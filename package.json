@@ -15,6 +15,7 @@
     "magazine",
     "medium"
   ],
+  "type": "module",
   "author": "naskko tech",
   "license": "ISC",
   "dependencies": {

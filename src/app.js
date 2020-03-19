@@ -107,7 +107,6 @@ app.use(passport.session());
 //Set the public folder
 app.use(express.static(path.join(__dirname, "public")));
 
-
 // Use all routers
 app.use(index);
 app.use(article);
