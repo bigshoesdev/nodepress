@@ -66,7 +66,6 @@ var _bookmark = _interopRequireDefault(require("./routes/bookmark"));
 
 var MongoStore = require("connect-mongo")(_expressSession["default"]); // Load environment variables from.env file, where API keys and passwords are configured.
 
-
 _dotenv["default"].config({
   path: "./.env"
 });
@@ -76,10 +75,10 @@ var port = process.env.PORT || 3000;
 
 var server = _http["default"].createServer(app);
 
-server.listen(port, function () {
+server.listen(port, function() {
   return console.log("App started on port: ".concat(port));
 });
-server.on("connection", function (socket) {
+server.on("connection", function(socket) {
   socket.setTimeout(600 * 60 * 1000); // now works perfectly...
 }); //Load views directory and view engine
 
@@ -92,51 +91,63 @@ var options = {
   useUnifiedTopology: true
 };
 
-_mongoose["default"].connect(process.env.MONGODB_ONLINE_DB, options).then(function (connected) {
-  return console.log("Database connection established");
-})["catch"](function (err) {
-  return console.error("There was an error connecting to database, the err is ".concat(err));
-}); // Import all routes
-
+_mongoose["default"]
+  .connect(process.env.MONGODB_ONLINE_DB, options)
+  .then(function(connected) {
+    return console.log("Database connection established");
+  })
+  ["catch"](function(err) {
+    return console.error(
+      "There was an error connecting to database, the err is ".concat(err)
+    );
+  }); // Import all routes
 
 //Init express session
 // Helmet config
 app.use((0, _helmet["default"])());
 app.use((0, _morgan["default"])("dev"));
-app.use(_express["default"].json({
-  limit: "900mb"
-}));
-app.use(_express["default"].urlencoded({
-  extended: false,
-  limit: "900mb"
-}));
+app.use(
+  _express["default"].json({
+    limit: "900mb"
+  })
+);
+app.use(
+  _express["default"].urlencoded({
+    extended: false,
+    limit: "900mb"
+  })
+);
 app.use((0, _expressValidator["default"])());
 app.use((0, _cookieParser["default"])());
-app.use((0, _expressSession["default"])({
-  secret: process.env.SESSION_SECRET,
-  resave: true,
-  saveUninitialized: true,
-  cookie: {
-    maxAge: 1209600000
-  },
-  store: new MongoStore({
-    url: process.env.MONGODB_ONLINE_DB,
-    autoReconnect: true
+app.use(
+  (0, _expressSession["default"])({
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 1209600000
+    },
+    store: new MongoStore({
+      url: process.env.MONGODB_ONLINE_DB,
+      autoReconnect: true
+    })
   })
-}));
-app.use(function (req, res, next) {
-  res.header("X-powered-by", "Nodepress");
+);
+app.use(function(req, res, next) {
+  res.header("X-powered-by", "Dype");
   next();
 });
-app.use(function (req, res, next) {
-  res.header("server", "Nodepress");
+app.use(function(req, res, next) {
+  res.header("server", "Dype");
   next();
 }); //Initialize passport
 
 app.use(_passport["default"].initialize());
 app.use(_passport["default"].session()); //Set the public folder
 
-app.use(_express["default"]["static"](_path["default"].join(__dirname, "public"))); // Use all routers
+app.use(
+  _express["default"]["static"](_path["default"].join(__dirname, "public"))
+); // Use all routers
 
 app.use(_index["default"]);
 app.use(_article["default"]);
@@ -155,13 +166,13 @@ app.use(_pages["default"]);
 app.use(_ads["default"]);
 app.use(_menu["default"]);
 app.use(_bookmark["default"]);
-app.use(_install["default"].redirectToLogin, function (req, res, next) {
+app.use(_install["default"].redirectToLogin, function(req, res, next) {
   if (res.status(404)) {
     res.render("404");
   }
 }); //Error handling
 
-app.use(function (err, req, res, next) {
+app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = process.env.NODE_ENV === "development" ? err : {}; // render the error page

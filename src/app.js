@@ -91,12 +91,12 @@ app.use(
 );
 
 app.use(function(req, res, next) {
-  res.header("X-powered-by", "Nodepress");
+  res.header("X-powered-by", "Dype");
   next();
 });
 
 app.use((req, res, next) => {
-  res.header("server", "Nodepress");
+  res.header("server", "Dype");
   next();
 });
 

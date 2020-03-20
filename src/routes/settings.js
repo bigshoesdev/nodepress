@@ -1203,7 +1203,11 @@ router.post(
           : req.body.approveComment == "enable"
           ? true
           : false,
-        autoLogin: !req.body.autoLogin ? true : req.body.autoLogin == "enable" ? true : false
+        autoLogin: !req.body.autoLogin
+          ? true
+          : req.body.autoLogin == "enable"
+          ? true
+          : false
       };
       let set = await Settings.find();
       await Settings.updateOne({ _id: set[0]._id }, payload);
@@ -1239,7 +1243,7 @@ router.post("/verify/purchase", async (req, res, next) => {
     res.redirect("back");
   }
   const option = {
-    url: "https://nodepress-server.herokuapp.com",
+    url: "https://Dype-server.herokuapp.com",
     method: "POST",
     form: {
       code: req.body.code,
