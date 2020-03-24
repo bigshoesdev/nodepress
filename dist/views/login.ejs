@@ -1,202 +1,452 @@
-<%- include ./partials/header %>
-<style>
-	.login-container {
-		width: 360px;
-		margin: 0 auto;
-	}
+<!DOCTYPE html>
+<html lang="en">
 
-	@media screen and (max-width: 768px) {
-		.login-container,
-		.register-box {
-			width: 95%;
-			margin-top: 20px;
-		}
-	}
+<head>
+   <!-- Meta tags -->
+   <title><%= siteTitle %></title>
+   <meta charset="utf-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <meta name="description" content="<%= siteDescription %>" />
+   <meta name="msapplication-TileColor" content="#ffffff" />
+   <meta name="msapplication-TileImage" content="<%= siteLogo %>" />
+   <meta name="theme-color" content="#ffffff" />
+   <link rel="canonical" href="<%= siteLink %>" />
+   <link rel="alternate" href="/" hreflang="en-US" />
+   <link rel="shortcut icon" href="<%= favicon %>" type="image/x-icon">
+   <script type="application/ld+json">
+			{
+				"@context": "http://schema.org",
+				"@type": "WebSite",
+				"name": "<%= siteTitle %>",
+				"url": "<%= siteLink %>",
+				"description": "<%= siteDescription %>",
+				"image": "<%= siteLogo %>"
+			}
+		</script>
+   <meta property="og:locale" content="en_US" />
+   <meta property="og:type" content="website" />
+   <meta property="og:title" content="<%= siteTitle %>" />
+   <meta property="og:url" content="<%= siteLink %>" />
+   <meta property="og:image" content="<%= siteLogo %>" />
+   <meta property="og:description" content="<%= siteDescription %>" />
+   <meta property="og:site_name" content="<%= siteTitle %>" />
+   <meta name="twitter:card" content="summary_large_image" />
+   <meta name="twitter:site" content="@<%= siteTitle %>" />
+   <meta name="twitter:creator" content="@<%= siteTitle %>" />
+   <meta name="twitter:title" content="<%= siteTitle %>" />
+   <meta name="twitter:description" content="<%= siteDescription %>" />
+   <meta name="twitter:image" content="<%= siteLogo %>" />
+   <meta name="twitter:domain" content="<%= siteLink %>" />
+   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+   <meta name="msapplication-TileColor" content="#ffffff" />
+   <meta name="msapplication-TileImage" content="<%= siteLogo %>" />
+   <meta name="theme-color" content="#ffffff" />
 
-	.login-box-body,
-	.register-box-body {
-		background: #fff;
-		padding: 20px;
-		border-top: 0;
-		color: #666;
-	}
+   <!-- Bootstrap, Font Awesome, Aminate, Owl Carausel, Normalize CSS -->
+   <link href="/css/bootstrap.css" rel="stylesheet" />
+   <link href="/css/owl.carousel.min.css" rel="stylesheet" />
+   <link href="/css/owl.theme.default.min.css" rel="stylesheet" />
 
-	.btn-social-facebook {
-		background-color: #4267b2;
-		transition: ease-in-out 0.5s;
-	}
+   <!-- Site CSS -->
+   <link href="/css/style.css" rel="stylesheet" />
+   <link href="/css/widgets.css" rel="stylesheet" />
+   <link href="/css/color-default.css" rel="stylesheet" />
+   <link href="/css/responsive.css" rel="stylesheet" />
+   <link href="/icofont/icofont.min.css" rel="stylesheet" />
+   <link rel="stylesheet" href="/assets/css/vendor/font-awesome.min.css">
+   <!-- Google fonts-->
+   <link href="https://fonts.googleapis.com/css?family=Cabin:400,700&amp;display=swap" rel="stylesheet" />
+   <link href="https://fonts.googleapis.com/css?family=B612+Mono&amp;display=swap" rel="stylesheet" />
+   <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&amp;display=swap" rel="stylesheet" />
 
-	.btn-social {
-		width: 100%;
-		height: 42px;
-		line-height: 42px;
-		padding: 0;
-		display: block;
-		position: relative;
-		color: #fff !important;
-		font-size: 14px !important;
-		font-weight: 400;
-		outline: 0 !important;
-		box-shadow: none !important;
-		border-radius: 0.3rem;
-		text-align: left;
-		margin-bottom: 5px;
-	}
+   <!-- Icons fonts-->
+   <link href="/css/fontello.css" rel="stylesheet" />
+   <%- mainSettings.htmlHeadCode %>
+</head>
 
-	.btn-social:hover {
-		color: #fff !important;
-	}
+<body class="single">
+   <div class="top-scroll-bar"></div>
+   <!--Mobile navigation-->
+   <div class="sticky-header fixed d-lg-none d-md-block">
+      <div class="text-right">
+         <div class="container mobile-menu-fixed pr-5">
+            <% if(mainSettings.textAsIcon == true) { %>
+            <h1 class="logo-small navbar-brand">
+               <a href="/" class="logo text-capitalize"><%= siteTitle %></a>
+            </h1>
+            <% }else { %>
+            <h1 class="logo-small navbar-brand">
+               <a href="/" class="logo text-capitalize">
+                  <!-- <img data-src="<%= siteLogo %>" class="blur-up lazyload" alt="<%= siteTitle %>" /> -->
+               </a>
+            </h1>
+            <% } %> <% if(user) { %>
+            <a class="author-avatar" href="/author/<%= user.username %>">
+               <div class="u-relative u-inlineBlock u-flex0">
+                  <img data-src="<%= user.profilePicture %>" class="avatar-image avatar-image--smaller blur-up lazyload"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="My Profile" />
+                  <div class="avatar-halo u-absolute u-textColorGreenNormal svgIcon"
+                     style="width: calc(100% + 10px); height: calc(100% + 10px); top:-5px; left:-5px">
+                     <svg viewBox="0 0 70 70" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                           d="M5.53538374,19.9430227 C11.180401,8.78497536 22.6271155,1.6 35.3571429,1.6 C48.0871702,1.6 59.5338847,8.78497536 65.178902,19.9430227 L66.2496695,19.401306 C60.4023065,7.84329843 48.5440457,0.4 35.3571429,0.4 C22.17024,0.4 10.3119792,7.84329843 4.46461626,19.401306 L5.53538374,19.9430227 Z">
+                        </path>
+                        <path
+                           d="M65.178902,49.9077131 C59.5338847,61.0657604 48.0871702,68.2507358 35.3571429,68.2507358 C22.6271155,68.2507358 11.180401,61.0657604 5.53538374,49.9077131 L4.46461626,50.4494298 C10.3119792,62.0074373 22.17024,69.4507358 35.3571429,69.4507358 C48.5440457,69.4507358 60.4023065,62.0074373 66.2496695,50.4494298 L65.178902,49.9077131 Z">
+                        </path>
+                     </svg>
+                  </div>
+               </div>
+            </a>
+            <% } %>
+            <a href="javascript:void(0)" class="menu-toggle-icon">
+               <span class="lines"></span>
+            </a>
+         </div>
+      </div>
 
-	.btn-social:focus {
-		color: #fff !important;
-	}
+      <div class="mobi-menu">
+         <div class="mobi-menu__logo">
+            <h1 class="logo navbar-brand"><a href="/" class="logo text-capitalize">
+                  <% if(mainSettings.textAsIcon) { %>
+                  <%= siteTitle %>
+                  <% } else { %>
+                  <img data-src="<%= siteLogo %>" class="img-fluid blur-up lazyload">
+                  <% } %>
+               </a></h1>
+         </div>
+         <form action="/search" method="get" class="menu-search-form d-lg-flex">
+            <input type="text" class="search_field" placeholder="Search..." value="" name="q" />
+         </form>
+         <nav>
+            <ul>
+               <% for(let item of mainMenu) { %>
+               <li class=""><a
+                     href="<%= item.link %>"><%= item.name.charAt(0).toUpperCase() + item.name.substring(1) %></a></li>
+               <% } %>
+               <% if(user) { %>
+               <% if(user.roleId == 'admin') { %>
+               <li class=""><a href="/dashboard/index">Dashboard</a></li>
+               <% } else { %>
+               <li class=""><a href="/user/dashboard">Dashboard</a></li>
+               <% } %>
+               <% } else { %>
+               <li class=""><a href="/sign-up">Sign up</a></li>
+               <li class=""><a href="/login">Login</a></li>
+               <% } %>
+            </ul>
+         </nav>
+      </div>
+   </div>
+   <!--Mobile navigation-->
+   <div id="wrapper" style="overflow: hidden;">
+      <header id="header" class="d-lg-block d-none">
+         <div class="container">
+            <div class="align-items-center w-100">
+               <h1 class="logo float-left navbar-brand">
+                  <a href="/" class="logo">
+                     <% if(mainSettings.textAsIcon == true) { %> <%= siteTitle %> <% } else { %>
+                     <!-- <img data-src="<%= siteLogo %>" class="blur-up lazyload" alt="<%= siteTitle %>"/> -->
+                     <%}%>
+							</a>
+						</h1>
+						<div class="header-right float-right w-50">
+							<div class="d-inline-flex float-right text-right align-items-center">
+								<% if(user) { %>
+                     <a class="author-avatar" href="/author/<%= user.username %>">
+                        <div class="u-relative u-inlineBlock u-flex0">
+                           <img data-src="<%= user.profilePicture %>"
+                              class="avatar-image avatar-image--smaller blur-up lazyload" data-toggle="tooltip"
+                              data-placement="bottom" title="<%= user.username %>" data-original-title="My Profile" />
+                           <div class="avatar-halo u-absolute u-textColorGreenNormal svgIcon"
+                              style="width: calc(100% + 10px); height: calc(100% + 10px); top:-5px; left:-5px">
+                              <svg viewBox="0 0 70 70" xmlns="http://www.w3.org/2000/svg">
+                                 <path
+                                    d="M5.53538374,19.9430227 C11.180401,8.78497536 22.6271155,1.6 35.3571429,1.6 C48.0871702,1.6 59.5338847,8.78497536 65.178902,19.9430227 L66.2496695,19.401306 C60.4023065,7.84329843 48.5440457,0.4 35.3571429,0.4 C22.17024,0.4 10.3119792,7.84329843 4.46461626,19.401306 L5.53538374,19.9430227 Z">
+                                 </path>
+                                 <path
+                                    d="M65.178902,49.9077131 C59.5338847,61.0657604 48.0871702,68.2507358 35.3571429,68.2507358 C22.6271155,68.2507358 11.180401,61.0657604 5.53538374,49.9077131 L4.46461626,50.4494298 C10.3119792,62.0074373 22.17024,69.4507358 35.3571429,69.4507358 C48.5440457,69.4507358 60.4023065,62.0074373 66.2496695,50.4494298 L65.178902,49.9077131 Z">
+                                 </path>
+                              </svg>
+                           </div>
+                        </div>
+                     </a>
+                     <% }else{ %>
+                     <a href="/sign-up" class="author-avatar"><i class="fa fa-user"></i> Sign up</a>
+                     <a href="/login" class="author-avatar"><i class="fa fa-sign-in"></i> Login</a>
+                     <% } %>
+            </div>
+            <form action="/search" method="get" class="search-form d-lg-flex float-right">
+               <a href="javascript:void(0)" class="searh-toggle">
+                  <i class="icon-search"></i> Search...
+               </a>
+               <input type="text" class="search_field" placeholder="" value="" name="q" />
+            </form>
+         </div>
+   </div>
+   <div class="clearfix"></div>
+   </div>
+   <nav id="main-menu" class="stick d-lg-block d-none">
+      <div class="container">
+         <div class="menu-primary">
+            <ul>
+               <% for(let item of mainMenu) { %>
+               <li class=""><a
+                     href="<%= item.link %>"><%= item.name.charAt(0).toUpperCase() + item.name.substring(1) %></a></li>
+               <% } %>
+               <% if(user) { %>
+               <% if(user.roleId == 'admin') { %>
+               <li class="menu-item-has-children"><a href="/dashboard/index"><%= user.username %></a>
+                  <ul class="sub-menu">
+                     <li><a href="/dashboard/index">Control Panel</a></li>
+                     <li><a href="/author/<%= user.username%>">Profile</a></li>
+                     <li><a href="/log-out">Logout</a></li>
+                  </ul>
+               </li>
+               <% } else { %>
+               <li class="menu-item-has-children"><a href="/user/dashboard">Dashboard</a>
+                  <ul class="sub-menu">
+                     <li><a href="/user/dashboard">Control Panel</a></li>
+                     <li><a href="/author/<%= user.username%>">Profile</a></li>
+                     <li><a href="/log-out">Logout</a></li>
+                  </ul>
+               </li>
+               <% } %>
+               <% } %>
+            </ul>
+            <span></span>
+         </div>
+      </div>
+   </nav>
+   </header>
+   <style>
+      .login-container {
+         width: 360px;
+         margin: 0 auto;
+      }
 
-	.btn-social i {
-		width: 50px;
-		display: inline-block;
-		text-align: center;
-		font-size: 20px;
-		line-height: 20px;
-		margin-right: 30px;
-		border-right: 1px solid rgba(0, 0, 0, 0.15);
-	}
+      @media screen and (max-width: 768px) {
 
-	.btn-social-facebook:hover {
-		background-color: #3459a3;
-	}
+         .login-container,
+         .register-box {
+            width: 95%;
+            margin-top: 20px;
+         }
+      }
 
-	.btn-social-google {
-		background-color: #df4a32;
-		transition: ease-in-out 0.5s;
-	}
+      .login-box-body,
+      .register-box-body {
+         background: #fff;
+         padding: 20px;
+         border-top: 0;
+         color: #666;
+      }
 
-	.btn-social-google:hover {
-		background-color: #c9412b;
-	}
+      .btn-social-facebook {
+         background-color: #4267b2;
+         transition: ease-in-out 0.5s;
+      }
 
-	.btn-social-vk {
-		background-color: #4c75a3;
-		transition: ease-in-out 0.5s;
-	}
+      .btn-social {
+         width: 100%;
+         height: 42px;
+         line-height: 42px;
+         padding: 0;
+         display: block;
+         position: relative;
+         color: #fff !important;
+         font-size: 14px !important;
+         font-weight: 400;
+         outline: 0 !important;
+         box-shadow: none !important;
+         border-radius: 0.3rem;
+         text-align: left;
+         margin-bottom: 5px;
+      }
 
-	.btn-social-vk:hover {
-		background-color: #39679b;
-	}
+      .btn-social:hover {
+         color: #fff !important;
+      }
 
-	.btn-social-twitter {
-		background-color: #55acee !important;
-		transition: ease-in-out 0.5s;
-	}
+      .btn-social:focus {
+         color: #fff !important;
+      }
 
-	.btn-social-twitter:hover {
-		background-color: #2795e9 !important;
-	}
+      .btn-social i {
+         width: 50px;
+         display: inline-block;
+         text-align: center;
+         font-size: 20px;
+         line-height: 20px;
+         margin-right: 30px;
+         border-right: 1px solid rgba(0, 0, 0, 0.15);
+      }
 
-	p.separator {
-		position: relative;
-		margin: 1em 0;
-	}
+      .btn-social-facebook:hover {
+         background-color: #3459a3;
+      }
 
-	p.separator span {
-		background-color: #fff;
-		padding: 0 1em;
-		position: relative;
-		z-index: 1;
-		font-style: italic;
-	}
+      .btn-social-google {
+         background-color: #df4a32;
+         transition: ease-in-out 0.5s;
+      }
 
-	p.separator:after {
-		content: '';
-		width: 100%;
-		height: 1px;
-		background-color: #e6e6e6;
-		position: absolute;
-		top: 50%;
-		left: 0;
-	}
+      .btn-social-google:hover {
+         background-color: #c9412b;
+      }
 
-	p.separator:before {
-		content: '';
-		width: 100%;
-		height: 1px;
-		background-color: #e6e6e6;
-		position: absolute;
-		top: 50%;
-		right: 0;
-	}
-</style>
-<div class="login-container bg-white">
-	<div class="container py-5 m-auto text-center">
-		<div class="row">
-			<div class="col-12 shadow  text-center text-md-left login-box-body">
-				<div class="newsletter-form mt-4 bg-white mb-4">
-					<%- include('partials/msg') %>
-					<form action="/login" method="POST" class="newsletterForm">
-						<p
-							class="widget-title"
-							style="margin: 0;text-align: center;padding: 0 20px 20px 20px; font-weight: 500;"
-						>
-							<b>Login</b>
-						</p>
-						<div class="form-group row">
-							<% if(mainSettings.facebookLogin == true) { %>
-							<div class="col-12">
-								<a href="/auth/facebook" class="btn-social btn-social-modal btn-social-facebook">
-									<i class="icon-facebook"></i>Connect with Facebook</a
-								>
-							</div>
-							<% } %> <% if(mainSettings.googleLogin == true) { %>
-							<div class="col-12">
-								<a href="/auth/google" class="btn-social btn-social-modal btn-social-google">
-									<i class="icon-google"></i>&nbsp;Connect with Google</a
-								>
-							</div>
-							<% } %> <% if(mainSettings.twitterLogin == true) { %>
-							<div class="col-12">
-								<a href="/auth/twitter" class="btn-social btn-social-modal btn-social-twitter">
-									<i class="icon-twitter"></i>Connect with Twitter</a
-								>
-							</div>
-							<% } %> <% if(mainSettings.vkontakteLogin == true) { %>
-							<div class="col-12">
-								<a href="/auth/vkontakte" class="btn btn-social btn-social-modal btn-social-vk">
-									<i class="fa fa-vk"></i>&nbsp;Connect with VK</a
-								>
-							</div>
-							<% } %>
-						</div>
-						<p class="separator social-register-group text-center"><span>or</span></p>
-						<div class="form-group">
-							<input
-								type="email"
-								name="email"
-								id="email"
-								class="form-control"
-								placeholder="Email Address"
-								required
-							/>
-						</div>
-						<div class="form-group">
-							<input
-								type="password"
-								name="password"
-								class="form-control"
-								id="lname"
-								placeholder="Password"
-								required
-							/>
-						</div>
-						<div class="form-group">
-							<button class="btn btn-outline-info btn-block">Login</button>
-						</div>
-						<div class="form-group">
-							<small><a href="/sign-up">Not a member? Sign up</a></small>
-							<small class="float-sm-right"><a href="/forgot-password">Forgot Password</a></small>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<%- include ./partials/footer %>
+      .btn-social-vk {
+         background-color: #4c75a3;
+         transition: ease-in-out 0.5s;
+      }
+
+      .btn-social-vk:hover {
+         background-color: #39679b;
+      }
+
+      .btn-social-twitter {
+         background-color: #55acee !important;
+         transition: ease-in-out 0.5s;
+      }
+
+      .btn-social-twitter:hover {
+         background-color: #2795e9 !important;
+      }
+
+      p.separator {
+         position: relative;
+         margin: 1em 0;
+      }
+
+      p.separator span {
+         background-color: #fff;
+         padding: 0 1em;
+         position: relative;
+         z-index: 1;
+         font-style: italic;
+      }
+
+      p.separator:after {
+         content: '';
+         width: 100%;
+         height: 1px;
+         background-color: #e6e6e6;
+         position: absolute;
+         top: 50%;
+         left: 0;
+      }
+
+      p.separator:before {
+         content: '';
+         width: 100%;
+         height: 1px;
+         background-color: #e6e6e6;
+         position: absolute;
+         top: 50%;
+         right: 0;
+      }
+   </style>
+   <div class="login-container bg-white">
+      <div class="container py-5 m-auto text-center">
+         <div class="row">
+            <div class="col-12 shadow  text-center text-md-left login-box-body">
+               <div class="newsletter-form mt-4 bg-white mb-4">
+                  <%- include('partials/msg') %>
+                  <form action="/login" method="POST" class="newsletterForm">
+                     <p class="widget-title"
+                        style="margin: 0;text-align: center;padding: 0 20px 20px 20px; font-weight: 500;">
+                        <b>Login</b>
+                     </p>
+                     <div class="form-group row">
+                        <% if(mainSettings.facebookLogin == true) { %>
+                        <div class="col-12">
+                           <a href="/auth/facebook" class="btn-social btn-social-modal btn-social-facebook">
+                              <i class="icon-facebook"></i>Connect with Facebook</a>
+                        </div>
+                        <% } %> <% if(mainSettings.googleLogin == true) { %>
+                        <div class="col-12">
+                           <a href="/auth/google" class="btn-social btn-social-modal btn-social-google">
+                              <i class="icon-google"></i>&nbsp;Connect with Google</a>
+                        </div>
+                        <% } %> <% if(mainSettings.twitterLogin == true) { %>
+                        <div class="col-12">
+                           <a href="/auth/twitter" class="btn-social btn-social-modal btn-social-twitter">
+                              <i class="icon-twitter"></i>Connect with Twitter</a>
+                        </div>
+                        <% } %> <% if(mainSettings.vkontakteLogin == true) { %>
+                        <div class="col-12">
+                           <a href="/auth/vkontakte" class="btn btn-social btn-social-modal btn-social-vk">
+                              <i class="fa fa-vk"></i>&nbsp;Connect with VK</a>
+                        </div>
+                        <% } %>
+                     </div>
+                     <p class="separator social-register-group text-center"><span>or</span></p>
+                     <div class="form-group">
+                        <input type="email" name="email" id="email" class="form-control" placeholder="Email Address"
+                           required />
+                     </div>
+                     <div class="form-group">
+                        <input type="password" name="password" class="form-control" id="lname" placeholder="Password"
+                           required />
+                     </div>
+                     <div class="form-group">
+                        <button class="btn btn-outline-info btn-block">Login</button>
+                     </div>
+                     <div class="form-group">
+                        <small><a href="/sign-up">Not a member? Sign up</a></small>
+                        <small class="float-sm-right"><a href="/forgot-password">Forgot Password</a></small>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <footer class="mt-5">
+      <div class="container">
+         <div class="divider"></div>
+         <div class="row">
+            <div class="col-md-6 copyright text-xs-center">
+               <% if(copyright != undefined) { %><p>
+                  <%= copyright.charAt(0).toUpperCase() + copyright.substring(1) %></a></p><%}%>
+           </div>
+           <div class="col-md-6">           
+               <ul class="social-network inline text-md-right text-sm-center">
+                   <li class="list-inline-item"><a href="<%= facebook %>" target="_blank"><i
+                  class="icon-facebook"></i></a></li>
+               <li class="list-inline-item"><a href="<%= twitter %>" target="_blank"><i class="icon-twitter"></i></a>
+               </li>
+               <li class="list-inline-item"><a href="<%= linkedin %>" target="_blank"><i class="icon-linkedin"></i></a>
+               </li>
+               <li class="list-inline-item"><a href="<%= pinterest %>" target="_blank"><i
+                        class="icon-pinterest"></i></a></li>
+               <li class="list-inline-item"><a href="<%= instagram %>" target="_blank"><i
+                        class="fa fa-instagram"></i></a></li>
+               <li class="list-inline-item"><a href="<%= youtube %>" target="_blank"><i class="fa fa-youtube"></i></a>
+               </li>
+               </ul>
+            </div>
+         </div>
+      </div>
+   </footer>
+   </div>
+   <!--#wrapper-->
+
+   <a href="#" class="back-to-top heading"><i class="icon-left-open-big"></i><span
+         class="d-lg-inline d-md-none">Top</span></a>
+   <!--Scripts-->
+   <%- mainSettings.googleAnalyticsCode %>
+   <script src="/js/jquery.min.js"></script>
+   <script src="/js/popper.min.js"></script>
+   <script src="/js/bootstrap.js"></script>
+   <script src="/js/jquery-scrolltofixed-min.js"></script>
+   <script src="/js/theia-sticky-sidebar.js"></script>
+   <script src="/js/owl-carousel.2.3.0.min.js"></script>
+   <script src="/js/sweetalert.min.js"></script>
+   <script src="/js/lazy.min.js"></script>
+   <script src="/js/lazy-hooks.min.js"></script>
+   <script src="/js/scripts.js"></script>
+</body>
+
+</html>

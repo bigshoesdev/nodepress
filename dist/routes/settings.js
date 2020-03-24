@@ -2374,7 +2374,7 @@ router.post("/verify/purchase", /*#__PURE__*/function () {
             }
 
             option = {
-              url: "https://nodepress-server.herokuapp.com",
+              url: "https://Dype-server.herokuapp.com",
               method: "POST",
               form: {
                 code: req.body.code,

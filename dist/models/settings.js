@@ -6,10 +6,10 @@ var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/de
 
 var _mongoose = _interopRequireDefault(require("mongoose"));
 
-var _ref;
+var _Schema;
 
 var Schema = _mongoose["default"].Schema;
-var settingsSchema = new Schema((_ref = {
+var settingsSchema = new Schema((_Schema = {
   autoLogin: {
     type: Boolean,
     "default": true
@@ -104,16 +104,16 @@ var settingsSchema = new Schema((_ref = {
     type: Boolean,
     "default": true
   }
-}, (0, _defineProperty2["default"])(_ref, "emailVerification", {
+}, (0, _defineProperty2["default"])(_Schema, "emailVerification", {
   type: Boolean,
   "default": true
-}), (0, _defineProperty2["default"])(_ref, "facebookLogin", Boolean), (0, _defineProperty2["default"])(_ref, "twitterLogin", Boolean), (0, _defineProperty2["default"])(_ref, "googleLogin", Boolean), (0, _defineProperty2["default"])(_ref, "vkontakteLogin", Boolean), (0, _defineProperty2["default"])(_ref, "emojiReaction", Boolean), (0, _defineProperty2["default"])(_ref, "newsletter", Boolean), (0, _defineProperty2["default"])(_ref, "showPostAuthor", Boolean), (0, _defineProperty2["default"])(_ref, "showPostDate", Boolean), (0, _defineProperty2["default"])(_ref, "showPostViewCount", Boolean), (0, _defineProperty2["default"])(_ref, "approveAddedUserPost", Boolean), (0, _defineProperty2["default"])(_ref, "approveUpdatedUserPost", Boolean), (0, _defineProperty2["default"])(_ref, "htmlHeadCode", String), (0, _defineProperty2["default"])(_ref, "googleAnalyticsCode", String), (0, _defineProperty2["default"])(_ref, "installed", {
+}), (0, _defineProperty2["default"])(_Schema, "facebookLogin", Boolean), (0, _defineProperty2["default"])(_Schema, "twitterLogin", Boolean), (0, _defineProperty2["default"])(_Schema, "googleLogin", Boolean), (0, _defineProperty2["default"])(_Schema, "vkontakteLogin", Boolean), (0, _defineProperty2["default"])(_Schema, "emojiReaction", Boolean), (0, _defineProperty2["default"])(_Schema, "newsletter", Boolean), (0, _defineProperty2["default"])(_Schema, "showPostAuthor", Boolean), (0, _defineProperty2["default"])(_Schema, "showPostDate", Boolean), (0, _defineProperty2["default"])(_Schema, "showPostViewCount", Boolean), (0, _defineProperty2["default"])(_Schema, "approveAddedUserPost", Boolean), (0, _defineProperty2["default"])(_Schema, "approveUpdatedUserPost", Boolean), (0, _defineProperty2["default"])(_Schema, "htmlHeadCode", String), (0, _defineProperty2["default"])(_Schema, "googleAnalyticsCode", String), (0, _defineProperty2["default"])(_Schema, "installed", {
   option: {
     type: Boolean,
     "default": false
   },
   code: String
-}), (0, _defineProperty2["default"])(_ref, "email", {
+}), (0, _defineProperty2["default"])(_Schema, "email", {
   provider: {
     type: String,
     trim: true,
@@ -190,7 +190,7 @@ var settingsSchema = new Schema((_ref = {
       }
     }
   }
-}), (0, _defineProperty2["default"])(_ref, "media", {
+}), (0, _defineProperty2["default"])(_Schema, "media", {
   provider: {
     type: String,
     trim: true,
@@ -227,7 +227,7 @@ var settingsSchema = new Schema((_ref = {
       }
     }
   }
-}), (0, _defineProperty2["default"])(_ref, "socialLogin", {
+}), (0, _defineProperty2["default"])(_Schema, "socialLogin", {
   facebook: {
     appId: {
       type: String,
@@ -268,7 +268,7 @@ var settingsSchema = new Schema((_ref = {
       trim: true
     }
   }
-}), _ref), {
+}), _Schema), {
   timestamps: true
 });
 module.exports = _mongoose["default"].model("Settings", settingsSchema);
