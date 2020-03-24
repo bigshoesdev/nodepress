@@ -14,7 +14,7 @@
                         <div class="section-1-left-first-img" style="background-image: url('<%= post[i * j].file %>');">
                            <div class="section-1-left-first-contant">
                               <i class="fa fa-compass" aria-hidden="true"></i>
-                              <h4><a href="/post/<%= post[i * j].slug %>"><%= post[i * j].title.charAt(0).toUpperCase() + post[i * j].title.substring(1) %></a></h4>
+                              <h4><a href="/post/<%= post[i * j].slug %>" style="color: white;"><%= post[i * j].title.charAt(0).toUpperCase() + post[i * j].title.substring(1) %></a></h4>
                               <p><% if(post[i * j].short != undefined) { %> <% post[i * j].short.substring(1) %> <% } %>
                               </p>
                            </div>
