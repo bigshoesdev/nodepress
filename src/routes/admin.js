@@ -28,7 +28,7 @@ router.get("/dashboard", install.redirectToLogin, auth, role('admin'), (req, res
 });
 
 router.get("/dashboard/index", install.redirectToLogin, auth, role("admin"), async (req, res, next) => {
-  let totalUsers = await User.countDocuments({roleId: 'user'});
+  let totalUsers = await User.countDocuments({ roleId: 'user' });
   let pendingPost = await Article.countDocuments({ active: false });
   let totalComments = await Comment.countDocuments();
   let totalPost = await Article.countDocuments();
@@ -445,18 +445,18 @@ router.get(
       let page = req.query.page || 1;
       let category = req.query.q
         ? await Category.find({
-            parent: undefined,
-            name: { $regex: req.query.q, $options: "$i" }
-          })
+          parent: undefined,
+          name: { $regex: req.query.q, $options: "$i" }
+        })
         : await Category.find({ parent: undefined })
-            .sort({ createdAt: -1 })
-            .skip(perPage * page - perPage)
-            .limit(perPage);
+          .sort({ createdAt: -1 })
+          .skip(perPage * page - perPage)
+          .limit(perPage);
       let count = req.query.q
         ? await Category.countDocuments({
-            parent: undefined,
-            name: { $regex: req.query.q, $options: "$i" }
-          })
+          parent: undefined,
+          name: { $regex: req.query.q, $options: "$i" }
+        })
         : await Category.countDocuments({ parent: undefined });
       res.render("./admin/categories", {
         title: "Categories",
@@ -507,13 +507,13 @@ router.get(
       let tags = req.query.q
         ? await Tags.find({ name: { $regex: req.query.q, $options: "$i" } })
         : await Tags.find()
-            .sort({ createdAt: -1 })
-            .skip(perPage * page - perPage)
-            .limit(perPage);
+          .sort({ createdAt: -1 })
+          .skip(perPage * page - perPage)
+          .limit(perPage);
       let count = req.query.q
         ? await Tags.countDocuments({
-            name: { $regex: req.query.q, $options: "$i" }
-          })
+          name: { $regex: req.query.q, $options: "$i" }
+        })
         : await Tags.countDocuments();
       res.render("./admin/tags", {
         title: "Posts - Tags",
@@ -557,16 +557,16 @@ router.get(
       let page = req.query.page || 1;
       let announcement = req.query.q
         ? await Announcement.find({
-            title: { $regex: req.query.q, $options: "$i" }
-          })
+          title: { $regex: req.query.q, $options: "$i" }
+        })
         : await Announcement.find()
-            .sort({ createdAt: -1 })
-            .skip(perPage * page - perPage)
-            .limit(perPage);
+          .sort({ createdAt: -1 })
+          .skip(perPage * page - perPage)
+          .limit(perPage);
       let count = req.query.q
         ? await Announcement.countDocuments({
-            title: { $regex: req.query.q, $options: "$i" }
-          })
+          title: { $regex: req.query.q, $options: "$i" }
+        })
         : await Announcement.countDocuments();
       res.render("./admin/announcement", {
         title: "Dashboard - Announcements",
@@ -719,17 +719,17 @@ router.get("/dashboard/pages", auth, install.redirectToLogin, role("admin"), asy
     let search = req.query.q ? req.query.q : undefined;
     let pages = req.query.q
       ? await Pages.find({
-          name: { $regex: req.query.q, $options: "i" }
-        }).populate("author")
+        name: { $regex: req.query.q, $options: "i" }
+      }).populate("author")
       : await Pages.find()
-          .populate("author")
-          .sort({ createdAt: -1 })
-          .skip(perPage * page - perPage)
-          .limit(perPage);
+        .populate("author")
+        .sort({ createdAt: -1 })
+        .skip(perPage * page - perPage)
+        .limit(perPage);
     let count = req.query.q
       ? await Pages.countDocuments({
-          name: { $regex: req.query.q, $options: "i" }
-        })
+        name: { $regex: req.query.q, $options: "i" }
+      })
       : await Pages.countDocuments();
     res.render("./admin/pages", {
       title: "Dashboard - Pages",
@@ -780,6 +780,17 @@ router.get(
     }
   }
 );
+
+router.get('/dashboard/pages/edit-homepage', auth, install.redirectToLogin, role('admin'), async (req, res, next) => {
+  try {
+    res.render('./admin/edit-home-page', {
+      title: "Dashboard - Edit Home Page",
+    });
+  } catch (error) {
+    next(error);
+  }
+
+});
 
 router.get(
   "/dashboard/comments",
@@ -973,26 +984,26 @@ router.get(
       let search = req.query.q ? req.query.q : undefined;
       let contact = req.query.q
         ? await Contact.find({
-            $or: [
-              { fullname: { $regex: req.query.q, $options: "$i" } },
-              { email: { $regex: req.query.q, $options: "$i" } },
-              { message: { $regex: req.query.q, $options: "$i" } }
-            ]
-          })
-            .skip(perPage * page - perPage)
-            .limit(perPage)
+          $or: [
+            { fullname: { $regex: req.query.q, $options: "$i" } },
+            { email: { $regex: req.query.q, $options: "$i" } },
+            { message: { $regex: req.query.q, $options: "$i" } }
+          ]
+        })
+          .skip(perPage * page - perPage)
+          .limit(perPage)
         : await Contact.find()
-            .sort({ createdAt: -1 })
-            .skip(perPage * page - perPage)
-            .limit(perPage);
+          .sort({ createdAt: -1 })
+          .skip(perPage * page - perPage)
+          .limit(perPage);
       let count = req.query.q
         ? await Contact.countDocuments({
-            $or: [
-              { fullname: { $regex: req.query.q, $options: "$i" } },
-              { email: { $regex: req.query.q, $options: "$i" } },
-              { message: { $regex: req.query.q, $options: "$i" } }
-            ]
-          })
+          $or: [
+            { fullname: { $regex: req.query.q, $options: "$i" } },
+            { email: { $regex: req.query.q, $options: "$i" } },
+            { message: { $regex: req.query.q, $options: "$i" } }
+          ]
+        })
         : await Contact.countDocuments();
       res.render("./admin/contact", {
         title: "Dashboard - Contacts",
@@ -1036,30 +1047,30 @@ router.get("/dashboard/users", auth, install.redirectToLogin, role("admin"), asy
     let page = req.query.page || 1;
     let users = req.query.q
       ? await User.find({
-          roleId: {
-            $ne: "admin"
-          },
-          $or: [
-            { username: { $regex: req.query.q, $options: "i" } },
-            { email: { $regex: req.query.q, $options: "i" } }
-          ]
-        })
-          .skip(perPage * page - perPage)
-          .limit(perPage)
+        roleId: {
+          $ne: "admin"
+        },
+        $or: [
+          { username: { $regex: req.query.q, $options: "i" } },
+          { email: { $regex: req.query.q, $options: "i" } }
+        ]
+      })
+        .skip(perPage * page - perPage)
+        .limit(perPage)
       : await User.find({ roleId: { $ne: "admin" } })
-          .sort({ createdAt: -1 })
-          .skip(perPage * page - perPage)
-          .limit(perPage);
+        .sort({ createdAt: -1 })
+        .skip(perPage * page - perPage)
+        .limit(perPage);
     let count = req.query.q
       ? await User.countDocuments({
-          roleId: {
-            $ne: "admin"
-          },
-          $or: [
-            { username: { $regex: req.query.q, $options: "i" } },
-            { email: { $regex: req.query.q, $options: "i" } }
-          ]
-        })
+        roleId: {
+          $ne: "admin"
+        },
+        $or: [
+          { username: { $regex: req.query.q, $options: "i" } },
+          { email: { $regex: req.query.q, $options: "i" } }
+        ]
+      })
       : await User.countDocuments({ roleId: { $ne: "admin" } });
     res.render("./admin/users", {
       title: "Dashboard - Users",
@@ -1083,26 +1094,26 @@ router.get(
       let page = req.query.page || 1;
       let users = req.query.q
         ? await User.find({
-            roleId: "admin",
-            $or: [
-              { username: { $regex: req.query.q, $options: "i" } },
-              { email: { $regex: req.query.q, $options: "i" } }
-            ]
-          })
-            .skip(perPage * page - perPage)
-            .limit(perPage)
+          roleId: "admin",
+          $or: [
+            { username: { $regex: req.query.q, $options: "i" } },
+            { email: { $regex: req.query.q, $options: "i" } }
+          ]
+        })
+          .skip(perPage * page - perPage)
+          .limit(perPage)
         : await User.find({ roleId: "admin" })
-            .sort({ createdAt: -1 })
-            .skip(perPage * page - perPage)
-            .limit(perPage);
+          .sort({ createdAt: -1 })
+          .skip(perPage * page - perPage)
+          .limit(perPage);
       let count = req.query.q
         ? await User.countDocuments({
-            roleId: "admin",
-            $or: [
-              { username: { $regex: req.query.q, $options: "i" } },
-              { email: { $regex: req.query.q, $options: "i" } }
-            ]
-          })
+          roleId: "admin",
+          $or: [
+            { username: { $regex: req.query.q, $options: "i" } },
+            { email: { $regex: req.query.q, $options: "i" } }
+          ]
+        })
         : await User.countDocuments({ roleId: "admin" });
       res.render("./admin/admin", {
         title: "Dashboard - Administrators",
@@ -1326,78 +1337,78 @@ router.get(
       let page = req.query.page || 1;
       let category = req.query.q
         ? await Category.aggregate([
-            {
-              $match: {
-                name: { $regex: req.query.q, $options: "$i" },
-                parent: {
-                  $exists: {
-                    $ne: false
-                  }
+          {
+            $match: {
+              name: { $regex: req.query.q, $options: "$i" },
+              parent: {
+                $exists: {
+                  $ne: false
                 }
               }
-            },
-            {
-              $lookup: {
-                from: "categories",
-                localField: "parent",
-                foreignField: "_id",
-                as: "parent"
-              }
-            },
-            {
-              $unwind: {
-                path: "$parent",
-                preserveNullAndEmptyArrays: true
-              }
-            },
-            {
-              $sort: {
-                createdAt: -1
-              }
-            },
-            {
-              $skip: perPage * page - perPage
-            },
-            {
-              $limit: perPage
             }
-          ])
+          },
+          {
+            $lookup: {
+              from: "categories",
+              localField: "parent",
+              foreignField: "_id",
+              as: "parent"
+            }
+          },
+          {
+            $unwind: {
+              path: "$parent",
+              preserveNullAndEmptyArrays: true
+            }
+          },
+          {
+            $sort: {
+              createdAt: -1
+            }
+          },
+          {
+            $skip: perPage * page - perPage
+          },
+          {
+            $limit: perPage
+          }
+        ])
         : await Category.aggregate([
-            {
-              $match: {
-                parent: {
-                  $exists: {
-                    $ne: false
-                  }
+          {
+            $match: {
+              parent: {
+                $exists: {
+                  $ne: false
                 }
               }
-            },
-            {
-              $lookup: {
-                from: "categories",
-                localField: "parent",
-                foreignField: "_id",
-                as: "parent"
-              }
-            },
-            {
-              $unwind: {
-                path: "$parent",
-                preserveNullAndEmptyArrays: true
-              }
-            },
-            {
-              $sort: {
-                createdAt: -1
-              }
-            },
-            {
-              $skip: perPage * page - perPage
-            },
-            {
-              $limit: perPage
             }
-          ]);
+          },
+          {
+            $lookup: {
+              from: "categories",
+              localField: "parent",
+              foreignField: "_id",
+              as: "parent"
+            }
+          },
+          {
+            $unwind: {
+              path: "$parent",
+              preserveNullAndEmptyArrays: true
+            }
+          },
+          {
+            $sort: {
+              createdAt: -1
+            }
+          },
+          {
+            $skip: perPage * page - perPage
+          },
+          {
+            $limit: perPage
+          }
+        ]);
       let count2 = await Category.aggregate([
         {
           $match: {
@@ -1425,20 +1436,20 @@ router.get(
       ]);
       let count = req.query.q
         ? await Category.aggregate([
-            {
-              $match: {
-                name: {
-                  $regex: req.query.q,
-                  $options: "$i"
-                },
-                parent: {
-                  $exists: {
-                    $ne: false
-                  }
+          {
+            $match: {
+              name: {
+                $regex: req.query.q,
+                $options: "$i"
+              },
+              parent: {
+                $exists: {
+                  $ne: false
                 }
               }
             }
-          ])
+          }
+        ])
         : count2.length;
       res.render("./admin/subcategory", {
         title: "Categories - Sub Categories",
@@ -1484,11 +1495,11 @@ router.get('/dashboard/visual', auth, install.redirectToLogin, role('admin'), as
 });
 
 router.get('/dashboard/menu', auth, install.redirectToLogin, role('admin'), async (req, res, next) => {
-  let menu = await Menu.find().sort({position: 1});
-  let adminCat = await Category.find().sort({createdAt: -1});
-  let adminPage = await Pages.find().sort({createdAt: -1});
-  let adminTag = await Tags.find().sort({createdAt: -1});
-  let adminAuthor = await User.find().sort({createdAt: -1});
+  let menu = await Menu.find().sort({ position: 1 });
+  let adminCat = await Category.find().sort({ createdAt: -1 });
+  let adminPage = await Pages.find().sort({ createdAt: -1 });
+  let adminTag = await Tags.find().sort({ createdAt: -1 });
+  let adminAuthor = await User.find().sort({ createdAt: -1 });
   res.render('./admin/menu', {
     title: 'Menu',
     menu,

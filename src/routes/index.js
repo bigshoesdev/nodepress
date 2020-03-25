@@ -721,4 +721,12 @@ router.get('/author/:username', install.redirectToLogin, async (req, res, next) 
 	}
 });
 
+router.get('/vision', install.redirectToLogin, async(req, res, next) => {
+	res.render('vision');
+})
+
+router.get('/membership', install.redirectToLogin, async(req, res, next) => {
+	res.render('membership');
+})
+
 module.exports = router;
