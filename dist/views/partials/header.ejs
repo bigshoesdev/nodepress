@@ -35,10 +35,11 @@
                         <a href="/"><img src="/images/GOLDEN-PNG.png"></a>
                      </div>
                      <div id="myTopnav" class="topnav">
-                        <form action="/search" method="get" class="search-form d-lg-flex float-right">
+                        <form action="/search" method="get" class="search-form d-lg-flex float-right" id="searchForm">
                            <div class="container">
+                              <a type="button" href="javascript:void(0)" class="closebtn" style="right: 15%; padding-left: 10px; padding-right: 10px;" onclick="searchForm()" id="closebtn"><i class="fa fa-search"></i></a>
                               <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-                              <input type="text" placeholder="Suche" name="q" value="" />
+                              <input id="q" type="text" placeholder="Suche" name="q" value="" onfocus="displaySearchbtn()"/>
                               <label>Suche Inhalte, die dich begeistern</label>
                            </div>
                         </form>

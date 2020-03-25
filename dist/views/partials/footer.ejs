@@ -25,7 +25,17 @@
    }
    function closeNav() {
       document.getElementById("myTopnav").style.height = "0";
+      document.getElementById('closebtn').style.visibility = "hidden";
    }
+   function searchForm(){
+      document.getElementById("searchForm").submit();
+   }
+   document.getElementById('closebtn').style.visibility = "hidden";
+   
+   function displaySearchbtn(){
+      document.getElementById('closebtn').style.visibility = "visible";
+   }
+
 </script>
 
 </body>
