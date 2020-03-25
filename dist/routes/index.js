@@ -915,4 +915,44 @@ router.get('/author/:username', _install["default"].redirectToLogin, /*#__PURE__
     return _ref4.apply(this, arguments);
   };
 }());
+router.get('/vision', _install["default"].redirectToLogin, /*#__PURE__*/function () {
+  var _ref5 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(req, res, next) {
+    return _regenerator["default"].wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            res.render('vision');
+
+          case 1:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5);
+  }));
+
+  return function (_x13, _x14, _x15) {
+    return _ref5.apply(this, arguments);
+  };
+}());
+router.get('/membership', _install["default"].redirectToLogin, /*#__PURE__*/function () {
+  var _ref6 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(req, res, next) {
+    return _regenerator["default"].wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            res.render('membership');
+
+          case 1:
+          case "end":
+            return _context6.stop();
+        }
+      }
+    }, _callee6);
+  }));
+
+  return function (_x16, _x17, _x18) {
+    return _ref6.apply(this, arguments);
+  };
+}());
 module.exports = router;

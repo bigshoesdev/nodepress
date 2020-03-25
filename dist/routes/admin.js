@@ -1386,24 +1386,50 @@ router.get("/dashboard/pages/edit/:name", _auth["default"], _install["default"].
     return _ref18.apply(this, arguments);
   };
 }());
-router.get("/dashboard/comments", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+router.get('/dashboard/pages/edit-homepage', _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])('admin'), /*#__PURE__*/function () {
   var _ref19 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee19(req, res, next) {
-    var perPage, page, comment, coun, count, _count4, _comment;
-
     return _regenerator["default"].wrap(function _callee19$(_context19) {
       while (1) {
         switch (_context19.prev = _context19.next) {
           case 0:
-            _context19.prev = 0;
+            try {
+              res.render('./admin/edit-home-page', {
+                title: "Dashboard - Edit Home Page"
+              });
+            } catch (error) {
+              next(error);
+            }
+
+          case 1:
+          case "end":
+            return _context19.stop();
+        }
+      }
+    }, _callee19);
+  }));
+
+  return function (_x55, _x56, _x57) {
+    return _ref19.apply(this, arguments);
+  };
+}());
+router.get("/dashboard/comments", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+  var _ref20 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee20(req, res, next) {
+    var perPage, page, comment, coun, count, _count4, _comment;
+
+    return _regenerator["default"].wrap(function _callee20$(_context20) {
+      while (1) {
+        switch (_context20.prev = _context20.next) {
+          case 0:
+            _context20.prev = 0;
             perPage = 10;
             page = req.query.page || 1;
 
             if (!req.query.q) {
-              _context19.next = 14;
+              _context20.next = 14;
               break;
             }
 
-            _context19.next = 6;
+            _context20.next = 6;
             return _comment2["default"].aggregate([{
               $lookup: {
                 from: "articles",
@@ -1463,8 +1489,8 @@ router.get("/dashboard/comments", _auth["default"], _install["default"].redirect
             }]);
 
           case 6:
-            comment = _context19.sent;
-            _context19.next = 9;
+            comment = _context20.sent;
+            _context20.next = 9;
             return _comment2["default"].aggregate([{
               $lookup: {
                 from: "articles",
@@ -1520,7 +1546,7 @@ router.get("/dashboard/comments", _auth["default"], _install["default"].redirect
             }]);
 
           case 9:
-            coun = _context19.sent;
+            coun = _context20.sent;
             count = coun.length;
             res.render("./admin/comments", {
               title: "Dashboard - Comments",
@@ -1530,16 +1556,16 @@ router.get("/dashboard/comments", _auth["default"], _install["default"].redirect
               query: true,
               search: req.query.q
             });
-            _context19.next = 21;
+            _context20.next = 21;
             break;
 
           case 14:
-            _context19.next = 16;
+            _context20.next = 16;
             return _comment2["default"].countDocuments();
 
           case 16:
-            _count4 = _context19.sent;
-            _context19.next = 19;
+            _count4 = _context20.sent;
+            _context20.next = 19;
             return _comment2["default"].aggregate([{
               $sort: {
                 createdAt: -1
@@ -1563,7 +1589,7 @@ router.get("/dashboard/comments", _auth["default"], _install["default"].redirect
             }]);
 
           case 19:
-            _comment = _context19.sent;
+            _comment = _context20.sent;
             res.render("./admin/comments", {
               title: "Dashboard - Comments",
               comment: _comment,
@@ -1573,86 +1599,86 @@ router.get("/dashboard/comments", _auth["default"], _install["default"].redirect
             });
 
           case 21:
-            _context19.next = 26;
+            _context20.next = 26;
             break;
 
           case 23:
-            _context19.prev = 23;
-            _context19.t0 = _context19["catch"](0);
-            next(_context19.t0);
-
-          case 26:
-          case "end":
-            return _context19.stop();
-        }
-      }
-    }, _callee19, null, [[0, 23]]);
-  }));
-
-  return function (_x55, _x56, _x57) {
-    return _ref19.apply(this, arguments);
-  };
-}());
-router.get("/dashboard/comments/edit/:id", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
-  var _ref20 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee20(req, res, next) {
-    var comment;
-    return _regenerator["default"].wrap(function _callee20$(_context20) {
-      while (1) {
-        switch (_context20.prev = _context20.next) {
-          case 0:
-            _context20.prev = 0;
-            _context20.next = 3;
-            return _comment2["default"].findOne({
-              _id: req.params.id
-            });
-
-          case 3:
-            comment = _context20.sent;
-            if (!comment) res.render("404");else {
-              res.render("./admin/edit-comment", {
-                title: "Edit Comment - ".concat(comment.email),
-                comment: comment
-              });
-            }
-            _context20.next = 10;
-            break;
-
-          case 7:
-            _context20.prev = 7;
+            _context20.prev = 23;
             _context20.t0 = _context20["catch"](0);
             next(_context20.t0);
 
-          case 10:
+          case 26:
           case "end":
             return _context20.stop();
         }
       }
-    }, _callee20, null, [[0, 7]]);
+    }, _callee20, null, [[0, 23]]);
   }));
 
   return function (_x58, _x59, _x60) {
     return _ref20.apply(this, arguments);
   };
 }());
-router.get("/dashboard/contacts", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+router.get("/dashboard/comments/edit/:id", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref21 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee21(req, res, next) {
-    var perPage, page, query, search, contact, count;
+    var comment;
     return _regenerator["default"].wrap(function _callee21$(_context21) {
       while (1) {
         switch (_context21.prev = _context21.next) {
           case 0:
             _context21.prev = 0;
+            _context21.next = 3;
+            return _comment2["default"].findOne({
+              _id: req.params.id
+            });
+
+          case 3:
+            comment = _context21.sent;
+            if (!comment) res.render("404");else {
+              res.render("./admin/edit-comment", {
+                title: "Edit Comment - ".concat(comment.email),
+                comment: comment
+              });
+            }
+            _context21.next = 10;
+            break;
+
+          case 7:
+            _context21.prev = 7;
+            _context21.t0 = _context21["catch"](0);
+            next(_context21.t0);
+
+          case 10:
+          case "end":
+            return _context21.stop();
+        }
+      }
+    }, _callee21, null, [[0, 7]]);
+  }));
+
+  return function (_x61, _x62, _x63) {
+    return _ref21.apply(this, arguments);
+  };
+}());
+router.get("/dashboard/contacts", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+  var _ref22 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee22(req, res, next) {
+    var perPage, page, query, search, contact, count;
+    return _regenerator["default"].wrap(function _callee22$(_context22) {
+      while (1) {
+        switch (_context22.prev = _context22.next) {
+          case 0:
+            _context22.prev = 0;
             perPage = 10;
             page = req.query.page || 1;
             query = req.query.q ? true : false;
             search = req.query.q ? req.query.q : undefined;
 
             if (!req.query.q) {
-              _context21.next = 11;
+              _context22.next = 11;
               break;
             }
 
-            _context21.next = 8;
+            _context22.next = 8;
             return _contact["default"].find({
               $or: [{
                 fullname: {
@@ -1673,28 +1699,28 @@ router.get("/dashboard/contacts", _auth["default"], _install["default"].redirect
             }).skip(perPage * page - perPage).limit(perPage);
 
           case 8:
-            _context21.t0 = _context21.sent;
-            _context21.next = 14;
+            _context22.t0 = _context22.sent;
+            _context22.next = 14;
             break;
 
           case 11:
-            _context21.next = 13;
+            _context22.next = 13;
             return _contact["default"].find().sort({
               createdAt: -1
             }).skip(perPage * page - perPage).limit(perPage);
 
           case 13:
-            _context21.t0 = _context21.sent;
+            _context22.t0 = _context22.sent;
 
           case 14:
-            contact = _context21.t0;
+            contact = _context22.t0;
 
             if (!req.query.q) {
-              _context21.next = 21;
+              _context22.next = 21;
               break;
             }
 
-            _context21.next = 18;
+            _context22.next = 18;
             return _contact["default"].countDocuments({
               $or: [{
                 fullname: {
@@ -1715,19 +1741,19 @@ router.get("/dashboard/contacts", _auth["default"], _install["default"].redirect
             });
 
           case 18:
-            _context21.t1 = _context21.sent;
-            _context21.next = 24;
+            _context22.t1 = _context22.sent;
+            _context22.next = 24;
             break;
 
           case 21:
-            _context21.next = 23;
+            _context22.next = 23;
             return _contact["default"].countDocuments();
 
           case 23:
-            _context21.t1 = _context21.sent;
+            _context22.t1 = _context22.sent;
 
           case 24:
-            count = _context21.t1;
+            count = _context22.t1;
             res.render("./admin/contact", {
               title: "Dashboard - Contacts",
               contact: contact,
@@ -1736,199 +1762,77 @@ router.get("/dashboard/contacts", _auth["default"], _install["default"].redirect
               query: query,
               search: search
             });
-            _context21.next = 31;
+            _context22.next = 31;
             break;
 
           case 28:
-            _context21.prev = 28;
-            _context21.t2 = _context21["catch"](0);
-            next(_context21.t2);
+            _context22.prev = 28;
+            _context22.t2 = _context22["catch"](0);
+            next(_context22.t2);
 
           case 31:
-          case "end":
-            return _context21.stop();
-        }
-      }
-    }, _callee21, null, [[0, 28]]);
-  }));
-
-  return function (_x61, _x62, _x63) {
-    return _ref21.apply(this, arguments);
-  };
-}());
-router.get("/dashboard/contacts/view/:id", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
-  var _ref22 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee22(req, res, next) {
-    var contact;
-    return _regenerator["default"].wrap(function _callee22$(_context22) {
-      while (1) {
-        switch (_context22.prev = _context22.next) {
-          case 0:
-            _context22.prev = 0;
-
-            if (!_mongoose["default"].Types.ObjectId.isValid(req.params.id)) {
-              _context22.next = 8;
-              break;
-            }
-
-            _context22.next = 4;
-            return _contact["default"].findById(req.params.id);
-
-          case 4:
-            contact = _context22.sent;
-            res.render("./admin/view-contact", {
-              title: "Contact - View Full Message",
-              contact: contact
-            });
-            _context22.next = 9;
-            break;
-
-          case 8:
-            res.render("404");
-
-          case 9:
-            _context22.next = 14;
-            break;
-
-          case 11:
-            _context22.prev = 11;
-            _context22.t0 = _context22["catch"](0);
-            next(_context22.t0);
-
-          case 14:
           case "end":
             return _context22.stop();
         }
       }
-    }, _callee22, null, [[0, 11]]);
+    }, _callee22, null, [[0, 28]]);
   }));
 
   return function (_x64, _x65, _x66) {
     return _ref22.apply(this, arguments);
   };
 }());
-router.get("/dashboard/users", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+router.get("/dashboard/contacts/view/:id", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref23 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee23(req, res, next) {
-    var perPage, page, users, count;
+    var contact;
     return _regenerator["default"].wrap(function _callee23$(_context23) {
       while (1) {
         switch (_context23.prev = _context23.next) {
           case 0:
             _context23.prev = 0;
-            perPage = 10;
-            page = req.query.page || 1;
 
-            if (!req.query.q) {
-              _context23.next = 9;
+            if (!_mongoose["default"].Types.ObjectId.isValid(req.params.id)) {
+              _context23.next = 8;
               break;
             }
 
-            _context23.next = 6;
-            return _users["default"].find({
-              roleId: {
-                $ne: "admin"
-              },
-              $or: [{
-                username: {
-                  $regex: req.query.q,
-                  $options: "i"
-                }
-              }, {
-                email: {
-                  $regex: req.query.q,
-                  $options: "i"
-                }
-              }]
-            }).skip(perPage * page - perPage).limit(perPage);
+            _context23.next = 4;
+            return _contact["default"].findById(req.params.id);
 
-          case 6:
-            _context23.t0 = _context23.sent;
-            _context23.next = 12;
+          case 4:
+            contact = _context23.sent;
+            res.render("./admin/view-contact", {
+              title: "Contact - View Full Message",
+              contact: contact
+            });
+            _context23.next = 9;
             break;
+
+          case 8:
+            res.render("404");
 
           case 9:
-            _context23.next = 11;
-            return _users["default"].find({
-              roleId: {
-                $ne: "admin"
-              }
-            }).sort({
-              createdAt: -1
-            }).skip(perPage * page - perPage).limit(perPage);
+            _context23.next = 14;
+            break;
 
           case 11:
-            _context23.t0 = _context23.sent;
+            _context23.prev = 11;
+            _context23.t0 = _context23["catch"](0);
+            next(_context23.t0);
 
-          case 12:
-            users = _context23.t0;
-
-            if (!req.query.q) {
-              _context23.next = 19;
-              break;
-            }
-
-            _context23.next = 16;
-            return _users["default"].countDocuments({
-              roleId: {
-                $ne: "admin"
-              },
-              $or: [{
-                username: {
-                  $regex: req.query.q,
-                  $options: "i"
-                }
-              }, {
-                email: {
-                  $regex: req.query.q,
-                  $options: "i"
-                }
-              }]
-            });
-
-          case 16:
-            _context23.t1 = _context23.sent;
-            _context23.next = 22;
-            break;
-
-          case 19:
-            _context23.next = 21;
-            return _users["default"].countDocuments({
-              roleId: {
-                $ne: "admin"
-              }
-            });
-
-          case 21:
-            _context23.t1 = _context23.sent;
-
-          case 22:
-            count = _context23.t1;
-            res.render("./admin/users", {
-              title: "Dashboard - Users",
-              allusers: users,
-              current: page,
-              pages: Math.ceil(count / perPage)
-            });
-            _context23.next = 29;
-            break;
-
-          case 26:
-            _context23.prev = 26;
-            _context23.t2 = _context23["catch"](0);
-            next(_context23.t2);
-
-          case 29:
+          case 14:
           case "end":
             return _context23.stop();
         }
       }
-    }, _callee23, null, [[0, 26]]);
+    }, _callee23, null, [[0, 11]]);
   }));
 
   return function (_x67, _x68, _x69) {
     return _ref23.apply(this, arguments);
   };
 }());
-router.get("/dashboard/administrators", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+router.get("/dashboard/users", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref24 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee24(req, res, next) {
     var perPage, page, users, count;
     return _regenerator["default"].wrap(function _callee24$(_context24) {
@@ -1946,7 +1850,9 @@ router.get("/dashboard/administrators", _auth["default"], _install["default"].re
 
             _context24.next = 6;
             return _users["default"].find({
-              roleId: "admin",
+              roleId: {
+                $ne: "admin"
+              },
               $or: [{
                 username: {
                   $regex: req.query.q,
@@ -1968,7 +1874,9 @@ router.get("/dashboard/administrators", _auth["default"], _install["default"].re
           case 9:
             _context24.next = 11;
             return _users["default"].find({
-              roleId: "admin"
+              roleId: {
+                $ne: "admin"
+              }
             }).sort({
               createdAt: -1
             }).skip(perPage * page - perPage).limit(perPage);
@@ -1986,7 +1894,9 @@ router.get("/dashboard/administrators", _auth["default"], _install["default"].re
 
             _context24.next = 16;
             return _users["default"].countDocuments({
-              roleId: "admin",
+              roleId: {
+                $ne: "admin"
+              },
               $or: [{
                 username: {
                   $regex: req.query.q,
@@ -2008,7 +1918,9 @@ router.get("/dashboard/administrators", _auth["default"], _install["default"].re
           case 19:
             _context24.next = 21;
             return _users["default"].countDocuments({
-              roleId: "admin"
+              roleId: {
+                $ne: "admin"
+              }
             });
 
           case 21:
@@ -2016,8 +1928,8 @@ router.get("/dashboard/administrators", _auth["default"], _install["default"].re
 
           case 22:
             count = _context24.t1;
-            res.render("./admin/admin", {
-              title: "Dashboard - Administrators",
+            res.render("./admin/users", {
+              title: "Dashboard - Users",
               allusers: users,
               current: page,
               pages: Math.ceil(count / perPage)
@@ -2042,82 +1954,170 @@ router.get("/dashboard/administrators", _auth["default"], _install["default"].re
     return _ref24.apply(this, arguments);
   };
 }());
-router.get("/dashboard/users/edit/:username", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+router.get("/dashboard/administrators", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref25 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee25(req, res, next) {
-    var userInfo;
+    var perPage, page, users, count;
     return _regenerator["default"].wrap(function _callee25$(_context25) {
       while (1) {
         switch (_context25.prev = _context25.next) {
           case 0:
             _context25.prev = 0;
-            _context25.next = 3;
-            return _users["default"].findOne({
-              username: req.params.username
-            });
+            perPage = 10;
+            page = req.query.page || 1;
 
-          case 3:
-            userInfo = _context25.sent;
-            if (!userInfo) res.render("404");else {
-              res.render("./admin/edit-users", {
-                title: "Edit User - ".concat(userInfo.username),
-                userInfo: userInfo
-              });
+            if (!req.query.q) {
+              _context25.next = 9;
+              break;
             }
-            _context25.next = 10;
+
+            _context25.next = 6;
+            return _users["default"].find({
+              roleId: "admin",
+              $or: [{
+                username: {
+                  $regex: req.query.q,
+                  $options: "i"
+                }
+              }, {
+                email: {
+                  $regex: req.query.q,
+                  $options: "i"
+                }
+              }]
+            }).skip(perPage * page - perPage).limit(perPage);
+
+          case 6:
+            _context25.t0 = _context25.sent;
+            _context25.next = 12;
             break;
 
-          case 7:
-            _context25.prev = 7;
-            _context25.t0 = _context25["catch"](0);
-            next(_context25.t0);
+          case 9:
+            _context25.next = 11;
+            return _users["default"].find({
+              roleId: "admin"
+            }).sort({
+              createdAt: -1
+            }).skip(perPage * page - perPage).limit(perPage);
 
-          case 10:
+          case 11:
+            _context25.t0 = _context25.sent;
+
+          case 12:
+            users = _context25.t0;
+
+            if (!req.query.q) {
+              _context25.next = 19;
+              break;
+            }
+
+            _context25.next = 16;
+            return _users["default"].countDocuments({
+              roleId: "admin",
+              $or: [{
+                username: {
+                  $regex: req.query.q,
+                  $options: "i"
+                }
+              }, {
+                email: {
+                  $regex: req.query.q,
+                  $options: "i"
+                }
+              }]
+            });
+
+          case 16:
+            _context25.t1 = _context25.sent;
+            _context25.next = 22;
+            break;
+
+          case 19:
+            _context25.next = 21;
+            return _users["default"].countDocuments({
+              roleId: "admin"
+            });
+
+          case 21:
+            _context25.t1 = _context25.sent;
+
+          case 22:
+            count = _context25.t1;
+            res.render("./admin/admin", {
+              title: "Dashboard - Administrators",
+              allusers: users,
+              current: page,
+              pages: Math.ceil(count / perPage)
+            });
+            _context25.next = 29;
+            break;
+
+          case 26:
+            _context25.prev = 26;
+            _context25.t2 = _context25["catch"](0);
+            next(_context25.t2);
+
+          case 29:
           case "end":
             return _context25.stop();
         }
       }
-    }, _callee25, null, [[0, 7]]);
+    }, _callee25, null, [[0, 26]]);
   }));
 
   return function (_x73, _x74, _x75) {
     return _ref25.apply(this, arguments);
   };
 }());
-router.get("/dashboard/users/add-new", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+router.get("/dashboard/users/edit/:username", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref26 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee26(req, res, next) {
+    var userInfo;
     return _regenerator["default"].wrap(function _callee26$(_context26) {
       while (1) {
         switch (_context26.prev = _context26.next) {
           case 0:
-            try {
-              res.render("./admin/add-new-user", {
-                title: "Users - Add New"
-              });
-            } catch (error) {
-              next(error);
-            }
+            _context26.prev = 0;
+            _context26.next = 3;
+            return _users["default"].findOne({
+              username: req.params.username
+            });
 
-          case 1:
+          case 3:
+            userInfo = _context26.sent;
+            if (!userInfo) res.render("404");else {
+              res.render("./admin/edit-users", {
+                title: "Edit User - ".concat(userInfo.username),
+                userInfo: userInfo
+              });
+            }
+            _context26.next = 10;
+            break;
+
+          case 7:
+            _context26.prev = 7;
+            _context26.t0 = _context26["catch"](0);
+            next(_context26.t0);
+
+          case 10:
           case "end":
             return _context26.stop();
         }
       }
-    }, _callee26);
+    }, _callee26, null, [[0, 7]]);
   }));
 
   return function (_x76, _x77, _x78) {
     return _ref26.apply(this, arguments);
   };
 }());
-router.get("/profile", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+router.get("/dashboard/users/add-new", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref27 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee27(req, res, next) {
     return _regenerator["default"].wrap(function _callee27$(_context27) {
       while (1) {
         switch (_context27.prev = _context27.next) {
           case 0:
             try {
-              res.render("./admin/profile", {
-                title: "My Profile"
+              res.render("./admin/add-new-user", {
+                title: "Users - Add New"
               });
             } catch (error) {
               next(error);
@@ -2135,44 +2135,33 @@ router.get("/profile", _auth["default"], _install["default"].redirectToLogin, (0
     return _ref27.apply(this, arguments);
   };
 }());
-router.get("/dashboard/settings/general", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+router.get("/profile", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref28 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee28(req, res, next) {
-    var settings;
     return _regenerator["default"].wrap(function _callee28$(_context28) {
       while (1) {
         switch (_context28.prev = _context28.next) {
           case 0:
-            _context28.prev = 0;
-            _context28.next = 3;
-            return _settings["default"].findOne();
+            try {
+              res.render("./admin/profile", {
+                title: "My Profile"
+              });
+            } catch (error) {
+              next(error);
+            }
 
-          case 3:
-            settings = _context28.sent;
-            res.render("./admin/general-settings", {
-              title: "General Settings",
-              settings: settings
-            });
-            _context28.next = 10;
-            break;
-
-          case 7:
-            _context28.prev = 7;
-            _context28.t0 = _context28["catch"](0);
-            next(_context28.t0);
-
-          case 10:
+          case 1:
           case "end":
             return _context28.stop();
         }
       }
-    }, _callee28, null, [[0, 7]]);
+    }, _callee28);
   }));
 
   return function (_x82, _x83, _x84) {
     return _ref28.apply(this, arguments);
   };
 }());
-router.get("/dashboard/settings/email", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+router.get("/dashboard/settings/general", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref29 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee29(req, res, next) {
     var settings;
     return _regenerator["default"].wrap(function _callee29$(_context29) {
@@ -2185,8 +2174,8 @@ router.get("/dashboard/settings/email", _auth["default"], _install["default"].re
 
           case 3:
             settings = _context29.sent;
-            res.render("./admin/email-settings", {
-              title: "Email Settings",
+            res.render("./admin/general-settings", {
+              title: "General Settings",
               settings: settings
             });
             _context29.next = 10;
@@ -2209,7 +2198,7 @@ router.get("/dashboard/settings/email", _auth["default"], _install["default"].re
     return _ref29.apply(this, arguments);
   };
 }());
-router.get("/dashboard/settings/media", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+router.get("/dashboard/settings/email", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref30 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee30(req, res, next) {
     var settings;
     return _regenerator["default"].wrap(function _callee30$(_context30) {
@@ -2222,8 +2211,8 @@ router.get("/dashboard/settings/media", _auth["default"], _install["default"].re
 
           case 3:
             settings = _context30.sent;
-            res.render("./admin/media-settings", {
-              title: "Media Settings",
+            res.render("./admin/email-settings", {
+              title: "Email Settings",
               settings: settings
             });
             _context30.next = 10;
@@ -2246,11 +2235,48 @@ router.get("/dashboard/settings/media", _auth["default"], _install["default"].re
     return _ref30.apply(this, arguments);
   };
 }());
-router.get("/dashboard/ad-spaces", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+router.get("/dashboard/settings/media", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref31 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee31(req, res, next) {
+    var settings;
     return _regenerator["default"].wrap(function _callee31$(_context31) {
       while (1) {
         switch (_context31.prev = _context31.next) {
+          case 0:
+            _context31.prev = 0;
+            _context31.next = 3;
+            return _settings["default"].findOne();
+
+          case 3:
+            settings = _context31.sent;
+            res.render("./admin/media-settings", {
+              title: "Media Settings",
+              settings: settings
+            });
+            _context31.next = 10;
+            break;
+
+          case 7:
+            _context31.prev = 7;
+            _context31.t0 = _context31["catch"](0);
+            next(_context31.t0);
+
+          case 10:
+          case "end":
+            return _context31.stop();
+        }
+      }
+    }, _callee31, null, [[0, 7]]);
+  }));
+
+  return function (_x91, _x92, _x93) {
+    return _ref31.apply(this, arguments);
+  };
+}());
+router.get("/dashboard/ad-spaces", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+  var _ref32 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee32(req, res, next) {
+    return _regenerator["default"].wrap(function _callee32$(_context32) {
+      while (1) {
+        switch (_context32.prev = _context32.next) {
           case 0:
             try {
               res.render("./admin/ad-spaces", {
@@ -2262,27 +2288,27 @@ router.get("/dashboard/ad-spaces", _auth["default"], _install["default"].redirec
 
           case 1:
           case "end":
-            return _context31.stop();
+            return _context32.stop();
         }
       }
-    }, _callee31);
+    }, _callee32);
   }));
 
-  return function (_x91, _x92, _x93) {
-    return _ref31.apply(this, arguments);
+  return function (_x94, _x95, _x96) {
+    return _ref32.apply(this, arguments);
   };
 }());
 router.get("/dashboard/library", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
-  var _ref32 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee32(req, res, next) {
+  var _ref33 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee33(req, res, next) {
     var perPage, page, media, count;
-    return _regenerator["default"].wrap(function _callee32$(_context32) {
+    return _regenerator["default"].wrap(function _callee33$(_context33) {
       while (1) {
-        switch (_context32.prev = _context32.next) {
+        switch (_context33.prev = _context33.next) {
           case 0:
-            _context32.prev = 0;
+            _context33.prev = 0;
             perPage = 48;
             page = req.query.page || 1;
-            _context32.next = 5;
+            _context33.next = 5;
             return _media["default"].find({
               file_type: {
                 $regex: "image",
@@ -2293,8 +2319,8 @@ router.get("/dashboard/library", _auth["default"], _install["default"].redirectT
             }).skip(perPage * page - perPage).limit(perPage);
 
           case 5:
-            media = _context32.sent;
-            _context32.next = 8;
+            media = _context33.sent;
+            _context33.next = 8;
             return _media["default"].countDocuments({
               file_type: {
                 $regex: "image",
@@ -2303,31 +2329,31 @@ router.get("/dashboard/library", _auth["default"], _install["default"].redirectT
             });
 
           case 8:
-            count = _context32.sent;
+            count = _context33.sent;
             res.render("./admin/media", {
               title: "Dashboard Media",
               media: media,
               current: page,
               pages: Math.ceil(count / perPage)
             });
-            _context32.next = 15;
+            _context33.next = 15;
             break;
 
           case 12:
-            _context32.prev = 12;
-            _context32.t0 = _context32["catch"](0);
-            next(_context32.t0);
+            _context33.prev = 12;
+            _context33.t0 = _context33["catch"](0);
+            next(_context33.t0);
 
           case 15:
           case "end":
-            return _context32.stop();
+            return _context33.stop();
         }
       }
-    }, _callee32, null, [[0, 12]]);
+    }, _callee33, null, [[0, 12]]);
   }));
 
-  return function (_x94, _x95, _x96) {
-    return _ref32.apply(this, arguments);
+  return function (_x97, _x98, _x99) {
+    return _ref33.apply(this, arguments);
   };
 }());
 router.get("/dashboard/media/add-new", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), function (req, res, next) {
@@ -2340,43 +2366,6 @@ router.get("/dashboard/media/add-new", _auth["default"], _install["default"].red
   }
 });
 router.get("/dashboard/social-login", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
-  var _ref33 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee33(req, res, next) {
-    var settings;
-    return _regenerator["default"].wrap(function _callee33$(_context33) {
-      while (1) {
-        switch (_context33.prev = _context33.next) {
-          case 0:
-            _context33.prev = 0;
-            _context33.next = 3;
-            return _settings["default"].findOne();
-
-          case 3:
-            settings = _context33.sent;
-            res.render("./admin/social-login", {
-              title: "Social Login Configuration",
-              settings: settings
-            });
-            _context33.next = 10;
-            break;
-
-          case 7:
-            _context33.prev = 7;
-            _context33.t0 = _context33["catch"](0);
-            next(_context33.t0);
-
-          case 10:
-          case "end":
-            return _context33.stop();
-        }
-      }
-    }, _callee33, null, [[0, 7]]);
-  }));
-
-  return function (_x97, _x98, _x99) {
-    return _ref33.apply(this, arguments);
-  };
-}());
-router.get("/dashboard/preferences", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref34 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee34(req, res, next) {
     var settings;
     return _regenerator["default"].wrap(function _callee34$(_context34) {
@@ -2389,8 +2378,8 @@ router.get("/dashboard/preferences", _auth["default"], _install["default"].redir
 
           case 3:
             settings = _context34.sent;
-            res.render("./admin/preferences", {
-              title: "Preferences",
+            res.render("./admin/social-login", {
+              title: "Social Login Configuration",
               settings: settings
             });
             _context34.next = 10;
@@ -2413,23 +2402,60 @@ router.get("/dashboard/preferences", _auth["default"], _install["default"].redir
     return _ref34.apply(this, arguments);
   };
 }());
-router.get("/dashboard/posts/sub-categories", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+router.get("/dashboard/preferences", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref35 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee35(req, res, next) {
-    var perPage, page, category, count2, count;
+    var settings;
     return _regenerator["default"].wrap(function _callee35$(_context35) {
       while (1) {
         switch (_context35.prev = _context35.next) {
           case 0:
             _context35.prev = 0;
+            _context35.next = 3;
+            return _settings["default"].findOne();
+
+          case 3:
+            settings = _context35.sent;
+            res.render("./admin/preferences", {
+              title: "Preferences",
+              settings: settings
+            });
+            _context35.next = 10;
+            break;
+
+          case 7:
+            _context35.prev = 7;
+            _context35.t0 = _context35["catch"](0);
+            next(_context35.t0);
+
+          case 10:
+          case "end":
+            return _context35.stop();
+        }
+      }
+    }, _callee35, null, [[0, 7]]);
+  }));
+
+  return function (_x103, _x104, _x105) {
+    return _ref35.apply(this, arguments);
+  };
+}());
+router.get("/dashboard/posts/sub-categories", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+  var _ref36 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee36(req, res, next) {
+    var perPage, page, category, count2, count;
+    return _regenerator["default"].wrap(function _callee36$(_context36) {
+      while (1) {
+        switch (_context36.prev = _context36.next) {
+          case 0:
+            _context36.prev = 0;
             perPage = 10;
             page = req.query.page || 1;
 
             if (!req.query.q) {
-              _context35.next = 9;
+              _context36.next = 9;
               break;
             }
 
-            _context35.next = 6;
+            _context36.next = 6;
             return _category["default"].aggregate([{
               $match: {
                 name: {
@@ -2465,12 +2491,12 @@ router.get("/dashboard/posts/sub-categories", _auth["default"], _install["defaul
             }]);
 
           case 6:
-            _context35.t0 = _context35.sent;
-            _context35.next = 12;
+            _context36.t0 = _context36.sent;
+            _context36.next = 12;
             break;
 
           case 9:
-            _context35.next = 11;
+            _context36.next = 11;
             return _category["default"].aggregate([{
               $match: {
                 parent: {
@@ -2502,11 +2528,11 @@ router.get("/dashboard/posts/sub-categories", _auth["default"], _install["defaul
             }]);
 
           case 11:
-            _context35.t0 = _context35.sent;
+            _context36.t0 = _context36.sent;
 
           case 12:
-            category = _context35.t0;
-            _context35.next = 15;
+            category = _context36.t0;
+            _context36.next = 15;
             return _category["default"].aggregate([{
               $match: {
                 parent: {
@@ -2530,14 +2556,14 @@ router.get("/dashboard/posts/sub-categories", _auth["default"], _install["defaul
             }]);
 
           case 15:
-            count2 = _context35.sent;
+            count2 = _context36.sent;
 
             if (!req.query.q) {
-              _context35.next = 22;
+              _context36.next = 22;
               break;
             }
 
-            _context35.next = 19;
+            _context36.next = 19;
             return _category["default"].aggregate([{
               $match: {
                 name: {
@@ -2553,50 +2579,50 @@ router.get("/dashboard/posts/sub-categories", _auth["default"], _install["defaul
             }]);
 
           case 19:
-            _context35.t1 = _context35.sent;
-            _context35.next = 23;
+            _context36.t1 = _context36.sent;
+            _context36.next = 23;
             break;
 
           case 22:
-            _context35.t1 = count2.length;
+            _context36.t1 = count2.length;
 
           case 23:
-            count = _context35.t1;
+            count = _context36.t1;
             res.render("./admin/subcategory", {
               title: "Categories - Sub Categories",
               category: category,
               current: page,
               pages: Math.ceil(count.length / perPage)
             });
-            _context35.next = 30;
+            _context36.next = 30;
             break;
 
           case 27:
-            _context35.prev = 27;
-            _context35.t2 = _context35["catch"](0);
-            next(_context35.t2);
+            _context36.prev = 27;
+            _context36.t2 = _context36["catch"](0);
+            next(_context36.t2);
 
           case 30:
           case "end":
-            return _context35.stop();
+            return _context36.stop();
         }
       }
-    }, _callee35, null, [[0, 27]]);
+    }, _callee36, null, [[0, 27]]);
   }));
 
-  return function (_x103, _x104, _x105) {
-    return _ref35.apply(this, arguments);
+  return function (_x106, _x107, _x108) {
+    return _ref36.apply(this, arguments);
   };
 }());
 router.get("/dashboard/posts/subcategory/edit/:name", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
-  var _ref36 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee36(req, res, next) {
+  var _ref37 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee37(req, res, next) {
     var category;
-    return _regenerator["default"].wrap(function _callee36$(_context36) {
+    return _regenerator["default"].wrap(function _callee37$(_context37) {
       while (1) {
-        switch (_context36.prev = _context36.next) {
+        switch (_context37.prev = _context37.next) {
           case 0:
-            _context36.prev = 0;
-            _context36.next = 3;
+            _context37.prev = 0;
+            _context37.next = 3;
             return _category["default"].findOne({
               parent: {
                 $ne: undefined
@@ -2605,7 +2631,7 @@ router.get("/dashboard/posts/subcategory/edit/:name", _auth["default"], _install
             }).populate("parent");
 
           case 3:
-            category = _context36.sent;
+            category = _context37.sent;
 
             if (!category) {
               res.render("404");
@@ -2616,31 +2642,31 @@ router.get("/dashboard/posts/subcategory/edit/:name", _auth["default"], _install
               });
             }
 
-            _context36.next = 10;
+            _context37.next = 10;
             break;
 
           case 7:
-            _context36.prev = 7;
-            _context36.t0 = _context36["catch"](0);
-            next(_context36.t0);
+            _context37.prev = 7;
+            _context37.t0 = _context37["catch"](0);
+            next(_context37.t0);
 
           case 10:
           case "end":
-            return _context36.stop();
+            return _context37.stop();
         }
       }
-    }, _callee36, null, [[0, 7]]);
+    }, _callee37, null, [[0, 7]]);
   }));
 
-  return function (_x106, _x107, _x108) {
-    return _ref36.apply(this, arguments);
+  return function (_x109, _x110, _x111) {
+    return _ref37.apply(this, arguments);
   };
 }());
 router.get('/dashboard/visual', _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])('admin'), /*#__PURE__*/function () {
-  var _ref37 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee37(req, res, next) {
-    return _regenerator["default"].wrap(function _callee37$(_context37) {
+  var _ref38 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee38(req, res, next) {
+    return _regenerator["default"].wrap(function _callee38$(_context38) {
       while (1) {
-        switch (_context37.prev = _context37.next) {
+        switch (_context38.prev = _context38.next) {
           case 0:
             res.render('./admin/visual', {
               title: 'Visual Settings'
@@ -2648,58 +2674,58 @@ router.get('/dashboard/visual', _auth["default"], _install["default"].redirectTo
 
           case 1:
           case "end":
-            return _context37.stop();
+            return _context38.stop();
         }
       }
-    }, _callee37);
+    }, _callee38);
   }));
 
-  return function (_x109, _x110, _x111) {
-    return _ref37.apply(this, arguments);
+  return function (_x112, _x113, _x114) {
+    return _ref38.apply(this, arguments);
   };
 }());
 router.get('/dashboard/menu', _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])('admin'), /*#__PURE__*/function () {
-  var _ref38 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee38(req, res, next) {
+  var _ref39 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee39(req, res, next) {
     var menu, adminCat, adminPage, adminTag, adminAuthor;
-    return _regenerator["default"].wrap(function _callee38$(_context38) {
+    return _regenerator["default"].wrap(function _callee39$(_context39) {
       while (1) {
-        switch (_context38.prev = _context38.next) {
+        switch (_context39.prev = _context39.next) {
           case 0:
-            _context38.next = 2;
+            _context39.next = 2;
             return _menu["default"].find().sort({
               position: 1
             });
 
           case 2:
-            menu = _context38.sent;
-            _context38.next = 5;
+            menu = _context39.sent;
+            _context39.next = 5;
             return _category["default"].find().sort({
               createdAt: -1
             });
 
           case 5:
-            adminCat = _context38.sent;
-            _context38.next = 8;
+            adminCat = _context39.sent;
+            _context39.next = 8;
             return _pages["default"].find().sort({
               createdAt: -1
             });
 
           case 8:
-            adminPage = _context38.sent;
-            _context38.next = 11;
+            adminPage = _context39.sent;
+            _context39.next = 11;
             return _tags["default"].find().sort({
               createdAt: -1
             });
 
           case 11:
-            adminTag = _context38.sent;
-            _context38.next = 14;
+            adminTag = _context39.sent;
+            _context39.next = 14;
             return _users["default"].find().sort({
               createdAt: -1
             });
 
           case 14:
-            adminAuthor = _context38.sent;
+            adminAuthor = _context39.sent;
             res.render('./admin/menu', {
               title: 'Menu',
               menu: menu,
@@ -2711,14 +2737,14 @@ router.get('/dashboard/menu', _auth["default"], _install["default"].redirectToLo
 
           case 16:
           case "end":
-            return _context38.stop();
+            return _context39.stop();
         }
       }
-    }, _callee38);
+    }, _callee39);
   }));
 
-  return function (_x112, _x113, _x114) {
-    return _ref38.apply(this, arguments);
+  return function (_x115, _x116, _x117) {
+    return _ref39.apply(this, arguments);
   };
 }());
 module.exports = router;

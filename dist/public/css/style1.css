@@ -1387,18 +1387,6 @@ input:-moz-placeholder, textarea:-moz-placeholder {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
 .topnav {
   height: 0%;
   width: 100%;
@@ -1433,6 +1421,7 @@ input:-moz-placeholder, textarea:-moz-placeholder {
     padding: 3px 19px;
     border-radius: 50%;
     transition: 0.5s;
+    border-color: black;
 }
 .topnav .closebtn:hover{
     transform: scale(1.2);
@@ -1445,23 +1434,13 @@ input:-moz-placeholder, textarea:-moz-placeholder {
     border: none;
     padding-top: 26px;
     background: transparent;
-    border-bottom: 4px solid gold;
+    border-bottom: 4px solid black;
 }
 .topnav label {
     font-size: 18px;
     font-weight: 400;
     margin-top: 16px;
 }
-
-
-
-
-
-
-
-
-
-
 
 .rightnav {
   height: 100%;

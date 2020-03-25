@@ -40,8 +40,6 @@ $(function() {
 
 // wow
 
-new WOW().init();
-
 // carousel
 
 $(document).ready(function() {
