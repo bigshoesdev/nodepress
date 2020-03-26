@@ -374,9 +374,9 @@ router.get("/login", _install["default"].redirectToLogin, checkIfLoggedIn, funct
     title: res.locals.siteTitle
   });
 });
-router.get('/afterloginuser', _install["default"].redirectToLogin, checkIfLoggedIn, function (req, res, next) {
-  res.render('after-login-user', {
-    title: "Dashboard"
+router.get('/category', _install["default"].redirectToLogin, function (req, res, next) {
+  res.render('afterloginuser', {
+    title: "Category"
   });
 });
 router.post("/login", _install["default"].redirectToLogin, checkIfLoggedIn, function (req, res, next) {
@@ -399,11 +399,10 @@ router.post("/login", _install["default"].redirectToLogin, checkIfLoggedIn, func
 
     req.logIn(user, function (err) {
       if (err) return next(err);
-      console.log(user);
 
       if (user.roleId === "user") {
         // return res.redirect(`/user/dashboard`);
-        return res.redirect("/afterloginuser");
+        return res.redirect('/category');
       } else if (user.roleId === "admin") {
         return res.redirect("/dashboard/index");
       }

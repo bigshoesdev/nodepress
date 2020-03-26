@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title><%= siteTitle %></title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- css -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/ionicons.min.css">
+  <link rel="stylesheet" href="/css/owl.carousel.css">
+  <link rel="stylesheet" href="/css/owl.theme.css">
+  <link rel="stylesheet" href="/css/animate.css">
+  <link rel="stylesheet" href="/css/style1.css">
+  <link rel="stylesheet" href="/css/style2.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- fonts -->
+  <link
+    href='http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic|Roboto+Condensed:300italic,400italic,700italic,400,300,700|Oxygen:400,300,700'
+    rel='stylesheet' />
+  <link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&display=swap"
+    rel="stylesheet" />
+  <link href="/css/aos.css" rel="stylesheet" />
+</head>
+
+<body>
+  <header class="sticky" id="header">
+    <section class="container">
+      <section style="display: flex; align-items: center;" class="row" id="logo_menu">
+        <section class="col-xs-9 col-md-9">
+          <div class="header-maindiv">
+            <div class="inner-header-maindiv-icon">
+              <div class="header-logo">
+                <a href="/"><img src="/images/GOLDEN-PNG.png"></a>
+              </div>
+              <div id="myTopnav" class="topnav">
+                <form action="/search" method="get" class="search-form d-lg-flex" id="searchForm">
+                  <div class="container">
+                    <a type="button" href="javascript:void(0)" class="closebtn"
+                      style="right: 15%; padding-left: 10px; padding-right: 10px;" onclick="searchForm()"
+                      id="closebtn"><i class="fa fa-search"></i></a>
+                    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                    <input id="q" type="text" placeholder="Suche" name="q" value="" onfocus="displaySearchbtn()" />
+                    <label>Suche Inhalte, die dich begeistern</label>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+        <a class="searchbar" href="/category"><span style="font-size:20px; padding-left: 10px;cursor:pointer"><i
+              class="fa fa-bars"></i></span></a>
+        <a class="searchbar" href="#"><span style="font-size:20px; padding-left: 10px;cursor:pointer"
+            onclick="openNav()"><i class="fa fa-search" aria-hidden="true"></i></span></a>
+        <% if(user) { %>
+        <div class="dropdown">
+          <a class="dropdown-toggle" type="button" data-toggle="dropdown" style="font-size: 20px;"><i
+              class="fa fa-user"></i><span class="caret"></span></a>
+          <ul class="dropdown-menu profile">
+            <% if(user.roleId == 'admin') { %>
+            <li><span><%= user.username%></span></li>
+            <li><a href="/dashboard/index" class="searchbar"><i class="fa fa-cog profileicon"></i>Control Panel</a></li>
+            <li><a href="/author/<%= user.username%>" class="searchbar"><i class="fa fa-user-circle profileicon"></i>Profile</a></li>
+            <li><a href="/log-out" class="searchbar"><i class="fa fa-sign-out profileicon"></i>Sign Out</a></li>
+          </ul>
+          <% } else {%>
+          <li><span><%= user.username%></span></li>
+          <li><a href="/user/dashboard" class="searchbar"><i class="fa fa-cog profileicon"></i>Control Panel</a></li>
+          <li><a href="/author/<%= user.username%>" class="searchbar"><i class="fa fa-user-circle profileicon"></i>Profile</a></li>
+          <li><a href="/log-out" class="searchbar"><i class="fa fa-sign-out profileicon"></i>Sign Out</a></li>
+          <% } %>
+          </ul>
+        </div>
+        <% } else {%>
+        <a href="/sign-up" class="searchbar"><span style="font-size:20px; padding-left: 10px;cursor:pointer"><i
+              class="fa fa-user"></i></span></a>
+        <a href="/login" class="searchbar"><span style="font-size:20px; padding-left: 10px;cursor:pointer"><i
+              class="fa fa-sign-in"></i></span></a>
+        <%}%>
+        <span class="webtoggle" style="font-size:24px;cursor:pointer" onclick="openaav()">&#9776; </span>
+        <span class="mobiletoggle" style="font-size:24px; margin-right: 20px;cursor:pointer" onclick="openAav()">&#9776;
+        </span>
+        <div id="myRightnav" class="rightnav">
+          <a href="javascript:void(0)" class="closebtn webcros" onclick="closeaav()">&times;</a>
+          <a href="javascript:void(0)" class="closebtn mobilecros" onclick="closeAav()">&times;</a>
+          <a href="#"><span>Home</span></a>
+          <a href="#"><span>The News</span></a>
+          <a href="#"><span>Contact US</span></a>
+          <a href="#"><span>Demos</span></a>
+          <div class="come-see">
+            <p>Come See Us</p>
+            <p>The Castle</p>
+            <p>2500 Castle Dr</p>
+            <p>Manhattan, NY</p>
+          </div>
+          <div class="numbers">
+            <p>T: +216(0)40 3629 4753</p>
+            <p>E: hello@example.com</p>
+          </div>
+        </div>
+      </section>
+    </section>
+  </header>
+
+  <div style="width: 100%;" class="after-login-banner">
+    <div id="demo" class="carousel slide" data-ride="carousel">
+      <ul class="carousel-indicators">
+        <li data-target="#demo" data-slide-to="0" class="active"></li>
+        <li data-target="#demo" data-slide-to="1"></li>
+        <li data-target="#demo" data-slide-to="2"></li>
+      </ul>
+      <div class="carousel-inner">
+        <div class="carousel-item bg1 active">
+          <div class="carousel-caption">
+            <h5><span>BUSINESS</span></h5>
+            <h1>The Reason We Decided to Change Locations</h1>
+          </div>
+        </div>
+        <div class="carousel-item bg2">
+          <div class="carousel-caption">
+            <h5><span>BUSINESS</span></h5>
+            <h1>A New Beginning Awaits</h1>
+          </div>
+        </div>
+        <div class="carousel-item bg3">
+          <div class="carousel-caption">
+            <h5><span>BUSINESS</span></h5>
+            <h1>Basically Salient is beautiful from all around</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="after-login-page-content">
+    <div class="container-fluid">
+      <div class="inner-after-login-page-content">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="content-one">
+              <div class="content-one-img">
+                <img src="/images/oranges.jpg">
+                <a href="#">Fashion</a>
+              </div>
+              <div class="content-one-text">
+                <p>July 15, 2014</p>
+                <h2>The Orange</h2>
+                <p>Wild Ouestion Marks and devious Semikoli, but the Little Blind Text didn't...</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="content-one">
+              <div class="content-one-img">
+                <img src="/images/mountain.jpg">
+                <a href="#">Music</a>
+              </div>
+              <div class="content-one-text">
+                <p>July 15, 2014</p>
+                <h2>The Orange</h2>
+                <p>Wild Ouestion Marks and devious Semikoli, but the Little Blind Text didn't...</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="content-one">
+              <div class="content-one-img">
+                <img src="/images/forest.jpg">
+                <a href="#">Food For Thought</a>
+              </div>
+              <div class="content-one-text">
+                <p>July 15, 2014</p>
+                <h2>The Orange</h2>
+                <p>Wild Ouestion Marks and devious Semikoli, but the Little Blind Text didn't...</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="content-two-zoom">
+              <div class="content-two">
+                <div class="content-two-btn">
+                  <a href="#">Gaming</a>
+                </div>
+                <div class="content-two-text">
+                  <p>February 22, 2013</p>
+                  <h2>Portit mollis</h2>
+                  <p>Nullam ornare, sem in malesuada sagittis, quam sapien ornare massa, id pulvinar quam augue vel...
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-9">
+            <div class="content-three">
+              <div class="row">
+                <div style="padding-right: 0px;" class="col-md-6">
+                  <div class="content-three-text">
+                    <div class="content-three-text-btn">
+                      <a href="#">gaming</a>
+                    </div>
+                    <div class="content-three-text-brief">
+                      <p>March 21, 2013</p>
+                      <h2>Magna Quis</h2>
+                      <p>Even the all-powerful Pointing has no control over the situation. Even the all-powerful
+                        Pointing has no control about the blind texts it is an almost unorthographic life One day
+                        however a...</p>
+                    </div>
+                  </div>
+                </div>
+                <div style="padding-left: 0px;" class="col-md-6">
+                  <div class="content-three-img">
+                    <img src="/images/crowd.jpg">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="content-four">
+              <div class="content-four-text">
+                <h2>Courage is not the absence of fear, but rather the judgment that something else is more important
+                  than fear</h2>
+                <p>Ambrose Redmoon</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="content-one">
+              <div class="content-one-img">
+                <img src="/images/mountain2.jpg">
+                <a href="#">Fashion</a>
+              </div>
+              <div class="content-one-text">
+                <p>February 14, 2013</p>
+                <h2>Be My Guest</h2>
+                <p>Even the all-powerful Pointing has no control about the blind texts it is an almost</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="content-five">
+              <div id="demo" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                  <div class="carousel-item sld1 active">
+                  </div>
+                  <div class="carousel-item sld2">
+                  </div>
+                  <div class="carousel-item sld3">
+                  </div>
+                  <div class="slider-content">
+                    <div class="slider-content-text-btn">
+                      <a href="#">gaming</a>
+                    </div>
+                    <div class="slider-content-text-brief">
+                      <p>January 23, 2013</p>
+                      <h2>Interdum</h2>
+                      <p>Cras et libero iaculis, consequat nisi nec, tristi que metus. Praesent eu odio in velit maximus
+                        accumsan </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="content-one">
+              <div class="content-one-img">
+                <img src="/images/mountain3.jpg">
+                <a href="#">Fashion</a>
+              </div>
+              <div class="content-one-text">
+                <p>January 15, 2013</p>
+                <h2>The Mountain</h2>
+                <p>Sed condimentum massa in enim cursus, sed mattis elit malesuada. Lorem sapien acveh icula
+                  vestibulum,...</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="content-one">
+              <div class="content-one-img">
+                <img src="/images/bridge.jpg">
+                <a href="#">Food For Thought</a>
+              </div>
+              <div class="content-one-text">
+                <p>January 11, 2013</p>
+                <h2>Velit Porttito</h2>
+                <p>Quisque porta ipsum quis neque elementum lacinia. Pellentesque ut risus rutrum, tristique lacus nec,
+                  mollis...</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-9">
+            <div class="content-three">
+              <div class="row">
+                <div style="padding-right: 0px;" class="col-md-6">
+                  <div class="content-three-text">
+                    <div class="content-three-text-btn">
+                      <a href="#">gaming</a>
+                    </div>
+                    <div class="content-three-text-brief">
+                      <p>January 10, 2013</p>
+                      <h2>Ink In Water</h2>
+                      <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.
+                      </p>
+                    </div>
+
+                  </div>
+                </div>
+                <div style="padding-left: 0px;" class="col-md-6">
+                  <div class="content-three-img">
+                    <img src="/images/boat.jpg">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="content-one">
+              <div class="content-one-img">
+                <img style="visibility: hidden;" src="/images/mountain2.jpg">
+                <a style="color: #ccc;" href="#">Food For Thought</a>
+              </div>
+              <div class="content-one-text">
+                <p>January 8, 2013</p>
+                <h2>Aenean tortor</h2>
+                <p>Vivamus risus mi, lobortis ut congue vitae, vestibulum vitae augue. Maecenas nunc odio, pulvinar
+                  id...</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="content-two-zoom">
+              <div class="content-two">
+                <div class="content-two-btn">
+                  <a href="#">Gaming</a>
+                </div>
+                <div class="content-two-text">
+                  <p>January 8, 2013</p>
+                  <h2>Donec Porta</h2>
+                  <p>Even the all-powerful Pointing has no control over the situation. far from the countries Vokalia
+                    and...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="content-one">
+              <div class="content-one-img">
+                <img src="/images/guy2.jpg">
+                <a href="#">Fashion</a>
+              </div>
+              <div class="content-one-text">
+                <p>January 7, 2013</p>
+                <h2>Elementum</h2>
+                <p>Even the all-powerful Pointing has no control over the situation. Even the all-powerful Pointing has
+                  no...</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="content-one">
+              <div class="content-one-img">
+                <img src="/images/sea.jpg">
+                <a href="#">Music</a>
+              </div>
+              <div class="content-one-text">
+                <p>January 7, 2013</p>
+                <h2>Mellow Waves</h2>
+                <p>Phasellus venenatis venenatis velit ut ultricies. Cras porta dignissim malesuada. Etiam auctor, justo
+                  et facilisis...</p>
+              </div>
+
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="content-four">
+              <div class="content-four-text">
+                <h2>The Sweetest WordPress Themes Around.</h2>
+                <p>http://www.themenectar.com</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%- include ./partials/footer %>
