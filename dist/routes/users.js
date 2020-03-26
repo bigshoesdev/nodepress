@@ -374,6 +374,11 @@ router.get("/login", _install["default"].redirectToLogin, checkIfLoggedIn, funct
     title: res.locals.siteTitle
   });
 });
+router.get('/afterloginuser', _install["default"].redirectToLogin, checkIfLoggedIn, function (req, res, next) {
+  res.render('after-login-user', {
+    title: "Dashboard"
+  });
+});
 router.post("/login", _install["default"].redirectToLogin, checkIfLoggedIn, function (req, res, next) {
   _passport["default"].authenticate("local", function (err, user, info) {
     if (err) return next(err);
@@ -394,9 +399,11 @@ router.post("/login", _install["default"].redirectToLogin, checkIfLoggedIn, func
 
     req.logIn(user, function (err) {
       if (err) return next(err);
+      console.log(user);
 
       if (user.roleId === "user") {
-        return res.redirect("/user/dashboard");
+        // return res.redirect(`/user/dashboard`);
+        return res.redirect("/afterloginuser");
       } else if (user.roleId === "admin") {
         return res.redirect("/dashboard/index");
       }
