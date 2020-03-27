@@ -1094,7 +1094,7 @@ router.post("/article/upvote", _auth["default"], /*#__PURE__*/function () {
             });
 
           case 2:
-            res.status(200).send("Post Has been Upvoted");
+            return _context8.abrupt("return", res.redirect("back"));
 
           case 3:
           case "end":
