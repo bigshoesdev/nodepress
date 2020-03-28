@@ -374,9 +374,14 @@ router.get("/login", _install["default"].redirectToLogin, checkIfLoggedIn, funct
     title: res.locals.siteTitle
   });
 });
-router.get('/category', _install["default"].redirectToLogin, function (req, res, next) {
+router.get('/afterlogin', _install["default"].redirectToLogin, function (req, res, next) {
   res.render('afterloginuser', {
-    title: "Category"
+    title: "After Login"
+  });
+});
+router.get('/category', _install["default"].redirectToLogin, function (req, res, next) {
+  res.render('category', {
+    title: 'Category'
   });
 });
 router.post("/login", _install["default"].redirectToLogin, checkIfLoggedIn, function (req, res, next) {
@@ -402,7 +407,7 @@ router.post("/login", _install["default"].redirectToLogin, checkIfLoggedIn, func
 
       if (user.roleId === "user") {
         // return res.redirect(`/user/dashboard`);
-        return res.redirect('/category');
+        return res.redirect('/afterlogin');
       } else if (user.roleId === "admin") {
         return res.redirect("/dashboard/index");
       }
@@ -411,7 +416,7 @@ router.post("/login", _install["default"].redirectToLogin, checkIfLoggedIn, func
 }); // Get forgot password page
 
 router.get("/forgot-password", _install["default"].redirectToLogin, checkIfLoggedIn, function (req, res, next) {
-  res.render("forgot-pass", {
+  res.render("lostpassword", {
     title: res.locals.siteTitle
   });
 }); // Forgot password route
@@ -1083,18 +1088,17 @@ router.get("/follow-user", _auth["default"], /*#__PURE__*/function () {
           case 0:
             _context13.next = 2;
             return _users["default"].updateOne({
-              _id: req.user.id
+              _id: req.query.followerId
             }, {
               $push: {
-                following: req.query.followerId
+                following: req.user.id
               }
             });
 
           case 2:
-            req.flash("success_msg", "User added to followers list Successfully");
             return _context13.abrupt("return", res.redirect("back"));
 
-          case 4:
+          case 3:
           case "end":
             return _context13.stop();
         }

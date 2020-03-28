@@ -73,7 +73,7 @@ router.post("/pages/create", _auth["default"], /*#__PURE__*/function () {
             break;
 
           case 17:
-            req.flash("success_msg", "There's a Page with That name");
+            req.flash("success_msg", "There's a Page with That/sign-up name");
             return _context.abrupt("return", res.redirect("back"));
 
           case 19:

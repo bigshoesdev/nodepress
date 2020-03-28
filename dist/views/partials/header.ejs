@@ -29,7 +29,7 @@
    <header class="sticky" id="header">
       <section class="container">
          <section style="display: flex; align-items: center;" class="row" id="logo_menu">
-            <section class="col-xs-8 col-md-10">
+            <section class="col-xs-6 col-md-6">
                <div class="header-maindiv">
                   <div class="inner-header-maindiv-icon">
                      <div class="header-logo">
@@ -51,10 +51,16 @@
                   </div>
                </div>
             </section>
-            <a class="searchbar" href="/category"><span style="padding-left: 10px;cursor:pointer">Explorer</span></a>
+            <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Publisher
+                  werden</span></a>
+            <a class="searchbar" href="/afterlogin"><span style="padding-left: 10px;cursor:pointer">Artikel
+                  entdecken</span></a>
+
+            <% if(user) { %>
+            <a class="searchbar" href="/membership"><span style="padding-left: 10px;cursor:pointer">Exklusive
+                  Inhalte</span></a>
             <a class="searchbar" href="#"><span style="font-size:20px; padding-left: 10px;cursor:pointer"
                   onclick="openNav()"><i class="fa fa-search" aria-hidden="true"></i></span></a>
-            <% if(user) { %>
             <div class="dropdown">
                <a class="dropdown-toggle" type="button" data-toggle="dropdown" style="font-size: 20px;"><i
                      class="fa fa-user"></i><span class="caret"></span></a>
@@ -78,6 +84,8 @@
                </ul>
             </div>
             <% } else {%>
+            <a class="searchbar" href="#"><span style="font-size:20px; padding-left: 10px;cursor:pointer"
+                  onclick="openNav()"><i class="fa fa-search" aria-hidden="true"></i></span></a>
             <a href="/sign-up" class="searchbar"><span style="font-size:20px; padding-left: 10px;cursor:pointer"><i
                      class="fa fa-user"></i></span></a>
             <a href="/login" class="searchbar"><span style="font-size:20px; padding-left: 10px;cursor:pointer"><i

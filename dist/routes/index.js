@@ -434,19 +434,63 @@ router.use( /*#__PURE__*/function () {
 // 		return res.redirect('back');
 // 	}
 // });
-// Get index page
 
-router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
+router.get('/publisher', _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, res, next) {
-    var perPage, page, slider1, featured, post, count, popularNews, popNews, img, recommended, breakingNews, video;
     return _regenerator["default"].wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _context2.prev = 0;
+            res.render('publisher', {
+              title: "Publisher"
+            });
+
+          case 1:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+
+  return function (_x4, _x5, _x6) {
+    return _ref2.apply(this, arguments);
+  };
+}());
+router.get('/lostpassword', _install["default"].redirectToLogin, /*#__PURE__*/function () {
+  var _ref3 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(req, res, next) {
+    return _regenerator["default"].wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            res.render('lostpassword', {
+              title: "Lost Passowrd"
+            });
+
+          case 1:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3);
+  }));
+
+  return function (_x7, _x8, _x9) {
+    return _ref3.apply(this, arguments);
+  };
+}()); // Get index page
+
+router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
+  var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res, next) {
+    var perPage, page, slider1, featured, post, count, popularNews, popNews, img, recommended, breakingNews, video, categories;
+    return _regenerator["default"].wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            _context4.prev = 0;
             perPage = 9;
             page = req.query.page || 1;
-            _context2.next = 5;
+            _context4.next = 5;
             return _articles["default"].aggregate([{
               $match: {
                 showPostOnSlider: true,
@@ -492,8 +536,8 @@ router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
             }]);
 
           case 5:
-            slider1 = _context2.sent;
-            _context2.next = 8;
+            slider1 = _context4.sent;
+            _context4.next = 8;
             return _articles["default"].aggregate([{
               $match: {
                 addToFeatured: true,
@@ -539,8 +583,8 @@ router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
             }]);
 
           case 8:
-            featured = _context2.sent;
-            _context2.next = 11;
+            featured = _context4.sent;
+            _context4.next = 11;
             return _articles["default"].find({
               active: true
             }).populate('postedBy').populate('category').sort({
@@ -548,15 +592,15 @@ router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
             }).skip(perPage * page - perPage).limit(perPage);
 
           case 11:
-            post = _context2.sent;
-            _context2.next = 14;
+            post = _context4.sent;
+            _context4.next = 14;
             return _articles["default"].countDocuments({
               active: true
             });
 
           case 14:
-            count = _context2.sent;
-            _context2.next = 17;
+            count = _context4.sent;
+            _context4.next = 17;
             return _articles["default"].find({
               active: true
             }).sort({
@@ -564,8 +608,8 @@ router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
             }).populate('category').populate('postedBy').limit(1);
 
           case 17:
-            popularNews = _context2.sent;
-            _context2.next = 20;
+            popularNews = _context4.sent;
+            _context4.next = 20;
             return _articles["default"].find({
               active: true
             }).sort({
@@ -573,8 +617,8 @@ router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
             }).populate('category').limit(3);
 
           case 20:
-            popNews = _context2.sent;
-            _context2.next = 23;
+            popNews = _context4.sent;
+            _context4.next = 23;
             return _articles["default"].find({
               active: true
             }).sort({
@@ -582,8 +626,8 @@ router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
             }).limit(12);
 
           case 23:
-            img = _context2.sent;
-            _context2.next = 26;
+            img = _context4.sent;
+            _context4.next = 26;
             return _articles["default"].find({
               active: true,
               addToRecommended: true
@@ -592,8 +636,8 @@ router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
             }).limit(4);
 
           case 26:
-            recommended = _context2.sent;
-            _context2.next = 29;
+            recommended = _context4.sent;
+            _context4.next = 29;
             return _articles["default"].find({
               active: true,
               addToBreaking: true
@@ -602,8 +646,8 @@ router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
             }).limit(4);
 
           case 29:
-            breakingNews = _context2.sent;
-            _context2.next = 32;
+            breakingNews = _context4.sent;
+            _context4.next = 32;
             return _articles["default"].aggregate([{
               $match: {
                 postType: 'video',
@@ -649,8 +693,14 @@ router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
             }]);
 
           case 32:
-            video = _context2.sent;
+            video = _context4.sent;
+            _context4.next = 35;
+            return _category["default"].find({});
+
+          case 35:
+            categories = _context4.sent;
             res.render('index', {
+              categories: categories,
               post: post,
               current: page,
               pages: Math.ceil(count / perPage),
@@ -663,44 +713,44 @@ router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
               video: video,
               recommended: recommended
             });
-            _context2.next = 39;
+            _context4.next = 42;
             break;
 
-          case 36:
-            _context2.prev = 36;
-            _context2.t0 = _context2["catch"](0);
-            next(_context2.t0);
-
           case 39:
+            _context4.prev = 39;
+            _context4.t0 = _context4["catch"](0);
+            next(_context4.t0);
+
+          case 42:
           case "end":
-            return _context2.stop();
+            return _context4.stop();
         }
       }
-    }, _callee2, null, [[0, 36]]);
+    }, _callee4, null, [[0, 39]]);
   }));
 
-  return function (_x4, _x5, _x6) {
-    return _ref2.apply(this, arguments);
+  return function (_x10, _x11, _x12) {
+    return _ref4.apply(this, arguments);
   };
 }()); // Get search page
 
 router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function () {
-  var _ref3 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(req, res, next) {
+  var _ref5 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(req, res, next) {
     var perPage, page, count, data, random;
-    return _regenerator["default"].wrap(function _callee3$(_context3) {
+    return _regenerator["default"].wrap(function _callee5$(_context5) {
       while (1) {
-        switch (_context3.prev = _context3.next) {
+        switch (_context5.prev = _context5.next) {
           case 0:
-            _context3.prev = 0;
+            _context5.prev = 0;
 
             if (!req.query.q) {
-              _context3.next = 16;
+              _context5.next = 16;
               break;
             }
 
             perPage = 9;
             page = req.query.page || 1;
-            _context3.next = 6;
+            _context5.next = 6;
             return _articles["default"].countDocuments({
               active: true,
               $or: [{
@@ -717,8 +767,8 @@ router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function
             });
 
           case 6:
-            count = _context3.sent;
-            _context3.next = 9;
+            count = _context5.sent;
+            _context5.next = 9;
             return _articles["default"].find({
               active: true,
               $or: [{
@@ -737,8 +787,8 @@ router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function
             });
 
           case 9:
-            data = _context3.sent;
-            _context3.next = 12;
+            data = _context5.sent;
+            _context5.next = 12;
             return _articles["default"].aggregate([{
               $match: {
                 active: true
@@ -768,7 +818,7 @@ router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function
             }]);
 
           case 12:
-            random = _context3.sent;
+            random = _context5.sent;
             res.render('search', {
               data: data,
               search: req.query.q,
@@ -776,48 +826,48 @@ router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function
               pages: Math.ceil(count / perPage),
               random: random
             });
-            _context3.next = 17;
+            _context5.next = 17;
             break;
 
           case 16:
             res.render('404');
 
           case 17:
-            _context3.next = 22;
+            _context5.next = 22;
             break;
 
           case 19:
-            _context3.prev = 19;
-            _context3.t0 = _context3["catch"](0);
-            next(_context3.t0);
+            _context5.prev = 19;
+            _context5.t0 = _context5["catch"](0);
+            next(_context5.t0);
 
           case 22:
           case "end":
-            return _context3.stop();
+            return _context5.stop();
         }
       }
-    }, _callee3, null, [[0, 19]]);
+    }, _callee5, null, [[0, 19]]);
   }));
 
-  return function (_x7, _x8, _x9) {
-    return _ref3.apply(this, arguments);
+  return function (_x13, _x14, _x15) {
+    return _ref5.apply(this, arguments);
   };
 }());
 router.get('/author/:username', _install["default"].redirectToLogin, /*#__PURE__*/function () {
-  var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res, next) {
+  var _ref6 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(req, res, next) {
     var user, featured, perPage, page, article, count;
-    return _regenerator["default"].wrap(function _callee4$(_context4) {
+    return _regenerator["default"].wrap(function _callee6$(_context6) {
       while (1) {
-        switch (_context4.prev = _context4.next) {
+        switch (_context6.prev = _context6.next) {
           case 0:
-            _context4.next = 2;
+            _context6.next = 2;
             return _users["default"].findOne({
               username: req.params.username
             });
 
           case 2:
-            user = _context4.sent;
-            _context4.next = 5;
+            user = _context6.sent;
+            _context6.next = 5;
             return _articles["default"].aggregate([{
               $match: {
                 addToFeatured: true,
@@ -863,21 +913,21 @@ router.get('/author/:username', _install["default"].redirectToLogin, /*#__PURE__
             }]);
 
           case 5:
-            featured = _context4.sent;
+            featured = _context6.sent;
 
             if (user) {
-              _context4.next = 10;
+              _context6.next = 10;
               break;
             }
 
             res.render('404');
-            _context4.next = 19;
+            _context6.next = 19;
             break;
 
           case 10:
             perPage = 9;
             page = req.query.page || 1;
-            _context4.next = 14;
+            _context6.next = 14;
             return _articles["default"].find({
               active: true,
               postedBy: user._id
@@ -886,15 +936,15 @@ router.get('/author/:username', _install["default"].redirectToLogin, /*#__PURE__
             });
 
           case 14:
-            article = _context4.sent;
-            _context4.next = 17;
+            article = _context6.sent;
+            _context6.next = 17;
             return _articles["default"].countDocuments({
               active: true,
               postedBy: user._id
             });
 
           case 17:
-            count = _context4.sent;
+            count = _context6.sent;
             res.render('author', {
               author: user,
               article: article,
@@ -905,46 +955,6 @@ router.get('/author/:username', _install["default"].redirectToLogin, /*#__PURE__
 
           case 19:
           case "end":
-            return _context4.stop();
-        }
-      }
-    }, _callee4);
-  }));
-
-  return function (_x10, _x11, _x12) {
-    return _ref4.apply(this, arguments);
-  };
-}());
-router.get('/vision', _install["default"].redirectToLogin, /*#__PURE__*/function () {
-  var _ref5 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(req, res, next) {
-    return _regenerator["default"].wrap(function _callee5$(_context5) {
-      while (1) {
-        switch (_context5.prev = _context5.next) {
-          case 0:
-            res.render('vision');
-
-          case 1:
-          case "end":
-            return _context5.stop();
-        }
-      }
-    }, _callee5);
-  }));
-
-  return function (_x13, _x14, _x15) {
-    return _ref5.apply(this, arguments);
-  };
-}());
-router.get('/membership', _install["default"].redirectToLogin, /*#__PURE__*/function () {
-  var _ref6 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(req, res, next) {
-    return _regenerator["default"].wrap(function _callee6$(_context6) {
-      while (1) {
-        switch (_context6.prev = _context6.next) {
-          case 0:
-            res.render('membership');
-
-          case 1:
-          case "end":
             return _context6.stop();
         }
       }
@@ -953,6 +963,46 @@ router.get('/membership', _install["default"].redirectToLogin, /*#__PURE__*/func
 
   return function (_x16, _x17, _x18) {
     return _ref6.apply(this, arguments);
+  };
+}());
+router.get('/vision', _install["default"].redirectToLogin, /*#__PURE__*/function () {
+  var _ref7 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee7(req, res, next) {
+    return _regenerator["default"].wrap(function _callee7$(_context7) {
+      while (1) {
+        switch (_context7.prev = _context7.next) {
+          case 0:
+            res.render('vision');
+
+          case 1:
+          case "end":
+            return _context7.stop();
+        }
+      }
+    }, _callee7);
+  }));
+
+  return function (_x19, _x20, _x21) {
+    return _ref7.apply(this, arguments);
+  };
+}());
+router.get('/membership', _install["default"].redirectToLogin, /*#__PURE__*/function () {
+  var _ref8 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee8(req, res, next) {
+    return _regenerator["default"].wrap(function _callee8$(_context8) {
+      while (1) {
+        switch (_context8.prev = _context8.next) {
+          case 0:
+            res.render('membership');
+
+          case 1:
+          case "end":
+            return _context8.stop();
+        }
+      }
+    }, _callee8);
+  }));
+
+  return function (_x22, _x23, _x24) {
+    return _ref8.apply(this, arguments);
   };
 }());
 module.exports = router;

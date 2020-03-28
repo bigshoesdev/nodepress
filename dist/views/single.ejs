@@ -7,15 +7,13 @@
         <div class="inner-dark-blog">
             <div class="dark-blog-banner-contant">
                 <div class="food-music-btn">
-                    <span><a href="#" style="color: white;"><%= article.category.name%></a></span>
+                    <span><a href="/category/<%= article.category.slug %>" style="color: white;"><%= article.category.name%></a></span>
                 </div>
                 <div class="dark-blog-banner-heading">
                     <h1 style="color: white;"><%= article.title%></h1>
                 </div>
                 <div class="dark-blog-banner-headingdown">
                     <span style="color: white;"><%= article.postedBy.firstName%> <%= article.postedBy.lastName%></span>
-                    <span style="border: none;color: white;">
-                        <%= article.createdAt.toDateString() %></span>
                 </div>
             </div>
         </div>
@@ -42,6 +40,7 @@
                 <div class="col-md-9">
                     <div class="dark-blog-makedby-details">
                         <h2><%= article.postedBy.firstName%> <%= article.postedBy.lastName%></h2>
+                        <p>Following User <%= article.postedBy.following.length%> member</p>
                     </div>
                 </div>
                 <div class="col-md-2">
@@ -79,34 +78,6 @@
         </div>
     </div>
 </div>
-<!-- 
-
-<div class="dark-blog-posts">
-    <div class="container-fluid">
-        <div class="inner-dark-blog-posts">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="dark-blog-previous-posts">
-                        <div class="dark-blog-previous-posts-content">
-                            <h5>Previous Post</h5>
-                            <h2>Doing a cross country road trip</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="dark-blog-next-posts">
-                        <div class="dark-blog-next-posts-content">
-                            <h5>Next Post</h5>
-                            <h2>Doing down in the water</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> -->
-
-
 <div class="recommended-for-you">
     <div class="container">
         <div class="inner-recommended-for-you">
@@ -163,9 +134,10 @@
             </div>
             <div class="upvote-btn">
                 <form action="/article/upvote" method="POST" id="upvoteForm">
-                <input type="text" name="articleId" value="<%= article._id%>"/>
+                    <input type="text" name="articleId" value="<%= article._id%>" />
                 </form>
-                <a id="return-to-top" href="javascript:void(0);" onclick="upvote()"><i class="fa fa-arrow-up" aria-hidden="true"></i>
+                <a id="return-to-top" href="javascript:void(0);" onclick="upvote()"><i class="fa fa-arrow-up"
+                        aria-hidden="true"></i>
                     <p>Upvote</p>
                     <p><%= article.upvote.count%></p>
                 </a>
@@ -211,7 +183,7 @@
 <script src="/js/owl.carousel.js" type="text/javascript"></script>
 <script src="/js/script1.js" type="text/javascript"></script>
 <script>
-    function upvote(){
+    function upvote() {
         $('#upvoteForm').submit();
     }
     $(window).scroll(function () {

@@ -592,7 +592,7 @@ router.get("/post/:slug", _install["default"].redirectToLogin, /*#__PURE__*/func
             }
 
             res.render("404");
-            _context4.next = 52;
+            _context4.next = 53;
             break;
 
           case 11:
@@ -705,10 +705,11 @@ router.get("/post/:slug", _install["default"].redirectToLogin, /*#__PURE__*/func
             ips = req.headers["x-forwarded-for"] || req.connection.remoteAddress || req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null);
 
             if (!(art.viewers.indexOf(ips) !== -1)) {
-              _context4.next = 48;
+              _context4.next = 49;
               break;
             }
 
+            console.log(article[0]);
             res.render("single", {
               title: article[0].title,
               article: article[0],
@@ -722,12 +723,12 @@ router.get("/post/:slug", _install["default"].redirectToLogin, /*#__PURE__*/func
               bookmark: book,
               bookmarkId: bookmark == null ? null : bookmark._id
             });
-            _context4.next = 52;
+            _context4.next = 53;
             break;
 
-          case 48:
+          case 49:
             ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress || req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null);
-            _context4.next = 51;
+            _context4.next = 52;
             return _articles["default"].updateOne({
               slug: req.params.slug.trim()
             }, {
@@ -736,7 +737,7 @@ router.get("/post/:slug", _install["default"].redirectToLogin, /*#__PURE__*/func
               }
             });
 
-          case 51:
+          case 52:
             _articles["default"].updateOne({
               slug: req.params.slug.trim()
             }, {
@@ -761,21 +762,21 @@ router.get("/post/:slug", _install["default"].redirectToLogin, /*#__PURE__*/func
               return _next(err);
             });
 
-          case 52:
-            _context4.next = 57;
+          case 53:
+            _context4.next = 58;
             break;
 
-          case 54:
-            _context4.prev = 54;
+          case 55:
+            _context4.prev = 55;
             _context4.t1 = _context4["catch"](0);
             next(_context4.t1);
 
-          case 57:
+          case 58:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[0, 54]]);
+    }, _callee4, null, [[0, 55]]);
   }));
 
   return function (_x10, _x11, _x12) {
@@ -892,7 +893,7 @@ router.get("/category/:slug", _install["default"].redirectToLogin, /*#__PURE__*/
             }
 
             res.render("404");
-            _context7.next = 26;
+            _context7.next = 27;
             break;
 
           case 10:
@@ -946,9 +947,11 @@ router.get("/category/:slug", _install["default"].redirectToLogin, /*#__PURE__*/
 
           case 24:
             popular = _context7.sent;
+            console.log(popular);
             res.render("category", {
               title: cat.name,
               cat: cat.name,
+              background: cat.background,
               post: post,
               current: page,
               pages: Math.ceil(count / perPage),
@@ -957,21 +960,21 @@ router.get("/category/:slug", _install["default"].redirectToLogin, /*#__PURE__*/
               popular: popular
             });
 
-          case 26:
-            _context7.next = 31;
+          case 27:
+            _context7.next = 32;
             break;
 
-          case 28:
-            _context7.prev = 28;
+          case 29:
+            _context7.prev = 29;
             _context7.t0 = _context7["catch"](0);
             next(_context7.t0);
 
-          case 31:
+          case 32:
           case "end":
             return _context7.stop();
         }
       }
-    }, _callee7, null, [[0, 28]]);
+    }, _callee7, null, [[0, 29]]);
   }));
 
   return function (_x17, _x18, _x19) {

@@ -43,8 +43,8 @@ router.post('/category/create', _auth["default"], /*#__PURE__*/function () {
             }
 
             payload = {
-              name: req.body.name.toLowerCase(),
-              slug: !req.body.slug ? req.body.name.split(' ').join('-').toLowerCase() : req.body.slug.split(' ').join('-').toLowerCase(),
+              name: req.body.name,
+              slug: !req.body.slug ? req.body.name.split(' ').join('-') : req.body.slug.split(' ').join('-'),
               description: req.body.description,
               background: req.body.background,
               color: req.body.color,
@@ -88,7 +88,7 @@ router.post('/category/create', _auth["default"], /*#__PURE__*/function () {
 
 router.post('/category/edit', _auth["default"], function (req, res, next) {
   try {
-    req.body.slug = !req.body.slug ? req.body.name.split(' ').join('-').toLowerCase() : req.body.slug.split(' ').join('-').toLowerCase();
+    req.body.slug = !req.body.slug ? req.body.name.split(' ').join('-') : req.body.slug.split(' ').join('-');
 
     _category["default"].updateOne({
       _id: req.body.categoryId.trim()
@@ -170,8 +170,8 @@ router.post('/subcategory/create', _auth["default"], /*#__PURE__*/function () {
             }
 
             payload = {
-              name: req.body.name.toLowerCase(),
-              slug: !req.body.slug ? req.body.name.split(' ').join('-').toLowerCase() : req.body.slug.split(' ').join('-').toLowerCase(),
+              name: req.body.name,
+              slug: !req.body.slug ? req.body.name.split(' ').join('-') : req.body.slug.split(' ').join('-'),
               description: req.body.description,
               parent: req.body.parent
             };
@@ -213,7 +213,7 @@ router.post('/subcategory/create', _auth["default"], /*#__PURE__*/function () {
 
 router.post('/subcategory/edit', _auth["default"], function (req, res, next) {
   try {
-    req.body.slug = !req.body.slug ? req.body.name.split(' ').join('-').toLowerCase() : req.body.slug.split(' ').join('-').toLowerCase();
+    req.body.slug = !req.body.slug ? req.body.name.split(' ').join('-') : req.body.slug.split(' ').join('-');
 
     _category["default"].updateOne({
       _id: req.body.subcategoryId.trim()
