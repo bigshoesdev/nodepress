@@ -869,7 +869,7 @@ router.get("/all-post", _install["default"].redirectToLogin, /*#__PURE__*/functi
   };
 }()); // Get all the posts in a category
 
-router.get("/category/:slug", _install["default"].redirectToLogin, /*#__PURE__*/function () {
+router.get("/kategorie/:slug", _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref7 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee7(req, res, next) {
     var perPage, page, cat, post, count, recent, featured, popular;
     return _regenerator["default"].wrap(function _callee7$(_context7) {

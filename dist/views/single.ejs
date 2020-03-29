@@ -7,7 +7,8 @@
         <div class="inner-dark-blog">
             <div class="dark-blog-banner-contant">
                 <div class="food-music-btn">
-                    <span><a href="/category/<%= article.category.slug %>" style="color: white;"><%= article.category.name%></a></span>
+                    <span><a href="/kategorie/<%= article.category.slug %>"
+                            style="color: white;"><%= article.category.name%></a></span>
                 </div>
                 <div class="dark-blog-banner-heading">
                     <h1 style="color: white;"><%= article.title%></h1>
@@ -40,12 +41,22 @@
                 <div class="col-md-9">
                     <div class="dark-blog-makedby-details">
                         <h2><%= article.postedBy.firstName%> <%= article.postedBy.lastName%></h2>
-                        <p>Following User <%= article.postedBy.following.length%> member</p>
+                        <p>Follower: <%= article.postedBy.following.length%> </p>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="follow-btn">
+                        <% if(article.postedBy.following.length < 1) {%>
                         <a href="/follow-user?followerId=<%= article.postedBy._id %>">Follow</a>
+                        <%} else {%>
+                        <% for(var i = 0; i < article.postedBy.following.length;  i ++){ %>
+                        <% if(article.postedBy.following[i] == article.postedBy._id){%>
+                        <a href="/follow-user?followerId=<%= article.postedBy._id %>">Follow</a>
+                        <% } else {%>
+                        <a href="/unfollow-user?followerId=<%= article.postedBy._id %>">Unfollow</a>
+                        <% }%>
+                        <%}%>
+                        <%}%>
                     </div>
                 </div>
             </div>

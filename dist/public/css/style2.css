@@ -17,6 +17,7 @@
   margin-top: 63px;
   padding: 20px;
   transition: 0.5s;
+  display: inline-table;
 }
 .section-1-left-first-img:hover {
   background-image: linear-gradient(#54515173, #52515161), url(/images/img-1.jpeg);

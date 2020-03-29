@@ -379,9 +379,9 @@ router.get('/afterlogin', _install["default"].redirectToLogin, function (req, re
     title: "After Login"
   });
 });
-router.get('/category', _install["default"].redirectToLogin, function (req, res, next) {
+router.get('/kategorie', _install["default"].redirectToLogin, function (req, res, next) {
   res.render('category', {
-    title: 'Category'
+    title: 'Kategorie'
   });
 });
 router.post("/login", _install["default"].redirectToLogin, checkIfLoggedIn, function (req, res, next) {
@@ -1119,18 +1119,17 @@ router.get("/unfollow-user", _auth["default"], /*#__PURE__*/function () {
           case 0:
             _context14.next = 2;
             return _users["default"].updateOne({
-              _id: req.user.id
+              _id: req.query.followerId
             }, {
               $pull: {
-                following: req.query.followerId
+                following: req.user.id
               }
             });
 
           case 2:
-            req.flash("success_msg", "User unfollowed successfully");
             return _context14.abrupt("return", res.redirect('back'));
 
-          case 4:
+          case 3:
           case "end":
             return _context14.stop();
         }
