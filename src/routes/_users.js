@@ -758,6 +758,7 @@ router.get(
   role("admin", "user"),
   async (req, res, next) => {
     const following = await User.findById(req.user.id).populate("following").sort({createdAt: -1});
+    console.log(following);
     res.render("./user/following", { title: "Following", following });
   }
 );

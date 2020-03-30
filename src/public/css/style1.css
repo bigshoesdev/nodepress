@@ -70,7 +70,6 @@ a {
     transition: all 0.3s ease-out;
     position: relative;
     padding: .5em;
-    margin: -.5em;
 }
 
 a:focus, 

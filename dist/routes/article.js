@@ -947,7 +947,7 @@ router.get("/kategorie/:slug", _install["default"].redirectToLogin, /*#__PURE__*
 
           case 24:
             popular = _context7.sent;
-            console.log(popular);
+            console.log(post);
             res.render("category", {
               title: cat.name,
               cat: cat.name,

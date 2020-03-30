@@ -21,24 +21,29 @@
       rel='stylesheet' />
    <link
       href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&display=swap"
-      rel="stylesheet"/>
-   <link href="/css/aos.css" rel="stylesheet"/>
+      rel="stylesheet" />
+   <link href="/css/aos.css" rel="stylesheet" />
 </head>
+
 <body>
    <header class="sticky" id="header">
       <section class="container">
          <section style="display: flex; align-items: center;" class="row" id="logo_menu">
-            <section class="col-xs-9 col-md-10">
+            <section class="col-xs-6 col-md-2">
                <div class="header-maindiv">
                   <div class="inner-header-maindiv-icon">
                      <div class="header-logo">
                         <a href="/"><img src="/images/GOLDEN-PNG.png"></a>
                      </div>
                      <div id="myTopnav" class="topnav">
-                        <form action="/search" method="get" class="search-form d-lg-flex float-right">
+                        <form action="/search" method="get" class="search-form d-lg-flex float-right" id="searchForm">
                            <div class="container">
+                              <a type="button" href="javascript:void(0)" class="closebtn"
+                                 style="right: 15%; padding-left: 10px; padding-right: 10px;" onclick="searchForm()"
+                                 id="closebtn"><i class="fa fa-search"></i></a>
                               <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-                              <input type="text" placeholder="Suche" name="q" value="" />
+                              <input id="q" type="text" placeholder="Suche" name="q" value=""
+                                 onfocus="displaySearchbtn()" />
                               <label>Suche Inhalte, die dich begeistern</label>
                            </div>
                         </form>
@@ -46,13 +51,50 @@
                   </div>
                </div>
             </section>
+            <a class="searchbar" href="#"><span style="padding-left: 10px;cursor:pointer">Blog kürzlich</span>
+            </a>
+            <a class="searchbar" href="#"><span style="padding-left: 10px;cursor:pointer">Kunden-Onboarding</span></a>
+            <a class="searchbar" href="#"><span style="padding-left: 10px;cursor:pointer">Inhalte bezahlen</span></a>
+            <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Publisher
+                  werden</span></a>
+            <a class="searchbar" href="/afterlogin"><span style="padding-left: 10px;cursor:pointer">Artikel
+                  entdecken</span></a>
+            <% if(user) { %>
+            <a class="searchbar" href="/membership"><span style="padding-left: 10px;cursor:pointer">Exklusive
+                  Inhalte</span></a>
+            <a class="searchbar" href="#"><span style="font-size:20px; padding-left: 10px;cursor:pointer"
+                  onclick="openNav()"><i class="fa fa-search" aria-hidden="true"></i></span></a>
+            <div class="dropdown">
+               <a class="dropdown-toggle" type="button" data-toggle="dropdown" style="font-size: 20px;"><i
+                     class="fa fa-user"></i><span class="caret"></span></a>
+               <ul class="dropdown-menu profile">
+                  <% if(user.roleId == 'admin') { %>
+                  <li><span><%= user.username%></span></li>
+                  <li><a href="/dashboard/index" class="searchbar"><i class="fa fa-cog profileicon"></i>Dashboard</a>
+                  </li>
+                  <li><a href="/author/<%= user.username%>" class="searchbar"><i
+                           class="fa fa-user-circle profileicon"></i>Profile</a></li>
+                  <li><a href="/log-out" class="searchbar"><i class="fa fa-sign-out profileicon"></i>Sign Out</a></li>
+               </ul>
+               <% } else {%>
+               <li><span><%= user.username%></span></li>
+               <li><a href="/user/dashboard" class="searchbar"><i class="fa fa-cog profileicon"></i>Control Panel</a>
+               </li>
+               <li><a href="/author/<%= user.username%>" class="searchbar"><i
+                        class="fa fa-user-circle profileicon"></i>Profile</a></li>
+               <li><a href="/log-out" class="searchbar"><i class="fa fa-sign-out profileicon"></i>Sign Out</a></li>
+               <% } %>
+               </ul>
+            </div>
+            <% } else {%>
             <a class="searchbar" href="#"><span style="font-size:20px; padding-left: 10px;cursor:pointer"
                   onclick="openNav()"><i class="fa fa-search" aria-hidden="true"></i></span></a>
             <a href="/sign-up" class="searchbar"><span style="font-size:20px; padding-left: 10px;cursor:pointer"><i
                      class="fa fa-user"></i></span></a>
             <a href="/login" class="searchbar"><span style="font-size:20px; padding-left: 10px;cursor:pointer"><i
                      class="fa fa-sign-in"></i></span></a>
-            <a href="/membership" class="searchbar">Member ship</a>
+            <%}%>
+            <!-- <a href="/membership" class="searchbar">Member ship</a> -->
             <span class="webtoggle" style="font-size:24px;cursor:pointer" onclick="openaav()">&#9776; </span>
             <span class="mobiletoggle" style="font-size:24px; margin-right: 20px;cursor:pointer"
                onclick="openAav()">&#9776; </span>

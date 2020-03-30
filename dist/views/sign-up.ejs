@@ -6,61 +6,36 @@
    <div class="container">
       <div class="inner-login">
          <div class="login-heading">
-            <h1>Sign Up</h1>
+            <h1>Anmelden</h1>
          </div>
          <div class="login-form">
             <%- include('partials/msg') %>
             <form action="/sign-up" method="POST" class="newsletterForm">
                <div class="form-group">
-                  <label class="login-label" for="text">Username <span>*</span></label>
-                  <input type="text" name="username" id="username" placeholder="Username"
+                  <label class="login-label" for="text">Benutzername <span>*</span></label>
+                  <input type="text" name="username" id="username" placeholder="Benutzername" required
                      class="form-control login-input" />
                </div>
                <div class="form-group">
-                  <label class="login-label" for="text">Email address <span>*</span></label>
-                  <input type="email" name="email" id="email" placeholder="Email Address"
+                  <label class="login-label" for="text">E-Mail Adresse <span>*</span></label>
+                  <input type="email" name="email" id="email" placeholder="E-Mail Adresse" required
                      class="form-control login-input">
                </div>
                <div class="form-group">
-                  <label class="login-label" for="pwd">Password <span>*</span></label>
-                  <input type="password" name="password" id="password" placeholder="Password"
+                  <label class="login-label" for="pwd">Kennwort <span>*</span></label>
+                  <input type="password" name="password" id="password" placeholder="Kennwort" required
                      class="form-control login-input">
                </div>
                <div class="form-group">
-                  <label class="login-label" for="pwd">Conform password <span>*</span></label>
-                  <input type="password" name="cPassword" id="cPassword" placeholder="Conform Password"
+                  <label class="login-label" for="pwd">Kennwort anpassen <span>*</span></label>
+                  <input type="password" name="cPassword" id="cPassword" placeholder="Kennwort anpassen" required
                      class="form-control login-input">
-               </div>
-               <div class="form-group">
-                  <label class="login-label" for="text">Instagram <span>(optional)</span></label>
-                  <input type="text" name="instagram" id="instagram" placeholder="Instagram"
-                     class="form-control login-input" />
-               </div>
-               <div class="form-group">
-                  <label class="login-label" for="text">Facebook <span>(optional)</span></label>
-                  <input type="text" name="facebook" id="facebook" placeholder="Facebook" 
-                     class="form-control login-input" />
-               </div>
-               <div class="form-group">
-                  <label class="login-label" for="text">Linkedin <span>(optional)</span></label>
-                  <input type="text" name="linkedin" id="linkedin" placeholder="Linkedin" 
-                     class="form-control login-input" />
-               </div>
-               <div class="form-group">
-                  <label class="login-label" for="text">Google <span>(optional)</span></label>
-                  <input type="text" name="google" id="google" placeholder="Google" 
-                     class="form-control login-input" />
-               </div>
-               <div class="form-group">
-                  <label class="login-label" for="text">Other <span>(optional)</span></label>
-                  <input type="text" name="other" id="other" placeholder="Other" 
-                     class="form-control login-input" />
                </div>
                <div class="login-btn">
-                  <button type="submit">Register</button>
+                  <button type="submit">Registrieren Sie</button>
                </div>
                <div class="lost-your-password">
-                  <a href="/login">Am a member, Login</a>
+                  <a href="/login">Bin Mitglied, Login</a>
                </div>
             </form>
          </div>

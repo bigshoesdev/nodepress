@@ -19,7 +19,7 @@ router.post(
     let search = await Article.find({ title: req.body.title });
     let slug = await Article.findOne({ slug: req.body.slug });
     let set = await Settings.findOne();
-    Date.prototype.getWeek = function() {
+    Date.prototype.getWeek = function () {
       let dt = new Date(this.getFullYear(), 0, 1);
       return Math.ceil(((this - dt) / 86400000 + dt.getDay() + 1) / 7);
     };
@@ -69,15 +69,15 @@ router.post(
             }),
             slug: req.body.slug
               ? req.body.slug
-                  .trim()
-                  .toLowerCase()
-                  .split("?")
-                  .join("")
-                  .split(" ")
-                  .join("-")
-                  .replace(new RegExp("/", "g"), "-")
+                .trim()
+                .toLowerCase()
+                .split("?")
+                .join("")
+                .split(" ")
+                .join("-")
+                .replace(new RegExp("/", "g"), "-")
               : search !== ""
-              ? req.body.title
+                ? req.body.title
                   .trim()
                   .toLowerCase()
                   .split("?")
@@ -87,7 +87,7 @@ router.post(
                   .replace(new RegExp("/", "g"), "-") +
                 "-" +
                 search.length
-              : req.body.title
+                : req.body.title
                   .trim()
                   .toLowerCase()
                   .split("?")
@@ -104,18 +104,18 @@ router.post(
             showPostOnSlider: !req.body.showPostOnSlider
               ? false
               : req.body.showPostOnSlider
-              ? true
-              : false,
+                ? true
+                : false,
             addToFeatured: !req.body.addToFeatured
               ? false
               : req.body.addToFeatured
-              ? true
-              : false,
+                ? true
+                : false,
             addToBreaking: !req.body.addToBreaking
               ? true
               : req.body.addToBreaking
-              ? true
-              : false,
+                ? true
+                : false,
             addToRecommended: !req.body.addToRecommended ? false : true,
             showOnlyToRegisteredUsers: !req.body.showOnlyToRegisteredUsers
               ? false
@@ -125,8 +125,8 @@ router.post(
             payload1.active = !req.body.status
               ? true
               : req.body.status == "activate"
-              ? true
-              : false;
+                ? true
+                : false;
           } else {
             payload1.active = set.approveAddedUserPost == false ? false : true;
           }
@@ -168,15 +168,15 @@ router.post(
             }),
             slug: req.body.slug
               ? req.body.slug
-                  .trim()
-                  .toLowerCase()
-                  .split("?")
-                  .join("")
-                  .split(" ")
-                  .join("-")
-                  .replace(new RegExp("/", "g"), "-")
+                .trim()
+                .toLowerCase()
+                .split("?")
+                .join("")
+                .split(" ")
+                .join("-")
+                .replace(new RegExp("/", "g"), "-")
               : search !== ""
-              ? req.body.title
+                ? req.body.title
                   .trim()
                   .toLowerCase()
                   .split("?")
@@ -186,7 +186,7 @@ router.post(
                   .replace(new RegExp("/", "g"), "-") +
                 "-" +
                 search.length
-              : req.body.title
+                : req.body.title
                   .trim()
                   .toLowerCase()
                   .split("?")
@@ -203,23 +203,23 @@ router.post(
             active: !req.body.status
               ? true
               : req.body.status == "activate"
-              ? true
-              : false,
+                ? true
+                : false,
             showPostOnSlider: !req.body.showPostOnSlider
               ? true
               : req.body.showPostOnSlider
-              ? true
-              : false,
+                ? true
+                : false,
             addToFeatured: !req.body.addToFeatured
               ? false
               : req.body.addToFeatured
-              ? true
-              : false,
+                ? true
+                : false,
             addToBreaking: !req.body.addToBreaking
               ? true
               : req.body.addToBreaking
-              ? true
-              : false,
+                ? true
+                : false,
             addToRecommended: !req.body.addToRecommended ? false : true,
             showOnlyToRegisteredUsers: !req.body.showOnlyToRegisteredUsers
               ? false
@@ -231,8 +231,8 @@ router.post(
             payload.active = !req.body.status
               ? true
               : req.body.status == "activate"
-              ? true
-              : false;
+                ? true
+                : false;
           } else {
             payload.active = set.approveAddedUserPost == false ? false : true;
           }
@@ -274,15 +274,15 @@ router.post(
             }),
             slug: req.body.slug
               ? req.body.slug
-                  .trim()
-                  .toLowerCase()
-                  .split("?")
-                  .join("")
-                  .split(" ")
-                  .join("-")
-                  .replace(new RegExp("/", "g"), "-")
+                .trim()
+                .toLowerCase()
+                .split("?")
+                .join("")
+                .split(" ")
+                .join("-")
+                .replace(new RegExp("/", "g"), "-")
               : search !== ""
-              ? req.body.title
+                ? req.body.title
                   .trim()
                   .toLowerCase()
                   .split("?")
@@ -292,7 +292,7 @@ router.post(
                   .replace(new RegExp("/", "g"), "-") +
                 "-" +
                 search.length
-              : req.body.title
+                : req.body.title
                   .trim()
                   .toLowerCase()
                   .split("?")
@@ -309,23 +309,23 @@ router.post(
             active: !req.body.status
               ? true
               : req.body.status == "activate"
-              ? true
-              : false,
+                ? true
+                : false,
             showPostOnSlider: !req.body.showPostOnSlider
               ? true
               : req.body.showPostOnSlider
-              ? true
-              : false,
+                ? true
+                : false,
             addToFeatured: !req.body.addToFeatured
               ? false
               : req.body.addToFeatured
-              ? true
-              : false,
+                ? true
+                : false,
             addToBreaking: !req.body.addToBreaking
               ? true
               : req.body.addToBreaking
-              ? true
-              : false,
+                ? true
+                : false,
             addToRecommended: !req.body.addToRecommended ? false : true,
             showOnlyToRegisteredUsers: !req.body.showOnlyToRegisteredUsers
               ? false
@@ -337,8 +337,8 @@ router.post(
             payload2.active = !req.body.status
               ? true
               : req.body.status == "activate"
-              ? true
-              : false;
+                ? true
+                : false;
           } else {
             payload2.active = set.approveAddedUserPost == false ? false : true;
           }
@@ -397,8 +397,8 @@ router.post(
         req.body.active = !req.body.status
           ? true
           : req.body.status == "activate"
-          ? true
-          : false;
+            ? true
+            : false;
       } else {
         req.body.active = set.approveUpdatedUserPost == false ? false : true;
       }
@@ -605,7 +605,7 @@ router.get("/post/:slug", install.redirectToLogin, async (req, res, next) => {
     ]);
     if (article == "") res.render("404");
     else {
-      let bookmark = typeof req.user !== "undefined" ? await Bookmark.findOne({userId: req.user.id, articleId: article[0]._id}) : false;
+      let bookmark = typeof req.user !== "undefined" ? await Bookmark.findOne({ userId: req.user.id, articleId: article[0]._id }) : false;
       let book = bookmark ? true : false;
       let art = await Article.findOne({ slug: req.params.slug, active: true });
       let next = await Article.find({
@@ -658,6 +658,7 @@ router.get("/post/:slug", install.redirectToLogin, async (req, res, next) => {
         req.socket.remoteAddress ||
         (req.connection.socket ? req.connection.socket.remoteAddress : null);
       if (art.viewers.indexOf(ips) !== -1) {
+        console.log(article[0]);
         res.render("single", {
           title: article[0].title,
           article: article[0],
@@ -745,7 +746,7 @@ router.get("/all-post", install.redirectToLogin, async (req, res, next) => {
 
 // Get all the posts in a category
 router.get(
-  "/category/:slug",
+  "/kategorie/:slug",
   install.redirectToLogin,
   async (req, res, next) => {
     try {
@@ -782,9 +783,11 @@ router.get(
           .populate("postedBy")
           .sort({ views: -1 })
           .limit(4);
+        console.log(post);
         res.render("category", {
           title: cat.name,
           cat: cat.name,
+          background: cat.background,
           post: post,
           current: page,
           pages: Math.ceil(count / perPage),
@@ -887,7 +890,8 @@ router.post("/article/upvote", auth, async (req, res, next) => {
     { _id: req.body.articleId },
     { $push: { "update.users": req.user.id }, $inc: { "upvote.count": 1 } }
   );
-  res.status(200).send("Post Has been Upvoted");
+  // res.status(200).send("Post Has been Upvoted");
+  return res.redirect(`back`);
 });
 
 // Downvote a post

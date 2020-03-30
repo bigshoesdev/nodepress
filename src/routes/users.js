@@ -120,8 +120,8 @@ router.post(
             typeof set.emailVerification == "undefined"
               ? true
               : set.emailVerification == true
-              ? false
-              : true,
+                ? false
+                : true,
           roleId: "user",
           firstName: "Not Specified",
           lastName: "Not Specified",
@@ -144,15 +144,15 @@ router.post(
             // SOLVED SETTINGS BUG, USED SET[0] INSTEAD OF SET
             set.emailVerification == true
               ? await _mail(
-                  "Registration Successfull",
-                  req.body.email,
-                  "reg-email",
-                  payload,
-                  req.headers.host,
-                  (err, info) => {
-                    if (err) console.log(err);
-                  }
-                )
+                "Registration Successfull",
+                req.body.email,
+                "reg-email",
+                payload,
+                req.headers.host,
+                (err, info) => {
+                  if (err) console.log(err);
+                }
+              )
               : null;
             if (set.emailVerification == true) {
               req.flash(
@@ -162,7 +162,7 @@ router.post(
               return res.redirect("back");
             } else {
               if (set.autoLogin == true) {
-                req.logIn(user, function(err) {
+                req.logIn(user, function (err) {
                   if (err) return next(err);
                   if (user.roleId === "user") {
                     return res.redirect(`/user/dashboard`);
@@ -296,12 +296,24 @@ router.get(
     res.render("login", { title: res.locals.siteTitle });
   }
 );
+router.get('/afterlogin', install.redirectToLogin, (req, res, next) => {
+  res.render('afterloginuser', {
+    title: "After Login",
+  });
+});
+
+router.get('/kategorie', install.redirectToLogin, (req, res, next) => {
+  res.render('category', {
+    title: 'Kategorie'
+  })
+});
+
 router.post(
   "/login",
   install.redirectToLogin,
   checkIfLoggedIn,
   (req, res, next) => {
-    passport.authenticate("local", function(err, user, info) {
+    passport.authenticate("local", function (err, user, info) {
       if (err) return next(err);
       if (!user) {
         req.flash("success_msg", "Incorect Email or password");
@@ -320,10 +332,11 @@ router.post(
           "Your Account has been suspended, You can visit the contact page for help."
         );
       }
-      req.logIn(user, function(err) {
+      req.logIn(user, function (err) {
         if (err) return next(err);
         if (user.roleId === "user") {
-          return res.redirect(`/user/dashboard`);
+          // return res.redirect(`/user/dashboard`);
+          return res.redirect('/afterlogin');
         } else if (user.roleId === "admin") {
           return res.redirect(`/dashboard/index`);
         }
@@ -331,14 +344,13 @@ router.post(
     })(req, res, next);
   }
 );
-
 // Get forgot password page
 router.get(
   "/forgot-password",
   install.redirectToLogin,
   checkIfLoggedIn,
   (req, res, next) => {
-    res.render("forgot-pass", { title: res.locals.siteTitle });
+    res.render("lostpassword", { title: res.locals.siteTitle });
   }
 );
 
@@ -485,8 +497,8 @@ router.post(
             const name = `${crypto
               .randomBytes(20)
               .toString("hex")}${Date.now().toString()}.${fileUpload.name
-              .split(".")
-              .pop()}`;
+                .split(".")
+                .pop()}`;
             const dest = `${path.join(
               __dirname,
               "..",
@@ -520,8 +532,8 @@ router.post(
             bucket: set[0].media.config.amazons3.bucket
           });
           let awsForm = new formidable.IncomingForm();
-          awsForm.parse(req, (err, fields, files) => {});
-          awsForm.on("end", function(fields, files) {
+          awsForm.parse(req, (err, fields, files) => { });
+          awsForm.on("end", function (fields, files) {
             for (let x in this.openedFiles) {
               let stream = fs.createReadStream(this.openedFiles[x].path);
               fs.unlinkSync(this.openedFiles[x].path);
@@ -538,7 +550,7 @@ router.post(
                 ACL: "public-read",
                 processData: false
               };
-              s3.upload(params, async function(err, data) {
+              s3.upload(params, async function (err, data) {
                 if (err) next(err);
                 else {
                   User.updateOne(
@@ -566,8 +578,8 @@ router.post(
             api_secret: set[0].media.config.cloudinary.api_secret
           });
           let cloudForm = new formidable.IncomingForm();
-          cloudForm.parse(req, function(err, fields, files) {});
-          cloudForm.on("end", async function(fields, files) {
+          cloudForm.parse(req, function (err, fields, files) { });
+          cloudForm.on("end", async function (fields, files) {
             for (let x in this.openedFiles) {
               cloudinary.uploader.upload(
                 this.openedFiles[x].path,
@@ -786,24 +798,33 @@ router.post(
 // Follow a user
 router.get("/follow-user", auth, async (req, res, next) => {
   await User.updateOne(
-    { _id: req.user.id },
-    { $push: { following: req.query.followerId } }
+    { _id: req.query.followerId },
+    { $push: { following: req.user.id } }
   );
-  req.flash("success_msg", "User added to followers list Successfully");
+  // req.flash("success_msg", "User added to followers list Successfully");
   return res.redirect("back");
 });
 
 // unfollow a user
 router.get("/unfollow-user", auth, async (req, res, next) => {
-  await User.updateOne(
-    { _id: req.user.id },
-    { $pull: { following: req.query.followerId } }
-  );
-  req.flash("success_msg", "User unfollowed successfully");
+  console.log(req.query.followerId);
+  console.log(req.user.id);
+  if (req.query.authorId) {
+    await User.updateOne(
+      { _id: req.query.authorId },
+      { $pull: { following: req.user.id } }
+    );
+   } else {
+    await User.updateOne(
+      { _id: req.user.id },
+      { $pull: { following: req.query.followerId } }
+    );
+  }
+  // req.flash("success_msg", "User unfollowed successfully");
   return res.redirect('back')
 });
 
 // Subscribe a user to a newsletter digest (Daily / Weekly)
-router.post("/subscribe/digest", auth, async (req, res, next) => {});
+router.post("/subscribe/digest", auth, async (req, res, next) => { });
 
 module.exports = router;

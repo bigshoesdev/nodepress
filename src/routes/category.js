@@ -12,16 +12,14 @@ router.post('/category/create', auth, async (req, res, next) => {
 		let exist = await Category.find({ name: req.body.name });
 		if (exist == '') {
 			let payload = {
-				name: req.body.name.toLowerCase(),
+				name: req.body.name,
 				slug: !req.body.slug
 					? req.body.name
 							.split(' ')
 							.join('-')
-							.toLowerCase()
 					: req.body.slug
 							.split(' ')
-							.join('-')
-							.toLowerCase(),
+							.join('-'),
 				description: req.body.description,
 				background: req.body.background,
 				color: req.body.color,
@@ -51,11 +49,9 @@ router.post('/category/edit', auth, (req, res, next) => {
 			? req.body.name
 					.split(' ')
 					.join('-')
-					.toLowerCase()
 			: req.body.slug
 					.split(' ')
-					.join('-')
-					.toLowerCase();
+					.join('-');
 		Category.updateOne({ _id: req.body.categoryId.trim() }, req.body)
 			.then(updated => {
 				req.flash('success_msg', 'Category has been updated');
@@ -109,16 +105,14 @@ router.post('/subcategory/create', auth, async (req, res, next) => {
 		let exist = await Category.find({ parent: { $ne: undefined }, name: req.body.name });
 		if (exist == '') {
 			let payload = {
-				name: req.body.name.toLowerCase(),
+				name: req.body.name,
 				slug: !req.body.slug
 					? req.body.name
 							.split(' ')
 							.join('-')
-							.toLowerCase()
 					: req.body.slug
 							.split(' ')
-							.join('-')
-							.toLowerCase(),
+							.join('-'),
 				description: req.body.description,
 				parent: req.body.parent,
 			};
@@ -146,11 +140,9 @@ router.post('/subcategory/edit', auth, (req, res, next) => {
 			? req.body.name
 					.split(' ')
 					.join('-')
-					.toLowerCase()
 			: req.body.slug
 					.split(' ')
-					.join('-')
-					.toLowerCase();
+					.join('-');
 		Category.updateOne({ _id: req.body.subcategoryId.trim() }, req.body)
 			.then(updated => {
 				req.flash('success_msg', 'Sub Category has been updated');

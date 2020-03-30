@@ -78,7 +78,8 @@
 							<!-- <img data-src="<%= siteLogo %>" class="blur-up lazyload" alt="<%= siteTitle %>" /> -->
 						</a>
 					</h1>
-					<% } %> <% if(user) { %>
+					<% } %> 
+					<% if(user) { %>
 					<a class="author-avatar" href="/author/<%= user.username %>">
 						<div class="u-relative u-inlineBlock u-flex0">
 							<img
@@ -109,7 +110,6 @@
 					</a>
 				</div>
 			</div>
-
 			<div class="mobi-menu">
 				<div class="mobi-menu__logo">
 					<h1 class="logo navbar-brand"><a href="/" class="logo text-capitalize">

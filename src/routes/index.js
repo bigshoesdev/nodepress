@@ -361,6 +361,38 @@ router.use(async function(req, res, next) {
 // 	}
 // });
 
+
+router.get('/publisher', install.redirectToLogin, async(req, res, next) => {
+	res.render('publisher', {
+		title: "Publisher"
+	});
+});
+
+router.get('/lostpassword', install.redirectToLogin, async(req, res, next) => {
+	res.render('lostpassword', {
+		title: "Lost Passowrd"
+	});
+});
+
+router.get('/paycontent', install.redirectToLogin, async(req, res, next) => {
+	res.render('paycontent', {
+		title: "Pay Content"
+	});
+});
+router.get('/onboarding', install.redirectToLogin, async(req, res, next) => {
+	res.render('onboarding', {
+		title: "Customer Onboarding"
+	});
+});
+router.get('/blogrecent', install.redirectToLogin, async(req, res, next) => {
+	res.render('blogrecent', {
+		title: "Blog Recent"
+	});
+});
+
+
+
+
 // Get index page
 router.get('/', install.redirectToLogin, async (req, res, next) => {
 	try {
@@ -554,7 +586,9 @@ router.get('/', install.redirectToLogin, async (req, res, next) => {
 				$limit: 12,
 			},
 		]);
+		var categories = await Category.find({});
 		res.render('index', {
+			categories: categories,
 			post: post,
 			current: page,
 			pages: Math.ceil(count / perPage),

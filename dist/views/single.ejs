@@ -45,19 +45,21 @@
                     </div>
                 </div>
                 <div class="col-md-2">
+                    <% if(article.postedBy._id != user.id){%>
+                    <% for(var i = 0; i < article.postedBy.following.length;  i ++){
+                            if(article.postedBy.following[i] == user.id){
+                               var existuser = true;
+                           } }%>
                     <div class="follow-btn">
                         <% if(article.postedBy.following.length < 1) {%>
                         <a href="/follow-user?followerId=<%= article.postedBy._id %>">Follow</a>
-                        <%} else {%>
-                        <% for(var i = 0; i < article.postedBy.following.length;  i ++){ %>
-                        <% if(article.postedBy.following[i] == article.postedBy._id){%>
+                        <%} else if(!existuser) {%>
                         <a href="/follow-user?followerId=<%= article.postedBy._id %>">Follow</a>
                         <% } else {%>
-                        <a href="/unfollow-user?followerId=<%= article.postedBy._id %>">Unfollow</a>
-                        <% }%>
-                        <%}%>
-                        <%}%>
+                        <a href="/unfollow-user?authorId=<%= article.postedBy._id %>">Unfollow</a>
+                        <%};%>
                     </div>
+                    <%}%>
                 </div>
             </div>
         </div>
@@ -100,27 +102,27 @@
                     <div class="recommnet">
                         <div class="recommnet-img">
                             <img src="<%= article.file%>">
-                        </div>
-                        <div class="recommnet-cate">
-                            <a href="#"><span><%= article.category.name%></span></a>
-                        </div>
-                        <div class="recommnet-heading">
-                            <h2><%= article.title%></h2>
-                        </div>
-                        <div class="recommnet-madeby">
-                            <div class="recommnet-madeby-img">
-                                <img src="/images/dark-blog-make.png">
-                            </div>
-                            <div class="recommnet-madeby-details">
-                                <h5><%= article.postedBy.firstName%> <%= article.postedBy.lastName%></h5>
-                                <p> <%= article.createdAt.toDateString() %></p>
-                            </div>
-                        </div>
+                </div>
+                <div class="recommnet-cate">
+                    <a href="#"><span><%= article.category.name%></span></a>
+                </div>
+                <div class="recommnet-heading">
+                    <h2><%= article.title%></h2>
+                </div>
+                <div class="recommnet-madeby">
+                    <div class="recommnet-madeby-img">
+                        <img src="/images/dark-blog-make.png">
+                    </div>
+                    <div class="recommnet-madeby-details">
+                        <h5><%= article.postedBy.firstName%> <%= article.postedBy.lastName%></h5>
+                        <p> <%= article.createdAt.toDateString() %></p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+</div>
 </div>
 <section class="footer-main" id="footer">
     <div class="container">

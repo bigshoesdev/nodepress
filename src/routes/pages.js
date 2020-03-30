@@ -36,7 +36,7 @@ router.post("/pages/create", auth, async (req, res, next) => {
           })
           .catch(e => next(e));
       } else {
-        req.flash("success_msg", "There's a Page with That name");
+        req.flash("success_msg", "There's a Page with That/sign-up name");
         return res.redirect("back");
       }
     }
