@@ -2352,6 +2352,7 @@
 }
 .inner-dark-blog-content-one p {
   font-family: "EB Garamond Regular";
+  overflow-wrap: break-word;
 }
 .inner-dark-blog-content-one span {
   font-family: "EB Garamond Regular";
