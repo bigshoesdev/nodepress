@@ -510,7 +510,7 @@ router.post("/article/deactivateMany", _install["default"].redirectToLogin, _aut
     next(error);
   }
 });
-router.get("/customer/:user/:category/:slug", _install["default"].redirectToLogin, /*#__PURE__*/function () {
+router.get("/publisher/:user/:category/:slug", _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res, next) {
     var settings, user, slug, category, article, bookmark, book, art, _next, previous, featured, popular, recommended, related, d, customDate, ips, ip;
 
@@ -791,7 +791,7 @@ router.get("/customer/:user/:category/:slug", _install["default"].redirectToLogi
   };
 }()); // Get single article page
 
-router.get("/admin/:category/:slug", _install["default"].redirectToLogin, /*#__PURE__*/function () {
+router.get("/dype/:category/:slug", _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(req, res, next) {
     var settings, article, bookmark, book, art, _next2, previous, featured, popular, recommended, related, d, customDate, ips, ip;
 

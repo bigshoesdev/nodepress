@@ -24,10 +24,10 @@
         <div class="col-12 col-lg-auto mb-20 text-right">
             <div class="page-heading">
                 <% if(author.roleId == "admin") {%>
-                <a href="/admin/<%= article.category.name%>/<%= article.slug %>" target="_blank"><button class="btn btn-info">View
+                <a href="/dype/<%= article.category.name%>/<%= article.slug %>" target="_blank"><button class="btn btn-info">View
                         Post</button></a>
                 <% } else {%>
-                <a href="/customer/<%= author.username%>/<%= article.category.name%>/<%= article.slug %>" target="_blank"><button class="btn btn-info">View
+                <a href="/publisher/<%= author.username%>/<%= article.category.name%>/<%= article.slug %>" target="_blank"><button class="btn btn-info">View
                         Post</button></a>
                 <%}%>
             </div>
