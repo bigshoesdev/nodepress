@@ -8973,7 +8973,7 @@ body.header-top-green .header-notification-area > li > a .user .name {
 /*----------------------------------------*/
 .side-header {
   width: 270px !important;
-  background-color: #161824;
+  background-color: #ffffff;
   height: calc(100vh - 110px);
   position: fixed;
   left: 0;

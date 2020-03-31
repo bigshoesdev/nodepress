@@ -400,14 +400,19 @@ router.post(
             ? true
             : false;
       } else {
-        req.body.active = set.approveUpdatedUserPost == false ? false : true;
+        // req.body.active = set.approveUpdatedUserPost == false ? false : true;
+        req.body.active = true;
       }
       switch (req.body.postType) {
         case "post":
           Article.updateOne({ _id: req.body.articleId.trim() }, req.body)
             .then(updated => {
               req.flash("success_msg", "Article has been updated successfully");
+              if(req.user.roleId == "admin"){
               return res.redirect(`/dashboard/all-posts/edit/${req.body.slug}`);
+              } else {
+                return res.redirect(`/user/all-posts/edit/${req.body.slug}`);
+              }
             })
             .catch(e => next(e));
           break;
@@ -528,9 +533,189 @@ router.post(
     }
   }
 );
-
+router.get("/:user/category/:slug", install.redirectToLogin, async (req, res, next) => {
+  try { 
+    console.log("+++++++++++++++++++");
+    let settings = await Settings.findOne();
+    let user = req.params.user;
+    let slug = req.params.slug;
+    let article = await Article.aggregate([
+      {
+        $match: {
+          active: true,
+          slug: req.params.slug
+        }
+      },
+      {
+        $lookup: {
+          from: "categories",
+          localField: "category",
+          foreignField: "_id",
+          as: "category"
+        }
+      },
+      {
+        $unwind: {
+          path: "$category",
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: "categories",
+          localField: "subCategory",
+          foreignField: "_id",
+          as: "subCategory"
+        }
+      },
+      {
+        $unwind: {
+          path: "$subCategory",
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "postedBy",
+          foreignField: "_id",
+          as: "postedBy"
+        }
+      },
+      {
+        $unwind: {
+          path: "$postedBy",
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: "comments",
+          let: { indicator_id: "$_id" },
+          as: "comments",
+          pipeline: [
+            {
+              $match: {
+                $expr: { $eq: ["$articleId", "$$indicator_id"] },
+                active: true
+              }
+            },
+            {
+              $sort: {
+                createdAt: -1
+              }
+            }
+          ]
+        }
+      }
+    ]);
+    if (article == "") res.render("404");
+    else {
+      let bookmark = typeof req.user !== "undefined" ? await Bookmark.findOne({ userId: req.user.id, articleId: article[0]._id }) : false;
+      let book = bookmark ? true : false;
+      let art = await Article.findOne({ slug: req.params.slug, active: true });
+      let next = await Article.find({
+        active: true,
+        _id: { $gt: article[0]._id }
+      })
+        .sort({ _id: 1 })
+        .limit(1);
+      let previous = await Article.find({
+        active: true,
+        _id: { $lt: article[0]._id }
+      })
+        .sort({ _id: 1 })
+        .limit(1);
+      let featured = await Article.find({
+        active: true,
+        slug: { $ne: article[0].slug },
+        addToFeatured: true
+      })
+        .populate("category")
+        .sort({ createdAt: -1 })
+        .limit(5);
+      let popular = await Article.find({
+        active: true,
+        slug: { $ne: article[0].slug }
+      })
+        .sort({ views: -1 })
+        .limit(3);
+      let recommended = await Article.find({
+        active: true,
+        slug: { $ne: article[0].slug },
+        addToRecommended: true
+      })
+        .populate("category")
+        .sort({ createdAt: -1 })
+        .limit(12);
+      let related = await Article.find({
+        active: true,
+        slug: { $ne: article[0].slug }
+      })
+        .populate("postedBy")
+        .populate("category")
+        .sort({ createdAt: -1 })
+        .limit(3);
+      let d = new Date();
+      let customDate = `${d.getDate()}/${d.getMonth()}/${d.getFullYear()}`;
+      let ips =
+        req.headers["x-forwarded-for"] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        (req.connection.socket ? req.connection.socket.remoteAddress : null);
+      if (art.viewers.indexOf(ips) !== -1) {
+        res.render("single", {
+          title: article[0].title,
+          article: article[0],
+          settings: settings,
+          previous: previous,
+          next: next,
+          featured: featured,
+          popular: popular,
+          recommended: recommended,
+          related: related,
+          bookmark: book,
+          bookmarkId: bookmark == null ? null : bookmark._id
+        });
+      } else {
+        let ip =
+          req.headers["x-forwarded-for"] ||
+          req.connection.remoteAddress ||
+          req.socket.remoteAddress ||
+          (req.connection.socket ? req.connection.socket.remoteAddress : null);
+        await Article.updateOne(
+          { slug: req.params.slug.trim() },
+          { $push: { viewers: ip } }
+        );
+        Article.updateOne(
+          { slug: req.params.slug.trim() },
+          { $inc: { views: 1 } }
+        )
+          .then(views => {
+            res.render("single", {
+              title: article[0].title,
+              article: article[0],
+              settings: settings,
+              previous: previous,
+              next: next,
+              featured: featured,
+              popular: popular,
+              recommended: recommended,
+              related: related,
+              bookmark: book,
+              bookmarkId: bookmark == null ? null : bookmark._id
+            });
+          })
+          .catch(err => next(err));
+      }
+    }
+    console.log("+++++++++++++++++++");
+  } catch (error) {
+    next(error);
+  }
+});
 // Get single article page
-router.get("/post/:slug", install.redirectToLogin, async (req, res, next) => {
+router.get("/category/:slug", install.redirectToLogin, async (req, res, next) => {
   try {
     let settings = await Settings.findOne();
     let article = await Article.aggregate([
@@ -658,7 +843,6 @@ router.get("/post/:slug", install.redirectToLogin, async (req, res, next) => {
         req.socket.remoteAddress ||
         (req.connection.socket ? req.connection.socket.remoteAddress : null);
       if (art.viewers.indexOf(ips) !== -1) {
-        console.log(article[0]);
         res.render("single", {
           title: article[0].title,
           article: article[0],
@@ -783,7 +967,6 @@ router.get(
           .populate("postedBy")
           .sort({ views: -1 })
           .limit(4);
-        console.log(post);
         res.render("category", {
           title: cat.name,
           cat: cat.name,

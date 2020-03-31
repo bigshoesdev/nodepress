@@ -2,8 +2,9 @@
 <link rel="stylesheet" href="/icofont/icofont.min.css">
 <link rel="stylesheet" href="/css/tags.css">
 <link rel="stylesheet" href="/css/upload.css">
+
 <style>
-    label.adomx-switch{
+    label.adomx-switch {
         font-size: 12px;
     }
 </style>
@@ -23,7 +24,9 @@
 
         <div class="col-12 col-lg-auto mb-20 text-right">
             <div class="page-heading">
-                <a href="/post/<%= article.slug %>" target="_blank"><button class="btn btn-info">View Post</button></a>
+
+                <a href="/<%= user.username%>/category/<%= article.slug %>" target="_blank"><button
+                        class="btn btn-primary">View Post</button></a>
             </div>
         </div>
 
@@ -44,39 +47,34 @@
                             <input type="text" name="title" placeholder="Post Title" class="form-control" id="title"
                                 value="<%= article.title %>" required>
                         </div>
-                        <div class="form-group mt-4">
-                            <label for=""><b>Slug</b></label>
-                            <input type="text" name="slug" placeholder="Slug" class="form-control" id="slug"
-                                value="<%= article.slug %>" required>
-                        </div>
+                        <input type="hidden" name="slug" placeholder="Slug" class="form-control" id="slug"
+                            value="<%= article.slug %>" required>
                         <div class="form-group mt-4">
                             <label for=""><b>Summary & Description (Meta Tag)</b></label>
                             <textarea name="summary" id="summary" cols="30" rows="5" class="form-control"
                                 placeholder="Summary & Description (Meta Tag)"><%= article.summary %></textarea>
                         </div>
-                        <div class="form-group mt-4">
-                            <label for=""><b>Keywords (Meta Tag)</b></label>
-                            <input type="text" name="keywords" class="form-control" id="keywords"
-                                placeholder="Keywords (Meta Tag)" value="<%= article.keywords %>">
-                        </div>
+                        <input type="hidden" name="keywords" class="form-control" id="keywords"
+                            placeholder="Keywords (Meta Tag)" value="<%= article.keywords %>">
                         <div class="form-group mt-4">
                             <label for="">Category</label>
                             <select name="category" id="category" class="form-control mb-4" required>
-                                <option selected="selected" value="<%= article.category._id %>"><%= article.category.name %></option>
+                                <option selected="selected" value="<%= article.category._id %>">
+                                    <%= article.category.name %></option>
                                 <% for(let key in category2) { %>
                                 <option value="<%= category2[key]._id %>"><%= category2[key].name %></option>
                                 <% } %>
                             </select>
                         </div>
                         <div class="form-group mt-4">
-                                <label for=""><b>Sub-Category</b></label>
-                                <select name="subCategory" id="subCategory" class="form-control mb-4" required>
-                                    <option selected="selected" disabled="disabled">-- Select a Sub-Category --</option>
-                                    <% for(let key in subCategory) { %>
-                                    <option value="<%= subCategory[key]._id %>"><%= subCategory[key].name %></option>
-                                    <% } %>
-                                </select>
-                            </div>
+                            <label for=""><b>Sub-Category</b></label>
+                            <select name="subCategory" id="subCategory" class="form-control mb-4" required>
+                                <option selected="selected" disabled="disabled">-- Select a Sub-Category --</option>
+                                <% for(let key in subCategory) { %>
+                                <option value="<%= subCategory[key]._id %>"><%= subCategory[key].name %></option>
+                                <% } %>
+                            </select>
+                        </div>
                         <input type="hidden" name="file" value="<%= article.file %>" id="image">
                         <div class="form-group mt-4">
                             <label for="">Content</label>
@@ -96,34 +94,22 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="card bg-white shadow-sm mt-4">
                     <div class="card-header">
                         <b>Featured Image</b>
                     </div>
                     <div class="card-body text-center">
                         <img src="<%= article.file %>" alt="" class="img-fluid"
-                                        style="border: 1px solid rgba(195, 207, 216, 0.3);" id="imgBox">
-                                    <a class="btn btn-primary btn-sm text-white" style="margin-top: -25px;"
-                                        onclick="uploadImages()">Upload Image</a>
-                        </div>
-                    </div>
-                    <div class="card bg-white shadow-sm mt-4">
-                        <div class="card-header">
-                            <b>Tags</b>
-                        </div>
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label for="">Enter Tags</label>
-                                <input type="text" name="tags" class="form-control"
-                                    placeholder="Nodejs, Angular.js, React.js" value="<%= article.tags %>" id="tags"
-                                    >
-                                <small>(Type tag and hit enter)</small>
-                            </div>
-                        </div>
+                            style="border: 1px solid rgba(195, 207, 216, 0.3);" id="imgBox">
+                        <a class="btn btn-primary btn-sm text-white" style="margin-top: -25px;"
+                            onclick="uploadImages()">Upload Image</a>
                     </div>
                 </div>
+                <input type="hidden" name="tags" class="form-control" placeholder="Nodejs, Angular.js, React.js"
+                    value="<%= article.tags %>" />
             </div>
+        </div>
     </form>
 </div><!-- Content Body End -->
 
@@ -268,7 +254,7 @@
     tinymce.init({
         selector: '#body',
         plugins: 'image code print preview fullpage searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern help',
-        toolbar: 'formatselect | bold italic strikethrough forecolor backcolor permanentpen formatpainter | link image media code  | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent | removeformat',
+        toolbar: 'formatselect | bold italic strikethrough forecolor backcolor permanentpen formatpainter | link image media code | numlist bullist outdent indent | removeformat',
         image_advtab: true,
         image_caption: true,
         relative_urls: false,

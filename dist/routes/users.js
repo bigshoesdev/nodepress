@@ -1117,15 +1117,12 @@ router.get("/unfollow-user", _auth["default"], /*#__PURE__*/function () {
       while (1) {
         switch (_context14.prev = _context14.next) {
           case 0:
-            console.log(req.query.followerId);
-            console.log(req.user.id);
-
             if (!req.query.authorId) {
-              _context14.next = 7;
+              _context14.next = 5;
               break;
             }
 
-            _context14.next = 5;
+            _context14.next = 3;
             return _users["default"].updateOne({
               _id: req.query.authorId
             }, {
@@ -1134,24 +1131,24 @@ router.get("/unfollow-user", _auth["default"], /*#__PURE__*/function () {
               }
             });
 
-          case 5:
-            _context14.next = 9;
+          case 3:
+            _context14.next = 7;
             break;
 
-          case 7:
-            _context14.next = 9;
+          case 5:
+            _context14.next = 7;
             return _users["default"].updateOne({
-              _id: req.user.id
+              _id: req.query.followerId
             }, {
               $pull: {
-                following: req.query.followerId
+                following: req.user.id
               }
             });
 
-          case 9:
+          case 7:
             return _context14.abrupt("return", res.redirect('back'));
 
-          case 10:
+          case 8:
           case "end":
             return _context14.stop();
         }

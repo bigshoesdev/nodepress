@@ -15,6 +15,13 @@
                 </div>
                 <div class="dark-blog-banner-headingdown">
                     <span style="color: white;"><%= article.postedBy.firstName%> <%= article.postedBy.lastName%></span>
+                    <span style="color: white; border-left: 3px solid white; padding-left: 50px;">
+                        <i class="fa fa-eye" style="margin-right: 20px;"></i>
+                        <%= article.viewers.length%>
+                    </span>
+                </div>
+                <div class="dark-blog-banner-heading text-center">
+                    <h3 style="color: white;"><%= article.summary%></h3>
                 </div>
             </div>
         </div>

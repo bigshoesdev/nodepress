@@ -271,7 +271,7 @@
 
 .section-2-left {
   background: #f4f4f4;
-  padding: 200px 140px 100px 140px;
+  padding: 200px 140px 125px 140px;
 }
 .section-2-heading h3 {
   font-size: 18px;
@@ -2342,10 +2342,13 @@
   max-width: 100% !important;
 }
 .inner-dark-blog-content-one {
-  font-size: 20px;
+  font-size: 14px;
   color: #000;
   word-spacing: 2px;
   margin-top: 50px;
+  text-align: justify;
+  border-left: 5px solid gray;
+  padding-left: 10px;
 }
 .inner-dark-blog-content-one p {
   font-family: "EB Garamond Regular";

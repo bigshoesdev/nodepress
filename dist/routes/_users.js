@@ -883,28 +883,25 @@ router.get("/user/profile", _auth["default"], (0, _role["default"])("admin", "us
 });
 router.get("/user/followers", _auth["default"], (0, _role["default"])("admin", "user"), /*#__PURE__*/function () {
   var _ref8 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee8(req, res, next) {
-    var followers;
+    var following;
     return _regenerator["default"].wrap(function _callee8$(_context8) {
       while (1) {
         switch (_context8.prev = _context8.next) {
           case 0:
             _context8.next = 2;
-            return _users["default"].find({
-              following: {
-                $in: req.user.id
-              }
-            }).populate("following").sort({
+            return _users["default"].findById(req.user.id).populate("following").sort({
               createdAt: -1
             });
 
           case 2:
-            followers = _context8.sent;
+            following = _context8.sent;
+            console.log(following);
             res.render("./user/followers", {
-              title: "My Followers",
-              followers: followers
+              title: "Followers",
+              following: following
             });
 
-          case 4:
+          case 5:
           case "end":
             return _context8.stop();
         }
@@ -918,25 +915,28 @@ router.get("/user/followers", _auth["default"], (0, _role["default"])("admin", "
 }());
 router.get("/user/following", _auth["default"], (0, _role["default"])("admin", "user"), /*#__PURE__*/function () {
   var _ref9 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee9(req, res, next) {
-    var following;
+    var followers;
     return _regenerator["default"].wrap(function _callee9$(_context9) {
       while (1) {
         switch (_context9.prev = _context9.next) {
           case 0:
             _context9.next = 2;
-            return _users["default"].findById(req.user.id).populate("following").sort({
+            return _users["default"].find({
+              following: {
+                $in: req.user.id
+              }
+            }).populate("following").sort({
               createdAt: -1
             });
 
           case 2:
-            following = _context9.sent;
-            console.log(following);
-            res.render("./user/following", {
-              title: "Following",
-              following: following
+            followers = _context9.sent;
+            res.render("./user/followings", {
+              title: "Followings",
+              followers: followers
             });
 
-          case 5:
+          case 4:
           case "end":
             return _context9.stop();
         }

@@ -745,10 +745,9 @@ router.get(
   auth,
   role("admin", "user"),
   async (req, res, next) => {
-    const followers = await User.find({
-      following: { $in: req.user.id }
-    }).populate("following").sort({createdAt: -1});
-    res.render("./user/followers", { title: "My Followers", followers });
+    const following = await User.findById(req.user.id).populate("following").sort({ createdAt: -1 });
+    console.log(following);
+    res.render("./user/followers", { title: "Followers", following });
   }
 );
 
@@ -757,9 +756,10 @@ router.get(
   auth,
   role("admin", "user"),
   async (req, res, next) => {
-    const following = await User.findById(req.user.id).populate("following").sort({createdAt: -1});
-    console.log(following);
-    res.render("./user/following", { title: "Following", following });
+    const followers = await User.find({
+      following: { $in: req.user.id }
+    }).populate("following").sort({ createdAt: -1 });
+    res.render("./user/followings", { title: "Followings", followers });
   }
 );
 
@@ -771,7 +771,7 @@ router.get(
     const bookmark = await Bookmark.find({ userId: req.user.id }).populate({
       path: "articleId",
       populate: { path: "postedBy category" }
-    }).sort({createdAt: -1});
+    }).sort({ createdAt: -1 });
     res.render("./user/bookmark", { title: "Reading List", bookmark });
   }
 );

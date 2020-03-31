@@ -807,17 +807,15 @@ router.get("/follow-user", auth, async (req, res, next) => {
 
 // unfollow a user
 router.get("/unfollow-user", auth, async (req, res, next) => {
-  console.log(req.query.followerId);
-  console.log(req.user.id);
   if (req.query.authorId) {
     await User.updateOne(
       { _id: req.query.authorId },
       { $pull: { following: req.user.id } }
     );
-   } else {
+  } else {
     await User.updateOne(
-      { _id: req.user.id },
-      { $pull: { following: req.query.followerId } }
+      { _id: req.query.followerId },
+      { $pull: { following: req.user.id } }
     );
   }
   // req.flash("success_msg", "User unfollowed successfully");

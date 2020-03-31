@@ -406,11 +406,13 @@ router.get(
         "category"
       );
       if (!article) res.render("404");
+      let author = await User.findOne({ _id: article.postedBy });
       switch (article.postType) {
         case "post":
           res.render("./admin/edit-post", {
             title: `Edit Post - ${article.title}`,
-            article: article
+            article: article,
+            author: author
           });
           break;
         case "audio":
