@@ -24,10 +24,10 @@
         <div class="col-12 col-lg-auto mb-20 text-right">
             <div class="page-heading">
                 <% if(author.roleId == "admin") {%>
-                <a href="/category/<%= article.slug %>" target="_blank"><button class="btn btn-info">View
+                <a href="/admin/<%= article.category.name%>/<%= article.slug %>" target="_blank"><button class="btn btn-info">View
                         Post</button></a>
                 <% } else {%>
-                <a href="/<%= author.username%>/category/<%= article.slug %>" target="_blank"><button class="btn btn-info">View
+                <a href="/customer/<%= author.username%>/<%= article.category.name%>/<%= article.slug %>" target="_blank"><button class="btn btn-info">View
                         Post</button></a>
                 <%}%>
             </div>
@@ -321,7 +321,6 @@
                     relative_urls: false,
                     remove_script_host: false,
                     convert_urls: true,
-                    menubar: "custom",
                     //images_upload_url: '/media/create', 
                     file_picker_callback: function file_picker_callback(callback, value, meta) {
                         /* Provide file and text for the link dialog */

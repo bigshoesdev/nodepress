@@ -510,23 +510,23 @@ router.post("/article/deactivateMany", _install["default"].redirectToLogin, _aut
     next(error);
   }
 });
-router.get("/:user/category/:slug", _install["default"].redirectToLogin, /*#__PURE__*/function () {
+router.get("/customer/:user/:category/:slug", _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res, next) {
-    var settings, user, slug, article, bookmark, book, art, _next, previous, featured, popular, recommended, related, d, customDate, ips, ip;
+    var settings, user, slug, category, article, bookmark, book, art, _next, previous, featured, popular, recommended, related, d, customDate, ips, ip;
 
     return _regenerator["default"].wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             _context4.prev = 0;
-            console.log("+++++++++++++++++++");
-            _context4.next = 4;
+            _context4.next = 3;
             return _settings["default"].findOne();
 
-          case 4:
+          case 3:
             settings = _context4.sent;
             user = req.params.user;
             slug = req.params.slug;
+            category = req.params.category;
             _context4.next = 9;
             return _articles["default"].aggregate([{
               $match: {
@@ -770,21 +770,20 @@ router.get("/:user/category/:slug", _install["default"].redirectToLogin, /*#__PU
             });
 
           case 55:
-            console.log("+++++++++++++++++++");
-            _context4.next = 61;
+            _context4.next = 60;
             break;
 
-          case 58:
-            _context4.prev = 58;
+          case 57:
+            _context4.prev = 57;
             _context4.t1 = _context4["catch"](0);
             next(_context4.t1);
 
-          case 61:
+          case 60:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[0, 58]]);
+    }, _callee4, null, [[0, 57]]);
   }));
 
   return function (_x10, _x11, _x12) {
@@ -792,7 +791,7 @@ router.get("/:user/category/:slug", _install["default"].redirectToLogin, /*#__PU
   };
 }()); // Get single article page
 
-router.get("/category/:slug", _install["default"].redirectToLogin, /*#__PURE__*/function () {
+router.get("/admin/:category/:slug", _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(req, res, next) {
     var settings, article, bookmark, book, art, _next2, previous, featured, popular, recommended, related, d, customDate, ips, ip;
 

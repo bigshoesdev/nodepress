@@ -32,7 +32,7 @@
                     <h2><a href="/post/<%= post[i*3 + j].slug %>"
                         style="color: black;"><%= post[i*3 + j].title.charAt(0).toUpperCase() + post[i*3 + j].title.substring(1) %></a>
                     </h2>
-                    <p><% if(post[i*3 + j].summary != undefined) { %> <%= post[i*3 + j].summary %> <% } %></p>
+                    <p style="overflow-wrap: break-word;"><% if(post[i*3 + j].summary != undefined) { %> <%= post[i*3 + j].summary %> <% } %></p>
                   </div>
                   <div class="recommnet-madeby">
                     <div class="recommnet-madeby-img">
