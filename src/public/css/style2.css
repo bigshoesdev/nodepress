@@ -2340,18 +2340,41 @@
   height: auto !important;
   object-fit: cover !important;
   max-width: 100% !important;
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+.inner-dark-blog-content-one p iframe {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.inner-dark-blog-content-one ul,
+li {
+  font-size: 18px;
+  line-height: 2em;
+  font-family: "EB Garamond Regular";
 }
 .inner-dark-blog-content-one {
-  font-size: 14px;
+  font-size: 18px;
   color: #000;
   word-spacing: 2px;
   margin-top: 50px;
   text-align: justify;
   border-left: 5px solid gray;
   padding-left: 10px;
+  padding-top: 50px;
+  user-select: none; /* supported by Chrome and Opera */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
 }
 .inner-dark-blog-content-one p {
   font-family: "EB Garamond Regular";
+  overflow-wrap: break-word;
+  line-height: 2em;
 }
 .inner-dark-blog-content-one span {
   font-family: "EB Garamond Regular";

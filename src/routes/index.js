@@ -390,9 +390,6 @@ router.get('/blogrecent', install.redirectToLogin, async(req, res, next) => {
 	});
 });
 
-
-
-
 // Get index page
 router.get('/', install.redirectToLogin, async (req, res, next) => {
 	try {

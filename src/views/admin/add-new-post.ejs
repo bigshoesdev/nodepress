@@ -6,6 +6,14 @@
     label.adomx-switch {
         font-size: 12px;
     }
+    .content-editor {
+        width: 100%;
+        margin: 20px;
+    }
+    .content-button{
+        width: 100%;
+        text-align: center;
+    }
 </style>
 <script src="/tinymce/js/tinymce/tinymce.min.js"></script>
 <%- include ./partials/sidebar %>
@@ -44,7 +52,7 @@
                         <div class="form-group mt-4">
                             <label for=""><b>Summary & Description (Meta Tag)</b></label>
                             <textarea name="summary" id="summary" cols="30" rows="5" class="form-control"
-                                placeholder="Summary & Description (Meta Tag)"></textarea>
+                                maxlength="200" placeholder="Summary & Description (Meta Tag)"></textarea>
                         </div>
                         <div class="form-group mt-4">
                             <label for=""><b>Keywords (Meta Tag)</b></label>
@@ -65,8 +73,8 @@
                             <select name="subCategory" id="subCategory" class="form-control mb-4" required>
                                 <option selected="selected" disabled="disabled">-- Select a Sub-Category --</option>
                                 <% for(let key in subCategory) { %>
-                                    <option value="<%= subCategory[key]._id %>"><%= subCategory[key].name %></option>
-                                    <% } %>
+                                <option value="<%= subCategory[key]._id %>"><%= subCategory[key].name %></option>
+                                <% } %>
                             </select>
                         </div>
                         <input type="hidden" name="file" id="image">
@@ -149,6 +157,30 @@
                             <input type="text" name="tags" class="form-control"
                                 placeholder="Nodejs, Angular.js, React.js" id="tags">
                             <small>(Type tag and hit enter)</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="card bg-white shadow-sm mt-4">
+                    <div class="card-header">
+                        <b>Tipps</b>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="form-group content-editor">
+                                <button type="button" class="btn btn-primary text-white content-button">Hilfreiche Tipps zur
+                                    Gestaltung</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group content-editor">
+                                <button type="button" class="btn btn-primary text-white content-button">Reichweite</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group content-editor">
+                                <button type="button" class="btn btn-primary text-white content-button">Qualifizieren bei
+                                    Dype</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -307,7 +339,6 @@
         relative_urls: false,
         remove_script_host: false,
         convert_urls: true,
-        menubar: "",
         // fontname: "EB Garamond Regular",
         // fontsize: '24px',
         //images_upload_url: '/media/create', 
@@ -345,4 +376,5 @@
 </script>
 
 </body>
+
 </html>

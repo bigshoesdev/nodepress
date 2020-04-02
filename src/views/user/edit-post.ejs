@@ -2,10 +2,17 @@
 <link rel="stylesheet" href="/icofont/icofont.min.css">
 <link rel="stylesheet" href="/css/tags.css">
 <link rel="stylesheet" href="/css/upload.css">
-
 <style>
     label.adomx-switch {
         font-size: 12px;
+    }
+    .content-editor {
+        width: 100%;
+        margin: 20px;
+    }
+    .content-button{
+        width: 100%;
+        text-align: center;
     }
 </style>
 <script src="/tinymce/js/tinymce/tinymce.min.js"></script>
@@ -25,7 +32,7 @@
         <div class="col-12 col-lg-auto mb-20 text-right">
             <div class="page-heading">
 
-                <a href="/<%= user.username%>/category/<%= article.slug %>" target="_blank"><button
+                <a href="/publisher/<%= user.username.toLowerCase()%>/<%= article.category.name.replace(/ /g, '-').toLowerCase();%>/<%= article.slug %>" target="_blank"><button
                         class="btn btn-primary">View Post</button></a>
             </div>
         </div>
@@ -51,7 +58,7 @@
                             value="<%= article.slug %>" required>
                         <div class="form-group mt-4">
                             <label for=""><b>Summary & Description (Meta Tag)</b></label>
-                            <textarea name="summary" id="summary" cols="30" rows="5" class="form-control"
+                            <textarea name="summary" id="summary" cols="30" rows="5" class="form-control" maxlength="200"
                                 placeholder="Summary & Description (Meta Tag)"><%= article.summary %></textarea>
                         </div>
                         <input type="hidden" name="keywords" class="form-control" id="keywords"
@@ -104,6 +111,30 @@
                             style="border: 1px solid rgba(195, 207, 216, 0.3);" id="imgBox">
                         <a class="btn btn-primary btn-sm text-white" style="margin-top: -25px;"
                             onclick="uploadImages()">Upload Image</a>
+                    </div>
+                </div>
+                <div class="card bg-white shadow-sm mt-4">
+                    <div class="card-header">
+                        <b>Tipps</b>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="form-group content-editor">
+                                <button type="button" class="btn btn-primary text-white content-button">Hilfreiche Tipps zur
+                                    Gestaltung</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group content-editor">
+                                <button type="button" class="btn btn-primary text-white content-button">Reichweite</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group content-editor">
+                                <button type="button" class="btn btn-primary text-white content-button">Qualifizieren bei
+                                    Dype</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <input type="hidden" name="tags" class="form-control" placeholder="Nodejs, Angular.js, React.js"

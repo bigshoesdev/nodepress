@@ -533,12 +533,12 @@ router.post(
     }
   }
 );
-router.get("/:user/category/:slug", install.redirectToLogin, async (req, res, next) => {
+router.get("/publisher/:user/:category/:slug", install.redirectToLogin, async (req, res, next) => {
   try { 
-    console.log("+++++++++++++++++++");
     let settings = await Settings.findOne();
     let user = req.params.user;
     let slug = req.params.slug;
+    let category = req.params.category;
     let article = await Article.aggregate([
       {
         $match: {
@@ -709,13 +709,12 @@ router.get("/:user/category/:slug", install.redirectToLogin, async (req, res, ne
           .catch(err => next(err));
       }
     }
-    console.log("+++++++++++++++++++");
   } catch (error) {
     next(error);
   }
 });
 // Get single article page
-router.get("/category/:slug", install.redirectToLogin, async (req, res, next) => {
+router.get("/dype/:category/:slug", install.redirectToLogin, async (req, res, next) => {
   try {
     let settings = await Settings.findOne();
     let article = await Article.aggregate([
