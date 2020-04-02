@@ -89,6 +89,7 @@
     </div>
 </div>
 <!-- <div class="dark-blog-content-one"> -->
+
 <div class="container">
     <article class="inner-dark-blog-content-one" id="inner-dark-blog-content-one" style="overflow:hidden;">
         <%- article.body %>
@@ -229,12 +230,15 @@
                         <input type="checkbox" style="font-size: 25px;" id="darkmode">
                         <span class="slider round"></span>
                     </label>
-                </div>
 
+                </div>
             </div>
         </div>
     </div>
+
 </section>
+
+
 <style>
     #return-to-top {
         padding: 10px;
@@ -273,7 +277,53 @@
 <script src="/js/bootstrap1.min.js" type="text/javascript"></script>
 <script src="/js/owl.carousel.js" type="text/javascript"></script>
 <script src="/js/script1.js" type="text/javascript"></script>
+
 <script>
+    // var articleimages = $('img');
+    // var articleurl = window.location.href;
+
+    // // var articleimages = $('#inner-dark-blog-content-one').find($('img')[0])[0];
+    // for(var i = 0; i < articleimages.length; i ++){
+    //     if(articleimages[i].parentElement.tagName == 'P'){
+    //         var element = articleimages[i];
+    //         console.log(element.outerHTML);
+    //         var string  = "<a href='" + articleurl + "'>" +element.outerHTML+"</a>";
+    //         var p = document.createElement("textarea");
+    //         var copybtn = document.createElement('button');
+    //         copybtn.innerHTML = "copy link";
+    //         copybtn.classList.add("copybutton");
+    //         p.style.marginLeft = "auto";
+    //         p.style.marginRight = "auto";
+    //         p.style.marginTop = "10px";
+    //         p.style.display = "block";
+    //         p.style.width = "50%";
+    //         p.value = string;
+    //         articleimages[i].parentElement.append(p);
+    //         articleimages[i].parentElement.append(copybtn);
+    //     }
+    // }
+    // $('.copybutton').click(function(){
+    //     $('#id').select();
+    //     document.execCommand('copy');
+    // });
+
+    var body = document.body;
+    var articleheight = $('#inner-dark-blog-content-one').height();
+
+    var percent = 0;
+    var totalheight = 620 + articleheight;
+
+    window.addEventListener('scroll', function () {
+        var y = window.scrollY;
+        if (y < 620) {
+            percent = 0;
+        } else if (y > totalheight) {
+            percent = 100;
+        } else {
+            percent = (y - 620) / (articleheight) * 100;
+        }
+        $('#processbar').css('width', Math.floor(percent) + "%");
+    });
     $('#darkmode').click(function () {
         if (this.checked) {
             document.body.style.background = 'black';
@@ -291,6 +341,7 @@
             $('.recommended-txt').css('color', 'black');
         }
     });
+
     var firstchild = $('.inner-dark-blog-content-one').children(":first");
     var clildstring = firstchild[0].innerText;
     var newstring = "<span style='color:blue; font-size:80px;'>" + clildstring.charAt(0) + "</span>" + clildstring.substr(1, clildstring.length);;
