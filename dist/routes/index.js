@@ -258,7 +258,7 @@ router.use( /*#__PURE__*/function () {
             _context.next = 37;
             return _category["default"].aggregate([{
               $sort: {
-                createdAt: -1
+                name: 1
               }
             }, {
               $lookup: {

@@ -2353,7 +2353,7 @@
 .inner-dark-blog-content-one ul,
 li {
   font-size: 18px;
-  line-height: 2em;
+  line-height: 1.5em;
   font-family: "EB Garamond Regular";
 }
 .inner-dark-blog-content-one {
@@ -2374,7 +2374,7 @@ li {
 .inner-dark-blog-content-one p {
   font-family: "EB Garamond Regular";
   overflow-wrap: break-word;
-  line-height: 2em;
+  line-height: 1.5em;
 }
 .inner-dark-blog-content-one span {
   font-family: "EB Garamond Regular";

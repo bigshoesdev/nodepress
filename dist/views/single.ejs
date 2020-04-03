@@ -83,6 +83,7 @@
                 </div>
                 <div class="dark-blog-banner-heading text-center" style="width: 60%;margin: auto;">
                     <p style="color: white; font-size: 24px; overflow-wrap: break-word;"><%= article.summary%></p>
+                    <input type="hidden" id="firstlettercolor" value="<%= article.category.color%>">
                 </div>
             </div>
         </div>
@@ -183,7 +184,7 @@
                         </div>
                         <div class="recommnet-madeby">
                             <div class="recommnet-madeby-img">
-                                <img src="/images/dark-blog-make.png">
+                                <img src="<%= article.postedBy.profilePicture%>">
                             </div>
                             <div class="recommnet-madeby-details">
                                 <h5><%= article.postedBy.firstName%> <%= article.postedBy.lastName%></h5>
@@ -226,6 +227,7 @@
                         <p>Upvote</p>
                         <p><%= article.upvote.count%></p>
                     </a>
+                    <p style="font-weight: 800px; color: #797474;">Dark Mode</p>
                     <label class="switch">
                         <input type="checkbox" style="font-size: 25px;" id="darkmode">
                         <span class="slider round"></span>
@@ -235,10 +237,7 @@
             </div>
         </div>
     </div>
-
 </section>
-
-
 <style>
     #return-to-top {
         padding: 10px;
@@ -247,7 +246,7 @@
         left: 0;
         background: #fff;
         width: 92px;
-        height: 120px;
+        height: 170px;
         display: none;
         text-decoration: none;
         border-radius: 0px 25px 25px 0px;
@@ -279,48 +278,50 @@
 <script src="/js/script1.js" type="text/javascript"></script>
 
 <script>
-    // var articleimages = $('img');
-    // var articleurl = window.location.href;
-
-    // // var articleimages = $('#inner-dark-blog-content-one').find($('img')[0])[0];
-    // for(var i = 0; i < articleimages.length; i ++){
-    //     if(articleimages[i].parentElement.tagName == 'P'){
-    //         var element = articleimages[i];
-    //         console.log(element.outerHTML);
-    //         var string  = "<a href='" + articleurl + "'>" +element.outerHTML+"</a>";
-    //         var p = document.createElement("textarea");
-    //         var copybtn = document.createElement('button');
-    //         copybtn.innerHTML = "copy link";
-    //         copybtn.classList.add("copybutton");
-    //         p.style.marginLeft = "auto";
-    //         p.style.marginRight = "auto";
-    //         p.style.marginTop = "10px";
-    //         p.style.display = "block";
-    //         p.style.width = "50%";
-    //         p.value = string;
-    //         articleimages[i].parentElement.append(p);
-    //         articleimages[i].parentElement.append(copybtn);
-    //     }
-    // }
-    // $('.copybutton').click(function(){
-    //     $('#id').select();
-    //     document.execCommand('copy');
-    // });
-
+    var articleimages = $('img');
+    var articleurl = window.location.href;
+    // var articleimages = $('#inner-dark-blog-content-one').find($('img')[0])[0];
+    for (var i = 0; i < articleimages.length; i++) {
+        if (articleimages[i].parentElement.tagName == 'FIGURE') {
+            var element = articleimages[i];
+            var string = "<a href='" + articleurl + "'>" + element.outerHTML + "</a>";
+            var p = document.createElement("textarea");
+            p.setAttribute('id', 'copylink');
+            $('figcaption').css('text-align', 'center');
+            var copybtn = document.createElement('button');
+            copybtn.innerHTML = "Copy Image";
+            copybtn.style.margin = "10px";
+            copybtn.classList.add("copybutton");
+            copybtn.classList.add("btn");
+            copybtn.classList.add("btn-primary");
+            $('figcaption').empty();
+            $('figcaption').append(copybtn);
+            p.style.marginLeft = "auto";
+            p.style.marginRight = "auto";
+            p.style.marginTop = "10px";
+            p.style.marginBottom = "10px";
+            p.classList.add('form-control');
+            p.style.display = "none";
+            p.style.width = "50%";
+            p.value = string;
+            articleimages[i].parentElement.append(p);
+        }
+    }
+    $('.copybutton').click(function(){
+        $('#copylink').css('display', 'block');
+    });
     var body = document.body;
     var articleheight = $('#inner-dark-blog-content-one').height();
-
     var percent = 0;
-    var totalheight = 620 + articleheight;
-
+    var totalheight = 100 + articleheight;
     window.addEventListener('scroll', function () {
         var y = window.scrollY;
-        if (y < 620) {
+        if (y < 100) {
             percent = 0;
         } else if (y > totalheight) {
             percent = 100;
         } else {
-            percent = (y - 620) / (articleheight) * 100;
+            percent = (y) / (articleheight) * 100;
         }
         $('#processbar').css('width', Math.floor(percent) + "%");
     });
@@ -341,10 +342,11 @@
             $('.recommended-txt').css('color', 'black');
         }
     });
-
     var firstchild = $('.inner-dark-blog-content-one').children(":first");
     var clildstring = firstchild[0].innerText;
-    var newstring = "<span style='color:blue; font-size:80px;'>" + clildstring.charAt(0) + "</span>" + clildstring.substr(1, clildstring.length);;
+    var firstlettercolor = $('#firstlettercolor').val();
+    $("#processbar").css('background-color', firstlettercolor);
+    var newstring = "<span style='color:" + firstlettercolor + "; font-size:80px;'>" + clildstring.charAt(0) + "</span>" + clildstring.substr(1, clildstring.length);;
     firstchild[0].innerHTML = newstring;
     function upvote() {
         $('#upvoteForm').submit();

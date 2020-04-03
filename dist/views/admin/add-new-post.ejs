@@ -63,6 +63,7 @@
                             <label for=""><b>Category</b></label>
                             <select name="category" id="category" class="form-control mb-4" required>
                                 <option selected="selected" disabled="disabled">-- Please Select a Category --</option>
+                                
                                 <% for(let key in category2) { %>
                                 <option value="<%= category2[key]._id %>"><%= category2[key].name %></option>
                                 <% } %>
