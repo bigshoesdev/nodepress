@@ -2354,7 +2354,7 @@
 li {
   font-size: 18px;
   line-height: 1.5em;
-  font-family: "EB Garamond Regular";
+  font-family: "EB Garamond";
 }
 .inner-dark-blog-content-one {
   font-size: 18px;
@@ -2372,12 +2372,17 @@ li {
   -ms-user-select: none; /* Internet Explorer/Edge */
 }
 .inner-dark-blog-content-one p {
-  font-family: "EB Garamond Regular";
+  font-family: "EB Garamond";
+  overflow-wrap: break-word;
+  line-height: 1.5em;
+}
+.inner-dark-blog-content-one p a{
+  font-family: "EB Garamond";
   overflow-wrap: break-word;
   line-height: 1.5em;
 }
 .inner-dark-blog-content-one span {
-  font-family: "EB Garamond Regular";
+  font-family: "EB Garamond";
 }
 .inner-dark-blog-content-one h1,
 h2,
@@ -2385,7 +2390,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "EB Garamond Regular";
+  font-family: "EB Garamond";
 }
 .profile li {
   margin: 10px;

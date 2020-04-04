@@ -419,6 +419,13 @@ router.get("/forgot-password", _install["default"].redirectToLogin, checkIfLogge
   res.render("lostpassword", {
     title: res.locals.siteTitle
   });
+});
+router.get("/google/signin", _install["default"].redirectToLogin, checkIfLoggedIn, function (req, res, next) {
+  _passport["default"].authenticate('google', {
+    failureRedirect: '/login'
+  }), function (req, res) {
+    res.redrect('/afterlogin');
+  };
 }); // Forgot password route
 
 router.post("/forgot-password", _install["default"].redirectToLogin, function (req, res, next) {

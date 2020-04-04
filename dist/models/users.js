@@ -52,6 +52,7 @@ var userSchema = new Schema({
   instagramId: String,
   googleId: String,
   vkontakteId: String,
+  appleId: String,
   following: Array
 }, {
   timestamps: true
