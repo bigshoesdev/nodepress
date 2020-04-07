@@ -173,7 +173,7 @@
                     <div class="dark-blog-next-posts">
                         <div class="dark-blog-next-posts-content">
                             <h5>Next Post</h5>
-                            <% if(previousAuthor) {%>
+                            <% if(nextAuthor) {%>
                                 <% if(nextAuthor.roleId == "admin") {%>
                                 <a href="/dype/<%= next.category.name.replace(/ /g, '-').toLowerCase();%>/<%= next.slug %>"
                                     target="_blank">
