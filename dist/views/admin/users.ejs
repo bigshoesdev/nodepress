@@ -159,6 +159,7 @@
                                 <th>Username</th>
                                 <th>Email</th>
                                 <th>Status</th>
+                                <th>Payment</th>
                                 <th>Role</th>
                                 <th>Date</th>
                             </tr>
@@ -181,6 +182,13 @@
                                 </td>
                                 <td>
                                     <%= allusers[key].email %>
+                                </td>
+                                <td>
+                                    <% if(allusers[key].paid == 'free') { %>
+                                        <span class="badge badge-warning">Free</span>
+                                    <% } else { %>
+                                    <span class="badge badge-success">Premium</span>
+                                    <% } %>
                                 </td>
                                 <td>
                                     <% if(allusers[key].active == true) { %>

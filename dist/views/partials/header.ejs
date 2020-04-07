@@ -25,14 +25,19 @@
    <link href="/css/aos.css" rel="stylesheet" />
    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap" rel="stylesheet">
    <style>
-      .progress{
-         position:absolute;
+      .progress {
+         position: absolute;
          bottom: 0;
          margin: 0;
          height: 5px;
       }
-      #processbar{
+
+      #processbar {
          background-color: #3452ff;
+      }
+
+      .show {
+         display: inline !important;
       }
    </style>
 </head>
@@ -63,74 +68,64 @@
                   </div>
                </div>
             </section>
-            <a class="searchbar" href="#"><span style="padding-left: 10px;cursor:pointer">Blog kürzlich</span>
-            </a>
-            <a class="searchbar" href="#"><span style="padding-left: 10px;cursor:pointer">Kunden-Onboarding</span></a>
-            <a class="searchbar" href="#"><span style="padding-left: 10px;cursor:pointer">Inhalte bezahlen</span></a>
-            <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Publisher
-                  werden</span></a>
-            <a class="searchbar" href="/afterlogin"><span style="padding-left: 10px;cursor:pointer">Artikel
-                  entdecken</span></a>
-            <% if(user) { %>
-            <a class="searchbar" href="/membership"><span style="padding-left: 10px;cursor:pointer">Exklusive
-                  Inhalte</span></a>
-            <a class="searchbar" href="#"><span style="font-size:20px; padding-left: 10px;cursor:pointer"
-                  onclick="openNav()"><i class="fa fa-search" aria-hidden="true"></i></span></a>
-            <div class="dropdown">
-               <a class="dropdown-toggle" type="button" data-toggle="dropdown" style="font-size: 20px;"><i
-                     class="fa fa-user"></i><span class="caret"></span></a>
-               <ul class="dropdown-menu profile">
-                  <% if(user.roleId == 'admin') { %>
+            <div class="col-xs-6 col-md-10" style="text-align: right;">
+               <% if(user) { %>
+               <% if (user.paid == "free") { %>
+               <a class="searchbar" href="/afterlogin"><span style="padding-left: 10px;cursor:pointer">Artikel
+                     entdecken</span></a>
+               <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Publisher
+                     werden</span></a>
+               <a class="searchbar" href="/membership"><span style="padding-left: 10px;cursor:pointer">Exklusive
+                     Inhalte</span></a>
+               <% } else if(user.paid == 'paid') { %>
+               <a class="searchbar" href="/membership"><span style="padding-left: 10px;cursor:pointer">Exklusive
+                     Inhalte</span></a>
+               <a class="searchbar" href="#"><span style="padding-left: 10px;cursor:pointer">Blog kürzlich</span>
+               </a>
+               <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Publisher
+                     werden</span></a>
+               <% } %>
+               <a class="searchbar" href="#"><span style="font-size:20px; padding-left: 10px;cursor:pointer"
+                     onclick="openNav()"><i class="fa fa-search" aria-hidden="true"></i></span></a>
+               <div class="dropdown" style="display: contents;">
+                  <a class="dropdown-toggle" type="button" data-toggle="dropdown" style="font-size: 20px;"><i
+                        class="fa fa-user"></i><span class="caret"></span></a>
+                  <ul class="dropdown-menu profile">
+                     <% if(user.roleId == 'admin') { %>
+                     <li><span><%= user.username%></span></li>
+                     <li><a href="/dashboard/index" class="searchbar"><i class="fa fa-cog profileicon"></i>Dashboard</a>
+                     </li>
+                     <li><a href="/author/<%= user.username%>" class="searchbar"><i
+                              class="fa fa-user-circle profileicon"></i>Profile</a></li>
+                     <li><a href="/log-out" class="searchbar"><i class="fa fa-sign-out profileicon"></i>Sign Out</a>
+                     </li>
+                  </ul>
+                  <% } else {%>
                   <li><span><%= user.username%></span></li>
-                  <li><a href="/dashboard/index" class="searchbar"><i class="fa fa-cog profileicon"></i>Dashboard</a>
+                  <li><a href="/user/dashboard" class="searchbar"><i class="fa fa-cog profileicon"></i>Control Panel</a>
                   </li>
                   <li><a href="/author/<%= user.username%>" class="searchbar"><i
                            class="fa fa-user-circle profileicon"></i>Profile</a></li>
                   <li><a href="/log-out" class="searchbar"><i class="fa fa-sign-out profileicon"></i>Sign Out</a></li>
-               </ul>
+                  <% } %>
+                  </ul>
+               </div>
                <% } else {%>
-               <li><span><%= user.username%></span></li>
-               <li><a href="/user/dashboard" class="searchbar"><i class="fa fa-cog profileicon"></i>Control Panel</a>
-               </li>
-               <li><a href="/author/<%= user.username%>" class="searchbar"><i
-                        class="fa fa-user-circle profileicon"></i>Profile</a></li>
-               <li><a href="/log-out" class="searchbar"><i class="fa fa-sign-out profileicon"></i>Sign Out</a></li>
-               <% } %>
-               </ul>
-            </div>
-            <% } else {%>
-            <a class="searchbar" href="#"><span style="font-size:20px; padding-left: 10px;cursor:pointer"
-                  onclick="openNav()"><i class="fa fa-search" aria-hidden="true"></i></span></a>
-            <a href="/sign-up" class="searchbar"><span style="font-size:20px; padding-left: 10px;cursor:pointer"><i
-                     class="fa fa-user"></i></span></a>
-            <a href="/login" class="searchbar"><span style="font-size:20px; padding-left: 10px;cursor:pointer"><i
-                     class="fa fa-sign-in"></i></span></a>
-            <%}%>
-            <!-- <a href="/membership" class="searchbar">Member ship</a> -->
-            <span class="webtoggle" style="font-size:24px;cursor:pointer" onclick="openaav()">&#9776; </span>
-            <span class="mobiletoggle" style="font-size:24px; margin-right: 20px;cursor:pointer"
-               onclick="openAav()">&#9776; </span>
-            <div id="myRightnav" class="rightnav">
-               <a href="javascript:void(0)" class="closebtn webcros" onclick="closeaav()">&times;</a>
-               <a href="javascript:void(0)" class="closebtn mobilecros" onclick="closeAav()">&times;</a>
-               <a href="#"><span>Home</span></a>
-               <a href="#"><span>The News</span></a>
-               <a href="#"><span>Contact US</span></a>
-               <a href="#"><span>Demos</span></a>
-               <div class="come-see">
-                  <p>Come See Us</p>
-                  <p>The Castle</p>
-                  <p>2500 Castle Dr</p>
-                  <p>Manhattan, NY</p>
-               </div>
-               <div class="numbers">
-                  <p>T: +216(0)40 3629 4753</p>
-                  <p>E: hello@example.com</p>
-               </div>
+               <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Publisher
+                     werden</span></a>
+               <a class="searchbar" href="/afterlogin"><span style="padding-left: 10px;cursor:pointer">Artikel
+                     entdecken</span></a>
+               <a class="searchbar" href="#"><span style="font-size:20px; padding-left: 10px;cursor:pointer"
+                     onclick="openNav()"><i class="fa fa-search" aria-hidden="true"></i></span></a>
+               <a href="/sign-up" class="searchbar"><span style="font-size:20px; padding-left: 10px;cursor:pointer"><i
+                        class="fa fa-user"></i></span></a>
+               <a href="/login" class="searchbar"><span style="font-size:20px; padding-left: 10px;cursor:pointer"><i
+                        class="fa fa-sign-in"></i></span></a>
+               <%}%>
             </div>
          </section>
+            <!-- <a href="/membership" class="searchbar">Member ship</a> -->
       </section>
-      
       <div class="progress">
          <div class="progress-bar" id="processbar" role="progressbar" aria-valuenow="100"
          aria-valuemin="0" aria-valuemax="100" style="width:0%">

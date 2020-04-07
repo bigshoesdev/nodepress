@@ -570,50 +570,49 @@ router.get("/dashboard/all-posts/edit/:slug", _auth["default"], _install["defaul
           case 7:
             author = _context7.sent;
             _context7.t0 = article.postType;
-            _context7.next = _context7.t0 === "post" ? 11 : _context7.t0 === "audio" ? 14 : _context7.t0 === "video" ? 16 : 18;
+            _context7.next = _context7.t0 === "post" ? 11 : _context7.t0 === "audio" ? 13 : _context7.t0 === "video" ? 15 : 17;
             break;
 
           case 11:
-            console.log(article);
             res.render("./admin/edit-post", {
               title: "Edit Post - ".concat(article.title),
               article: article,
               author: author
             });
-            return _context7.abrupt("break", 19);
+            return _context7.abrupt("break", 18);
 
-          case 14:
+          case 13:
             res.render("./admin/edit-audio", {
               title: "Edit Audio - ".concat(article.title),
               article: article
             });
-            return _context7.abrupt("break", 19);
+            return _context7.abrupt("break", 18);
 
-          case 16:
+          case 15:
             res.render("./admin/edit-video", {
               title: "Edit Video - ".concat(article.title),
               article: article
             });
-            return _context7.abrupt("break", 19);
+            return _context7.abrupt("break", 18);
+
+          case 17:
+            return _context7.abrupt("break", 18);
 
           case 18:
-            return _context7.abrupt("break", 19);
-
-          case 19:
-            _context7.next = 24;
+            _context7.next = 23;
             break;
 
-          case 21:
-            _context7.prev = 21;
+          case 20:
+            _context7.prev = 20;
             _context7.t1 = _context7["catch"](0);
             next(_context7.t1);
 
-          case 24:
+          case 23:
           case "end":
             return _context7.stop();
         }
       }
-    }, _callee7, null, [[0, 21]]);
+    }, _callee7, null, [[0, 20]]);
   }));
 
   return function (_x19, _x20, _x21) {

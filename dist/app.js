@@ -64,12 +64,8 @@ var _menu = _interopRequireDefault(require("./routes/menu"));
 
 var _bookmark = _interopRequireDefault(require("./routes/bookmark"));
 
-var MongoStore = require("connect-mongo")(_expressSession["default"]);
+var MongoStore = require("connect-mongo")(_expressSession["default"]); // Load environment variables from.env file, where API keys and passwords are configured.
 
-var GoogleStrategy = require('passport-google-oauth20');
-
-var GOOGLE_CLIENT_ID = '995280985287-f759obd464jold46547s2skat034q2qi.apps.googleusercontent.com';
-var GOOGLE_CLIENT_SECRET = "nDT3CZ1UGJm2mYIBFQjpDm7H"; // Load environment variables from.env file, where API keys and passwords are configured.
 
 _dotenv["default"].config({
   path: "./.env"
@@ -135,20 +131,7 @@ app.use(function (req, res, next) {
 app.use(function (req, res, next) {
   res.header("server", "Dype");
   next();
-});
-
-_passport["default"].use(new GoogleStrategy({
-  clientID: GOOGLE_CLIENT_ID,
-  clientSecret: GOOGLE_CLIENT_SECRET,
-  callbackURL: "http://localhost:9000/googleauth"
-}, function (accessToken, refreshToken, profile, done) {
-  Use.findOrCreate({
-    googleId: profile.id
-  }, function (error, user) {
-    return done(error, user);
-  });
-})); //Initialize passport
-
+}); //Initialize passport
 
 app.use(_passport["default"].initialize());
 app.use(_passport["default"].session()); //Set the public folder

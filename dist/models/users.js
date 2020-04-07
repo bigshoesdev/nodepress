@@ -28,6 +28,11 @@ var userSchema = new Schema({
     type: Boolean,
     "default": false
   },
+  paid: {
+    type: String,
+    "enum": ["free", "paid"],
+    "default": "free"
+  },
   roleId: {
     type: String,
     "enum": ["admin", "user"],
@@ -53,7 +58,12 @@ var userSchema = new Schema({
   googleId: String,
   vkontakteId: String,
   appleId: String,
-  following: Array
+  following: Array,
+  fromgoogle: String,
+  fromfacebook: String,
+  fromlinkedin: String,
+  frominstagram: String,
+  fromother: String
 }, {
   timestamps: true
 }); //Hash password with bcrypt before saving

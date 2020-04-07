@@ -1,35 +1,45 @@
 <%- include ./partials/header %>
-      <main id="content">
-        <div class="container">
-          <article class="entry-wraper mb-5">
-            <h1 class="text-center mb-3 mt-5">404</h1>
 
-            <form
-              action="/search"
-              method="get"
-              class="search-form d-lg-flex open-search mb-5"
-            >
-              <i class="icon-search"></i>
-              <input
-                type="text"
-                class="search_field"
-                placeholder="Search..."
-                value=""
-                name="q"
-              />
-            </form>
-            <p class="text-center">
-              The link you clicked may be broken or the page may have been
-              removed.<br />
-              visit the <a href="/">Homepage</a> or
-              <a href="/contact">Contact us</a> about the problem
-            </p>
-          </article>
-          <!--entry-content-->
+<style>
+  .btn-home{
+    font-size: 20px;
+    background-color: #2846f9;
+    padding: 15px;
+    color: white;
+    border-radius: 10px;
+  }
+  a:hover, a:focus {
+    color: white;
+  }
+  .return-home{
+    text-align: center;
+    margin-top: 250px;
+    height: 100px;
+  }
+  .inner-onboarding{
+    text-align: center;
+    margin-top: 300px;
+  }
+  .footer-main{
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+  }
+</style>
+
+<div class="onboarding-banner">
+  <div class="container">
+     <div class="inner-onboarding">
+        <div class="onboarding-banner-heading text-center">
+           <h2>Ouh, diese Seite ist leider nicht mehr verfügbar. Keine Sorge, wir haben noch weitaus bessere! </h2>
         </div>
-        <!--container-->
-      </main>
-      <%- include ./partials/footer %>
-    </div>
-  </body>
-</html>
+     </div>
+     <div class="return-home">
+       <a href="/" class="btn-home">Zeige mir die besseren Seiten </a>
+     </div>
+  </div>
+</div>
+
+
+
+<%- include ./partials/footer %>

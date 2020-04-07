@@ -1,7 +1,20 @@
 <%- include ./partials/header %>
 
+<style>
+   .google {
+      background-color: #dd4b39;
+      color: white;
+      border: 1px solid #dd4b39;
+      margin: 10px;
+   }
 
-
+   .apple {
+      background-color: gray;
+      color: white;
+      border: 1px solid gray;
+      margin: 10px;
+   }
+</style>
 <div class="login">
    <div class="container">
       <div class="inner-login">
@@ -10,7 +23,9 @@
          </div>
          <div class="login-form">
             <%- include('partials/msg') %>
+
             <form action="/sign-up" method="POST" class="newsletterForm">
+
                <div class="form-group">
                   <label class="login-label" for="text">Benutzername <span>*</span></label>
                   <input type="text" name="username" id="username" placeholder="Benutzername" required
@@ -31,22 +46,21 @@
                   <input type="password" name="cPassword" id="cPassword" placeholder="Kennwort anpassen" required
                      class="form-control login-input">
                </div>
+
+               <div class="login-btn row">
+                  <div class="col-md-6 text-center">
+                     <a href="/auth/google" class="google btn btn-primary">
+                        <i class="fa fa-google fa-fw"></i> Sign Up with Google+
+                     </a>
+                  </div>
+                  <div class="col-md-6 text-center">
+                     <a href="/auth/apple" class="apple btn btn-primary">
+                        <i class="fa fa-apple fa-fw"></i> Sign Up with Apple
+                     </a>
+                  </div>
+               </div>
                <div class="login-btn">
                   <button type="submit">Registrieren Sie</button>
-               </div>
-               <div class="form-group row">
-                  <%= mainSettings.facebookLogin%>
-                  <% if(mainSettings.googleLogin == true) { %>
-                  <div class="col-12">
-                     <a href="/auth/google" class="btn-social btn-social-modal btn-social-google">
-                        <i class="icon-google"></i>&nbsp;Connect with Google</a>
-                  </div>
-                  <% } %> <% if(mainSettings.appleLogin == true) { %>
-                  <div class="col-12">
-                     <a href="/auth/twitter" class="btn-social btn-social-modal btn-social-twitter">
-                        <i class="icon-twitter"></i>Connect with Twitter</a>
-                  </div>
-                  <% } %>
                </div>
                <div class="lost-your-password">
                   <a href="/login">Bin Mitglied, Login</a>

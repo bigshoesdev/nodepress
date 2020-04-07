@@ -95,17 +95,28 @@ set.then(function (data) {
 
 
   _passport["default"].use(new GoogleStrategy({
-    clientID: data != null ? data.socialLogin.google.clientId !== undefined ? data.socialLogin.google.clientId : " " : " ",
-    clientSecret: data != null ? data.socialLogin.google.clientSecret !== undefined ? data.socialLogin.google.clientSecret : " " : " ",
+    clientID: "995280985287-f759obd464jold46547s2skat034q2qi.apps.googleusercontent.com",
+    // data != null
+    //   ? data.socialLogin.google.clientId !== undefined
+    //     ? data.socialLogin.google.clientId
+    //     : " "
+    //   : " ",
+    clientSecret: "nDT3CZ1UGJm2mYIBFQjpDm7H",
+    // data != null
+    //   ? data.socialLogin.google.clientSecret !== undefined
+    //     ? data.socialLogin.google.clientSecret
+    //     : " "
+    //   : " ",
     callbackURL: "/auth/google/callback"
   }, function (accessToken, refreshToken, profile, done) {
     process.nextTick(function () {
       _users["default"].findOne({
         email: profile.emails[0].value
       }, function (err, user) {
+        var status = "exist";
         if (err) return done(err);
-        if (user) return done(null, user);else {
-          console.log(profile);
+        if (user) return done(null, user, status);else {
+          status = "create";
           var payload = {
             email: profile.emails[0].value,
             username: profile.displayName.split(" ").join("-").toLowerCase(),
@@ -119,7 +130,7 @@ set.then(function (data) {
           var newUser = new _users["default"](payload);
           newUser.save(function (err, user) {
             if (err) throw err;
-            return done(null, newUser);
+            return done(null, newUser, status);
           });
         }
       });
@@ -147,7 +158,8 @@ set.then(function (data) {
           provider: profile.provider,
           twitterId: profile.id,
           firstName: profile.displayName,
-          lastName: profile.displayName
+          lastName: profile.displayName,
+          paid: 'free'
         };
         var newUser = new _users["default"](payload);
         newUser.save(function (err, user) {

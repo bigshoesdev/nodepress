@@ -579,14 +579,8 @@ a:hover {
     padding-left: 40px;
 }
 
-
-
-
-
-
-
 .footer-main {
-    background: #f4f4f4 !important;
+    background: #f4f4f4;
     padding-top: 50px;
     height: 220px;
     display: flex;
@@ -1187,7 +1181,6 @@ input:-moz-placeholder, textarea:-moz-placeholder {
 }
 
 #footer {
-    background: transparent;
     padding: 20px 0px 22px 0px;
 }
 .footer-logo {
