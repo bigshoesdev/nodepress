@@ -62,7 +62,7 @@ router.use( /*#__PURE__*/function () {
             res.locals.mainMenu = _context.sent;
 
             res.locals.time = function (ev) {
-              var wordsPerMinute = 200; // Average case.
+              var wordsPerMinute = 250; // Average case.
 
               var result;
               var textLength = ev.split(/\s/g).length; // Split by words
@@ -501,7 +501,7 @@ router.get('/paycontent', _install["default"].redirectToLogin, /*#__PURE__*/func
     return _ref4.apply(this, arguments);
   };
 }());
-router.get('/blogrecent', _install["default"].redirectToLogin, /*#__PURE__*/function () {
+router.get('/blogrecent', /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(req, res, next) {
     return _regenerator["default"].wrap(function _callee5$(_context5) {
       while (1) {

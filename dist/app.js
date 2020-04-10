@@ -93,7 +93,7 @@ var options = {
 };
 
 _mongoose["default"].connect(process.env.MONGODB_ONLINE_DB, options).then(function (connected) {
-  return console.log("Database connection established");
+  return console.log("Database connection established !");
 })["catch"](function (err) {
   return console.error("There was an error connecting to database, the err is ".concat(err));
 }); // Import all routes

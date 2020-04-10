@@ -75,7 +75,7 @@ a {
 a:focus, 
 a:hover {
     text-decoration: none;
-    color: #00ceb8;
+    color: blue;
 }
 
 .img_res{
@@ -744,7 +744,7 @@ a:hover {
 
 .searchbar {
     margin-right: 15px;
-    color: #333 !important;
+    color: #333;
     margin-bottom: 0px;
 }
 

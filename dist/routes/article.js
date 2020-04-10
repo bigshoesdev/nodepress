@@ -1468,15 +1468,59 @@ router.post("/article/upvote", _auth["default"], /*#__PURE__*/function () {
   return function (_x23, _x24, _x25) {
     return _ref9.apply(this, arguments);
   };
-}()); // Downvote a post
-
-router.post("/article/downvote", _auth["default"], /*#__PURE__*/function () {
+}());
+router.post('/article/upvote-ajax', _auth["default"], /*#__PURE__*/function () {
   var _ref10 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee10(req, res, next) {
+    var articleId, userId, article, upvotecount;
     return _regenerator["default"].wrap(function _callee10$(_context10) {
       while (1) {
         switch (_context10.prev = _context10.next) {
           case 0:
-            _context10.next = 2;
+            articleId = req.body.articleId;
+            userId = req.body.userId;
+            _context10.next = 4;
+            return _articles["default"].updateOne({
+              _id: req.body.articleId
+            }, {
+              $push: {
+                "update.users": req.user.id
+              },
+              $inc: {
+                "upvote.count": 1
+              }
+            });
+
+          case 4:
+            _context10.next = 6;
+            return _articles["default"].findOne({
+              _id: articleId
+            });
+
+          case 6:
+            article = _context10.sent;
+            upvotecount = article.upvote.count;
+            res.json(upvotecount);
+
+          case 9:
+          case "end":
+            return _context10.stop();
+        }
+      }
+    }, _callee10);
+  }));
+
+  return function (_x26, _x27, _x28) {
+    return _ref10.apply(this, arguments);
+  };
+}()); // Downvote a post
+
+router.post("/article/downvote", _auth["default"], /*#__PURE__*/function () {
+  var _ref11 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee11(req, res, next) {
+    return _regenerator["default"].wrap(function _callee11$(_context11) {
+      while (1) {
+        switch (_context11.prev = _context11.next) {
+          case 0:
+            _context11.next = 2;
             return _articles["default"].updateOne({
               _id: req.body.articleId
             }, {
@@ -1493,24 +1537,24 @@ router.post("/article/downvote", _auth["default"], /*#__PURE__*/function () {
 
           case 3:
           case "end":
-            return _context10.stop();
+            return _context11.stop();
         }
       }
-    }, _callee10);
+    }, _callee11);
   }));
 
-  return function (_x26, _x27, _x28) {
-    return _ref10.apply(this, arguments);
+  return function (_x29, _x30, _x31) {
+    return _ref11.apply(this, arguments);
   };
 }()); // Flag an article
 
 router.post("/article/flag", /*#__PURE__*/function () {
-  var _ref11 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee11(req, res, next) {
-    return _regenerator["default"].wrap(function _callee11$(_context11) {
+  var _ref12 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee12(req, res, next) {
+    return _regenerator["default"].wrap(function _callee12$(_context12) {
       while (1) {
-        switch (_context11.prev = _context11.next) {
+        switch (_context12.prev = _context12.next) {
           case 0:
-            _context11.next = 2;
+            _context12.next = 2;
             return _flag["default"].create({
               articleId: req.body.articleId,
               reason: req.body.reason.trim(),
@@ -1522,24 +1566,24 @@ router.post("/article/flag", /*#__PURE__*/function () {
 
           case 3:
           case "end":
-            return _context11.stop();
+            return _context12.stop();
         }
       }
-    }, _callee11);
+    }, _callee12);
   }));
 
-  return function (_x29, _x30, _x31) {
-    return _ref11.apply(this, arguments);
+  return function (_x32, _x33, _x34) {
+    return _ref12.apply(this, arguments);
   };
 }()); // Clap under an article
 
 router.post("/article/clap", /*#__PURE__*/function () {
-  var _ref12 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee12(req, res, next) {
-    return _regenerator["default"].wrap(function _callee12$(_context12) {
+  var _ref13 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee13(req, res, next) {
+    return _regenerator["default"].wrap(function _callee13$(_context13) {
       while (1) {
-        switch (_context12.prev = _context12.next) {
+        switch (_context13.prev = _context13.next) {
           case 0:
-            _context12.next = 2;
+            _context13.next = 2;
             return _articles["default"].updateOne({
               _id: req.body.articleId
             }, {
@@ -1553,14 +1597,14 @@ router.post("/article/clap", /*#__PURE__*/function () {
 
           case 3:
           case "end":
-            return _context12.stop();
+            return _context13.stop();
         }
       }
-    }, _callee12);
+    }, _callee13);
   }));
 
-  return function (_x32, _x33, _x34) {
-    return _ref12.apply(this, arguments);
+  return function (_x35, _x36, _x37) {
+    return _ref13.apply(this, arguments);
   };
 }());
 module.exports = router;

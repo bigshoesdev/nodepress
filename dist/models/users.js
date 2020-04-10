@@ -63,7 +63,8 @@ var userSchema = new Schema({
   fromfacebook: String,
   fromlinkedin: String,
   frominstagram: String,
-  fromother: String
+  fromother: String,
+  signupProcess: String
 }, {
   timestamps: true
 }); //Hash password with bcrypt before saving

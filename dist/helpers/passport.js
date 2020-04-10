@@ -125,7 +125,8 @@ set.then(function (data) {
             provider: profile.provider,
             googleId: profile.id,
             firstName: profile.name.givenName,
-            lastName: profile.name.familyName
+            lastName: profile.name.familyName,
+            signupProcess: "/enterinformation"
           };
           var newUser = new _users["default"](payload);
           newUser.save(function (err, user) {

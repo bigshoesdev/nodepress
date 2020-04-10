@@ -51,38 +51,46 @@
             text-transform: capitalize;
             display: block;
         }
+        @media screen and (max-width: 1000px) {
+            .header-logo{
+                display: none;
+            }
+        }
+        @media screen and (min-width: 1000px) {
+            .header-logo {
+                display: block;
+            }
+            .mobile-logo {
+                display: none;
+            }
+        }
     </style>
 </head>
 
 <body>
-
     <div class="main-wrapper">
-
-
         <!-- Header Section Start -->
         <div class="header-section">
             <div class="container-fluid">
                 <div class="row justify-content-between align-items-center">
-
                     <!-- Header Logo (Header Left) Start -->
                     <div class="header-logo col-auto">
                         <a href="/dashboard/index">
-                            <img src="<%= siteLogo %>" alt="">
-                            <img src="<%= siteLogo %>" class="logo-light" alt="">
+                            <img src="/images/GOLDEN-PNG.png" alt="">
                         </a>
                     </div><!-- Header Logo (Header Left) End -->
 
                     <!-- Header Right Start -->
                     <div class="header-right flex-grow-1 col-auto">
                         <div class="row justify-content-between align-items-center">
-
                             <!-- Side Header Toggle & Search Start -->
                             <div class="col-auto">
                                 <div class="row align-items-center">
-
                                     <!--Side Header Toggle-->
                                     <div class="col-auto"><button class="side-header-toggle"><i class="zmdi zmdi-menu"></i></button></div>
-
+                                    <a class="mobile-logo" href="/dashboard/index">
+                                        <img src="/images/GOLDEN-PNG.png" alt="" style="height: 35px;">
+                                    </a>
                                     <!--Header Search-->
                                     <!-- <div class="col-auto">
 
