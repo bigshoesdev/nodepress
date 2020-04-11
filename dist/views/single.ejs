@@ -151,8 +151,7 @@
         </div>
     </div>
 </div>
-
-
+<% if (articleCount > 2) {%>
 <div class="dark-blog-posts">
     <div class="container-fluid">
         <div class="inner-dark-blog-posts">
@@ -160,20 +159,19 @@
                 <div class="col-md-6">
                     <div class="dark-blog-previous-posts">
                         <div class="dark-blog-previous-posts-content">
-                            <h5>Previous Post</h5>
-                            <% if(previousAuthor) {%>
-                            <% if(previousAuthor.roleId == "admin") {%>
+                            <h5>Previous Post </h5>
+                            <% if(previous.postedBy.roleId == "admin") {%>
                             <a href="/dype/<%= previous.category.name.replace(/ /g, '-').toLowerCase();%>/<%= previous.slug %>"
                                 target="_blank">
                                 <h2>
                                     <%= previous.title%></h2>
                             </a>
                             <% } else {%>
-                            <a href="/publisher/<%= previousAuthor.username.toLowerCase()%>/<%= previous.category.name.replace(/ /g, '-').toLowerCase();%>/<%= previous.slug %>"
+                            <a href="/publisher/<%= previous.postedBy.username.toLowerCase()%>/<%= previous.category.name.replace(/ /g, '-').toLowerCase();%>/<%= previous.slug %>"
                                 target="_blank">
-                                <h2><%= previous.title%></h2>
+                                <h2>
+                                    <%= previous.title%></h2>
                             </a>
-                            <%}%>
                             <%}%>
                         </div>
                     </div>
@@ -182,19 +180,18 @@
                     <div class="dark-blog-next-posts">
                         <div class="dark-blog-next-posts-content">
                             <h5>Next Post</h5>
-                            <% if(nextAuthor) {%>
-                            <% if(nextAuthor.roleId == "admin") {%>
+                            <% if(next.postedBy.roleId == "admin") {%>
                             <a href="/dype/<%= next.category.name.replace(/ /g, '-').toLowerCase();%>/<%= next.slug %>"
                                 target="_blank">
                                 <h2>
                                     <%= next.title%></h2>
                             </a>
                             <% } else {%>
-                            <a href="/publisher/<%= nextAuthor.username.toLowerCase()%>/<%= next.category.name.replace(/ /g, '-').toLowerCase();%>/<%= next.slug %>"
+                            <a href="/publisher/<%= next.postedBy.username.toLowerCase()%>/<%= next.category.name.replace(/ /g, '-').toLowerCase();%>/<%= next.slug %>"
                                 target="_blank">
-                                <h2><%= next.title%></h2>
+                                <h2>
+                                    <%= next.title%></h2>
                             </a>
-                            <%}%>
                             <%}%>
                         </div>
                     </div>
@@ -203,6 +200,7 @@
         </div>
     </div>
 </div>
+<% }%>
 <div class="recommended-for-you">
     <div class="container">
         <div class="inner-recommended-for-you">
@@ -260,7 +258,8 @@
                 </div>
             </div>
             <div class="dropup-mobile">
-                <button type="button" class="dropbtn mobile-upvote"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                <button type="button" class="dropbtn mobile-upvote"><i class="fa fa-plus"
+                        aria-hidden="true"></i></button>
             </div>
             <div class="upvote-btn">
                 <form action="/article/upvote" method="POST" id="upvoteForm">
@@ -280,7 +279,7 @@
                         <span class="slider round"></span>
                     </label>
             </div>
-           
+
         </div>
     </div>
     </div>
@@ -441,7 +440,7 @@
             }
         });
     }
-    $('.mobile-upvote').click(function(){
+    $('.mobile-upvote').click(function () {
         upvote();
     });
     $(window).scroll(function () {
@@ -451,7 +450,7 @@
             $('#return-to-top').fadeOut(200);   // Else fade out the arrow
         }
     });
-    $('.cancelNav').click(function(){
+    $('.cancelNav').click(function () {
         $('.sidenav').css('display', 'none');
     });
     function getmonth(data) {
@@ -512,8 +511,8 @@
     function displaySearchbtn() {
         document.getElementById('closebtn').style.visibility = "visible";
     }
-    function openSidebar(){
-      document.getElementById("sidenav").style.display = "block";
+    function openSidebar() {
+        document.getElementById("sidenav").style.display = "block";
     }
 
 </script>

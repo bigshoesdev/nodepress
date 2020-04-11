@@ -21,21 +21,24 @@
                      <div class="col-md-4 col-sm-6">
                         <div class="startresult">
                            <div class="bg-1">
-                              <img src="<%= data[i*3 + j].file%>"/>
+                              <img src="<%= data[i*3 + j].file%>" />
                            </div>
                            <div class="bg-1-contant">
                               <% if(data[i*3 + j].postedBy.roleId == "admin"){%>
-                                 <h3><a href="/dype/<%= data[i*3 + j].category.name.replace(/ /g, '').toLowerCase()%>/<%= data[i*3 + j].slug %>"
-                                   style="color:
+                              <p style="overflow-wrap: break-word; font-size: 18px;"><a
+                                    href="/dype/<%= data[i*3 + j].category.slug.toLowerCase()%>/<%= data[i*3 + j].slug %>"
+                                    style="color:
                                    black;"><%= data[i*3 + j].title.charAt(0).toUpperCase() + data[i*3 + j].title.substring(1) %>
-                                   </a>
-                                 </h3>
-                               <%} else {%>
-                               <h3><a href="/publisher/<%= data[i*3 + j].postedBy.username%>/<%= data[i*3+j].category.name.replace(/ /g, '').toLowerCase()%>/<%= data[i*3 + j].slug %>" style="color:
+                                 </a>
+                              </p>
+                              <%} else {%>
+                              <p style="overflow-wrap: break-word; font-size: 18px;"><a
+                                    href="/publisher/<%= data[i*3 + j].postedBy.username.toLowerCase()%>/<%= data[i*3+j].category.slug.toLowerCase()%>/<%= data[i*3 + j].slug %>"
+                                    style="color:
                                    black;"><%= data[i*3 + j].title.charAt(0).toUpperCase() + data[i*3 + j].title.substring(1) %>
-                               </a></h3>
-                               <%}%>
-                              <p><%= data[i*3 + j].summary%></p>
+                                 </a></p>
+                              <%}%>
+                              <p style="overflow-wrap: break-word;"><%= data[i*3 + j].summary%></p>
                            </div>
                         </div>
                      </div>

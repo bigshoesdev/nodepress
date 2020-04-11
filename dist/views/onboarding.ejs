@@ -24,16 +24,18 @@
       margin: 10px;
       margin-bottom: 100px;
    }
-   .show-more{
+
+   .show-more {
       display: none;
    }
-   .show-more-text{
+
+   .show-more-text {
       text-align: right;
       margin: 50px;
       font-size: 25px;
    }
-   .save-button{
-      display: none;
+   .save-button {
+      display: block;
    }
 </style>
 <div class="onboarding-banner">
@@ -53,8 +55,8 @@
 <div class="onboarding-content">
    <div class="container-fluid">
       <div class="inner-onboarding-content">
-         <div class="row">
-            <% for(var i = 0; i < 20; i ++){%>
+         <div class="row category-content">
+            <% for(var i = 0; i < categories.length; i ++){%>
             <div class="col-md-3 col-lg-3 col-sm-3">
                <div class="over-hideen">
                   <div class="onboarding-content-bgimg11" categorySelected="false"
@@ -75,23 +77,7 @@
                <div class="show-more-text">..und viele weitere Kategorien</div>
             </div>
          </div>
-         <div class="row show-more">
-            <% for(var i = 20; i < categories.length; i ++){%>
-            <div class="col-md-3 col-lg-3 col-sm-3">
-               <div class="over-hideen">
-                  <div class="onboarding-content-bgimg11" categorySelected="false"
-                     categorySlug="<%= categories[i].slug%>" categoryId="<%= categories[i]._id%>"
-                     style="background-image:linear-gradient(#0000003d, #00000040),url('<%= categories[i].background%>');">
-                     <div class="onboarding-content-text">
-                        <h4 style="color: #fff;"><%= categories[i].name %></h4>
-                        <p style=" color: #fff;"><%= categories[i].description %></p>
-                     </div>
-                     <i class="fa fa-check-circle category-check category-check<%= categories[i]._id%>"></i>
-                  </div>
-               </div>
-            </div>
-            <%}%>
-         </div>
+         
          <div class="row save-button">
             <form action="/choose-category" method="POST">
             <div class="next-btn">
@@ -107,10 +93,40 @@
 <script src="/js/jquery-2.1.3.min.js" type="text/javascript"></script>
 <script type="text/javascript">
    $(function () {
-      $('.show-more-text').click(function(){
+      $('.show-more-text').click(function () {
          $('.show-more').css('display', 'block');
          $('show-more-text').css('display', 'none');
-         $('save-button').css('display', 'block');
+         // $('next-btn').css('display', 'block');
+         var categoryCount = 20;
+         $.ajax({
+            url: '/category/show-more',
+            type: 'post',
+            data: { categoryCount: categoryCount },
+            dataType: 'json',
+            success: function (data) {
+               var length = data.length;
+               console.log(data[0]);
+               for (var i = 0; i < length; i++) {
+                  var image = data[i].background;
+                  var name = data[i].name;
+                  var description = datap[i].description,
+                  var template = '<div class="col-md-3 col-lg-3 col-sm-3">' +
+                     '<div class="over-hideen">' +
+                     '<div class="onboarding-content-bgimg11" categorySelected="false"' +
+                     'categorySlug=""' +
+                     'style="background-image:linear-gradient(#0000003d, #00000040),url();">' +
+                     '<div class="onboarding-content-text">' +
+                     '<h4 style="color: #fff;">' + name + '</h4>' +
+                     '<p style=" color: #fff;">' + description + '</p>' +
+                     '</div>' +
+                     '<i class="fa fa-check-circle category-check category-check%>"></i>' +
+                     '</div>' +
+                     '</div>' +
+                     '</div>';
+                  $('.category-content').append(template);
+               }
+            }
+         });
       });
       var categoryCountLimit = $('#categoryCount').val();
       var selectCount = 0;
