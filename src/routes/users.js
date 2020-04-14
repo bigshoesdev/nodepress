@@ -2,12 +2,13 @@
 
 import express from "express";
 import User from "../models/users";
+import Category from '../models/category';
 import crypto from "crypto";
 import formidable from "formidable";
 import _mail from "../helpers/_mail";
 import Settings from "../models/settings";
 import passport from "../helpers/passport";
-import fs from "fs";
+import fs, { stat } from "fs";
 import path from "path";
 import auth from "../helpers/auth";
 import AWS from "aws-sdk";
@@ -39,21 +40,135 @@ router.get(
     successRedirect: "/"
   })
 );
-
 // Google login auth
 router.get(
   "/auth/google",
   install.redirectToLogin,
-  passport.authenticate("google", { scope: ["profile", "email"] })
+  passport.authenticate("google", { scope: ["profile", "email"], state: "signup" })
+);
+router.get(
+  "/auth/google/login",
+  install.redirectToLogin,
+  // passport.authenticate("google", { scope: ["profile", "email"], state: "login" })
+  passport.authenticate("google", { scope: ["https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile", "openid"], state: "login" })
 );
 router.get(
   "/auth/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "/login",
-    successRedirect: "/"
-  })
+    failureRedirect: "/sign-up",
+  }), async (req, res) => {
+    let signupProcess = req.user.signupProcess;
+    var state = req.query.state;
+    if (state == 'login') {
+      if (req.authInfo == 'exist') {
+        res.redirect(signupProcess);
+      } else if (req.authInfo == "create") {
+        await User.deleteOne({ _id: req.user._id });
+        res.redirect('/sign-up');
+      }
+    } else if (state == 'signup') {
+      if (req.authInfo == 'exist') {
+        res.redirect(signupProcess);
+      } else if (req.authInfo == "create") {
+        res.redirect('/enterinformation');
+      }
+    }
+  }
 );
 
+router.get(
+  '/enterinformation',
+  install.redirectToLogin,
+  (req, res, next) => {
+    res.render('enter-information');
+  }
+);
+
+router.post(
+  '/information-from',
+  install.redirectToLogin,
+  async (req, res, next) => {
+    let fromgoogle = req.body.fromgoogle;
+    let fromfacebook = req.body.fromfacebook;
+    let fromlinkedin = req.body.fromlinkedin;
+    let frominstagram = req.body.frominstagram;
+    let fromother = req.body.fromother;
+    if (!(fromgoogle == "on" || fromfacebook == "on" || fromlinkedin == "on" ||
+      frominstagram == "on" || fromother == "on")) {
+      req.flash("error_msg", "Bitte wähle einen Punkt aus");
+      return res.redirect('back');
+    }
+
+    await User.updateOne({ _id: req.user.id }, req.body)
+      .then(user => {
+        return res.redirect("/membership");
+      })
+      .catch(err => next(err));
+    await User.updateOne({ _id: req.user.id }, { $set: { signupProcess: "/membership" } })
+      .then(user => {
+        return res.redirect("/membership");
+      })
+      .catch(err => next(err));
+  }
+);
+
+router.post('/category/show-more', install.redirectToLogin, async (req, res, next) => {
+  try {
+    let showCnt = req.body.categoryCount;
+    let    categories = await Category.find({}).limit(20).skip(parseInt(showCnt));
+    res.json(categories);
+  } catch (error) {
+    next(error);
+  }
+});
+router.get('/onboarding', install.redirectToLogin, async (req, res, next) => {
+  try {
+    let categoryCount = 2;
+    if (req.user.paid == "paid") {
+      categoryCount = 10;
+    }
+    var categories = await Category.find({}).limit(20);
+    res.render('onboarding', {
+      categoryCount: categoryCount,
+      categories: categories,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post(
+  '/choose-category',
+  install.redirectToLogin,
+  auth,
+  role("user"),
+  async (req, res, next) => {
+    var categoryCount = req.body.categoryCount;
+    var paid = "free";
+    if (categoryCount == 10) {
+      paid = 'paid';
+    }
+    await User.updateOne({ _id: req.user._id }, { $set: { paid: paid, signupProcess: "/afterlogin" } });
+    return res.redirect('/afterlogin');
+  }
+);
+
+router.post('/onboarding', install.redirectToLogin, async (req, res, next) => {
+  try {
+    await User.updateOne({ _id: req.user._id }, { $set: { signupProcess: "/onboarding" } });
+    var categoryCount = req.body.categoryCount;
+    if (categoryCount == 10) {
+      await User.updateOne({ _id: req.user._id }, { $set: { paid: "paid" } });
+    }
+    var categories = await Category.find({}).limit(20);
+    res.render('onboarding', {
+      categoryCount: categoryCount,
+      categories: categories,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 // Twitter login auth
 router.get(
   "/auth/twitter",
@@ -129,7 +244,8 @@ router.post(
           logo: res.locals.siteLogo,
           instagram: res.locals.instagram,
           facebook: res.locals.facebook,
-          twitter: res.locals.twitter
+          twitter: res.locals.twitter,
+          signupProcess: "/enterinformation"
         };
         if (req.body.password !== req.body.cPassword) {
           req.flash("success_msg", "Password Does/'nt match");
@@ -265,7 +381,7 @@ router.get(
                 if (set.autoLogin) {
                   req.logIn(user, (err, user) => {
                     if (err) return next(err);
-                    return res.redirect(`/user/dashboard`);
+                    return res.redirect(`/afterlogin`);
                   });
                 } else {
                   req.flash(
@@ -336,7 +452,8 @@ router.post(
         if (err) return next(err);
         if (user.roleId === "user") {
           // return res.redirect(`/user/dashboard`);
-          return res.redirect('/afterlogin');
+          let signupProcess = user.signupProcess;
+          return res.redirect(signupProcess);
         } else if (user.roleId === "admin") {
           return res.redirect(`/dashboard/index`);
         }
@@ -351,6 +468,18 @@ router.get(
   checkIfLoggedIn,
   (req, res, next) => {
     res.render("lostpassword", { title: res.locals.siteTitle });
+  }
+);
+
+router.get(
+  "/google/signin",
+  install.redirectToLogin,
+  checkIfLoggedIn,
+  (req, res, next) => {
+    passport.authenticate('google', { failureRedirect: '/login' }),
+      function (req, res) {
+        res.redrect('/afterlogin');
+      }
   }
 );
 

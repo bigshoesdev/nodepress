@@ -64,8 +64,9 @@ router.get("/auth/google", _install["default"].redirectToLogin, _passport["defau
   scope: ["profile", "email"],
   state: "signup"
 }));
-router.get("/auth/google/login", _install["default"].redirectToLogin, _passport["default"].authenticate("google", {
-  scope: ["profile", "email"],
+router.get("/auth/google/login", _install["default"].redirectToLogin, // passport.authenticate("google", { scope: ["profile", "email"], state: "login" })
+_passport["default"].authenticate("google", {
+  scope: ["https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile", "openid"],
   state: "login"
 }));
 router.get("/auth/google/callback", _passport["default"].authenticate("google", {
@@ -138,11 +139,27 @@ router.get('/enterinformation', _install["default"].redirectToLogin, function (r
 });
 router.post('/information-from', _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, res, next) {
+    var fromgoogle, fromfacebook, fromlinkedin, frominstagram, fromother;
     return _regenerator["default"].wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _context2.next = 2;
+            fromgoogle = req.body.fromgoogle;
+            fromfacebook = req.body.fromfacebook;
+            fromlinkedin = req.body.fromlinkedin;
+            frominstagram = req.body.frominstagram;
+            fromother = req.body.fromother;
+
+            if (fromgoogle == "on" || fromfacebook == "on" || fromlinkedin == "on" || frominstagram == "on" || fromother == "on") {
+              _context2.next = 8;
+              break;
+            }
+
+            req.flash("error_msg", "Bitte wähle einen Punkt aus");
+            return _context2.abrupt("return", res.redirect('back'));
+
+          case 8:
+            _context2.next = 10;
             return _users["default"].updateOne({
               _id: req.user.id
             }, req.body).then(function (user) {
@@ -151,8 +168,8 @@ router.post('/information-from', _install["default"].redirectToLogin, /*#__PURE_
               return next(err);
             });
 
-          case 2:
-            _context2.next = 4;
+          case 10:
+            _context2.next = 12;
             return _users["default"].updateOne({
               _id: req.user.id
             }, {
@@ -165,7 +182,7 @@ router.post('/information-from', _install["default"].redirectToLogin, /*#__PURE_
               return next(err);
             });
 
-          case 4:
+          case 12:
           case "end":
             return _context2.stop();
         }
@@ -179,15 +196,15 @@ router.post('/information-from', _install["default"].redirectToLogin, /*#__PURE_
 }());
 router.post('/category/show-more', _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(req, res, next) {
-    var categoryCount, categories;
+    var showCnt, categories;
     return _regenerator["default"].wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
             _context3.prev = 0;
-            categoryCount = parseInt(req.body.categoryCount);
+            showCnt = req.body.categoryCount;
             _context3.next = 4;
-            return _category["default"].find({}).limit(20).skip(categoryCount);
+            return _category["default"].find({}).limit(20).skip(parseInt(showCnt));
 
           case 4:
             categories = _context3.sent;
@@ -330,7 +347,7 @@ router.post('/onboarding', _install["default"].redirectToLogin, /*#__PURE__*/fun
 
           case 7:
             _context6.next = 9;
-            return _category["default"].find({});
+            return _category["default"].find({}).limit(20);
 
           case 9:
             categories = _context6.sent;
@@ -453,8 +470,6 @@ router.post("/sign-up", _install["default"].redirectToLogin, checkIfLoggedIn, /*
 
             _context7.next = 25;
             return (0, _mail2["default"])("Registration Successfull", req.body.email, "reg-email", payload, req.headers.host, function (err, info) {
-              ;
-              console.log("=======================================================================");
               if (err) console.log(err);
             });
 
@@ -636,7 +651,7 @@ router.get("/verify-account", _install["default"].redirectToLogin, checkIfLogged
                       if (set.autoLogin) {
                         req.logIn(user, function (err, user) {
                           if (err) return next(err);
-                          return res.redirect("/user/dashboard");
+                          return res.redirect("/afterlogin");
                         });
                       } else {
                         req.flash("success_msg", "Account Verified Successfully, you can now login.");

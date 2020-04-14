@@ -97,32 +97,32 @@ set.then(data => {
       }
     )
   );
-
   // Google strategy
   passport.use(
     new GoogleStrategy(
       {
-        clientID:
-          data != null
-            ? data.socialLogin.google.clientId !== undefined
-              ? data.socialLogin.google.clientId
-              : " "
-            : " ",
-        clientSecret:
-          data != null
-            ? data.socialLogin.google.clientSecret !== undefined
-              ? data.socialLogin.google.clientSecret
-              : " "
-            : " ",
+        clientID: "995280985287-f759obd464jold46547s2skat034q2qi.apps.googleusercontent.com",
+          // data != null
+          //   ? data.socialLogin.google.clientId !== undefined
+          //     ? data.socialLogin.google.clientId
+          //     : " "
+          //   : " ",
+        clientSecret: "nDT3CZ1UGJm2mYIBFQjpDm7H",
+          // data != null
+          //   ? data.socialLogin.google.clientSecret !== undefined
+          //     ? data.socialLogin.google.clientSecret
+          //     : " "
+          //   : " ",
         callbackURL: "/auth/google/callback"
       },
       function(accessToken, refreshToken, profile, done) {
         process.nextTick(() => {
           User.findOne({ email: profile.emails[0].value }, (err, user) => {
+            var status = "exist";
             if (err) return done(err);
-            if (user) return done(null, user);
+            if (user) return done(null, user, status);
             else {
-              console.log(profile);
+              status = "create";
               let payload = {
                 email: profile.emails[0].value,
                 username: profile.displayName
@@ -134,12 +134,13 @@ set.then(data => {
                 provider: profile.provider,
                 googleId: profile.id,
                 firstName: profile.name.givenName,
-                lastName: profile.name.familyName
+                lastName: profile.name.familyName,
+                signupProcess: "/enterinformation",
               };
               let newUser = new User(payload);
               newUser.save((err, user) => {
                 if (err) throw err;
-                return done(null, newUser);
+                return done(null, newUser, status);
               });
             }
           });
@@ -147,7 +148,6 @@ set.then(data => {
       }
     )
   );
-
   // Twitter strategy
   passport.use(
     new TwitterStrategy(
@@ -188,7 +188,8 @@ set.then(data => {
               provider: profile.provider,
               twitterId: profile.id,
               firstName: profile.displayName,
-              lastName: profile.displayName
+              lastName: profile.displayName,
+              paid: 'free',
             };
             let newUser = new User(payload);
             newUser.save((err, user) => {

@@ -6,11 +6,13 @@
     label.adomx-switch {
         font-size: 12px;
     }
+
     .content-editor {
         width: 100%;
         margin: 20px;
     }
-    .content-button{
+
+    .content-button {
         width: 100%;
         text-align: center;
     }
@@ -48,8 +50,8 @@
                         <input type="hidden" name="slug" placeholder="Slug" class="form-control" id="slug">
                         <div class="form-group mt-4">
                             <label for=""><b>Summary & Description (Meta Tag)</b></label>
-                            <textarea name="summary" id="summary" cols="30" rows="5" class="form-control" maxlength="200"
-                                placeholder="Summary & Description (Meta Tag)"></textarea>
+                            <textarea name="summary" id="summary" cols="30" rows="5" class="form-control"
+                                maxlength="200" placeholder="Summary & Description (Meta Tag)"></textarea>
                         </div>
                         <input type="hidden" name="keywords" class="form-control" id="keywords"
                             placeholder="Keywords (Meta Tag)">
@@ -74,7 +76,7 @@
                         <input type="hidden" name="file" id="image">
                         <div class="form-group mt-5">
                             <label for=""><b>Content</b></label>
-                            <textarea name="body" id="body" cols="30" rows="20"></textarea>
+                            <textarea name="body" id="body" cols="30" rows="20" minlength="800"></textarea>
                         </div>
                     </div>
                 </div>
@@ -108,18 +110,21 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="form-group content-editor">
-                                <button type="button" class="btn btn-primary text-white content-button">Hilfreiche Tipps zur
+                                <button type="button" class="btn btn-primary text-white content-button">Hilfreiche Tipps
+                                    zur
                                     Gestaltung</button>
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group content-editor">
-                                <button type="button" class="btn btn-primary text-white content-button">Reichweite</button>
+                                <button type="button"
+                                    class="btn btn-primary text-white content-button">Reichweite</button>
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group content-editor">
-                                <button type="button" class="btn btn-primary text-white content-button">Qualifizieren bei
+                                <button type="button" class="btn btn-primary text-white content-button">Qualifizieren
+                                    bei
                                     Dype</button>
                             </div>
                         </div>
@@ -290,14 +295,14 @@
 <script>
     tinymce.init({
         selector: '#body',
-        plugins: 'image code print preview fullpage searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern help',
-        toolbar: 'formatselect | bold italic strikethrough forecolor backcolor permanentpen formatpainter | link image media code | numlist bullist outdent indent | removeformat',
+        plugins: 'image print preview fullpage searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern help',
+        toolbar: 'formatselect | bold italic strikethrough forecolor backcolor permanentpen formatpainter | link image media | numlist bullist outdent indent | removeformat example',
         image_advtab: true,
         image_caption: true,
-        relative_urls: false,
+        relative_urls: true,
         remove_script_host: false,
         convert_urls: true,
-        menubar: "",
+        // menubar: "",
         //images_upload_url: '/media/create', 
         file_picker_callback: function file_picker_callback(callback, value, meta) {
             /* Provide file and text for the link dialog */

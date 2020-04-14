@@ -1,0 +1,32 @@
+.inforcheckbox {
+   width: 25px;
+   height: 25px;
+}
+
+.infockdiv {
+   text-align: right;
+}
+
+.infolabeldiv {
+   text-align: left;
+}
+
+.footer-main {
+   width: 100%;
+   bottom: 0;
+}
+
+.next-btn button {
+   width: 20%;
+   padding: 10px;
+   background: #3452ff;
+   border: none;
+   border-radius: 4px;
+   font-weight: 600;
+   color: white;
+   transition: 0.5s;
+}
+
+.next-btn {
+   text-align: right;
+}

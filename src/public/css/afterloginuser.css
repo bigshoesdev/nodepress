@@ -1,0 +1,100 @@
+.show {
+   display: inline !important;
+ }
+ .progress {
+      position: absolute;
+      bottom: 0;
+      margin: 0;
+      height: 5px;
+   }
+
+   @media screen and (max-width: 1000px) {
+      .menu-large {
+         display: none;
+      }
+      .upvote-btn {
+         display: none;
+      }
+      .dropup-mobile {
+         display: block;
+      }
+      .dropup{
+         display: none;
+      }
+      .menu-small {
+         display: block;
+      }
+   }
+
+   @media screen and (min-width: 1000px) {
+      .menu-small {
+         display: none;
+      }
+      .dropup-mobile {
+         display: none;
+      }
+      .dropup{
+         display: block;
+      }
+
+   }
+
+   #processbar {
+      background-color: #3452ff;
+   }
+
+   .show {
+      display: inline !important;
+   }
+
+   .header {
+      display: flex;
+      align-items: center;
+   }
+
+   .sidenav {
+      height: 100%;
+      width: 200px;
+      position: fixed;
+      z-index: 1000000;
+      top: 0;
+      right: 0;
+      background-color: white;
+      overflow-x: hidden;
+      padding-top: 20px;
+      display: none;
+      padding: 10px;
+   }
+
+   .sidenav a {
+      padding: 6px 8px 6px 16px;
+      text-decoration: none;
+      font-size: 16px;
+      color: #818181;
+      display: block;
+      margin-bottom: 5px;
+   }
+
+   .sidenav a:hover {
+      color: blue;
+   }
+
+   .cancelNav {
+      font-size: 40px !important;
+      text-align: right;
+      margin-right: 20px;
+   }
+
+   .username_span {
+      font-size: 18px;
+      padding: 20px;
+   }
+   .menu-logo{
+     width: 10%;
+   }
+   .menu-small {
+     width: 90%;
+   }
+   .fixed {
+     padding-top: 26px;
+   }

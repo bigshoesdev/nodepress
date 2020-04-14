@@ -15,7 +15,6 @@ import http from "http";
 import _view from "./helpers/_dailyViews";
 import install from "./helpers/install";
 const MongoStore = require("connect-mongo")(session);
-
 // Load environment variables from.env file, where API keys and passwords are configured.
 dotenv.config({ path: "./.env" });
 
@@ -41,7 +40,7 @@ const options = {
 };
 mongoose
   .connect(process.env.MONGODB_ONLINE_DB, options)
-  .then(connected => console.log(`Database connection established`))
+  .then(connected => console.log(`Database connection established !`))
   .catch(err =>
     console.error(
       `There was an error connecting to database, the err is ${err}`
@@ -66,7 +65,6 @@ import pages from "./routes/pages";
 import ads from "./routes/ads";
 import menu from "./routes/menu";
 import bookmark from "./routes/bookmark";
-
 //Init express session
 // Helmet config
 app.use(helmet());
@@ -106,7 +104,6 @@ app.use(passport.session());
 
 //Set the public folder
 app.use(express.static(path.join(__dirname, "public")));
-
 // Use all routers
 app.use(index);
 app.use(article);
@@ -131,13 +128,11 @@ app.use(install.redirectToLogin, (req, res, next) => {
     res.render("404");
   }
 });
-
 //Error handling
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = process.env.NODE_ENV === "development" ? err : {};
-  
   // render the error page
   res.status(err.status || 500);
   res.render("error");

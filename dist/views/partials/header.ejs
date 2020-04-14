@@ -23,99 +23,9 @@
       href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&display=swap"
       rel="stylesheet" />
    <link href="/css/aos.css" rel="stylesheet" />
+   <link href="/css/header.css" rel="stylesheet" />
    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap" rel="stylesheet">
-   <style>
-      .progress {
-         position: absolute;
-         bottom: 0;
-         margin: 0;
-         height: 5px;
-      }
-
-      @media screen and (max-width: 1000px) {
-         .menu-large {
-            display: none;
-         }
-         .upvote-btn {
-            display: none;
-         }
-         .dropup-mobile {
-            display: block;
-         }
-         .dropup{
-            display: none;
-         }
-         .menu-small {
-            display: block;
-         }
-      }
-
-      @media screen and (min-width: 1000px) {
-         .menu-small {
-            display: none;
-         }
-         .dropup-mobile {
-            display: none;
-         }
-         .dropup{
-            display: block;
-         }
-
-      }
-
-      #processbar {
-         background-color: #3452ff;
-      }
-
-      .show {
-         display: inline !important;
-      }
-
-      .header {
-         display: flex;
-         align-items: center;
-      }
-
-      .sidenav {
-         height: 100%;
-         width: 200px;
-         position: fixed;
-         z-index: 1000000;
-         top: 0;
-         right: 0;
-         background-color: white;
-         overflow-x: hidden;
-         padding-top: 20px;
-         display: none;
-         padding: 10px;
-      }
-
-      .sidenav a {
-         padding: 6px 8px 6px 16px;
-         text-decoration: none;
-         font-size: 16px;
-         color: #818181;
-         display: block;
-         margin-bottom: 5px;
-      }
-
-      .sidenav a:hover {
-         color: blue;
-      }
-
-      .cancelNav {
-         font-size: 40px !important;
-         text-align: right;
-         margin-right: 20px;
-      }
-
-      .username_span {
-         font-size: 18px;
-         padding: 20px;
-      }
-   </style>
 </head>
-
 <body>
    <div class="sidenav" id="sidenav">
       <a class="cancelNav">
@@ -123,19 +33,19 @@
       </a>
       <% if(user) { %>
       <% if (user.paid == "free") { %>
-      <a class="searchbar" href="/afterlogin"><span style="padding-left: 10px;cursor:pointer">Artikel
+      <a class="searchbar" href="/afterlogin"><span class="menu-title">Artikel
             entdecken</span></a>
-      <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Publisher
+      <a class="searchbar" href="/publisher"><span class="menu-title" >Publisher
             werden</span></a>
-      <a class="searchbar" href="/membership"><span style="padding-left: 10px;cursor:pointer">Exklusive
+      <a class="searchbar" href="/membership"><span class="menu-title">Exklusive
             Inhalte</span></a>
       <hr>
       <% } else if(user.paid == 'paid') { %>
-      <a class="searchbar" href="/membership"><span style="padding-left: 10px;cursor:pointer">Exklusive
+      <a class="searchbar" href="/membership"><span class="menu-title">Exklusive
             Inhalte</span></a>
-      <a class="searchbar" href="#"><span style="padding-left: 10px;cursor:pointer">Blog kürzlich</span>
+      <a class="searchbar" href="#"><span class="menu-title">Blog kürzlich</span>
       </a>
-      <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Publisher
+      <a class="searchbar" href="/publisher"><span class="menu-title">Publisher
             werden</span></a>
       <% } %>
       <% if(user.roleId == 'admin') { %>
@@ -154,9 +64,9 @@
       <a href="/log-out" class="searchbar"><i class="fa fa-sign-out profileicon"></i>Sign Out</a>
       <% } %>
       <% } else {%>
-      <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Publisher
+      <a class="searchbar" href="/publisher"><span class="menu-title">Publisher
             werden</span></a>
-      <a class="searchbar" href="/afterlogin"><span style="padding-left: 10px;cursor:pointer">Artikel
+      <a class="searchbar" href="/afterlogin"><span class="menu-title">Artikel
             entdecken</span></a>
       <% } %>
    </div>
@@ -189,27 +99,27 @@
                </div>
             </section>
 
-            <div class="col-xs-11 col-md-10 menu-small" style="text-align: right;">
+            <div class="col-xs-11 col-md-10 menu-small">
                <a class="searchbar" href="#"><span style="font-size:20px; padding-left: 10px;cursor:pointer"
                      onclick="openNav()"><i class="fa fa-search" aria-hidden="true"></i></span></a>
                <a class="searchbar" href="#"><span style="font-size:20px; padding-left: 10px;cursor:pointer"
                      onclick="openSidebar()"><i class="fa fa-bars" aria-hidden="true"></i></span></a>
             </div>
-            <div class="col-xs-11 col-md-10 menu-large" style="text-align: right;">
+            <div class="col-xs-11 col-md-10 menu-large">
                <% if(user) { %>
                <% if (user.paid == "free") { %>
-               <a class="searchbar" href="/afterlogin"><span style="padding-left: 10px;cursor:pointer">Artikel
+               <a class="searchbar" href="/afterlogin"><span class="menu-title">Artikel
                      entdecken</span></a>
-               <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Publisher
+               <a class="searchbar" href="/publisher"><span class="menu-title">Publisher
                      werden</span></a>
-               <a class="searchbar" href="/membership"><span style="padding-left: 10px;cursor:pointer">Exklusive
+               <a class="searchbar" href="/membership"><span class="menu-title">Exklusive
                      Inhalte</span></a>
                <% } else if(user.paid == 'paid') { %>
-               <a class="searchbar" href="/membership"><span style="padding-left: 10px;cursor:pointer">Exklusive
+               <a class="searchbar" href="/membership"><span class="menu-title">Exklusive
                      Inhalte</span></a>
-               <a class="searchbar" href="#"><span style="padding-left: 10px;cursor:pointer">Blog kürzlich</span>
+               <a class="searchbar" href="#"><span class="menu-title">Blog kürzlich</span>
                </a>
-               <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Publisher
+               <a class="searchbar" href="/publisher"><span class="menu-title">Publisher
                      werden</span></a>
                <% } %>
                <a class="searchbar" href="#"><span style="font-size:20px; padding-left: 10px;cursor:pointer"
@@ -238,9 +148,9 @@
                   </ul>
                </div>
                <% } else {%>
-               <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Publisher
+               <a class="searchbar" href="/publisher"><span class="menu-title">Publisher
                      werden</span></a>
-               <a class="searchbar" href="/afterlogin"><span style="padding-left: 10px;cursor:pointer">Artikel
+               <a class="searchbar" href="/afterlogin"><span class="menu-title">Artikel
                      entdecken</span></a>
                <a class="searchbar" href="#"><span style="font-size:20px; padding-left: 10px;cursor:pointer"
                      onclick="openNav()"><i class="fa fa-search" aria-hidden="true"></i></span></a>

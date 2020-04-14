@@ -12,6 +12,7 @@ import url from 'url';
 import Ads from '../models/ads';
 import install from '../helpers/install';
 import Menu from '../models/menu';
+
 const router = express.Router();
 
 dotenv.config({ path: './.env' });
@@ -21,7 +22,7 @@ router.use(async function(req, res, next) {
 	let settingsInfo = await Settings.find({});
 	res.locals.mainMenu = await Menu.find().sort({ position: 1 });
 	res.locals.time = ev => {
-		const wordsPerMinute = 200; // Average case.
+		const wordsPerMinute = 250; // Average case.
 		let result;
 
 		let textLength = ev.split(/\s/g).length; // Split by words
@@ -208,7 +209,7 @@ router.use(async function(req, res, next) {
 	res.locals.category2 = await Category.aggregate([
 		{
 			$sort: {
-				createdAt: -1,
+				name: 1,
 			},
 		},
 		{
@@ -379,12 +380,8 @@ router.get('/paycontent', install.redirectToLogin, async(req, res, next) => {
 		title: "Pay Content"
 	});
 });
-router.get('/onboarding', install.redirectToLogin, async(req, res, next) => {
-	res.render('onboarding', {
-		title: "Customer Onboarding"
-	});
-});
-router.get('/blogrecent', install.redirectToLogin, async(req, res, next) => {
+
+router.get('/blogrecent',  async(req, res, next) => {
 	res.render('blogrecent', {
 		title: "Blog Recent"
 	});

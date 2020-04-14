@@ -1,6 +1,5 @@
 <%- include ./partials/header %>
-
-
+<link rel="stylesheet" href="/css/sign-up.css">
 
 <div class="login">
    <div class="container">
@@ -10,7 +9,9 @@
          </div>
          <div class="login-form">
             <%- include('partials/msg') %>
+
             <form action="/sign-up" method="POST" class="newsletterForm">
+
                <div class="form-group">
                   <label class="login-label" for="text">Benutzername <span>*</span></label>
                   <input type="text" name="username" id="username" placeholder="Benutzername" required
@@ -30,6 +31,19 @@
                   <label class="login-label" for="pwd">Kennwort anpassen <span>*</span></label>
                   <input type="password" name="cPassword" id="cPassword" placeholder="Kennwort anpassen" required
                      class="form-control login-input">
+               </div>
+
+               <div class="login-btn row">
+                  <div class="col-md-6 text-center">
+                     <a href="/auth/google" class="google btn btn-primary">
+                        <i class="fa fa-google fa-fw"></i> Sign Up with Google+
+                     </a>
+                  </div>
+                  <div class="col-md-6 text-center">
+                     <a href="/auth/apple" class="apple btn btn-primary">
+                        <i class="fa fa-apple fa-fw"></i> Sign Up with Apple
+                     </a>
+                  </div>
                </div>
                <div class="login-btn">
                   <button type="submit">Registrieren Sie</button>

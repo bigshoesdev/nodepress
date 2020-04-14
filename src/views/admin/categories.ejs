@@ -45,6 +45,7 @@
         content: "";
         font: normal normal normal 13px/1 FontAwesome;
     }
+
     .btn-bsa {
         background: #acbb16;
         color: #fff;
@@ -85,22 +86,25 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for=""><b>Name*</b></label>
-                                <input type="text" class="form-control" placeholder="Category Name" name="name" required>
+                                <input type="text" class="form-control" placeholder="Category Name" name="name"
+                                    required>
                             </div>
                             <div class="form-group mt-4">
                                 <label for=""><b>Slug*</b></label>
-                                <input type="text" name="slug" class="form-control" id="slug" placeholder="Category Slug">
+                                <input type="text" name="slug" class="form-control" id="slug"
+                                    placeholder="Category Slug">
                             </div>
                             <!-- <div class="form-group mt-4">
                                     <label for=""><b>Background</b></label>
                                     <img src="" alt="" class="img-fluid mb-3" id="imgBox">
                                     <a class="btn btn-info text-white btn-sm" onclick="uploadImages()">Select Background</a>
                                     <input type="text" name="background" class="form-control d-none" id="background">
-                                </div>
-                                <div class="form-group mt-4">
-                                        <label for=""><b>Colour*</b></label>
-                                        <input type="color" name="color" class="form-control" id="" placeholder="Category Colour" >
-                                    </div> -->
+                                </div>-->
+                            <div class="form-group mt-4">
+                                <label for=""><b>Colour*</b></label>
+                                <input type="color" name="color" class="form-control" id="color"
+                                    placeholder="Category Colour">
+                            </div>
                             <div class="form-group mt-4">
                                 <label for=""><b>Description</b></label>
                                 <textarea name="description" class="form-control" id="" cols="30" rows="10"></textarea>
@@ -114,32 +118,35 @@
             </form>
         </div>
         <div class="col-md-8">
-                <div class="row justify-content-between align-items-center mb-10">
+            <div class="row justify-content-between align-items-center mb-10">
 
-                        <!-- Page Heading Start -->
-                        <div class="col-md-5">
-                            <div class="form-group d-flex">
-                                    <select id="bulkSelect" class="form-control form-control-sm bulk">
-                                            <option selected="selected" disabled="disabled">Bulk Actions</option>
-                                            <option value="delete">Delete</option>
-                                        </select>
-                                        <button class="btn btn-info ml-3 btn-sm" onclick="document.querySelector('#bulkDeleteForm').submit();">Apply</button>
+                <!-- Page Heading Start -->
+                <div class="col-md-5">
+                    <div class="form-group d-flex">
+                        <select id="bulkSelect" class="form-control form-control-sm bulk">
+                            <option selected="selected" disabled="disabled">Bulk Actions</option>
+                            <option value="delete">Delete</option>
+                        </select>
+                        <button class="btn btn-info ml-3 btn-sm"
+                            onclick="document.querySelector('#bulkDeleteForm').submit();">Apply</button>
+                    </div>
+                </div><!-- Page Heading End -->
+                <!-- Page Heading Start -->
+                <div class="col-md-7">
+                    <form action="/dashboard/posts/categories" method="GET">
+                        <div class="input-group">
+                            <input type="search" name="q" class="form-control" placeholder="Search Category"
+                                aria-describedby="button-addon2" required>
+                            <div class="input-group-append">
+                                <button class="btn btn-bsa noBorderRadius" id="button-addon2" id="search"><i
+                                        class="icofont-search-2 mr-1"></i></button>
                             </div>
-                        </div><!-- Page Heading End -->
-                        <!-- Page Heading Start -->
-                        <div class="col-md-7">
-                            <form action="/dashboard/posts/categories" method="GET">
-                                    <div class="input-group">
-                                            <input type="search" name="q" class="form-control" placeholder="Search Category" aria-describedby="button-addon2" required>
-                                            <div class="input-group-append">
-                                                <button class="btn btn-bsa noBorderRadius" id="button-addon2" id="search"><i class="icofont-search-2 mr-1"></i></button>
-                                            </div>
-                                        </div>
-                            </form>
-                        </div><!-- Page Heading End -->
-                        
-                
-                    </div><!-- Page Headings End -->
+                        </div>
+                    </form>
+                </div><!-- Page Heading End -->
+
+
+            </div><!-- Page Headings End -->
             <form action method="GET" id="bulkDeleteForm">
                 <div class="table-responsive bg-white shadow-sm">
                     <table class="table table-vertical-middle">
@@ -150,6 +157,7 @@
                                 </th>
                                 <th>Name</th>
                                 <th>Slug</th>
+                                <th>Color</th>
                                 <th>Date</th>
                             </tr>
                         </thead>
@@ -159,14 +167,17 @@
                                 <td class="">
                                     <input type="checkbox" name="ids" value="<%= category[key]._id %>">
                                 </td>
-                                <td data-toggle="tooltip"
-                                data-placement="bottom" title="Edit Category" class="text-capitalize">
+                                <td data-toggle="tooltip" data-placement="bottom" title="Edit Category"
+                                    class="text-capitalize">
                                     <a href="/dashboard/posts/categories/edit/<%= category[key].name %>">
                                         <%= category[key].name %>
                                     </a>
                                 </td>
                                 <td class="">
                                     <%= category[key].slug %>
+                                </td>
+                                <td class="">
+                                    <%= category[key].color %>
                                 </td>
                                 <td><%= category[key].createdAt.toLocaleDateString() %></td>
                             </tr>
@@ -176,43 +187,43 @@
                 </div>
             </form>
             <div class=" mt-4">
-                    <% if (pages > 0) { %>
-                    <div class="pagination-container pagination-sm">
-                        <ul class="pagination">
-                            <% if (current == 1) { %>
-                            <li class="disabled page-item"><a href="javascript:void(0);" class="page-link">First</a>
-                            </li>
-                            <% } else { %>
-                            <li class="page-item"><a href="?page=1" class="page-link">First</a></li>
-                            <% } %>
-                            <% var i = (Number(current) > 3 ? Number(current) - 3 : 1) %>
-                            <% if (i !== 1) { %>
-                            <li class="disabled page-item"><a href="javascript:void(0);" class="page-link">...</a>
-                            </li>
-                            <% } %>
-                            <% for (; i <= (Number(current) + 2) && i <= pages; i++) { %>
-                            <% if (i == current) { %>
-                            <li class="diabled page-item active"><a href="javascript:void(0)" style="cursor:default;"
-                                    class="page-link"><%= i %></a></li>
-                            <% } else { %>
-                            <li class="page-item"><a href="?page=<%= i %>" class="page-link"><%= i %></a></li>
-                            <% } %>
-                            <% if (i == Number(current) + 2 && i < pages) { %>
-                            <li class="disabled page-item"><a href="javascript:void(0);" class="page-link">...</a>
-                            </li>
-                            <% } %>
-                            <% } %>
-                            <% if (current == pages) { %>
-                            <li class="disabled page-item"><a href="javascript:void(0);" class="page-link">Last</a>
-                            </li>
-                            <% } else { %>
-                            <li class="page-item"><a href="?page=<%= pages %>" class="page-link">Last</a></li>
-                            <% } %>
-                        </ul>
-                    </div>
-                    <div class="clearfix"></div>
-                    <% } %>
+                <% if (pages > 0) { %>
+                <div class="pagination-container pagination-sm">
+                    <ul class="pagination">
+                        <% if (current == 1) { %>
+                        <li class="disabled page-item"><a href="javascript:void(0);" class="page-link">First</a>
+                        </li>
+                        <% } else { %>
+                        <li class="page-item"><a href="?page=1" class="page-link">First</a></li>
+                        <% } %>
+                        <% var i = (Number(current) > 3 ? Number(current) - 3 : 1) %>
+                        <% if (i !== 1) { %>
+                        <li class="disabled page-item"><a href="javascript:void(0);" class="page-link">...</a>
+                        </li>
+                        <% } %>
+                        <% for (; i <= (Number(current) + 2) && i <= pages; i++) { %>
+                        <% if (i == current) { %>
+                        <li class="diabled page-item active"><a href="javascript:void(0)" style="cursor:default;"
+                                class="page-link"><%= i %></a></li>
+                        <% } else { %>
+                        <li class="page-item"><a href="?page=<%= i %>" class="page-link"><%= i %></a></li>
+                        <% } %>
+                        <% if (i == Number(current) + 2 && i < pages) { %>
+                        <li class="disabled page-item"><a href="javascript:void(0);" class="page-link">...</a>
+                        </li>
+                        <% } %>
+                        <% } %>
+                        <% if (current == pages) { %>
+                        <li class="disabled page-item"><a href="javascript:void(0);" class="page-link">Last</a>
+                        </li>
+                        <% } else { %>
+                        <li class="page-item"><a href="?page=<%= pages %>" class="page-link">Last</a></li>
+                        <% } %>
+                    </ul>
                 </div>
+                <div class="clearfix"></div>
+                <% } %>
+            </div>
         </div>
         <!--Manage Product List End-->
     </div>
@@ -232,81 +243,81 @@
 </div><!-- Footer Section End -->
 
 <div id="cdn-browser-modal" class="modal fade" style="z-index: 9999;">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div id="cdn-browser" class="cdn-browser d-flex flex-column" v-cloak>
-                    <div class="files-nav flex-shrink-0">
-                        <div class="d-flex justify-content-between">
-                            <div class="col-left d-flex align-items-center">
-                                <div class="filter-item">
-                                    <input type="text" placeholder="Search file name...." class="form-control"
-                                        v-model="filter.s" @keyup.enter="filter.page = 1;reloadLists()">
-                                </div>
-                                <div class="filter-item">
-                                    <button class="btn btn-default" @click="filter.page = 1;reloadLists()">
-                                        <i class="fa fa-search"></i> Search</button>
-                                </div>
-                                <div class="filter-item">
-                                    <small><i>Total: {{total}} files</i></small>
-                                </div>
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div id="cdn-browser" class="cdn-browser d-flex flex-column" v-cloak>
+                <div class="files-nav flex-shrink-0">
+                    <div class="d-flex justify-content-between">
+                        <div class="col-left d-flex align-items-center">
+                            <div class="filter-item">
+                                <input type="text" placeholder="Search file name...." class="form-control"
+                                    v-model="filter.s" @keyup.enter="filter.page = 1;reloadLists()">
                             </div>
-                            <div class="col-right">
-                                <i class="fa-spin fa fa-spinner icon-loading"></i>
-                                <button class="btn btn-success btn-pick-files">
-                                    <span><i class="fa fa-upload"></i> Upload</span>
-                                    <input multiple type="file" name="files[]" ref="files">
-                                </button>
+                            <div class="filter-item">
+                                <button class="btn btn-default" @click="filter.page = 1;reloadLists()">
+                                    <i class="fa fa-search"></i> Search</button>
+                            </div>
+                            <div class="filter-item">
+                                <small><i>Total: {{total}} files</i></small>
                             </div>
                         </div>
-                    </div>
-                    <div class="upload-new" v-show="showUploader" display="none">
-                        <input type="file" name="filepond[]" class="my-pond">
-                    </div>
-                    <div class="files-list">
-                        <div class="files-wraps " :class="'view-'+viewType">
-                            <file-item v-for="(file,index) in files" :key="index" :view-type="viewType" :selected="selected"
-                                :file="file" v-on:select-file="selectFile"></file-item>
-                        </div>
-                        <p class="no-files-text text-center" v-show="!total && apiFinished" style="display: none">No file
-                            found</p>
-                        <div class="text-center" v-if="totalPage > 1">
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination">
-                                    <li class="page-item" :class="{disabled:filter.page <= 1}">
-                                        <a class="page-link" v-if="filter.page <=1">Previous</a>
-                                        <a class="page-link" href="#" v-if="filter.page > 1"
-                                            v-on:click="changePage(filter.page-1,$event)">Previous</a>
-                                    </li>
-                                    <li class="page-item" v-if="p >= (filter.page-3) && p <= (filter.page+3)"
-                                        :class="{active: p == filter.page}" v-for="p in totalPage"
-                                        @click="changePage(p,$event)">
-                                        <a class="page-link" href="#">{{p}}</a></li>
-                                    <li class="page-item" :class="{disabled:filter.page >= totalPage}">
-                                        <a v-if="filter.page >= totalPage" class="page-link">Next</a>
-                                        <a href="#" class="page-link" v-if="filter.page < totalPage"
-                                            v-on:click="changePage(filter.page+1,$event)">Next</a>
-                                    </li>
-                                </ul>
-                            </nav>
+                        <div class="col-right">
+                            <i class="fa-spin fa fa-spinner icon-loading"></i>
+                            <button class="btn btn-success btn-pick-files">
+                                <span><i class="fa fa-upload"></i> Upload</span>
+                                <input multiple type="file" name="files[]" ref="files">
+                            </button>
                         </div>
                     </div>
-                    <div class="browser-actions d-flex justify-content-between flex-shrink-0" v-if="selected.length">
-                        <div class="col-left" v-show="selected.length">
-                            <div v-if="selected && selected.length">
-                                <div class="count-selected">{{selected.length}} file selected</div>
-                                <div class="clear-selected" @click="selected=[]"><i>unselect</i></div>
-                            </div>
+                </div>
+                <div class="upload-new" v-show="showUploader" display="none">
+                    <input type="file" name="filepond[]" class="my-pond">
+                </div>
+                <div class="files-list">
+                    <div class="files-wraps " :class="'view-'+viewType">
+                        <file-item v-for="(file,index) in files" :key="index" :view-type="viewType" :selected="selected"
+                            :file="file" v-on:select-file="selectFile"></file-item>
+                    </div>
+                    <p class="no-files-text text-center" v-show="!total && apiFinished" style="display: none">No file
+                        found</p>
+                    <div class="text-center" v-if="totalPage > 1">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <li class="page-item" :class="{disabled:filter.page <= 1}">
+                                    <a class="page-link" v-if="filter.page <=1">Previous</a>
+                                    <a class="page-link" href="#" v-if="filter.page > 1"
+                                        v-on:click="changePage(filter.page-1,$event)">Previous</a>
+                                </li>
+                                <li class="page-item" v-if="p >= (filter.page-3) && p <= (filter.page+3)"
+                                    :class="{active: p == filter.page}" v-for="p in totalPage"
+                                    @click="changePage(p,$event)">
+                                    <a class="page-link" href="#">{{p}}</a></li>
+                                <li class="page-item" :class="{disabled:filter.page >= totalPage}">
+                                    <a v-if="filter.page >= totalPage" class="page-link">Next</a>
+                                    <a href="#" class="page-link" v-if="filter.page < totalPage"
+                                        v-on:click="changePage(filter.page+1,$event)">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="browser-actions d-flex justify-content-between flex-shrink-0" v-if="selected.length">
+                    <div class="col-left" v-show="selected.length">
+                        <div v-if="selected && selected.length">
+                            <div class="count-selected">{{selected.length}} file selected</div>
+                            <div class="clear-selected" @click="selected=[]"><i>unselect</i></div>
                         </div>
-                        <div class="col-right" v-show="selected.length">
-                            <button class="btn btn-success" :class="{disabled:!selected.length}" @click="sendFiles">Use
-                                file</button>
-                        </div>
+                    </div>
+                    <div class="col-right" v-show="selected.length">
+                        <button class="btn btn-success" :class="{disabled:!selected.length}" @click="sendFiles">Use
+                            file</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script type="text/x-template" id="file-item-template">
+</div>
+<script type="text/x-template" id="file-item-template">
         <div class="file-item" :class="fileClass(file)">
             <div class="inner" :class="{active:selected.indexOf(file._id) !== -1 }" @click="selectFile(file)" :title="file.file_name.split('/').pop()">
                 <div class="file-thumb" v-if="viewType=='grid'" v-html="getFileThumb(file)">
@@ -332,13 +343,13 @@
 <script src="/assets/js/plugins/tippy4.min.js.js"></script>
 <!--Main JS-->
 <script src="/assets/js/main.js"></script>
-<script src="/assets/js/plugins/nice-select/jquery.nice-select.min.js"></script> 
+<script src="/assets/js/plugins/nice-select/jquery.nice-select.min.js"></script>
 <script src="/js/vue.min.js"></script>
-<script src="/js/upload.js"></script> 
+<script src="/js/upload.js"></script>
 <script>
-    $(document).ready(function() {
-  $('select').niceSelect();
-});
+    $(document).ready(function () {
+        $('select').niceSelect();
+    });
 </script>
 
 <script>

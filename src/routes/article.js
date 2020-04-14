@@ -1,4 +1,5 @@
 import express from "express";
+import User from "../models/users";
 import Article from "../models/articles";
 import Category from "../models/category";
 import Comment from "../models/comment";
@@ -18,6 +19,8 @@ router.post(
   async (req, res, next) => {
     let search = await Article.find({ title: req.body.title });
     let slug = await Article.findOne({ slug: req.body.slug });
+    let content = req.body.body;
+    let textLength = content.split(/\s/g).length;
     let set = await Settings.findOne();
     Date.prototype.getWeek = function () {
       let dt = new Date(this.getFullYear(), 0, 1);
@@ -53,6 +56,13 @@ router.post(
             req.flash(
               "success_msg",
               "That slug has been used, pls used another slug or just leave the field empty"
+            );
+            return res.redirect("back");
+          }
+          if (textLength < 200) {
+            req.flash(
+              "success_msg",
+              "Das sieht doch garnicht mal so schlecht aus! Dennoch solltest du mindestens 200 Wörter schreiben, um deinen Lesern einen Mehrwert zu bieten"
             );
             return res.redirect("back");
           }
@@ -368,6 +378,15 @@ router.post(
   auth,
   (req, res, next) => {
     try {
+      let content = req.body.body;
+      let textLength = content.split(/\s/g).length;
+      if (textLength < 200) {
+        req.flash(
+          "success_msg",
+          "Das sieht doch garnicht mal so schlecht aus! Dennoch solltest du mindestens 200 Wörter schreiben, um deinen Lesern einen Mehrwert zu bieten"
+        );
+        return res.redirect("back");
+      }
       req.body.tags ? (req.body.tags = req.body.tags.split(",")) : undefined;
       req.body.showPostOnSlider = req.body.showPostOnSlider ? true : false;
       req.body.addToFeatured = req.body.addToFeatured ? true : false;
@@ -408,8 +427,8 @@ router.post(
           Article.updateOne({ _id: req.body.articleId.trim() }, req.body)
             .then(updated => {
               req.flash("success_msg", "Article has been updated successfully");
-              if(req.user.roleId == "admin"){
-              return res.redirect(`/dashboard/all-posts/edit/${req.body.slug}`);
+              if (req.user.roleId == "admin") {
+                return res.redirect(`/dashboard/all-posts/edit/${req.body.slug}`);
               } else {
                 return res.redirect(`/user/all-posts/edit/${req.body.slug}`);
               }
@@ -534,7 +553,7 @@ router.post(
   }
 );
 router.get("/publisher/:user/:category/:slug", install.redirectToLogin, async (req, res, next) => {
-  try { 
+  try {
     let settings = await Settings.findOne();
     let user = req.params.user;
     let slug = req.params.slug;
@@ -616,16 +635,33 @@ router.get("/publisher/:user/:category/:slug", install.redirectToLogin, async (r
       let art = await Article.findOne({ slug: req.params.slug, active: true });
       let next = await Article.find({
         active: true,
-        _id: { $gt: article[0]._id }
-      })
-        .sort({ _id: 1 })
+        _id: { $gt: article[0]._id },
+        category: article[0].category._id,
+        postedBy: article[0].postedBy._id
+      }).populate(
+        "category"
+      ).populate("postedBy").sort({ _id: 1 })
         .limit(1);
+      if (next.length == 0) {
+        next = await Article.find({
+          active: true,
+        }).populate("category").populate("postedBy").sort({ _id: 1 }).limit(1);
+      }
       let previous = await Article.find({
         active: true,
-        _id: { $lt: article[0]._id }
-      })
+        _id: { $lt: article[0]._id },
+        category: article[0].category._id,
+        postedBy: article[0].postedBy._id
+      }).populate(
+        "category"
+      ).populate('postedBy')
         .sort({ _id: 1 })
         .limit(1);
+      if (previous.length == 0) {
+        previous = await Article.find({
+          active: true,
+        }).populate("category").populate("postedBy").sort({ _id: 1 }).limit(1);
+      }
       let featured = await Article.find({
         active: true,
         slug: { $ne: article[0].slug },
@@ -663,13 +699,15 @@ router.get("/publisher/:user/:category/:slug", install.redirectToLogin, async (r
         req.connection.remoteAddress ||
         req.socket.remoteAddress ||
         (req.connection.socket ? req.connection.socket.remoteAddress : null);
+      let articleCount = await Article.count();
       if (art.viewers.indexOf(ips) !== -1) {
         res.render("single", {
+          articleCount: articleCount,
           title: article[0].title,
           article: article[0],
           settings: settings,
-          previous: previous,
-          next: next,
+          previous: previous[0],
+          next: next[0],
           featured: featured,
           popular: popular,
           recommended: recommended,
@@ -687,17 +725,19 @@ router.get("/publisher/:user/:category/:slug", install.redirectToLogin, async (r
           { slug: req.params.slug.trim() },
           { $push: { viewers: ip } }
         );
+
         Article.updateOne(
           { slug: req.params.slug.trim() },
           { $inc: { views: 1 } }
         )
           .then(views => {
             res.render("single", {
+              articleCount: articleCount,
               title: article[0].title,
               article: article[0],
               settings: settings,
-              previous: previous,
-              next: next,
+              previous: previous[0],
+              next: next[0],
               featured: featured,
               popular: popular,
               recommended: recommended,
@@ -794,16 +834,35 @@ router.get("/dype/:category/:slug", install.redirectToLogin, async (req, res, ne
       let art = await Article.findOne({ slug: req.params.slug, active: true });
       let next = await Article.find({
         active: true,
-        _id: { $gt: article[0]._id }
-      })
-        .sort({ _id: 1 })
+        _id: { $gt: article[0]._id },
+        category: article[0].category._id,
+        postedBy: article[0].postedBy._id
+      }).populate(
+        "category"
+      ).populate("postedBy").sort({ _id: 1 })
         .limit(1);
+      if (next.length == 0) {
+        let index = Math.floor(Math.random() * 100 % 28);
+        next = await Article.find({
+          active: true,
+        }).populate("category").populate("postedBy").sort({ _id: 1 }).limit(1).skip(index);
+      }
       let previous = await Article.find({
         active: true,
-        _id: { $lt: article[0]._id }
-      })
+        _id: { $lt: article[0]._id },
+        category: article[0].category._id,
+        postedBy: article[0].postedBy._id
+      }).populate(
+        "category"
+      ).populate('postedBy')
         .sort({ _id: 1 })
         .limit(1);
+      if (previous.length == 0) {
+        let index = Math.floor(Math.random() * 100 % 28);
+        previous = await Article.find({
+          active: true,
+        }).populate("category").populate("postedBy").sort({ _id: 1 }).limit(1).skip(index);
+      }
       let featured = await Article.find({
         active: true,
         slug: { $ne: article[0].slug },
@@ -841,13 +900,15 @@ router.get("/dype/:category/:slug", install.redirectToLogin, async (req, res, ne
         req.connection.remoteAddress ||
         req.socket.remoteAddress ||
         (req.connection.socket ? req.connection.socket.remoteAddress : null);
+      let articleCount = await Article.count();
       if (art.viewers.indexOf(ips) !== -1) {
         res.render("single", {
+          articleCount: articleCount,
           title: article[0].title,
           article: article[0],
           settings: settings,
-          previous: previous,
-          next: next,
+          previous: previous[0],
+          next: next[0],
           featured: featured,
           popular: popular,
           recommended: recommended,
@@ -871,11 +932,12 @@ router.get("/dype/:category/:slug", install.redirectToLogin, async (req, res, ne
         )
           .then(views => {
             res.render("single", {
+              articleCount: articleCount,
               title: article[0].title,
               article: article[0],
               settings: settings,
-              previous: previous,
-              next: next,
+              previous: previous[0],
+              next: next[0],
               featured: featured,
               popular: popular,
               recommended: recommended,
@@ -1074,6 +1136,17 @@ router.post("/article/upvote", auth, async (req, res, next) => {
   );
   // res.status(200).send("Post Has been Upvoted");
   return res.redirect(`back`);
+});
+router.post('/article/upvote-ajax', auth, async (req, res, next) => {
+  let articleId = req.body.articleId;
+  let userId = req.body.userId;
+  await Article.updateOne(
+    { _id: req.body.articleId },
+    { $push: { "update.users": req.user.id }, $inc: { "upvote.count": 1 } }
+  );
+  let article = await Article.findOne({ _id: articleId });
+  let upvotecount = article.upvote.count;
+  res.json(upvotecount);
 });
 
 // Downvote a post

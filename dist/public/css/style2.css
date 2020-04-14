@@ -3467,7 +3467,7 @@
 .inner-dark-blog-content-one img {
   height: auto !important;
   object-fit: cover !important;
-  max-width: 100% !important;
+  max-width: 800px !important;
   display: block;
   margin-right: auto;
   margin-left: auto;

@@ -51,6 +51,19 @@
             text-transform: capitalize;
             display: block;
         }
+        @media screen and (max-width: 1000px) {
+            .header-logo{
+                display: none;
+            }
+        }
+        @media screen and (min-width: 1000px) {
+            .header-logo {
+                display: block;
+            }
+            .mobile-logo {
+                display: none;
+            }
+        }
     </style>
 </head>
 
@@ -67,8 +80,7 @@
                     <!-- Header Logo (Header Left) Start -->
                     <div class="header-logo col-auto">
                         <a href="/dashboard/index">
-                            <img src="<%= siteLogo %>" alt="">
-                            <img src="<%= siteLogo %>" class="logo-light" alt="">
+                            <img src="/images/GOLDEN-PNG.png" alt="">
                         </a>
                     </div><!-- Header Logo (Header Left) End -->
 
@@ -82,7 +94,9 @@
 
                                     <!--Side Header Toggle-->
                                     <div class="col-auto"><button class="side-header-toggle"><i class="zmdi zmdi-menu"></i></button></div>
-
+                                    <a class="mobile-logo" href="/user/dashboard">
+                                        <img src="/images/GOLDEN-PNG.png" alt="" style="height: 35px;">
+                                    </a>
                                     <!--Header Search-->
                                     <!-- <div class="col-auto">
 

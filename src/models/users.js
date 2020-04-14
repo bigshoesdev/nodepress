@@ -23,6 +23,11 @@ const userSchema = new Schema(
       type: Boolean,
       default: false
     },
+    paid: {
+      type: String,
+      enum: ["free", "paid"],
+      default: "free"
+    },
     roleId: {
       type: String,
       enum: ["admin", "user"],
@@ -47,7 +52,14 @@ const userSchema = new Schema(
     instagramId: String,
     googleId: String,
     vkontakteId: String,
-    following: Array
+    appleId: String,
+    following: Array,
+    fromgoogle: String,
+    fromfacebook: String,
+    fromlinkedin: String,
+    frominstagram: String,
+    fromother: String,
+    signupProcess: String
   },
   { timestamps: true }
 );

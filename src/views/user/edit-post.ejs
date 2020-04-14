@@ -31,8 +31,7 @@
 
         <div class="col-12 col-lg-auto mb-20 text-right">
             <div class="page-heading">
-
-                <a href="/publisher/<%= user.username.toLowerCase()%>/<%= article.category.name.replace(/ /g, '-').toLowerCase();%>/<%= article.slug %>" target="_blank"><button
+                <a href="/publisher/<%= user.username.toLowerCase()%>/<%= article.category.slug.toLowerCase();%>/<%= article.slug %>" target="_blank"><button
                         class="btn btn-primary">View Post</button></a>
             </div>
         </div>
@@ -85,7 +84,7 @@
                         <input type="hidden" name="file" value="<%= article.file %>" id="image">
                         <div class="form-group mt-4">
                             <label for="">Content</label>
-                            <textarea name="body" id="body" cols="30" rows="20"><%- article.body %></textarea>
+                            <textarea name="body" id="body" cols="30" rows="20" minlength="800"><%- article.body %></textarea>
                         </div>
                     </div>
                 </div>
