@@ -102,6 +102,11 @@ function upvote() {
       }
    });
 }
+
+$(document).on('mousedown touchstart', '.mobile-upvote', function(){
+   upvote();
+});
+
 $('.mobile-upvote').click(function () {
    upvote();
 });

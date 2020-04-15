@@ -4,9 +4,6 @@
 <head>
     <title><%= article.title%></title>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="<%= article.summary %>">
     <meta name="msapplication-TileColor" content="#ffffff">
@@ -16,10 +13,9 @@
     <meta itemprop="name" content="<%= article.title%>">
     <meta itemprop="description" content="<%= article.summary%>">
     <meta itemprop="image" content="<%= article.file%>">
-    
+
     <link rel="canonical" href="<%= siteLink %>" />
     <link rel="alternate" href="/" hreflang="en-US" />
-    <link rel="shortcut icon" href="<%= favicon %>" type="image/x-icon">
     <script type="application/ld+json">
             {
               "@context": "http://schema.org",
@@ -440,7 +436,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="dropup-mobile">
-                                                            <button type="button" class="dropbtn mobile-upvote" click="upvote()"><i
+                                                            <button type="button" class="dropbtn mobile-upvote"><i
                                                                     class="fa fa-arrow-up"
                                                                     aria-hidden="true"></i><br><p id="upvotemobileCount"><%= article.upvote.count%>
                                                                 </p></button>
