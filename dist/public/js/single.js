@@ -103,7 +103,7 @@ function upvote() {
    });
 }
 
-$(document).on('mousedown touchstart', '.mobile-upvote', function(){
+$(document).on('touchstart', '.mobile-upvote', function(){
    upvote();
 });
 
