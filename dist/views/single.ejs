@@ -310,13 +310,13 @@
                                         <div class="dark-blog-previous-posts-content">
                                             <h5>Letzten Artikel ansehen</h5>
                                             <% if(previous.postedBy.roleId == "admin") {%>
-                                            <a href="/dype/<%= previous.category.name.replace(/ /g, '-').toLowerCase();%>/<%= previous.slug %>"
+                                            <a href="/d/<%= previous.category.slug.toLowerCase();%>/<%= previous.slug %>"
                                                 target="_blank">
                                                 <h2>
                                                     <%= previous.title%></h2>
                                             </a>
                                             <% } else {%>
-                                            <a href="/publisher/<%= previous.postedBy.username.toLowerCase()%>/<%= previous.category.name.replace(/ /g, '-').toLowerCase();%>/<%= previous.slug %>"
+                                            <a href="/p/<%= previous.category.slug.toLowerCase();%>/<%= previous.slug %>"
                                                 target="_blank">
                                                 <h2>
                                                     <%= previous.title%></h2>
@@ -330,13 +330,13 @@
                                             <div class="dark-blog-next-posts-content">
                                                 <h5>Nächsten Artikel ansehen</h5>
                                                 <% if(next.postedBy.roleId == "admin") {%>
-                                                <a href="/dype/<%= next.category.name.replace(/ /g, '-').toLowerCase();%>/<%= next.slug %>"
+                                                <a href="/d/<%= next.category.slug.toLowerCase();%>/<%= next.slug %>"
                                                     target="_blank">
                                                     <h2>
                                                         <%= next.title%></h2>
                                                 </a>
                                                 <% } else {%>
-                                                <a href="/publisher/<%= next.postedBy.username.toLowerCase()%>/<%= next.category.name.replace(/ /g, '-').toLowerCase();%>/<%= next.slug %>"
+                                                <a href="/p/<%= next.category.slug.toLowerCase();%>/<%= next.slug %>"
                                                     target="_blank">
                                                     <h2>
                                                         <%= next.title%></h2>
@@ -425,13 +425,13 @@
                                                             <button class="dropbtn"><i class="fa fa-share-alt"
                                                                     aria-hidden="true"></i></button>
                                                             <div class="dropup-content">
-                                                                <a href="#"><i class="fa fa-pinterest"
+                                                                <a href="http://pinterest.com/pin/create/bookmarklet/?media=<%= article.file%>&url=https://dype.me/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>&description=<%= article.title%>"><i class="fa fa-pinterest"
                                                                         aria-hidden="true"></i></a>
-                                                                <a href="#"><i class="fa fa-linkedin"
+                                                                <a href="http://www.linkedin.com/shareArticle?mini=true&url=https://dype.me/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>&title=<%= article.title%>&source=https://dype.me"><i class="fa fa-linkedin"
                                                                         aria-hidden="true"></i></a>
-                                                                <a href="#"><i class="fa fa-twitter"
+                                                                <a href="http://twitter.com/intent/tweet?status=<%= article.title%>+https://dype.me/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>"><i class="fa fa-twitter"
                                                                         aria-hidden="true"></i></a>
-                                                                <a href="#"><i class="fa fa-facebook"
+                                                                <a href="http://www.facebook.com/sharer/sharer.php?u=https://dype.me/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>&title=<%= article.title%>"><i class="fa fa-facebook"
                                                                         aria-hidden="true"></i></a>
                                                             </div>
                                                         </div>
@@ -453,7 +453,7 @@
                 </form>
                 <div id="return-to-top">
                     <a href="javascript:void(0);" onclick="upvote()"><i class="fa fa-arrow-up" aria-hidden="true"></i>
-                        <p>Upvote</p>
+                        <p>Upvote <%= %></p>
                         <p id="upvoteCount"><%= article.upvote.count%></p>
                                                                     </a>
                                                                     <p style="font-weight: 800px; color: #797474;">Dark

@@ -30,12 +30,12 @@
                   <div class="recommnet-heading2">
                     <p style="overflow-wrap: break-word;font-size: 18px;">
                       <% if(post[i*3 + j].postedBy.roleId == "admin"){%>
-                        <a href="/dype/<%= post[i*3 + j].category.slug%>/<%= post[i*3 + j].slug %>"
+                        <a href="/d/<%= post[i*3 + j].category.slug%>/<%= post[i*3 + j].slug %>"
                           style="color:
                           black;"><%= post[i*3 + j].title.charAt(0).toUpperCase() + post[i*3 + j].title.substring(1) %>
                           </a>
                       <%} else {%>
-                      <a href="/publisher/<%= post[i*3 + j].postedBy.username.toLowerCase()%>/<%= post[i*3+j].category.slug.toLowerCase()%>/<%= post[i*3 + j].slug %>" style="color:
+                      <a href="/p/<%= post[i*3+j].category.slug.toLowerCase()%>/<%= post[i*3 + j].slug %>" style="color:
                           black;"><%= post[i*3 + j].title.charAt(0).toUpperCase() + post[i*3 + j].title.substring(1) %>
                       </a>
                       <%}%>

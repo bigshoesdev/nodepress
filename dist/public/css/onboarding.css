@@ -30,9 +30,18 @@
 .show-more-text {
    text-align: right;
    margin: 50px;
-   font-size: 25px;
+   font-size: 16px;
 }
 
 .save-button {
    display: block;
+}
+.show-more-button {
+   background: white;
+    border-radius: 5px;
+    border: 1px solid blue;
+    padding: 10px;
+}
+.show-more-button:hover {
+   background: rgb(231, 231, 231);
 }

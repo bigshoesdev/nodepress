@@ -32,16 +32,15 @@
          </div>
          <div class="row">
             <div class="col-12">
-               <div class="show-more-text">..und viele weitere Kategorien</div>
+               <div class="show-more-text"><button class="show-more-button">..und viele weitere Kategorien</button></div>
             </div>
          </div>
-         
          <div class="row save-button">
             <form action="/choose-category" method="POST">
             <div class="next-btn">
                <input type="hidden" name="categoryCount" id="categoryCount" value="<%= categoryCount%>" />
             <input type="hidden" name="categoryList" id="categoryList" />
-            <button type="submit">Save and Continue</button>
+            <button type="submit">Zeige mir weitere Kategorien</button>
          </div>
          </form>
       </div>
