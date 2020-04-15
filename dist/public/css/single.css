@@ -254,3 +254,13 @@ h6 a {
    padding-left: 10px;
    cursor: pointer;
 }
+
+.mobile-upvote{
+   background-color: #efefef;
+}
+.mobile-upvote i {
+   color: #3452ff;
+}
+.mobile-upvote p {
+   color: gray;
+}
