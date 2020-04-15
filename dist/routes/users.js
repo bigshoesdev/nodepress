@@ -651,7 +651,7 @@ router.get("/verify-account", _install["default"].redirectToLogin, checkIfLogged
                       if (set.autoLogin) {
                         req.logIn(user, function (err, user) {
                           if (err) return next(err);
-                          return res.redirect("/afterlogin");
+                          return res.redirect('/enterinformation');
                         });
                       } else {
                         req.flash("success_msg", "Account Verified Successfully, you can now login.");
