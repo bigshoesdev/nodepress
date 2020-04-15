@@ -435,7 +435,7 @@
                                                         <div class="dropup-mobile">
                                                             <button type="button" class="dropbtn mobile-upvote" click="upvote()"><i
                                                                     class="fa fa-arrow-up"
-                                                                    aria-hidden="true"></i><br><%= article.upvote.count%></button>
+                                                                    aria-hidden="true"></i><br><p id="upvotemobileCount"><%= article.upvote.count%></p></button>
                                                         </div>
                                                         <div class="upvote-btn">
                                                             <form action="/article/upvote" method="POST"
