@@ -99,7 +99,6 @@ function upvote() {
       data: { articleId: articleId, userId: uId },
       success: function (data) {
          $('#upvoteCount').text(data);
-         $('#upvotemobileCount').text(data);
       }
    });
 }

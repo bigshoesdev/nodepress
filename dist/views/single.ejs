@@ -5,13 +5,12 @@
     <title><%= article.title%></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="<%= article.summary %>">
+    <meta name="description" content="<%= article.metadescription %>">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="<%= siteLink%><%= article.file %>">
     <meta name="theme-color" content="#ffffff">
-
-    <meta itemprop="name" content="<%= article.title%>">
-    <meta itemprop="description" content="<%= article.summary%>">
+    <meta itemprop="name" content="<%= article.metatitle%>">
+    <meta itemprop="description" content="<%= article.metadescription%>">
     <meta itemprop="image" content="<%= article.file%>">
 
     <link rel="canonical" href="<%= siteLink%>" />
@@ -20,24 +19,24 @@
             {
               "@context": "http://schema.org",
               "@type": "WebSite",
-              "name": "<%= article.title %>",
+              "name": "<%= article.metatitle %>",
               "url": "<%= siteLink%>",
-              "description": "<%= article.summary %>",
+              "description": "<%= article.metadescription %>",
               "image": "<%= article.file %>"
             }
         </script>
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="<%= article.title%>" />
+    <meta property="og:title" content="<%= article.metatitle%>" />
     <meta property="og:url" content="<%= siteLink%>" />
     <meta property="og:image" content="<%= article.file %>" />
-    <meta property="og:description" content="<%= article.summary%>">
+    <meta property="og:description" content="<%= article.metadescription%>">
     <meta property="og:site_name" content="<%= article.title%>" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@<%= article.title%>" />
     <meta name="twitter:creator" content="@<%= article.postedBy.username %>" />
-    <meta name="twitter:title" content="<%= article.title %>" />
-    <meta name="twitter:description" content="<%= article.summary %>" />
+    <meta name="twitter:title" content="<%= article.metatitle %>" />
+    <meta name="twitter:description" content="<%= article.metadescription %>" />
     <meta name="twitter:image" content="<%= siteLink%><%= article.file %>" />
     <meta name="twitter:domain" content="<%= siteLink%>" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">

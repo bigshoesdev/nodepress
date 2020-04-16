@@ -2693,7 +2693,7 @@
 }
 
 .onboarding-banner {
-  height: 500px;
+  height: 800px;
   display: flex;
   align-items: center;
   padding-top: 70px;
@@ -3493,11 +3493,6 @@ li {
   border-left: 5px solid gray;
   padding-left: 10px;
   padding-top: 50px;
-  user-select: none; /* supported by Chrome and Opera */
-  -webkit-user-select: none; /* Safari */
-  -khtml-user-select: none; /* Konqueror HTML */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
 }
 .inner-dark-blog-content-one p {
   font-family: "EB Garamond";

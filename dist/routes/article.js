@@ -110,6 +110,8 @@ router.post("/article/create", _install["default"].redirectToLogin, _auth["defau
               month: "".concat(months[newDate.getMonth()]),
               year: "".concat(newDate.getFullYear()),
               title: req.body.title.trim(),
+              metatitle: req.body.metatitle,
+              metadescription: req.body.metadescription,
               body: req.body.body.trim(),
               summary: req.body.summary.trim(),
               keywords: req.body.keywords.trim(),
@@ -456,11 +458,11 @@ router.post("/article/deletemany", _install["default"].redirectToLogin, _auth["d
             }
 
             req.flash("success_msg", "Nothing Has Been Deleted");
-            return _context3.abrupt("return", res.redirect("/dashboard/all-posts"));
+            return _context3.abrupt("return", res.redirect('back'));
 
           case 10:
             req.flash("success_msg", "Posts Has Been Deleted");
-            return _context3.abrupt("return", res.redirect("/dashboard/all-posts"));
+            return _context3.abrupt("return", res.redirect('back'));
 
           case 12:
             _context3.next = 17;
@@ -771,7 +773,7 @@ router.get("/p/:category/:slug", _install["default"].redirectToLogin, /*#__PURE_
             customDate = "".concat(d.getDate(), "/").concat(d.getMonth(), "/").concat(d.getFullYear());
             ips = req.headers["x-forwarded-for"] || req.connection.remoteAddress || req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null);
             _context4.next = 57;
-            return _articles["default"].count();
+            return _articles["default"].countDocuments();
 
           case 57:
             articleCount = _context4.sent;
@@ -1096,7 +1098,7 @@ router.get("/d/:category/:slug", _install["default"].redirectToLogin, /*#__PURE_
             customDate = "".concat(d.getDate(), "/").concat(d.getMonth(), "/").concat(d.getFullYear());
             ips = req.headers["x-forwarded-for"] || req.connection.remoteAddress || req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null);
             _context5.next = 56;
-            return _articles["default"].count();
+            return _articles["default"].countDocuments();
 
           case 56:
             articleCount = _context5.sent;

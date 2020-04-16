@@ -11,6 +11,8 @@ var articleSchema = new Schema({
     ref: "User"
   },
   title: String,
+  metatitle: String,
+  metadescription: String,
   body: String,
   file: String,
   slug: String,

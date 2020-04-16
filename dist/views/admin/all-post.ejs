@@ -103,6 +103,7 @@
         transition: all ease-in-out 200ms;
         font-weight: 500 !important;
     }
+
     .btn-bsa {
         background: #acbb16;
         color: #fff;
@@ -128,16 +129,16 @@
         </div><!-- Page Heading End -->
 
         <div class="col-md-4 text-right">
-                <div class="dropdown">
-                        <a href="javascript:void(0);" class="btn text-white button button-info dropdown-toggle btn-sm"
-                            data-toggle="dropdown" aria-expanded="false">Add New</a>
-                        <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-start"
-                            style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 40px, 0px);">
-                            <a class="dropdown-item" href="/dashboard/posts/add-new">Add New Article</a>
-                            <a class="dropdown-item" href="/dashboard/posts/add-new-audio">Add new Audio</a>
-                            <a class="dropdown-item" href="/dashboard/posts/add-new-video">Add new Video</a>
-                        </div>
-                    </div>
+            <div class="dropdown">
+                <a href="javascript:void(0);" class="btn text-white button button-info dropdown-toggle btn-sm"
+                    data-toggle="dropdown" aria-expanded="false">Add New</a>
+                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-start"
+                    style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 40px, 0px);">
+                    <a class="dropdown-item" href="/dashboard/posts/add-new">Add New Article</a>
+                    <a class="dropdown-item" href="/dashboard/posts/add-new-audio">Add new Audio</a>
+                    <a class="dropdown-item" href="/dashboard/posts/add-new-video">Add new Video</a>
+                </div>
+            </div>
         </div>
 
     </div><!-- Page Headings End -->
@@ -163,26 +164,30 @@
             </div>
         </div><!-- Page Heading End -->
         <div class="col-md-3 mb-20">
-                <div class="form-group">
-                    <select id="searchByCategory" class="form-control form-control-sm" onchange="window.location.href = window.origin + '/dashboard/all-posts?category=' + this.value" required>
-                        <option selected="selected" disabled="disabled">-- Filter By Category --</option>
-                        <% for(let item of category2) { %>
-    
-                        <option value="<%= item.name %>"><%= item.name %></option>
-                        <% } %>
-                    </select>
-                </div>
+            <div class="form-group">
+                <select id="searchByCategory" class="form-control form-control-sm"
+                    onchange="window.location.href = window.origin + '/dashboard/all-posts?category=' + this.value"
+                    required>
+                    <option selected="selected" disabled="disabled">-- Filter By Category --</option>
+                    <% for(let item of category2) { %>
+
+                    <option value="<%= item.name %>"><%= item.name %></option>
+                    <% } %>
+                </select>
             </div>
+        </div>
         <!-- Page Heading Start -->
         <div class="col-md-5  mb-20">
-                <form action="/dashboard/all-posts" method="GET">
-                        <div class="input-group">
-                                <input type="search" name="q" class="form-control" placeholder="Search by Title.." aria-describedby="button-addon2" required>
-                                <div class="input-group-append">
-                                    <button class="btn btn-bsa noBorderRadius" id="button-addon2" id="search"><i class="icofont-search-2 mr-1"></i></button>
-                                </div>
-                            </div>
-                </form>
+            <form action="/dashboard/all-posts" method="GET">
+                <div class="input-group">
+                    <input type="search" name="q" class="form-control" placeholder="Search by Title.."
+                        aria-describedby="button-addon2" required>
+                    <div class="input-group-append">
+                        <button class="btn btn-bsa noBorderRadius" id="button-addon2" id="search"><i
+                                class="icofont-search-2 mr-1"></i></button>
+                    </div>
+                </div>
+            </form>
             <!-- <div class="form-group ">
                 <input type="text" placeholder="Search By name" class="form-control form-control-sm" id="searchByName"
                     required>
@@ -208,9 +213,10 @@
                                 </th>
                                 <th>Title</th>
                                 <th>Category</th>
+                                <th>Article Type</th>
                                 <th>Post Type</th>
                                 <th>Author</th>
-                                <th>Comments</th>
+                                <!-- <th>Comments</th> -->
                                 <th>Date</th>
                                 <th>Status</th>
                             </tr>
@@ -221,24 +227,30 @@
                                 <td class="">
                                     <input type="checkbox" name="ids" value="<%= article[key]._id %>">
                                 </td>
-                                <td class="format" style="width: 160px;" data-toggle="tooltip"
-                                data-placement="bottom" title="Edit Post">
-                                    <a  href="/dashboard/all-posts/edit/<%= article[key].slug %>" >
+                                <td class="format" style="width: 160px;" data-toggle="tooltip" data-placement="bottom"
+                                    title="Edit Post">
+                                    <a href="/dashboard/all-posts/edit/<%= article[key].slug %>">
                                         <%= article[key].title %>
                                     </a>
                                 </td>
-                                
                                 <td><%= article[key].category.name %></td>
-                                <td>
-                                    <span class="badge badge-info"><%= article[key].postType %></span>
+                                <td class="text-center">
+                                    <% if(article[key].showOnlyToRegisteredUsers == true) {%>
+                                    <span class="badge badge-success">Qualified</span>
+                                    <%} else {%>
+                                    <span class="badge badge-warning">Free</span>
+                                    <%}%>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge badge-primary"><%= article[key].postType %></span>
                                 </td>
                                 <td><%= article[key].postedBy.email %></td>
-                                <td class="text-center">
-                                    <span class="count-comment">
+                                <!-- <td class="text-center"> -->
+                                    <!-- <span class="count-comment"> -->
                                         <!-- <i class="zmdi zmdi-comments"></i> -->
-                                        <%= article[key].comments.length %>
-                                    </span>
-                                </td>
+                                        <!-- <%= article[key].comments.length %> -->
+                                    <!-- </span> -->
+                                <!-- </td> -->
                                 <td><%= article[key].createdAt.toLocaleDateString() %></td>
                                 <td>
                                     <% if(article[key].active== true){ %>
@@ -256,48 +268,7 @@
         </div>
         <!--Manage Product List End-->
         <div class="container mt-4">
-            <% if(query == 'yes') { %> 
-                <% if (pages > 0) { %>
-                    <div class="pagination-container pagination-sm">
-                        <ul class="pagination">
-                            <% if (current == 1) { %>
-                            <li class="disabled page-item"><a href="javascript:void(0);" class="page-link">First</a>
-                            </li>
-                            <% } else { %>
-                            <li class="page-item"><a href="?category=<%=searchName %>&&page=1"
-                                    class="page-link">First</a></li>
-                            <% } %>
-                            <% var i = (Number(current) > 3 ? Number(current) - 3 : 1) %>
-                            <% if (i !== 1) { %>
-                            <li class="disabled page-item"><a href="javascript:void(0);" class="page-link">...</a>
-                            </li>
-                            <% } %>
-                            <% for (; i <= (Number(current) + 2) && i <= pages; i++) { %>
-                            <% if (i == current) { %>
-                            <li class="diabled page-item active"><a href="javascript:void(0)" style="cursor:default;"
-                                    class="page-link"><%= i %></a></li>
-                            <% } else { %>
-                            <li class="page-item"><a href="?category=<%=searchName %>&&page=<%= i %>"
-                                    class="page-link"><%= i %></a></li>
-                            <% } %>
-                            <% if (i == Number(current) + 2 && i < pages) { %>
-                            <li class="disabled page-item"><a href="javascript:void(0);" class="page-link">...</a>
-                            </li>
-                            <% } %>
-                            <% } %>
-                            <% if (current == pages) { %>
-                            <li class="disabled page-item"><a href="javascript:void(0);" class="page-link">Last</a>
-                            </li>
-                            <% } else { %>
-                            <li class="page-item"><a href="?category=<%=searchName %>&&page=<%= pages %>"
-                                    class="page-link">Last</a></li>
-                            <% } %>
-                        </ul>
-                    </div>
-                    <div class="clearfix"></div>
-                    <% } %>
-            <% } %>    
-            <% if(query == true) { %>
+            <% if(query == 'yes') { %>
             <% if (pages > 0) { %>
             <div class="pagination-container pagination-sm">
                 <ul class="pagination">
@@ -305,8 +276,7 @@
                     <li class="disabled page-item"><a href="javascript:void(0);" class="page-link">First</a>
                     </li>
                     <% } else { %>
-                    <li class="page-item"><a href="?q=<%=searchName %>&&page=1"
-                            class="page-link">First</a></li>
+                    <li class="page-item"><a href="?category=<%=searchName %>&&page=1" class="page-link">First</a></li>
                     <% } %>
                     <% var i = (Number(current) > 3 ? Number(current) - 3 : 1) %>
                     <% if (i !== 1) { %>
@@ -318,7 +288,7 @@
                     <li class="diabled page-item active"><a href="javascript:void(0)" style="cursor:default;"
                             class="page-link"><%= i %></a></li>
                     <% } else { %>
-                    <li class="page-item"><a href="?q=<%=searchName %>&&page=<%= i %>"
+                    <li class="page-item"><a href="?category=<%=searchName %>&&page=<%= i %>"
                             class="page-link"><%= i %></a></li>
                     <% } %>
                     <% if (i == Number(current) + 2 && i < pages) { %>
@@ -330,8 +300,48 @@
                     <li class="disabled page-item"><a href="javascript:void(0);" class="page-link">Last</a>
                     </li>
                     <% } else { %>
-                    <li class="page-item"><a href="?q=<%=searchName %>&&page=<%= pages %>"
+                    <li class="page-item"><a href="?category=<%=searchName %>&&page=<%= pages %>"
                             class="page-link">Last</a></li>
+                    <% } %>
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+            <% } %>
+            <% } %>
+            <% if(query == true) { %>
+            <% if (pages > 0) { %>
+            <div class="pagination-container pagination-sm">
+                <ul class="pagination">
+                    <% if (current == 1) { %>
+                    <li class="disabled page-item"><a href="javascript:void(0);" class="page-link">First</a>
+                    </li>
+                    <% } else { %>
+                    <li class="page-item"><a href="?q=<%=searchName %>&&page=1" class="page-link">First</a></li>
+                    <% } %>
+                    <% var i = (Number(current) > 3 ? Number(current) - 3 : 1) %>
+                    <% if (i !== 1) { %>
+                    <li class="disabled page-item"><a href="javascript:void(0);" class="page-link">...</a>
+                    </li>
+                    <% } %>
+                    <% for (; i <= (Number(current) + 2) && i <= pages; i++) { %>
+                    <% if (i == current) { %>
+                    <li class="diabled page-item active"><a href="javascript:void(0)" style="cursor:default;"
+                            class="page-link"><%= i %></a></li>
+                    <% } else { %>
+                    <li class="page-item"><a href="?q=<%=searchName %>&&page=<%= i %>" class="page-link"><%= i %></a>
+                    </li>
+                    <% } %>
+                    <% if (i == Number(current) + 2 && i < pages) { %>
+                    <li class="disabled page-item"><a href="javascript:void(0);" class="page-link">...</a>
+                    </li>
+                    <% } %>
+                    <% } %>
+                    <% if (current == pages) { %>
+                    <li class="disabled page-item"><a href="javascript:void(0);" class="page-link">Last</a>
+                    </li>
+                    <% } else { %>
+                    <li class="page-item"><a href="?q=<%=searchName %>&&page=<%= pages %>" class="page-link">Last</a>
+                    </li>
                     <% } %>
                 </ul>
             </div>
@@ -341,42 +351,42 @@
             <% } %>
 
             <% if (query == 'no') { %>
-                <% if (pages > 0) { %>
-                    <div class="pagination-container pagination-sm">
-                        <ul class="pagination">
-                            <% if (current == 1) { %>
-                            <li class="disabled page-item"><a href="javascript:void(0);" class="page-link">First</a>
-                            </li>
-                            <% } else { %>
-                            <li class="page-item"><a href="?page=1" class="page-link">First</a></li>
-                            <% } %>
-                            <% var i = (Number(current) > 3 ? Number(current) - 3 : 1) %>
-                            <% if (i !== 1) { %>
-                            <li class="disabled page-item"><a href="javascript:void(0);" class="page-link">...</a>
-                            </li>
-                            <% } %>
-                            <% for (; i <= (Number(current) + 2) && i <= pages; i++) { %>
-                            <% if (i == current) { %>
-                            <li class="diabled page-item active"><a href="javascript:void(0)" style="cursor:default;"
-                                    class="page-link"><%= i %></a></li>
-                            <% } else { %>
-                            <li class="page-item"><a href="?page=<%= i %>" class="page-link"><%= i %></a></li>
-                            <% } %>
-                            <% if (i == Number(current) + 2 && i < pages) { %>
-                            <li class="disabled page-item"><a href="javascript:void(0);" class="page-link">...</a>
-                            </li>
-                            <% } %>
-                            <% } %>
-                            <% if (current == pages) { %>
-                            <li class="disabled page-item"><a href="javascript:void(0);" class="page-link">Last</a>
-                            </li>
-                            <% } else { %>
-                            <li class="page-item"><a href="?page=<%= pages %>" class="page-link">Last</a></li>
-                            <% } %>
-                        </ul>
-                    </div>
-                    <div class="clearfix"></div>
+            <% if (pages > 0) { %>
+            <div class="pagination-container pagination-sm">
+                <ul class="pagination">
+                    <% if (current == 1) { %>
+                    <li class="disabled page-item"><a href="javascript:void(0);" class="page-link">First</a>
+                    </li>
+                    <% } else { %>
+                    <li class="page-item"><a href="?page=1" class="page-link">First</a></li>
                     <% } %>
+                    <% var i = (Number(current) > 3 ? Number(current) - 3 : 1) %>
+                    <% if (i !== 1) { %>
+                    <li class="disabled page-item"><a href="javascript:void(0);" class="page-link">...</a>
+                    </li>
+                    <% } %>
+                    <% for (; i <= (Number(current) + 2) && i <= pages; i++) { %>
+                    <% if (i == current) { %>
+                    <li class="diabled page-item active"><a href="javascript:void(0)" style="cursor:default;"
+                            class="page-link"><%= i %></a></li>
+                    <% } else { %>
+                    <li class="page-item"><a href="?page=<%= i %>" class="page-link"><%= i %></a></li>
+                    <% } %>
+                    <% if (i == Number(current) + 2 && i < pages) { %>
+                    <li class="disabled page-item"><a href="javascript:void(0);" class="page-link">...</a>
+                    </li>
+                    <% } %>
+                    <% } %>
+                    <% if (current == pages) { %>
+                    <li class="disabled page-item"><a href="javascript:void(0);" class="page-link">Last</a>
+                    </li>
+                    <% } else { %>
+                    <li class="page-item"><a href="?page=<%= pages %>" class="page-link">Last</a></li>
+                    <% } %>
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+            <% } %>
             <% } %>
         </div>
     </div>
