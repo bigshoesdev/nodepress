@@ -7,21 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="<%= article.summary %>">
     <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="<%= article.file %>">
+    <meta name="msapplication-TileImage" content="<%= siteLink%><%= article.file %>">
     <meta name="theme-color" content="#ffffff">
 
     <meta itemprop="name" content="<%= article.title%>">
     <meta itemprop="description" content="<%= article.summary%>">
     <meta itemprop="image" content="<%= article.file%>">
 
-    <link rel="canonical" href="https://dype.me" />
+    <link rel="canonical" href="<%= siteLink%>" />
     <link rel="alternate" href="/" hreflang="en-US" />
     <script type="application/ld+json">
             {
               "@context": "http://schema.org",
               "@type": "WebSite",
               "name": "<%= article.title %>",
-              "url": "https://dype.me",
+              "url": "<%= siteLink%>",
               "description": "<%= article.summary %>",
               "image": "<%= article.file %>"
             }
@@ -29,7 +29,7 @@
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="<%= article.title%>" />
-    <meta property="og:url" content="https://dype.me" />
+    <meta property="og:url" content="<%= siteLink%>" />
     <meta property="og:image" content="<%= article.file %>" />
     <meta property="og:description" content="<%= article.summary%>">
     <meta property="og:site_name" content="<%= article.title%>" />
@@ -38,11 +38,11 @@
     <meta name="twitter:creator" content="@<%= article.postedBy.username %>" />
     <meta name="twitter:title" content="<%= article.title %>" />
     <meta name="twitter:description" content="<%= article.summary %>" />
-    <meta name="twitter:image" content="https://dype.me<%= article.file %>" />
-    <meta name="twitter:domain" content="https://dype.me" />
+    <meta name="twitter:image" content="<%= siteLink%><%= article.file %>" />
+    <meta name="twitter:domain" content="<%= siteLink%>" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="https://dype.me<%= article.file %>">
+    <meta name="msapplication-TileImage" content="<%= siteLink%><%= article.file %>">
     <meta name="theme-color" content="#ffffff">
     <!-- css -->
     <link rel="stylesheet" href="/css/bootstrap.min.css" async>
@@ -444,11 +444,11 @@
                                                                             class="fa fa-linkedin"
                                                                             aria-hidden="true"></i></a>
                                                                     <a target="_blank"
-                                                                        href="http://twitter.com/intent/tweet?status=<%= article.title%>+https://dype.me/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>"><i
+                                                                        href="http://twitter.com/intent/tweet?status=<%= article.title%>+<%= siteLink%>/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>"><i
                                                                             class="fa fa-twitter"
                                                                             aria-hidden="true"></i></a>
                                                                     <a target="_blank"
-                                                                        href="http://www.facebook.com/sharer/sharer.php?u=https://dype.me/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>&title=<%= article.title%>"><i
+                                                                        href="http://www.facebook.com/sharer/sharer.php?u=http://dype.me/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>&title=<%= article.title%>"><i
                                                                             class="fa fa-facebook"
                                                                             aria-hidden="true"></i></a>
                                                             </div>
