@@ -97,7 +97,7 @@ set.then(function (data) {
   _passport["default"].use(new GoogleStrategy({
     clientID: data != null ? data.socialLogin.google.clientId !== undefined ? data.socialLogin.google.clientId : " " : " ",
     clientSecret: data != null ? data.socialLogin.google.clientSecret !== undefined ? data.socialLogin.google.clientSecret : " " : " ",
-    callbackURL: "/auth/google/callback"
+    callbackURL: "https://dype.me/auth/google/callback"
   }, function (accessToken, refreshToken, profile, done) {
     process.nextTick(function () {
       _users["default"].findOne({
