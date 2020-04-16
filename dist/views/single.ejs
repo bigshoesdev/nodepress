@@ -27,9 +27,9 @@
         </script>
     <meta name='robots' content='noindex,nofollow'>
     <meta property="og:locale" content="en_US" />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content="article" />
     <meta property="og:title" content="<%= article.metatitle%>" />
-    <meta property="og:url" content="<%= siteLink%>" />
+    <meta property="og:url" content="<%= siteLink%>/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>&title=<%= article.title%>" />
     <meta property="og:image" content="<%= siteLink%><%= article.file %>" />
     <meta property="og:description" content="<%= article.metadescription%>">
     <meta property="og:site_name" content="<%= article.metatitle%>" />
@@ -441,7 +441,7 @@
                                                                             class="fa fa-twitter"
                                                                             aria-hidden="true"></i></a>
                                                                     <a target="_blank"
-                                                                        href="https://www.facebook.com/sharer/sharer.php?u=http://dype.me/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>&title=<%= article.title%>"><i
+                                                                        href="https://www.facebook.com/sharer/sharer.php?u=<%= siteLink%>/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>&title=<%= article.title%>"><i
                                                                             class="fa fa-facebook"
                                                                             aria-hidden="true"></i></a>
                                                             </div>
