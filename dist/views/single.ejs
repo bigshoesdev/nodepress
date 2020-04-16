@@ -35,10 +35,10 @@
     <meta property="og:site_name" content="<%= article.title%>" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@<%= article.title%>" />
-    <meta name="twitter:creator" content="@<%= article.title %>" />
+    <meta name="twitter:creator" content="@<%= article.postedBy.username %>" />
     <meta name="twitter:title" content="<%= article.title %>" />
     <meta name="twitter:description" content="<%= article.summary %>" />
-    <meta name="twitter:image" content="<%= article.file %>" />
+    <meta name="twitter:image:src" content="<%= article.file %>" />
     <meta name="twitter:domain" content="<%= siteLink %>" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="msapplication-TileColor" content="#ffffff">
@@ -456,7 +456,6 @@
                                                         <div class="dropup-mobile">
                                                             <button type="button" class="dropbtn mobile-upvote"><i
                                                                     class="fa fa-arrow-up" aria-hidden="true"></i><br>
-                                                                <p id="upvotemobileCount"><%= article.upvote.count%>
                                                                 </p>
                                                             </button>
                                                         </div>
