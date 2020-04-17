@@ -12,6 +12,10 @@ var _express = _interopRequireDefault(require("express"));
 
 var _users = _interopRequireDefault(require("../models/users"));
 
+var _subscription = _interopRequireDefault(require("../models/subscription"));
+
+var _stripesession = _interopRequireDefault(require("../models/stripesession"));
+
 var _category = _interopRequireDefault(require("../models/category"));
 
 var _crypto = _interopRequireDefault(require("crypto"));
@@ -239,41 +243,59 @@ router.post('/category/show-more', _install["default"].redirectToLogin, /*#__PUR
 }());
 router.get('/onboarding', _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res, next) {
-    var categoryCount, categories;
+    var stripeSession_id, session, categoryCount, categories;
     return _regenerator["default"].wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            _context4.prev = 0;
+            stripeSession_id = req.query.session_id;
+
+            if (!stripeSession_id) {
+              _context4.next = 8;
+              break;
+            }
+
+            console.log("Strinpe"); //paid account for paid account stripe connection successfully
+
+            _context4.next = 5;
+            return stripe.checkout.sessions.retrieve(stripeSession_id);
+
+          case 5:
+            session = _context4.sent;
+            _context4.next = 8;
+            return _stripesession["default"].create(session);
+
+          case 8:
+            _context4.prev = 8;
             categoryCount = 2;
 
             if (req.user.paid == "paid") {
               categoryCount = 10;
             }
 
-            _context4.next = 5;
+            _context4.next = 13;
             return _category["default"].find({}).limit(20);
 
-          case 5:
+          case 13:
             categories = _context4.sent;
             res.render('onboarding', {
               categoryCount: categoryCount,
               categories: categories
             });
-            _context4.next = 12;
+            _context4.next = 20;
             break;
 
-          case 9:
-            _context4.prev = 9;
-            _context4.t0 = _context4["catch"](0);
+          case 17:
+            _context4.prev = 17;
+            _context4.t0 = _context4["catch"](8);
             next(_context4.t0);
 
-          case 12:
+          case 20:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[0, 9]]);
+    }, _callee4, null, [[8, 17]]);
   }));
 
   return function (_x9, _x10, _x11) {
@@ -1553,8 +1575,8 @@ router.post("/create-checkout-session", /*#__PURE__*/function () {
                   plan: planId
                 }]
               },
-              success_url: "".concat(domainURL, "/success.html?session_id={CHECKOUT_SESSION_ID}"),
-              cancel_url: "".concat(domainURL, "/cancel.html")
+              success_url: "".concat(domainURL, "/onboarding?session_id={CHECKOUT_SESSION_ID}"),
+              cancel_url: "".concat(domainURL, "/cancel")
             });
 
           case 5:
