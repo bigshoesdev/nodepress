@@ -42,9 +42,17 @@ var _role = _interopRequireDefault(require("../helpers/role"));
 
 var _newsletter = _interopRequireDefault(require("../models/newsletter"));
 
+var _dotenv = _interopRequireDefault(require("dotenv"));
+
 var router = _express["default"].Router();
 
-// Prevent logged in users from viewing the sign up and login page
+var stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
+_dotenv["default"].config({
+  path: "./.env"
+}); // Prevent logged in users from viewing the sign up and login page
+
+
 function checkIfLoggedIn(req, res, next) {
   if (req.isAuthenticated()) return res.redirect("back");else {
     next();
@@ -1499,4 +1507,77 @@ router.post("/subscribe/digest", _auth["default"], /*#__PURE__*/function () {
     return _ref21.apply(this, arguments);
   };
 }());
+router.get("/checkout-session", /*#__PURE__*/function () {
+  var _ref22 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee22(req, res) {
+    var sessionId, session;
+    return _regenerator["default"].wrap(function _callee22$(_context22) {
+      while (1) {
+        switch (_context22.prev = _context22.next) {
+          case 0:
+            sessionId = req.query.sessionId;
+            _context22.next = 3;
+            return stripe.checkout.sessions.retrieve(sessionId);
+
+          case 3:
+            session = _context22.sent;
+            res.send(session);
+
+          case 5:
+          case "end":
+            return _context22.stop();
+        }
+      }
+    }, _callee22);
+  }));
+
+  return function (_x60, _x61) {
+    return _ref22.apply(this, arguments);
+  };
+}());
+router.post("/create-checkout-session", /*#__PURE__*/function () {
+  var _ref23 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee23(req, res) {
+    var planId, domainURL, session;
+    return _regenerator["default"].wrap(function _callee23$(_context23) {
+      while (1) {
+        switch (_context23.prev = _context23.next) {
+          case 0:
+            planId = process.env.SUBSCRIPTION_PLAN_ID;
+            domainURL = process.env.DOMAIN;
+            // Customer is only signing up for a subscription
+            console.log(domainURL);
+            _context23.next = 5;
+            return stripe.checkout.sessions.create({
+              payment_method_types: ["card"],
+              subscription_data: {
+                items: [{
+                  plan: planId
+                }]
+              },
+              success_url: "".concat(domainURL, "/success.html?session_id={CHECKOUT_SESSION_ID}"),
+              cancel_url: "".concat(domainURL, "/cancel.html")
+            });
+
+          case 5:
+            session = _context23.sent;
+            res.send({
+              checkoutSessionId: session.id
+            });
+
+          case 7:
+          case "end":
+            return _context23.stop();
+        }
+      }
+    }, _callee23);
+  }));
+
+  return function (_x62, _x63) {
+    return _ref23.apply(this, arguments);
+  };
+}());
+router.get("/public-key", function (req, res) {
+  res.send({
+    publicKey: process.env.STRIPE_PUBLISHABLE_KEY
+  });
+});
 module.exports = router;
