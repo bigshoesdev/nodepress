@@ -3,36 +3,18 @@
 
 <head>
     <title><%= article.metatitle%></title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="<%= article.metadescription %>">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="<%= siteLink%><%= article.file %>">
-    <meta name="theme-color" content="#ffffff">
-    <meta name="robots" content="noindex,nofollow">
-    <meta itemprop="name" content="<%= article.metatitle%>">
-    <meta itemprop="description" content="<%= article.metadescription%>">
-    <meta itemprop="image" content="<%= article.file%>">
-    <link rel="canonical" href="<%= siteLink%>" />
-    <link rel="alternate" href="/" hreflang="en-US" />
-    <script type="application/ld+json">
-            {
-              "@context": "http://schema.org",
-              "@type": "WebSite",
-              "name": "<%= article.metatitle %>",
-              "url": "<%= siteLink%>",
-              "description": "<%= article.metadescription %>",
-              "image": "<%= article.file %>"
-            }
-        </script>
-    <meta name='robots' content='noindex,nofollow'>
-    <meta property="og:locale" content="en_US" />
-    <meta property="og:type" content="article" />
+    <meta charset="utf-8"/>
+    <meta name="description" content="<%= article.metadescription %>"/>
+    <meta name="robots" content="noindex,nofollow"/>
+    <meta itemprop="name" content="<%= article.metatitle%>"/>
+    <meta itemprop="description" content="<%= article.metadescription%>"/>
+    <meta itemprop="image" content="https://dype.me<%= article.file%>"/>
+    
+    <meta name='robots' content='noindex,nofollow'/>
+    <meta property="og:type" content="article"/>
     <meta property="og:title" content="<%= article.metatitle%>" />
-    <meta property="og:url" content="<%= siteLink%>/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>&title=<%= article.title%>" />
-    <meta property="og:image" content="<%= siteLink%><%= article.file %>" />
-    <meta property="og:description" content="<%= article.metadescription%>">
-    <meta property="og:site_name" content="<%= article.metatitle%>" />
+    <meta property="og:description" content="<%= article.metadescription%>"/>
+    <meta property="og:image" content="https://dype.me<%= article.file %>"/>
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@<%= article.metatitle%>" />
     <meta name="twitter:creator" content="@<%= article.postedBy.username %>" />
@@ -40,10 +22,6 @@
     <meta name="twitter:description" content="<%= article.metadescription %>" />
     <meta name="twitter:image" content="<%= siteLink%><%= article.file %>" />
     <meta name="twitter:domain" content="<%= siteLink%>" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="<%= siteLink%><%= article.file %>">
-    <meta name="theme-color" content="#ffffff">
     <!-- css -->
     <link rel="stylesheet" href="/css/bootstrap.min.css" async>
     <link rel="stylesheet" href="/css/ionicons.min.css" async>
@@ -64,6 +42,16 @@
     <link href="/css/aos.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap" rel="stylesheet">
     <link href="/css/single.css" rel="stylesheet" />
+    <script type="application/ld+json">
+            {
+              "@context": "http://schema.org",
+              "@type": "WebSite",
+              "name": "<%= article.metatitle %>",
+              "url": "<%= siteLink%>",
+              "description": "<%= article.metadescription %>",
+              "image": "<%= article.file %>"
+            }
+        </script>
     <%- mainSettings.htmlHeadCode %>
 </head>
 
@@ -433,7 +421,7 @@
                                                                         class="fa fa-pinterest"
                                                                         aria-hidden="true"></i></a>
                                                                     <a target="_blank"
-                                                                        href="https://www.linkedin.com/shareArticle?mini=true&url=https://dype.me/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>&title=<%= article.title%>&source=https://dype.me"><i
+                                                                        href="https://www.linkedin.com/shareArticle?mini=true&url=https://dype.me/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>"><i
                                                                             class="fa fa-linkedin"
                                                                             aria-hidden="true"></i></a>
                                                                     <a target="_blank"
