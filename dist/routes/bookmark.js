@@ -15,6 +15,8 @@ var _express = _interopRequireDefault(require("express"));
 
 var _bookmark = _interopRequireDefault(require("../models/bookmark"));
 
+var _savetext = _interopRequireDefault(require("../models/savetext"));
+
 var _auth = _interopRequireDefault(require("../helpers/auth"));
 
 var router = _express["default"].Router(); // Add a new article to reading list
@@ -93,6 +95,61 @@ router.get("/bookmark/delete", _auth["default"], /*#__PURE__*/function () {
 
   return function (_x4, _x5, _x6) {
     return _ref2.apply(this, arguments);
+  };
+}());
+router.post("/savetext", _auth["default"], /*#__PURE__*/function () {
+  var _ref3 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(req, res, next) {
+    var userId, selectedString;
+    return _regenerator["default"].wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            userId = req.body.userId;
+            selectedString = req.body.text;
+            _context3.next = 4;
+            return _savetext["default"].create(req.body);
+
+          case 4:
+            res.json("successful");
+
+          case 5:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3);
+  }));
+
+  return function (_x7, _x8, _x9) {
+    return _ref3.apply(this, arguments);
+  };
+}());
+router.get('/savetext/delete', _auth["default"], /*#__PURE__*/function () {
+  var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res, next) {
+    return _regenerator["default"].wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            console.log(req.query.markingId);
+            _context4.next = 3;
+            return _savetext["default"].deleteOne({
+              _id: req.query.markingId
+            });
+
+          case 3:
+            req.flash("success_msg", "Marking has been removed from marking list");
+            return _context4.abrupt("return", res.redirect("back"));
+
+          case 5:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4);
+  }));
+
+  return function (_x10, _x11, _x12) {
+    return _ref4.apply(this, arguments);
   };
 }());
 var _default = router;

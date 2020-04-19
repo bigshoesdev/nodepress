@@ -36,6 +36,10 @@ var articleSchema = new Schema({
     type: Boolean,
     "default": true
   },
+  addToNoIndex: {
+    type: Boolean,
+    "default": false
+  },
   addToFeatured: {
     type: Boolean,
     "default": false

@@ -10,6 +10,19 @@
       <div class="login-form">
         <%- include('partials/msg') %>
         <form action="/login" method="POST">
+          <div class="form-group row text-center">
+            <div class="col-lg-6">
+              <a href="/auth/google/login" class="btn btn-social btn-social-modal btn-social-facebook google">
+                <i class="fa fa-google fa-2x"></i>
+              </a>
+            </div>
+            <div class="col-lg-6">
+              <a href="/auth/apple/login" class="btn btn-social btn-social-modal btn-social-facebook apple">
+                <i class="fa fa-apple fa-2x"></i>  
+              </a>
+            </div>
+          </div>
+          <hr>
           <div class="form-group">
             <label class="login-label" for="text">E-Mail Adresse <span>*</span></label>
             <input type="email" name="email" id="email" placeholder="E-Mail Adresse" required
@@ -21,7 +34,8 @@
               class="form-control login-input">
           </div>
           <div class="form-group">
-            <div class="g-recaptcha" data-sitekey="your_site_key"></div>
+            <div class="g-recaptcha" data-sitekey="6LfyU-sUAAAAAO-NcoCZ73A6TO_ujV8t4txCrRLA"></div>
+            <span id="captcha-error"></span>
           </div>
           <div class="form-group form-check">
             <label class="login-label" class="form-check-label">
@@ -31,18 +45,6 @@
           <div class="login-btn">
             <button type="submit">Einloggen</button>
           </div>
-          <div class="login-btn row">
-            <div class="col-md-6 text-center">
-              <a href="/auth/google/login" class="google btn btn-primary">
-                <i class="fa fa-google fa-fw"></i> Log In with Google+
-              </a>
-            </div>
-            <div class="col-md-6 text-center">
-              <a href="/auth/apple/login" class="apple btn btn-primary">
-                <i class="fa fa-apple fa-fw"></i> Log In with Apple
-              </a>
-            </div>
-          </div>
           <div class="lost-your-password">
             <a href="/forgot-password">Passwort vergessen?</a>
           </div>
@@ -51,9 +53,6 @@
     </div>
   </div>
 </div>
-
-
-<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
-    async defer>
+<script src="https://www.google.com/recaptcha/api.js?" async defer>
 </script>
 <%- include ./partials/footer %>

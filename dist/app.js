@@ -30,6 +30,8 @@ var _dailyViews = _interopRequireDefault(require("./helpers/_dailyViews"));
 
 var _install = _interopRequireDefault(require("./helpers/install"));
 
+var _cors = _interopRequireDefault(require("cors"));
+
 var _index = _interopRequireDefault(require("./routes/index"));
 
 var _article = _interopRequireDefault(require("./routes/article"));
@@ -73,6 +75,7 @@ _dotenv["default"].config({
 
 var app = (0, _express["default"])();
 var port = process.env.PORT || 3000;
+app.use((0, _cors["default"])());
 
 var server = _http["default"].createServer(app);
 

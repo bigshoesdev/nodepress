@@ -139,6 +139,10 @@
                                 </div>
                                 <div class="card-body">
                                     <div>
+                                        <b><label class="adomx-switch"><input type="checkbox" name="addToNoIndex" <% if(article.addToNoIndex == true){ %>checked<%}%> > <i class="lever"></i> <span class="text">No Index</span></label></b>
+                        </div>
+                        <hr>
+                                    <div>
                                         <b><label class="adomx-switch"><input type="checkbox" name="addToFeatured" <% if(article.addToFeatured == true){ %>checked<%}%> > <i class="lever"></i> <span class="text">Add to Featured</span></label></b>
                         </div>
                         <hr>
@@ -395,6 +399,9 @@
                         }
                     }
                 });
+                $(function(){
+                    $('a').attr('rel', 'nofollow');
+                })
             </script>
 
             </body>

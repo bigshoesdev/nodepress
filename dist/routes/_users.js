@@ -22,6 +22,8 @@ var _users = _interopRequireDefault(require("../models/users"));
 
 var _bookmark = _interopRequireDefault(require("../models/bookmark"));
 
+var _savetext = _interopRequireDefault(require("../models/savetext"));
+
 var router = _express["default"].Router();
 
 router.get("/user/dashboard", _auth["default"], (0, _role["default"])("admin", "user"), /*#__PURE__*/function () {
@@ -984,6 +986,41 @@ router.get("/user/bookmarks", _auth["default"], (0, _role["default"])("admin", "
 
   return function (_x28, _x29, _x30) {
     return _ref10.apply(this, arguments);
+  };
+}());
+router.get("/user/marking", _auth["default"], (0, _role["default"])("admin", "user"), /*#__PURE__*/function () {
+  var _ref11 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee11(req, res, next) {
+    var marking;
+    return _regenerator["default"].wrap(function _callee11$(_context11) {
+      while (1) {
+        switch (_context11.prev = _context11.next) {
+          case 0:
+            _context11.next = 2;
+            return _savetext["default"].find({
+              userId: req.user.id
+            }).populate({
+              path: "articleId"
+            }).sort({
+              createdAt: -1
+            });
+
+          case 2:
+            marking = _context11.sent;
+            res.render("./user/marking", {
+              title: "Marking List",
+              marking: marking
+            });
+
+          case 4:
+          case "end":
+            return _context11.stop();
+        }
+      }
+    }, _callee11);
+  }));
+
+  return function (_x31, _x32, _x33) {
+    return _ref11.apply(this, arguments);
   };
 }());
 module.exports = router;

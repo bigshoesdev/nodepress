@@ -126,6 +126,7 @@ router.post("/article/create", _install["default"].redirectToLogin, _auth["defau
               postedBy: req.user.id,
               postType: req.body.postType,
               showPostOnSlider: !req.body.showPostOnSlider ? false : req.body.showPostOnSlider ? true : false,
+              addToNoIndex: !req.body.addToNoIndex ? false : req.body.addToNoIndex ? true : false,
               addToFeatured: !req.body.addToFeatured ? false : req.body.addToFeatured ? true : false,
               addToBreaking: !req.body.addToBreaking ? true : req.body.addToBreaking ? true : false,
               addToRecommended: !req.body.addToRecommended ? false : true,
@@ -316,6 +317,7 @@ router.post("/article/edit", _install["default"].redirectToLogin, _auth["default
 
     req.body.tags ? req.body.tags = req.body.tags.split(",") : undefined;
     req.body.showPostOnSlider = req.body.showPostOnSlider ? true : false;
+    req.body.addToNoIndex = req.body.addToNoIndex ? true : false;
     req.body.addToFeatured = req.body.addToFeatured ? true : false;
     req.body.addToBreaking = req.body.addToBreaking ? true : false;
     req.body.addToRecommended = !req.body.addToRecommended ? false : true;

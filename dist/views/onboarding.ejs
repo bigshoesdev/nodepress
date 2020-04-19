@@ -36,11 +36,12 @@
             </div>
          </div>
          <div class="row save-button">
-            <form action="/choose-category" method="POST">
+            <form action="/choose-category" id="save-form" method="POST">
             <div class="next-btn col-12">
+               <input type="hidden" id="redirect" value="<%= redirect%>" name="redirect"/>
                <input type="hidden" name="categoryCount" id="categoryCount" value="<%= categoryCount%>" />
             <input type="hidden" name="categoryList" id="categoryList" />
-            <button type="submit">Speichern und weiter</button>
+            <button type="submit" id="saveCategory">Speichern und weiter</button>
          </div>
          </form>
       </div>
