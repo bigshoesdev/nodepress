@@ -494,7 +494,7 @@
             <script type="text/javascript">
                 var selectedText = "";
                 function saveText() {
-                    let userId = "<%= user._id%>";
+                    let userId = "<%if(user){%><%= user._id%><%}%>";
                     $.ajax({
                         url: '/savetext',
                         dataType: 'json',
