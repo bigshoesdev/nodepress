@@ -1,42 +1,56 @@
 <%- include ./partials/header %>
+<link href="/css/index.css" rel="stylesheet" />
 
 <div class="section-1">
   <div class="container">
     <div class="inner-section-1">
       <div class="row align-items-center">
-        <div class="col-md-8 col-sm-12">
+        <div class="col-md-8 col-sm-12 slide-part">
           <div class="section-1-left">
-            <% for(var i = 0; i < (categories.length / 3); i ++) { %>
             <div class="row">
-              <% for(var j = 0; j < 3; j ++) {%>
-              <% if((i*3+j) < categories.length) {%>
-              <% if(categories[i*3 + j].name == 'Blockchain' || 
-              categories[i*3 + j].name == 'Finanzen' ||
-              categories[i*3 + j].name == 'Fitness' ||
-              categories[i*3 + j].name == 'Spiritualität' ||
-              categories[i*3 + j].name == 'Food' ||
-              categories[i*3 + j].name == 'Beziehungen') {%>
-              <div class="col-md-4">
+              <% var index = categories.length / 3;
+              var left = categories.length % 3;
+              if(left > 0){index ++}%>
+
+              <div class="col-md-4 first-column">
+                <% for(var i = index * 0; i < index; i ++){%>
                 <div class="section-1-left-first-img"
-                  style="background-image: linear-gradient(#0000003d, #00000040), url('<%= categories[(i * 3)+j].background %>'); margin-top: <%= ((100 - (100 * (j % 2))) + j * 20) - 130 * (i % 2) %>px;">
+                  style="background-image: linear-gradient(#0000003d, #00000040), url('<%= categories[i].background %>');">
                   <div class="section-1-left-first-contant">
                     <i class="fa fa-compass" aria-hidden="true"></i>
-                    <h4><a href="/kategorie/<%= categories[(i * 3)+j].slug %>"
-                        style="color: white;"><%= categories[(i * 3)+j].name %></a></h4>
-                    <br>
-                    <p><% if(categories[(i * 3)+j].description != undefined) { %>
-                      <%= categories[(i * 3)+j].description %> <% } %></p>
+                    <h4><%= categories[i].name %></h4>
                   </div>
                 </div>
-                <% if(categories[i*3 + j].name == 'Finanzen') {%>
-                <span style="color: white; font-size: 17px;">..und viele weitere Kategorien</span>
-                <% }%>
+                <%}%>
               </div>
-              <% } %>
-              <% } %>
-              <% } %>
+
+              <div class="col-md-4 second-column">
+                <% 
+                 for(var i = index * 1; i < index * 2; i ++){%>
+                <div class="section-1-left-first-img"
+                  style="background-image: linear-gradient(#0000003d, #00000040), url('<%= categories[i].background %>');">
+                  <div class="section-1-left-first-contant">
+                    <i class="fa fa-compass" aria-hidden="true"></i>
+                    <h4><%= categories[i].name %></h4>
+                  </div>
+                </div>
+                <%}%>
+              </div>
+
+              <div class="col-md-4 third-column">
+                <% 
+                 for(var i = index * 2; i < categories.length; i ++){%>
+                <div class="section-1-left-first-img"
+                  style="background-image: linear-gradient(#0000003d, #00000040), url('<%= categories[i].background %>');">
+                  <div class="section-1-left-first-contant">
+                    <i class="fa fa-compass" aria-hidden="true"></i>
+                    <h4><%= categories[i].name %></h4>
+                  </div>
+                </div>
+                <%}%>
+              </div>
+
             </div>
-            <% }%>
           </div>
         </div>
         <div class="col-md-4 col-sm-12">
@@ -45,20 +59,20 @@
               <h1>Dype. - Einzigartige Inhalte.</h1>
             </div>
             <div class="section-1-right-heading2">
-              <h2>Finde Inhalte, die begeistern.</h2>
+              <h2>Einzigartige Inhalte.</h2>
               <!-- <h3>Position: Top Right</h3> -->
             </div>
-            <div class="section-1-right-edit">
+            <!-- <div class="section-1-right-edit">
               <a href="javascript:void(0)" type="button" onclick="openNav()"><i class="fa fa-search"
                   aria-hidden="true"></i></a>
-            </div>
+            </div> -->
             <div class="section-1-right-content">
               <p>Genieße einzigartige Inhalte aus unzähligen Kategorien, verfasst von Experten, Autoren, Coaches und
                 Künstlern, die mit Begeisterung ihr Wissen teilen. Unser Versprechen: Keine Werbung, kein Up-Selling,
                 hochqualitative Beiträge.</p>
             </div>
             <div class="section-1-right-btn">
-              <a href="/publisher"><span>Kategorien durchstöbern</span><span><i class="fa fa-long-arrow-right"
+              <a href="/category"><span>Jetzt Artikel entdecken</span><span><i class="fa fa-long-arrow-right"
                     aria-hidden="true"></i></span></a>
             </div>
           </div>
@@ -81,7 +95,7 @@
               <h1>Keine theoretischen, ellenlange Bücher - Komprimiertes, praxisnahes und anwendbares Wissen für die
                 tägliche Wissensspritze.</h1>
             </div>
-            <div class="section-2-content-2">
+            <!-- <div class="section-2-content-2">
               <div class="section-2-content-2-icon">
                 <i class="fa fa-check" aria-hidden="true"></i>
               </div>
@@ -90,11 +104,31 @@
                   über Themen und schaffe deine ganz persönliche Perspektive.</p>
                 <p>Konsumiere jeden Tag Inhalte zu deinen Lieblingsthemen, ganz ohne Limitierung und Werbung.</p>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
-        <div style="padding: 0px;" class="col-md-6">
-          <div class="section-2-right">
+        <div style="padding: 0px;" class="col-md-6" style="background: #f4f4f4;">
+          <div class="section-2-right" >
+            <div class="text">
+              <p style="padding-left: 10px;">Dype ist&nbsp;
+                <span class="word wisteria">beautiful.
+                </span>
+                <span class="word midnight">Social Content.</span>
+                <span class="word belize">dein Wort.</span>
+                <span class="word pomegranate">deine Geschichte.</span>
+                <span class="word green">dein Content.</span>
+                <span class="word belize">Dype bist du.</span>
+                <!-- <span class="word wisteria">smart.</span>
+                <span class="word midnight">free.</span>
+                <span class="word pomegranate">love.</span>
+                <span class="word green">strength.</span>
+                <span class="word belize">courage.</span>
+                <span class="word wisteria">style.</span>
+                <span class="word pomegranate">cool</span>
+                <span class="word green">hip.</span>
+                <span class="word midnight">wealth.</span> -->
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -103,77 +137,17 @@
 </div>
 
 
-<div class="section-3">
-  <div class="container-fluid">
-    <div class="inner-section-3">
-      <div class="row">
-        <div style="padding: 0px;" class="col-md-6">
-          <div class="section-3-left">
-            <img src="/images/img-7.jpeg"/>
-          </div>
-        </div>
-        <div style="padding: 0px;" class="col-md-6">
-          <div class="section-3-right" >
-            <div class="section-3-heading">
-              <h3>Du stehst im Mittelpunkt.</h3>
-            </div>
-            <div class="section-3-content">
-              <h1>Keine Werbung, kein Datenverkauf - deine Interessen bleiben geheim. </h1>
-            </div>
-            <div class="section-3-content-2-brief">
-              <p>Du wirst schnell bemerken, dass wir ganzlich auf Werbung verzichten. Unsere Autoren erhalten
-                eine faire. Entlohnung fur ihre geleistenten Beitrage.</p>
-              <p>Dies biebet dir ein werbefresis Wissenszentrum.</p>
-            </div>
-            <div class="section-3-right-btn">
-              <a href="/vision">Unsere Vision</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+
 
 <div class="section-2">
   <div class="container-fluid">
     <div class="inner-section-2">
       <div class="row">
-        <div style="padding: 0px;" class="col-md-6">
+        <div style="padding: 0px;" class="col-md-12">
           <div class="section-2-right" style="text-align: center;">
-            <video style="margin-top: 270px; max-width: 100%;" autoplay loop controls>
-              <source src="/images/Dype.mp4" type="video/mp4">
-              Your browser does not support the video tag.
-            </video>
-          </div>
-        </div>
-        <div style="padding: 0px;" class="col-md-6">
-          <div class="section-2-left">
-            <div class="section-2-heading">
-              <h3>Du stichst heraus.</h3>
-            </div>
-            <div class="section-2-content">
-              <h1>Das wissen, was andere nicht wissen.</h1>
-            </div>
-            <div class="section-2-content-2">
-              <div class="section-2-content-2-brief">
-                <p>Das Internet verschafft dir Zugang zu sämtlichen Informationen. Doch wer gewährleistet die Seriosität
-                  der Informationen? Unsere Publisher sind verifiziert und ihre Inhalte werden von uns geprüft.</p>
-                <p>Lasse dich von den Geschichten und Erfahrungen unserer Publisher begeistern. Informationen aus erster
-                  Hand – von Experten für Dich!</p>
-              </div>
-            </div>
-            <div class="section-4-contentlist">
-              <p data-aos="fade-in" data-aos-duration="1500"><i class="fa fa-minus" aria-hidden="true"></i> Lerne aus
-                exklusiven Beiträgen.</p>
-              <p data-aos="fade-in" data-aos-duration="1500"><i class="fa fa-minus" aria-hidden="true"></i> Lese aus bis
-                zu 100 Kategorien.</p>
-              <p data-aos="fade-in" data-aos-duration="1500"><i class="fa fa-minus" aria-hidden="true"></i> Erhalte
-                interessenbasierte Vorschläge.</p>
-              <p data-aos="fade-in" data-aos-duration="1500"><i class="fa fa-minus" aria-hidden="true"></i> Werde jeden
-                Tag etwas schlauer.</p>
-              <p data-aos="fade-in" data-aos-duration="1500"><i class="fa fa-minus" aria-hidden="true"></i> Lerne
-                Experten in deinen Bereichen kennen.</p>
+            <div class="box">
+              <p class="split">Die Plattform für Weisheiten, Erfahrungen, Geschichten, Anekdoten, Anschauungen und Interpretationen einzigartiger Persönlichkeiten.
+              </p>
             </div>
           </div>
         </div>
@@ -190,19 +164,18 @@
           <div class="section-4-left-2">
             <div class="section-4-left-2-content">
               <h2>Unbegrenzte Vielfalt genießen.</h2>
-              <p>Genieße die unbegrenzte Vielfalt unserer qualifizierten Autoren. Folge ihnen, damit du keine ihrer
-                Veröffentlichungen mehr verpasst. Markiere Passagen oder einen ganzen Beitrag, der dich begeistert,
-                damit du ihn später noch einmal lesen kannst.</p>
+              <p>Genieße die unbegrenzte Vielfalt unserer qualifizierten Autoren. Folge ihnen, damit du keine ihrer Veröffentlichungen mehr verpasst. Markiere Passagen oder einen ganzen Beitrag, der dich begeistert, damit du ihn später noch einmal lesen kannst.</p>
             </div>
             <div class="section-1-right-btn">
-              <a class="free-test-button"  href="#"><span>Jetzt 30 Tage kostenlos
+              <a class="free-test-button" href="/sign-up" 
+              style="border: 1px solid white; color: white"><span>Jetzt kostenlos starten
                   testen</span><span><i class="fa fa-long-arrow-right" aria-hidden="true"></i></span></a>
             </div>
           </div>
         </div>
         <div style="padding: 0px;" class="col-md-6">
           <div class="section-4-right-2 text-center">
-            <img src="/images/img-8.png" class="dype-image"/>
+            <a href="/sign-up"><img src="/images/img-8.png" class="dype-image" /></a>
           </div>
         </div>
       </div>
@@ -210,17 +183,172 @@
   </div>
 </div>
 
-<div class="section-5">
+<div class="section-5" style="background-image:linear-gradient(#00000073, #00000061), url(/images/Dype_Vision_VideoImage.png)">
   <div class="container">
-    <div class="inner-section-5">
+    <div class="inner-section-5 vision-our" >
       <div class="section-5-heading">
-        <h1>Wir leben alle unter dem gleichen Himmel, aber wir haben nicht immer den gleichen Horizont.</h1>
-        <h1>- Konrad Adenauer</h1>
+        <h1>Vision</h1>
       </div>
       <div class="section-5-btn">
-        <a href="#">Erweitere deinen Horizont</a>
+        <a href="https://www.youtube.com/watch?v=6oTurM7gESE" style="border-radius: 100px !important"><i class="fa fa-play"></i></a>
       </div>
     </div>
   </div>
 </div>
+
+
+<div class="section-3">
+  <div class="container-fluid">
+    <div class="inner-section-3">
+      <div class="row">
+        <div style="padding: 0px;" class="col-md-6">
+          
+        </div>
+        <div style="padding: 0px;" class="col-md-6">
+          <div class="section-3-right">
+            <div class="section-3-heading">
+              <h3>Du stehst im Mittelpunkt.</h3>
+            </div>
+            <div class="section-3-content">
+              <h1>Keine Werbung, kein Datenverkauf - deine Interessen bleiben geheim. </h1>
+            </div>
+            <div class="section-3-content-2-brief">
+              <p>Du wirst schnell bemerken, dass wir ganzlich auf Werbung verzichten. Unsere Autoren erhalten
+                eine faire. Entlohnung fur ihre geleistenten Beitrage.</p>
+              <p>Dies biebet dir ein werbefresis Wissenszentrum.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="/js/jquery-2.1.3.min.js" type="text/javascript"></script>
+<script src="/js/splittext.js" type="text/javascript"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js"></script>
+<script type="text/javascript">
+// word part
+  var words = document.getElementsByClassName('word');
+  var wordArray = [];
+  var currentWord = 0;
+  words[currentWord].style.opacity = 1;
+  for (var i = 0; i < words.length; i++) {
+    splitLetters(words[i]);
+  }
+  function changeWord() {
+    var cw = wordArray[currentWord];
+    var nw = currentWord == words.length - 1 ? wordArray[0] : wordArray[currentWord + 1];
+    for (var i = 0; i < cw.length; i++) {
+      animateLetterOut(cw, i);
+    }
+
+    for (var i = 0; i < nw.length; i++) {
+      nw[i].className = 'letter behind';
+      nw[0].parentElement.style.opacity = 1;
+      animateLetterIn(nw, i);
+    }
+
+    currentWord = (currentWord == wordArray.length - 1) ? 0 : currentWord + 1;
+  }
+
+  function animateLetterOut(cw, i) {
+    setTimeout(function () {
+      cw[i].className = 'letter out';
+    }, i * 80);
+  }
+
+  function animateLetterIn(nw, i) {
+    setTimeout(function () {
+      nw[i].className = 'letter in';
+    }, 340 + (i * 80));
+  }
+
+  function splitLetters(word) {
+    var content = word.innerHTML;
+    word.innerHTML = '';
+    var letters = [];
+    for (var i = 0; i < content.length; i++) {
+      var letter = document.createElement('span');
+      letter.className = 'letter';
+      letter.innerHTML = content.charAt(i);
+      word.appendChild(letter);
+      letters.push(letter);
+    }
+
+    wordArray.push(letters);
+  }
+
+  changeWord();
+  setInterval(changeWord, 2000);
+// text split part
+  var text = $(".split");
+
+  var split = new SplitText(text);
+  
+  function random(min, max) {
+    return (Math.random() * (max - min)) + min;
+  }
+
+  $(split.chars).each(function (i) {
+    TweenMax.from($(this), 2.5, {
+      opacity: 0,
+      x: random(-500, 500),
+      y: random(-500, 500),
+      z: random(-500, 500),
+      scale: .1,
+      delay: i * .02,
+      yoyo: true,
+      repeat: -1,
+      repeatDelay: 10
+    });
+  });
+
+
+
+  $(function () {
+    var height_first = $('.first-column').height();
+    var height_second = $('.second-column').height();
+    var height_third = $('.third-column').height();
+
+    var deltaheight_first = -height_first + 'px';
+    var deltaheight_second = -height_second + 'px';
+    var deltaheight_third = -height_third + 'px';
+
+    function loop() {
+      $('.first-column')
+        .animate({ top: '0px' }, 1000, 'linear')
+        .animate({ top: deltaheight_first }, 200000, 'linear', loop);
+      $('.second-column')
+        .animate({ top: '0px' }, 3000, 'linear')
+        .animate({ top: deltaheight_second }, 60000, 'linear', loop);
+      $('.third-column')
+        .animate({ top: '0px' }, 5000, 'linear')
+        .animate({ top: deltaheight_third }, 140000, 'linear', loop);
+    }
+    loop();
+    $('.first-column').hover(function () {
+      $(this).stop();
+    }, function () {
+      $(this)
+        .animate({ top: deltaheight_first }, 200000, 'linear', loop);
+    }
+    );
+    $('.second-column').hover(function () {
+      $(this).stop();
+    }, function () {
+      $(this)
+        .animate({ top: deltaheight_second }, 60000, 'linear', loop);
+    }
+    );
+    $('.third-column').hover(function () {
+      $(this).stop();
+    }, function () {
+      $(this)
+        .animate({ top: deltaheight_third }, 140000, 'linear', loop);
+    }
+    );
+  });
+</script>
 <%- include ./partials/footer %>

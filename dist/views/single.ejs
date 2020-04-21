@@ -495,15 +495,18 @@
                 var selectedText = "";
                 function saveText() {
                     let userId = "<%if(user){%><%= user._id%><%}%>";
-                    $.ajax({
-                        url: '/savetext',
-                        dataType: 'json',
-                        type: 'post',
-                        data: { userId: userId, text: selectedText },
-                        success: function (data) {
+                    console.log(userId);
+                    if (userId != "") {
+                        $.ajax({
+                            url: '/savetext',
+                            dataType: 'json',
+                            type: 'post',
+                            data: { userId: userId, text: selectedText },
+                            success: function (data) {
 
-                        }
-                    })
+                            }
+                        })
+                    }
                 }
                 const tip4 = new TextTip({
                     scope: '.inner-dark-blog-content-one',
