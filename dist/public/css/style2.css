@@ -307,7 +307,7 @@
 }
 .section-3-right {
   background: #f4f4f4;
-  padding: 90px 140px 200px 140px;
+  padding: 90px 140px 150px 140px;
 }
 .section-3-heading h3 {
   font-size: 18px;
@@ -343,7 +343,7 @@
   box-shadow: 0px 10px 10px -3px rgba(0, 0, 0, 0.5);
 }
 .section-4 {
-  background-image: url(/images/back.jpeg);
+  background-image: url(/images/Publisher_Page_Section.jpeg);
   height: 700px;
   background-size: cover;
   background-repeat: no-repeat;
@@ -784,6 +784,7 @@
 }
 .recommnet-img {
   overflow: hidden;
+  max-height: 170px;
 }
 .recommnet-img img {
   width: 100%;
@@ -797,6 +798,12 @@
 .recommended-for-you {
   padding: 60px 0px 120px 0px;
   background: #efefef;
+}
+.recommnet-heading {
+  min-height: 120px;
+}
+.recommnet-heading2 {
+  height: 250px;
 }
 .recommnet-heading-main h2 {
   font-family: initial;

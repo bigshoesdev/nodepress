@@ -1325,7 +1325,7 @@ router.get("/kategorie/:slug", _install["default"].redirectToLogin, /*#__PURE__*
               }
             }).sort({
               createdAt: -1
-            }).populate("category").populate("postedBy").limit(4);
+            }).populate("category").populate("postedBy").limit(5);
 
           case 18:
             recent = _context8.sent;
@@ -1345,7 +1345,7 @@ router.get("/kategorie/:slug", _install["default"].redirectToLogin, /*#__PURE__*
               category: cat._id
             }).populate("category").populate("postedBy").sort({
               views: -1
-            }).limit(4);
+            }).limit(3);
 
           case 24:
             popular = _context8.sent;

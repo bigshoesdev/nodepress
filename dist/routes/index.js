@@ -62,6 +62,13 @@ router.use( /*#__PURE__*/function () {
 
           case 5:
             res.locals.mainMenu = _context.sent;
+            _context.next = 8;
+            return _category["default"].find({}).sort({
+              name: 1
+            });
+
+          case 8:
+            res.locals.footercategory = _context.sent;
 
             res.locals.time = function (ev) {
               var wordsPerMinute = 250; // Average case.
@@ -138,7 +145,7 @@ router.use( /*#__PURE__*/function () {
             res.locals.user = req.user || null;
             res.locals.siteTitle = settingsInfo == '' ? 'Pls edit site title in the admin dashboard' : typeof settingsInfo[0].siteName == 'undefined' ? 'Pls edit site title in the admin dashboard' : "".concat(settingsInfo[0].siteName);
             res.locals.siteDescription = settingsInfo == '' ? 'Edit site description in the admin dashboard' : typeof settingsInfo[0].siteDescription == 'undefined' ? 'edit site title in the admin dashboard' : "".concat(settingsInfo[0].siteDescription);
-            _context.next = 16;
+            _context.next = 19;
             return _articles["default"].find({
               slug: {
                 $ne: _url["default"].parse(req.url).path.split('/').pop()
@@ -147,9 +154,9 @@ router.use( /*#__PURE__*/function () {
               createdAt: -1
             }).limit(5);
 
-          case 16:
+          case 19:
             res.locals.recent = _context.sent;
-            _context.next = 19;
+            _context.next = 22;
             return _articles["default"].find({
               slug: {
                 $ne: _url["default"].parse(req.url).path.split('/').pop()
@@ -158,9 +165,9 @@ router.use( /*#__PURE__*/function () {
               views: -1
             }).limit(5);
 
-          case 19:
+          case 22:
             res.locals.sidebarPop = _context.sent;
-            _context.next = 22;
+            _context.next = 25;
             return _comment["default"].aggregate([{
               $lookup: {
                 from: 'articles',
@@ -205,23 +212,23 @@ router.use( /*#__PURE__*/function () {
               $limit: 5
             }]);
 
-          case 22:
+          case 25:
             res.locals.comments = _context.sent;
-            _context.next = 25;
+            _context.next = 28;
             return _tags["default"].find().sort({
               createdAt: -1
             }).limit(12);
 
-          case 25:
+          case 28:
             res.locals.tags = _context.sent;
-            _context.next = 28;
+            _context.next = 31;
             return _tags["default"].find().sort({
               createdAt: -1
             });
 
-          case 28:
+          case 31:
             res.locals.tags2 = _context.sent;
-            _context.next = 31;
+            _context.next = 34;
             return _category["default"].aggregate([{
               $sort: {
                 createdAt: -1
@@ -237,9 +244,9 @@ router.use( /*#__PURE__*/function () {
               }
             }]);
 
-          case 31:
+          case 34:
             res.locals.category = _context.sent;
-            _context.next = 34;
+            _context.next = 37;
             return _category["default"].aggregate([{
               $limit: 7
             }, {
@@ -255,9 +262,9 @@ router.use( /*#__PURE__*/function () {
               }
             }]);
 
-          case 34:
+          case 37:
             res.locals.hotCategory = _context.sent;
-            _context.next = 37;
+            _context.next = 40;
             return _category["default"].aggregate([{
               $sort: {
                 name: 1
@@ -271,9 +278,9 @@ router.use( /*#__PURE__*/function () {
               }
             }]);
 
-          case 37:
+          case 40:
             res.locals.category2 = _context.sent;
-            _context.next = 40;
+            _context.next = 43;
             return _category["default"].aggregate([{
               $match: {
                 parent: {
@@ -286,9 +293,9 @@ router.use( /*#__PURE__*/function () {
               }
             }]);
 
-          case 40:
+          case 43:
             res.locals.subCategory2 = _context.sent;
-            _context.next = 43;
+            _context.next = 46;
             return _category["default"].aggregate([{
               $match: {
                 parent: {
@@ -301,7 +308,7 @@ router.use( /*#__PURE__*/function () {
               }
             }]);
 
-          case 43:
+          case 46:
             res.locals.subCategory = _context.sent;
 
             res.locals.formatDate = function (arg) {
@@ -326,81 +333,81 @@ router.use( /*#__PURE__*/function () {
             res.locals.siteEmail = settingsInfo == '' ? 'update site email in the admin dashboard' : typeof settingsInfo[0].contactInfo.email == 'undefined' ? 'update site email in the admin dashboard' : settingsInfo[0].contactInfo.email;
             res.locals.siteNumber = settingsInfo == '' ? 'update Phone number in the admin dashboard' : typeof settingsInfo[0].contactInfo.phoneNumber == 'undefined' ? 'update phone number in the admin dashboard' : settingsInfo[0].contactInfo.phoneNumber;
             res.locals.otherInfo = settingsInfo == '' ? 'update this in the admin dashboard' : typeof settingsInfo[0].contactInfo.otherInfo == 'undefined' ? 'update this in the admin dashboard' : settingsInfo[0].contactInfo.otherInfo;
-            _context.next = 61;
+            _context.next = 64;
             return _category["default"].find().populate('parent').sort({
               createdAt: -1
             }).limit(3);
 
-          case 61:
+          case 64:
             res.locals.headerCategory = _context.sent;
             res.locals.operatingSystem = process.platform;
 
             if (!(typeof req.user !== 'undefined')) {
-              _context.next = 69;
+              _context.next = 72;
               break;
             }
 
-            _context.next = 66;
+            _context.next = 69;
             return _articles["default"].countDocuments({
               postedBy: req.user.id
             });
 
-          case 66:
+          case 69:
             _context.t0 = _context.sent;
-            _context.next = 70;
+            _context.next = 73;
             break;
 
-          case 69:
+          case 72:
             _context.t0 = null;
 
-          case 70:
+          case 73:
             res.locals.myPost = _context.t0;
             res.locals.copyright = settingsInfo == '' ? "Copright ".concat(new Date().getFullYear()) : settingsInfo[0].copyright;
             res.locals.mainSettings = settingsInfo[0];
-            _context.next = 75;
+            _context.next = 78;
             return _ads["default"].find({
               location: 'homepageFooter'
             }).sort({
               createdAt: -1
             });
 
-          case 75:
+          case 78:
             res.locals.homepageFooter = _context.sent;
-            _context.next = 78;
+            _context.next = 81;
             return _ads["default"].find({
               location: 'homepageSidebar'
             }).sort({
               createdAt: -1
             });
 
-          case 78:
+          case 81:
             res.locals.homepageSidebar = _context.sent;
-            _context.next = 81;
+            _context.next = 84;
             return _ads["default"].find({
               location: 'categoryFooter'
             }).sort({
               createdAt: -1
             });
 
-          case 81:
+          case 84:
             res.locals.categoryFooter = _context.sent;
-            _context.next = 84;
+            _context.next = 87;
             return _ads["default"].find({
               location: 'authorFooter'
             }).sort({
               createdAt: -1
             });
 
-          case 84:
+          case 87:
             res.locals.authorFooter = _context.sent;
-            _context.next = 87;
+            _context.next = 90;
             return _ads["default"].find({
               location: 'searchFooter'
             }).sort({
               createdAt: -1
             });
 
-          case 87:
+          case 90:
             res.locals.searchFooter = _context.sent;
 
             res.locals.getCat = function (arg) {
@@ -416,7 +423,7 @@ router.use( /*#__PURE__*/function () {
 
             next();
 
-          case 90:
+          case 93:
           case "end":
             return _context.stop();
         }
