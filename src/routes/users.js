@@ -642,7 +642,20 @@ router.post(
     try {
       let user = await User.findById(req.user.id);
       if (user.email == req.body.email) {
-        User.updateOne({ _id: req.user.id }, req.body)
+        var status = 0;
+        if (req.body.firstname != 'Not Specified') { status = status + 10;}
+        if (req.body.lastname != 'Not Specified') { status = status + 10;}
+        if (req.body.email != '') { status = status + 10;}
+        if (req.body.birthday != '') { status = status + 10;}
+        if (req.body.phone != '') { status = status + 10;}
+        if (req.body.sociallinkedin != "" || req.body.socialinstagram != "" || req.body.socialtwitter != "" || req.body.socialfacebook != "") { req.body.status = status + 50;}
+        var postenable = "false";
+        console.log(status);
+        if(status == 100){
+          postenable = "true";
+        }
+        User.updateOne({ _id: req.user.id }, req.body);
+        User.updateOne({ _id: req.user.id }, { $set: { postenable: postenable }})
           .then(user => {
             req.flash(
               "success_msg",

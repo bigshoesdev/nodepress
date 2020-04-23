@@ -106,8 +106,8 @@
                                         id="birthday" required />
                                 </div>
                                 <div class="col-sm-6 col-12 mb-20">
-                                    <label for="">Phone Number(Format: 123-456-7890)</label>
-                                    <input type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" name="phone" id="phone"
+                                    <label for="">Phone Number</label>
+                                    <input type="tel" name="phone" id="phone"
                                         class="form-control" value="<%= user.phone %>" required />
                                 </div>
                                 <div class="col-sm-12 col-12 mb-20">
@@ -154,7 +154,7 @@
                                         value="<%= user.social.linkedin %>">
                                 </div>
                                 <div class="col-12 mt-10 mb-20">
-                                    <input type="submit" class="button button-primary button-outline"
+                                    <input type="submit" class="button button-primary button-outline button-profile"
                                         value="Save Changes">
                                 </div>
                             </div>
@@ -211,7 +211,6 @@
                 <script>document.write(new Date().getFullYear())</script> &copy; <a
                     href="<%= siteLink %>"><%= siteTitle %></a></p>
         </div>
-
     </div>
 </div><!-- Footer Section End -->
 
@@ -263,23 +262,13 @@
         if (phone != "") {
             percent = percent + 10;
         }
-        if (sociallinkedin != "") {
-            percent = percent + 10;
-        }
-        if (socialinstagram != "") {
-            percent = percent + 10;
-        }
-        if (socialtwitter != "") {
-            percent = percent + 10;
-        }
-        if (socialfacebook != "") {
-            percent = percent + 10;
-        }
-        if (tax != "") {
-            percent = percent + 10;
+        if (sociallinkedin != "" || socialinstagram != "" || socialtwitter != "" || socialfacebook != "") {
+            percent = percent + 50;
         }
         if(percent == 100){
             $('#postenable').val("true");
+        }else {
+            $('#postenable').val("false");
         }
         $('.progress-bar').css('width', percent + "%");
     })
@@ -292,14 +281,12 @@
                 reader.onload = function (e) {
                     $('.profile-pic').attr('src', e.target.result);
                 };
-
                 reader.readAsDataURL(input.files[0]);
                 setTimeout(() => {
                     $('#profilePicForm').submit()
                 }, 2000)
             }
         };
-
         $("#clickMe").on('change', function () {
             readURL(this);
         });

@@ -43,6 +43,10 @@
    }
 }
 
+.footercategory:hover {
+   color: blue !important;
+}
+
 @media screen and (min-width: 1000px) {
    .menu-small {
       display: none;
@@ -105,13 +109,11 @@
 .sidenav a:hover {
    color: blue;
 }
-
 .cancelNav {
    font-size: 40px !important;
    text-align: right;
    margin-right: 20px;
 }
-
 .username_span {
    font-size: 18px;
    padding: 20px;
@@ -120,11 +122,11 @@
 }
 .menu-title {
    padding-left: 10px;
-   cursor:pointer
+   cursor: pointer;
 }
-.menu-large{
+.menu-large {
    text-align: right;
 }
-.menu-small{
+.menu-small {
    text-align: right;
 }

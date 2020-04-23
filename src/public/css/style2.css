@@ -800,7 +800,15 @@
   background: #efefef;
 }
 .recommnet-heading {
-  min-height: 120px;
+  height: 250px;
+}
+.re-description {
+  overflow-wrap: break-word;
+  padding: 5px 22px; 
+  color: #6d6b6b; 
+  line-height: 30px; 
+  font-size: 16px;
+  font-weight: 600;
 }
 .recommnet-heading2 {
   height: 250px;

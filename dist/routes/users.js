@@ -1001,7 +1001,7 @@ router.post("/reset/:token", _install["default"].redirectToLogin, function (req,
 
 router.post("/user/dashboard/update/info", _install["default"].redirectToLogin, _auth["default"], /*#__PURE__*/function () {
   var _ref12 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee12(req, res, next) {
-    var user, use;
+    var user, status, postenable, use;
     return _regenerator["default"].wrap(function _callee12$(_context12) {
       while (1) {
         switch (_context12.prev = _context12.next) {
@@ -1014,40 +1014,81 @@ router.post("/user/dashboard/update/info", _install["default"].redirectToLogin, 
             user = _context12.sent;
 
             if (!(user.email == req.body.email)) {
-              _context12.next = 8;
+              _context12.next = 19;
               break;
+            }
+
+            status = 0;
+
+            if (req.body.firstname != 'Not Specified') {
+              status = status + 10;
+            }
+
+            if (req.body.lastname != 'Not Specified') {
+              status = status + 10;
+            }
+
+            if (req.body.email != '') {
+              status = status + 10;
+            }
+
+            if (req.body.birthday != '') {
+              status = status + 10;
+            }
+
+            if (req.body.phone != '') {
+              status = status + 10;
+            }
+
+            if (req.body.sociallinkedin != "" || req.body.socialinstagram != "" || req.body.socialtwitter != "" || req.body.socialfacebook != "") {
+              req.body.status = status + 50;
+            }
+
+            postenable = "false";
+            console.log(status);
+
+            if (status == 100) {
+              postenable = "true";
             }
 
             _users["default"].updateOne({
               _id: req.user.id
-            }, req.body).then(function (user) {
+            }, req.body);
+
+            _users["default"].updateOne({
+              _id: req.user.id
+            }, {
+              $set: {
+                postenable: postenable
+              }
+            }).then(function (user) {
               req.flash("success_msg", "Your profile has been updated successfully");
               return res.redirect("back");
             })["catch"](function (err) {
               return next(err);
             });
 
-            _context12.next = 17;
+            _context12.next = 28;
             break;
 
-          case 8:
-            _context12.next = 10;
+          case 19:
+            _context12.next = 21;
             return _users["default"].findOne({
               email: req.body.email
             });
 
-          case 10:
+          case 21:
             use = _context12.sent;
 
             if (!use) {
-              _context12.next = 16;
+              _context12.next = 27;
               break;
             }
 
             req.flash("success_msg", "The Email you provided has been used");
             return _context12.abrupt("return", res.redirect("back"));
 
-          case 16:
+          case 27:
             _users["default"].updateOne({
               _id: req.user.id
             }, req.body).then(function (user) {
@@ -1057,21 +1098,21 @@ router.post("/user/dashboard/update/info", _install["default"].redirectToLogin, 
               return next(err);
             });
 
-          case 17:
-            _context12.next = 22;
+          case 28:
+            _context12.next = 33;
             break;
 
-          case 19:
-            _context12.prev = 19;
+          case 30:
+            _context12.prev = 30;
             _context12.t0 = _context12["catch"](0);
             next(_context12.t0);
 
-          case 22:
+          case 33:
           case "end":
             return _context12.stop();
         }
       }
-    }, _callee12, null, [[0, 19]]);
+    }, _callee12, null, [[0, 30]]);
   }));
 
   return function (_x33, _x34, _x35) {

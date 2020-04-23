@@ -1041,6 +1041,7 @@ router.get(
           title: cat.name,
           cat: cat.name,
           background: cat.background,
+          category: cat,
           post: post,
           current: page,
           pages: Math.ceil(count / perPage),
