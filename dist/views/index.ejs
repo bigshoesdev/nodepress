@@ -384,49 +384,49 @@
 
 
 
-  // $(function () {
-  //   var height_first = $('.first-column').height();
-  //   var height_second = $('.second-column').height();
-  //   var height_third = $('.third-column').height();
+  $(function () {
+    var height_first = $('.first-column').height();
+    var height_second = $('.second-column').height();
+    var height_third = $('.third-column').height();
 
-  //   var deltaheight_first = -height_first + 'px';
-  //   var deltaheight_second = -height_second + 'px';
-  //   var deltaheight_third = -height_third + 'px';
+    var deltaheight_first = -height_first + 'px';
+    var deltaheight_second = -height_second + 'px';
+    var deltaheight_third = -height_third + 'px';
 
-  //   function loop() {
-  //     $('.first-column')
-  //       .animate({ top: '0px' }, 1000, 'linear')
-  //       .animate({ top: deltaheight_first }, 200000, 'linear', loop);
-  //     $('.second-column')
-  //       .animate({ top: '0px' }, 3000, 'linear')
-  //       .animate({ top: deltaheight_second }, 60000, 'linear', loop);
-  //     $('.third-column')
-  //       .animate({ top: '0px' }, 5000, 'linear')
-  //       .animate({ top: deltaheight_third }, 140000, 'linear', loop);
-  //   }
-  //   loop();
-  //   $('.first-column').hover(function () {
-  //     $(this).stop();
-  //   }, function () {
-  //     $(this)
-  //       .animate({ top: deltaheight_first }, 200000, 'linear', loop);
-  //   }
-  //   );
-  //   $('.second-column').hover(function () {
-  //     $(this).stop();
-  //   }, function () {
-  //     $(this)
-  //       .animate({ top: deltaheight_second }, 60000, 'linear', loop);
-  //   }
-  //   );
-  //   $('.third-column').hover(function () {
-  //     $(this).stop();
-  //   }, function () {
-  //     $(this)
-  //       .animate({ top: deltaheight_third }, 140000, 'linear', loop);
-  //   }
-  //   );
-  // });
+    function loop() {
+      $('.first-column')
+        .animate({ top: '0px' }, 1000, 'linear')
+        .animate({ top: deltaheight_first }, 200000, 'linear', loop);
+      $('.second-column')
+        .animate({ top: '0px' }, 3000, 'linear')
+        .animate({ top: deltaheight_second }, 60000, 'linear', loop);
+      $('.third-column')
+        .animate({ top: '0px' }, 5000, 'linear')
+        .animate({ top: deltaheight_third }, 140000, 'linear', loop);
+    }
+    loop();
+    $('.first-column').hover(function () {
+      $(this).stop();
+    }, function () {
+      $(this)
+        .animate({ top: deltaheight_first }, 200000, 'linear', loop);
+    }
+    );
+    $('.second-column').hover(function () {
+      $(this).stop();
+    }, function () {
+      $(this)
+        .animate({ top: deltaheight_second }, 60000, 'linear', loop);
+    }
+    );
+    $('.third-column').hover(function () {
+      $(this).stop();
+    }, function () {
+      $(this)
+        .animate({ top: deltaheight_third }, 140000, 'linear', loop);
+    }
+    );
+  });
 
     $('.icon-1').hover(function(){
       $('.list-icon-1').animate({top: '30px', opacity: 1.0},1000 , 'linear');
