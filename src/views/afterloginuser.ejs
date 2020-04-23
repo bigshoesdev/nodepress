@@ -161,35 +161,18 @@
 
   <div style="width: 100%;" class="after-login-banner">
     <div id="demo" class="carousel slide" data-ride="carousel">
-      <ul class="carousel-indicators">
-        <li data-target="#demo" data-slide-to="0" class="active"></li>
-        <li data-target="#demo" data-slide-to="1"></li>
-        <li data-target="#demo" data-slide-to="2"></li>
-      </ul>
       <div class="carousel-inner">
-        <div class="carousel-item bg1 active">
+        <% for(var i = 0; i < editorsPicker.length; i ++){%>
+        <div class="carousel-item bg1 <% if(i == 0){%>active<%}%>" style="background-image: linear-gradient(#00000061, #00000069), url('<%= editorsPicker[i].file%>')">
           <div class="carousel-caption">
-            <h5><span>BUSINESS</span></h5>
-            <h1>The Reason We Decided to Change Locations</h1>
+            <h5><span><%= editorsPicker[i].category.name%></span></h5>
+            <h1><%= editorsPicker[i].title%></h1>
           </div>
         </div>
-        <div class="carousel-item bg2">
-          <div class="carousel-caption">
-            <h5><span>BUSINESS</span></h5>
-            <h1>A New Beginning Awaits</h1>
-          </div>
-        </div>
-        <div class="carousel-item bg3">
-          <div class="carousel-caption">
-            <h5><span>BUSINESS</span></h5>
-            <h1>Basically Salient is beautiful from all around</h1>
-          </div>
-        </div>
+        <% }%>
       </div>
     </div>
   </div>
-
-
 
   <div class="after-login-page-content">
     <div class="container-fluid">

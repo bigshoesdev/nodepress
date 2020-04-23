@@ -2,6 +2,8 @@
 
 import express from "express";
 import User from "../models/users";
+import Subscription from "../models/subscription";
+import StripeSession from "../models/stripesession";
 import Category from '../models/category';
 import crypto from "crypto";
 import formidable from "formidable";
@@ -18,7 +20,9 @@ const router = express.Router();
 import install from "../helpers/install";
 import role from "../helpers/role";
 import Newsletter from "../models/newsletter";
-
+import dotenv from "dotenv";
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+dotenv.config({ path: "./.env" });
 // Prevent logged in users from viewing the sign up and login page
 function checkIfLoggedIn(req, res, next) {
   if (req.isAuthenticated()) return res.redirect(`back`);
@@ -101,12 +105,12 @@ router.post(
 
     await User.updateOne({ _id: req.user.id }, req.body)
       .then(user => {
-        return res.redirect("/membership");
+        return res.redirect("/onboarding");
       })
       .catch(err => next(err));
-    await User.updateOne({ _id: req.user.id }, { $set: { signupProcess: "/membership" } })
+    await User.updateOne({ _id: req.user.id }, { $set: { signupProcess: "/onboarding" } })
       .then(user => {
-        return res.redirect("/membership");
+        return res.redirect("/onboarding");
       })
       .catch(err => next(err));
   }
@@ -115,15 +119,23 @@ router.post(
 router.post('/category/show-more', install.redirectToLogin, async (req, res, next) => {
   try {
     let showCnt = req.body.categoryCount;
-    let    categories = await Category.find({}).limit(20).skip(parseInt(showCnt));
+    let categories = await Category.find({}).limit(20).skip(parseInt(showCnt));
     res.json(categories);
   } catch (error) {
     next(error);
   }
 });
 router.get('/onboarding', install.redirectToLogin, async (req, res, next) => {
+  let redirect = req.query.redirect ? true : false;
   try {
     let categoryCount = 2;
+    let stripeSession_id = req.query.session_id;
+    if (stripeSession_id) {
+      //paid account for paid account stripe connection successfully
+      let session = await stripe.checkout.sessions.retrieve(stripeSession_id);
+      await StripeSession.create(session);
+      categoryCount = 10
+    }
     if (req.user.paid == "paid") {
       categoryCount = 10;
     }
@@ -131,27 +143,12 @@ router.get('/onboarding', install.redirectToLogin, async (req, res, next) => {
     res.render('onboarding', {
       categoryCount: categoryCount,
       categories: categories,
-    });
+      redirect: redirect
+    })
   } catch (error) {
     next(error);
   }
 });
-
-router.post(
-  '/choose-category',
-  install.redirectToLogin,
-  auth,
-  role("user"),
-  async (req, res, next) => {
-    var categoryCount = req.body.categoryCount;
-    var paid = "free";
-    if (categoryCount == 10) {
-      paid = 'paid';
-    }
-    await User.updateOne({ _id: req.user._id }, { $set: { paid: paid, signupProcess: "/afterlogin" } });
-    return res.redirect('/afterlogin');
-  }
-);
 
 router.post('/onboarding', install.redirectToLogin, async (req, res, next) => {
   try {
@@ -164,11 +161,44 @@ router.post('/onboarding', install.redirectToLogin, async (req, res, next) => {
     res.render('onboarding', {
       categoryCount: categoryCount,
       categories: categories,
+      redirect: false
     });
   } catch (error) {
     next(error);
   }
 });
+
+router.get('blogrecent', install.redirectToLogin, auth, role('user'), async (req, res, next) => {
+
+  res.render('blogrecent');
+});
+
+router.post(
+  '/choose-category',
+  install.redirectToLogin,
+  auth,
+  role("user"),
+  async (req, res, next) => {
+    var categoryCount = req.body.categoryCount;
+    let listString = req.body.categoryList;
+    let categoryList = listString.split(",");
+    var paid = "free";
+    if (categoryCount == 10) {
+      paid = 'paid';
+    }
+    await User.updateOne({ _id: req.user._id }, { $set: { paid: paid, categoryList: categoryList, signupProcess: "/afterlogin" } });
+    if (req.body.redirect == "true") {
+      return res.redirect('/user/profile');
+    } else {
+      if (categoryCount == 10) {
+        return res.redirect('/blogrecent');
+      } else {
+        return res.redirect('/afterlogin');
+      }
+    }
+  }
+);
+
 // Twitter login auth
 router.get(
   "/auth/twitter",
@@ -213,91 +243,96 @@ router.post(
   install.redirectToLogin,
   checkIfLoggedIn,
   async (req, res, next) => {
-    try {
-      let set = await Settings.findOne();
-      // SOLVED SETTINGS BUG, USED SET[0] INSTEAD OF SET
-      if (set.registrationSystem == true) {
-        let payload = {
-          email: req.body.email.trim(),
-          password: req.body.password.trim(),
-          token: crypto.randomBytes(16).toString("hex"),
-          username: req.body.username.trim(),
-          profilePicture:
-            "https://gravatar.com/avatar/" +
-            crypto
-              .createHash("md5")
-              .update(req.body.email)
-              .digest("hex")
-              .toString() +
-            "?s=200" +
-            "&d=retro",
-          active:
-            typeof set.emailVerification == "undefined"
-              ? true
-              : set.emailVerification == true
-                ? false
-                : true,
-          roleId: "user",
-          firstName: "Not Specified",
-          lastName: "Not Specified",
-          siteLink: res.locals.siteLink,
-          logo: res.locals.siteLogo,
-          instagram: res.locals.instagram,
-          facebook: res.locals.facebook,
-          twitter: res.locals.twitter,
-          signupProcess: "/enterinformation"
-        };
-        if (req.body.password !== req.body.cPassword) {
-          req.flash("success_msg", "Password Does/'nt match");
-          return res.redirect("back");
-        } else {
-          let check = await User.findOne({ email: req.body.email });
-          if (check) {
-            req.flash("success_msg", "Email has been used");
+    if (!req.body['g-recaptcha-response']) {
+      req.flash("success_msg", "Captcha is required!");
+      return res.redirect("back");
+    } else {
+      try {
+        let set = await Settings.findOne();
+        // SOLVED SETTINGS BUG, USED SET[0] INSTEAD OF SET
+        if (set.registrationSystem == true) {
+          let payload = {
+            email: req.body.email.trim(),
+            password: req.body.password.trim(),
+            token: crypto.randomBytes(16).toString("hex"),
+            username: req.body.username.trim(),
+            profilePicture:
+              "https://gravatar.com/avatar/" +
+              crypto
+                .createHash("md5")
+                .update(req.body.email)
+                .digest("hex")
+                .toString() +
+              "?s=200" +
+              "&d=retro",
+            active:
+              typeof set.emailVerification == "undefined"
+                ? true
+                : set.emailVerification == true
+                  ? false
+                  : true,
+            roleId: "user",
+            firstName: "Not Specified",
+            lastName: "Not Specified",
+            siteLink: res.locals.siteLink,
+            logo: res.locals.siteLogo,
+            instagram: res.locals.instagram,
+            facebook: res.locals.facebook,
+            twitter: res.locals.twitter,
+            signupProcess: "/enterinformation"
+          };
+          if (req.body.password !== req.body.cPassword) {
+            req.flash("success_msg", "Password Does/'nt match");
             return res.redirect("back");
           } else {
-            let user = await User.create(payload);
-            // SOLVED SETTINGS BUG, USED SET[0] INSTEAD OF SET
-            set.emailVerification == true
-              ? await _mail(
-                "Registration Successfull",
-                req.body.email,
-                "reg-email",
-                payload,
-                req.headers.host,
-                (err, info) => {
-                  if (err) console.log(err);
-                }
-              )
-              : null;
-            if (set.emailVerification == true) {
-              req.flash(
-                "success_msg",
-                "Registration Successfull, pls check your email for futher instrcutions"
-              );
+            let check = await User.findOne({ email: req.body.email });
+            if (check) {
+              req.flash("success_msg", "Email has been used");
               return res.redirect("back");
             } else {
-              if (set.autoLogin == true) {
-                req.logIn(user, function (err) {
-                  if (err) return next(err);
-                  if (user.roleId === "user") {
-                    return res.redirect(`/user/dashboard`);
-                  } else if (user.roleId === "admin") {
-                    return res.redirect(`/dashboard/index`);
+              let user = await User.create(payload);
+              // SOLVED SETTINGS BUG, USED SET[0] INSTEAD OF SET
+              set.emailVerification == true
+                ? await _mail(
+                  "Registration Successfull",
+                  req.body.email,
+                  "reg-email",
+                  payload,
+                  req.headers.host,
+                  (err, info) => {
+                    if (err) console.log(err);
                   }
-                });
+                )
+                : null;
+              if (set.emailVerification == true) {
+                req.flash(
+                  "success_msg",
+                  "Registration Successfull, pls check your email for futher instrcutions"
+                );
+                return res.redirect("back");
               } else {
-                req.flash("success_msg", "Registration Successfull");
-                return res.redirect("/login");
+                if (set.autoLogin == true) {
+                  req.logIn(user, function (err) {
+                    if (err) return next(err);
+                    if (user.roleId === "user") {
+                      return res.redirect(`/user/dashboard`);
+                    } else if (user.roleId === "admin") {
+                      return res.redirect(`/dashboard/index`);
+                    }
+                  });
+                } else {
+                  req.flash("success_msg", "Registration Successfull");
+                  return res.redirect("/login");
+                }
               }
             }
           }
+        } else {
+          res.render("404");
         }
-      } else {
-        res.render("404");
+      } catch (e) {
+        next(e);
       }
-    } catch (e) {
-      next(e);
     }
   }
 );
@@ -381,7 +416,7 @@ router.get(
                 if (set.autoLogin) {
                   req.logIn(user, (err, user) => {
                     if (err) return next(err);
-                    return res.redirect(`/afterlogin`);
+                    return res.redirect('/enterinformation');
                   });
                 } else {
                   req.flash(
@@ -412,9 +447,37 @@ router.get(
     res.render("login", { title: res.locals.siteTitle });
   }
 );
-router.get('/afterlogin', install.redirectToLogin, (req, res, next) => {
+router.get('/afterlogin', install.redirectToLogin, async (req, res, next) => {
+  let editorsPicker = await Article.find({
+    showPostOnSlider: true
+  }).populate('category');
+  if (editorsPicker.length == 0) {
+    let a = [];
+    for (var i = 0; i < req.user.categoryList.length; i++) {
+      var usercategory = req.user.categoryList[i];
+      let _category = await Category.find({
+        slug: usercategory
+      });
+      let article = await Article.find({
+        category: _category[0]._id
+      }).populate('category');
+      for (var b in article) {
+        a.push(article[b]);
+      }
+    }
+    for (var i in a) {
+      if (a[i].short.split(' ').length > 900) {
+        if (editorsPicker.length > 2) {
+          break;
+        }
+        editorsPicker.push(a[i]);
+      }
+    }
+  }
+  console.log(editorsPicker);
   res.render('afterloginuser', {
     title: "After Login",
+    editorsPicker: editorsPicker
   });
 });
 
@@ -429,36 +492,41 @@ router.post(
   install.redirectToLogin,
   checkIfLoggedIn,
   (req, res, next) => {
-    passport.authenticate("local", function (err, user, info) {
-      if (err) return next(err);
-      if (!user) {
-        req.flash("success_msg", "Incorect Email or password");
-        return res.redirect("back");
-      }
-      if (typeof user.active == "boolean" && user.active === false) {
-        req.flash(
-          "success_msg",
-          "Your account is not active, check your email to activate your account"
-        );
-        return res.redirect("back");
-      }
-      if (user.banned === true) {
-        req.flash(
-          "success_msg",
-          "Your Account has been suspended, You can visit the contact page for help."
-        );
-      }
-      req.logIn(user, function (err) {
+    if (!req.body['g-recaptcha-response']) {
+      req.flash("success_msg", "Captcha is required!");
+      return res.redirect("back");
+    } else {
+      passport.authenticate("local", function (err, user, info) {
         if (err) return next(err);
-        if (user.roleId === "user") {
-          // return res.redirect(`/user/dashboard`);
-          let signupProcess = user.signupProcess;
-          return res.redirect(signupProcess);
-        } else if (user.roleId === "admin") {
-          return res.redirect(`/dashboard/index`);
+        if (!user) {
+          req.flash("success_msg", "Incorect Email or password");
+          return res.redirect("back");
         }
-      });
-    })(req, res, next);
+        if (typeof user.active == "boolean" && user.active === false) {
+          req.flash(
+            "success_msg",
+            "Your account is not active, check your email to activate your account"
+          );
+          return res.redirect("back");
+        }
+        if (user.banned === true) {
+          req.flash(
+            "success_msg",
+            "Your Account has been suspended, You can visit the contact page for help."
+          );
+        }
+        req.logIn(user, function (err) {
+          if (err) return next(err);
+          if (user.roleId === "user") {
+            // return res.redirect(`/user/dashboard`);
+            let signupProcess = user.signupProcess;
+            return res.redirect(signupProcess);
+          } else if (user.roleId === "admin") {
+            return res.redirect(`/dashboard/index`);
+          }
+        });
+      })(req, res, next);
+    }
   }
 );
 // Get forgot password page
@@ -953,5 +1021,40 @@ router.get("/unfollow-user", auth, async (req, res, next) => {
 
 // Subscribe a user to a newsletter digest (Daily / Weekly)
 router.post("/subscribe/digest", auth, async (req, res, next) => { });
+
+
+router.get("/checkout-session", async (req, res) => {
+  const { sessionId } = req.query;
+  const session = await stripe.checkout.sessions.retrieve(sessionId);
+  res.send(session);
+});
+
+router.post("/create-checkout-session", async (req, res) => {
+  const planId = process.env.SUBSCRIPTION_PLAN_ID;
+  const domainURL = process.env.DOMAIN;
+  let session;
+  // Customer is only signing up for a subscription
+  session = await stripe.checkout.sessions.create({
+    payment_method_types: ["card"],
+    subscription_data: {
+      items: [
+        {
+          plan: planId
+        }
+      ]
+    },
+    success_url: `${domainURL}/onboarding?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${domainURL}/membership`
+  });
+  res.send({
+    checkoutSessionId: session.id
+  });
+});
+
+router.get("/public-key", (req, res) => {
+  res.send({
+    publicKey: process.env.STRIPE_PUBLISHABLE_KEY
+  });
+});
 
 module.exports = router;

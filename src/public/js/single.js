@@ -89,6 +89,7 @@ var newstring = "<span style='color:" + firstlettercolor + "; font-size:80px;'>"
 firstchild[0].innerHTML = newstring;
 function upvote() {
    // $('#upvoteForm').submit();
+   console.log("this is the ajax call part");
    var articleId = $('#articleId').val();
    var uId = $('#userId').val();
    $.ajax({
@@ -101,9 +102,12 @@ function upvote() {
       }
    });
 }
-$('.mobile-upvote').click(function () {
+
+$(document).on('mousedown', '.mobile-upvote', function(){
+   console.log("this is mobile click function!");
    upvote();
 });
+
 $(window).scroll(function () {
    if ($(this).scrollTop() >= 0) {        // If page is scrolled more than 50px
       $('#return-to-top').fadeIn(200);    // Fade in the arrow

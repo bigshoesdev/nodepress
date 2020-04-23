@@ -8,6 +8,8 @@ const articleSchema = new Schema(
       ref: "User"
     },
     title: String,
+    metatitle: String,
+    metadescription: String,
     body: String,
     file: String,
     slug: String,
@@ -30,6 +32,10 @@ const articleSchema = new Schema(
     showPostOnSlider: {
       type: Boolean,
       default: true
+    },
+    addToNoIndex: {
+      type: Boolean,
+      default: false
     },
     addToFeatured: {
       type: Boolean,

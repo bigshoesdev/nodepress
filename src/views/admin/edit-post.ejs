@@ -32,10 +32,10 @@
         <div class="col-12 col-lg-auto mb-20 text-right">
             <div class="page-heading">
                 <% if(author.roleId == "admin") {%>
-                <a href="/dype/<%= article.category.slug.toLowerCase();%>/<%= article.slug %>" target="_blank"><button class="btn btn-info">View
+                <a href="/d/<%= article.category.slug.toLowerCase();%>/<%= article.slug %>" target="_blank"><button class="btn btn-info">View
                         Post</button></a>
                 <% } else {%>
-                <a href="/publisher/<%= author.username.toLowerCase()%>/<%= article.category.slug.toLowerCase();%>/<%= article.slug %>" target="_blank"><button class="btn btn-info">View
+                <a href="/p/<%= article.category.slug.toLowerCase();%>/<%= article.slug %>" target="_blank"><button class="btn btn-info">View
                         Post</button></a>
                 <%}%>
             </div>
@@ -54,6 +54,16 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group">
+                                        <label for=""><b>Meta Title</b></label>
+                                        <input type="text" name="metatitle" placeholder="Meta Title" class="form-control" id="metatitle"
+                                            required value="<%= article.metatitle %>">
+                                    </div>
+                                    <div class="form-group mt-4">
+                                        <label for=""><b>Meta description</b></label>
+                                        <textarea name="metadescription" id="metadescription" cols="30" rows="2" class="form-control"
+                                            maxlength="800" placeholder="Meta Description"><%= article.metadescription %></textarea>
+                                    </div>
+                                    <div class="form-group mt-4">
                                         <label for="">Title</label>
                                         <input type="text" name="title" placeholder="Post Title" class="form-control"
                                             id="title" value="<%= article.title %>" required>
@@ -129,6 +139,10 @@
                                 </div>
                                 <div class="card-body">
                                     <div>
+                                        <b><label class="adomx-switch"><input type="checkbox" name="addToNoIndex" <% if(article.addToNoIndex == true){ %>checked<%}%> > <i class="lever"></i> <span class="text">No Index</span></label></b>
+                        </div>
+                        <hr>
+                                    <div>
                                         <b><label class="adomx-switch"><input type="checkbox" name="addToFeatured" <% if(article.addToFeatured == true){ %>checked<%}%> > <i class="lever"></i> <span class="text">Add to Featured</span></label></b>
                         </div>
                         <hr>
@@ -145,7 +159,7 @@
                         </div>
                         <hr>
                         <div>
-                            <b><label class="adomx-switch"><input type="checkbox" name="showOnlyToRegisteredUsers"<% if(article.showOnlyToRegisteredUsers == true){ %>checked<%}%> > <i class="lever"></i> <span class="text">Show only to Registered Users</span></label></b>
+                            <b><label class="adomx-switch"><input type="checkbox" name="showOnlyToRegisteredUsers" <% if(article.showOnlyToRegisteredUsers == true){ %>checked<%}%> > <i class="lever"></i> <span class="text">Show only to Registered Users</span></label></b>
                         </div>
                     </div>
                 </div>
@@ -385,6 +399,9 @@
                         }
                     }
                 });
+                $(function(){
+                    $('a').attr('rel', 'nofollow');
+                })
             </script>
 
             </body>

@@ -167,7 +167,11 @@
                                 <td><%= data.articleId.createdAt.toDateString() %></td>
                                 <td><%= data.createdAt.toDateString() %></td>
                                 <td>
-                                    <a href="/post/<%= data.articleId.slug %>" target="_blank"><button type="button" class="btn btn-success btn-sm">View Post</button></a>
+                                    <% if(data.articleId.postedBy.roleId == 'user'){%>
+                                        <a href="/p/<%= data.articleId.category.slug%>/<%= data.articleId.slug %>" target="_blank"><button type="button" class="btn btn-success btn-sm">View Post</button></a>
+                                        <%} else {%>
+                                            <a href="/d/<%= data.articleId.slug %>" target="_blank"><button type="button" class="btn btn-success btn-sm">View Post</button></a>
+                                            <%}%>
                                     <a href="/bookmark/delete?bookmarkId=<%= data._id %>">
                                         <button type="button" class="btn btn-danger btn-sm">Remove</button>
                                     </a>

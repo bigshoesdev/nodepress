@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import Category from "../models/category";
 import User from "../models/users";
 import Bookmark from "../models/bookmark";
+import SaveText from "../models/savetext";
 const router = express.Router();
 
 router.get(
@@ -775,5 +776,15 @@ router.get(
     res.render("./user/bookmark", { title: "Reading List", bookmark });
   }
 );
-
+router.get(
+  "/user/marking",
+  auth,
+  role("admin", "user"),
+  async (req, res, next) => {
+    const marking = await SaveText.find({ userId: req.user.id }).populate({
+      path: "articleId",
+    }).sort({ createdAt: -1 });
+    res.render("./user/marking", { title: "Marking List", marking });
+  }
+);
 module.exports = router;

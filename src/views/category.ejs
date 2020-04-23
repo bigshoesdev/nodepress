@@ -1,9 +1,9 @@
 <%- include ./partials/header %>
+<link href="/css/category.css" rel="stylesheet" />
 <div class="category-banner" style="background-image: linear-gradient(#0000003d, #00000040), url('<%= background %>');">
   <div class="container">
     <div class="inner-container">
       <div class="category-banner-content">
-        <h5 style="color: white;">Kategorie</h5>
         <h1 style="color: white;"><%= cat%></h1>
       </div>
     </div>
@@ -30,18 +30,17 @@
                   <div class="recommnet-heading2">
                     <p style="overflow-wrap: break-word;font-size: 18px;">
                       <% if(post[i*3 + j].postedBy.roleId == "admin"){%>
-                        <a href="/dype/<%= post[i*3 + j].category.slug%>/<%= post[i*3 + j].slug %>"
-                          style="color:
+                    <a href="/d/<%= post[i*3 + j].category.slug%>/<%= post[i*3 + j].slug %>" style="color:
                           black;"><%= post[i*3 + j].title.charAt(0).toUpperCase() + post[i*3 + j].title.substring(1) %>
-                          </a>
-                      <%} else {%>
-                      <a href="/publisher/<%= post[i*3 + j].postedBy.username.toLowerCase()%>/<%= post[i*3+j].category.slug.toLowerCase()%>/<%= post[i*3 + j].slug %>" style="color:
+                    </a>
+                    <%} else {%>
+                    <a href="/p/<%= post[i*3+j].category.slug.toLowerCase()%>/<%= post[i*3 + j].slug %>" style="color:
                           black;"><%= post[i*3 + j].title.charAt(0).toUpperCase() + post[i*3 + j].title.substring(1) %>
-                      </a>
-                      <%}%>
+                    </a>
+                    <%}%>
                     </p>
                     <p style="overflow-wrap: break-word;"><% if(post[i*3 + j].summary != undefined) { %>
-                      <%= post[i*3 + j].summary %> <% } %></p>
+                    <%= post[i*3 + j].summary %> <% } %></p>
                   </div>
                   <div class="recommnet-madeby">
                     <div class="recommnet-madeby-img">
@@ -49,7 +48,7 @@
                     </div>
                     <div class="recommnet-madeby-details">
                       <h5><%= post[i*3 + j].postedBy.firstName%> <%= post[i*3 + j].postedBy.lastName%></h5>
-                      <p><%= post[i*3 + j].createdAt.toDateString() %></p>
+                      <!-- <p><%= post[i*3 + j].createdAt.toDateString() %></p> -->
                     </div>
                   </div>
                 </div>
@@ -64,112 +63,72 @@
           <div class="category-content-main-right">
             <div class="category-search">
               <div class="category-search-heading">
-                <h4>Tranding Now</h4>
+                <h4>Beliebt</h4>
               </div>
-              <div class="category-search-bg1">
+              <% if(popular.length > 0){%>
+              <div class="category-search-bg1" style="background: linear-gradient(#d6d3fa00, #f9c7ff49), url('<%= popular[0].file %>'); background-size: cover;">
                 <div class="category-search-bg1-contant">
                   <div class="one-round1">
                     <span>1</span>
                   </div>
                   <div class="two-round1">
-                    <h3>Be My Guest Concert</h3>
-                    <p>February 14, 2017</p>
+                    <h3><%= popular[0].title%></h3>
                   </div>
                 </div>
               </div>
-              <div class="category-search-bg2">
-                <div class="category-search-bg2-contant">
-                  <div class="one-round2">
+              <%}%>
+              <% if(popular.length > 1){%>
+              <div class="category-search-bg1" style="background: linear-gradient(#d6d3fa00, #f9c7ff49), url('<%= popular[1].file %>'); background-size: cover;">
+                <div class="category-search-bg1-contant" >
+                  <div class="one-round1">
                     <span>2</span>
                   </div>
-                  <div class="two-round2">
-                    <h3>The top 10 places to go hiking tomorrow</h3>
-                    <p>July 15, 2017</p>
+                  <div class="two-round1">
+                    <h3><%= popular[1].title%></h3>
                   </div>
                 </div>
               </div>
-              <div class="category-search-bg3">
-                <div class="category-search-bg3-contant">
-                  <div class="one-round3">
+              <%}%>
+              <% if(popular.length > 2){%>
+                <div class="category-search-bg1" style="background: linear-gradient(#d6d3fa00, #f9c7ff49), url('<%= popular[2].file %>'); background-size: cover;">
+                <div class="category-search-bg1-contant">
+                  <div class="one-round1">
                     <span>3</span>
                   </div>
-                  <div class="two-round3">
-                    <h3>Waking up at early today</h3>
-                    <p>March 22, 2017</p>
+                  <div class="two-round1">
+                    <h3><%= popular[2].title%></h3>
                   </div>
                 </div>
               </div>
+              <%}%>
             </div>
             <div class="category-search">
               <div class="category-search-heading">
-                <h4>Recently Posted</h4>
+                <h4>Neueste Artikel</h4>
               </div>
+              <% for(var i = 0; i < recent.length; i ++){%>
+
               <div class="category-search-content">
                 <div class="row">
-                  <div class="col-md-3">
+                  <div class="col-md-4">
                     <div class="category-search-content-img">
-                      <img src="/images/cateimg-11.jpg">
+                      <img src="<%= recent[i].file %>" style="width: 100%;" />
                     </div>
                   </div>
-                  <div class="col-md-9">
+                  <div class="col-md-8">
                     <div class="category-search-content-text">
-                      <h3>The top 10 places to go hiking tomarrow</h3>
-                      <p>July 15, 2017</p>
+                      <h3><%= recent[i].title %></h3>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="category-search-content">
-                <div class="row">
-                  <div class="col-md-3">
-                    <div class="category-search-content-img">
-                      <img src="/images/cateimg-12.jpg">
-                    </div>
-                  </div>
-                  <div class="col-md-9">
-                    <div class="category-search-content-text">
-                      <h3>We encountered an actual bird paradise</h3>
-                      <p>April 21, 2017</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="category-search-content">
-                <div class="row">
-                  <div class="col-md-3">
-                    <div class="category-search-content-img">
-                      <img src="/images/cateimg-13.jpg">
-                    </div>
-                  </div>
-                  <div class="col-md-9">
-                    <div class="category-search-content-text">
-                      <h3>Deep down in the water</h3>
-                      <p>March 23, 2017</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="category-search-content">
-                <div class="row">
-                  <div class="col-md-3">
-                    <div class="category-search-content-img">
-                      <img src="/images/cateimg-14.jpg">
-                    </div>
-                  </div>
-                  <div class="col-md-9">
-                    <div class="category-search-content-text">
-                      <h3>Waking up at earcly today</h3>
-                      <p>March 22, 2017</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <%}%>
             </div>
           </div>
         </div>
       </div>
       <div class="publish5-btn">
-        <a href="#"><span>Next Page</span><span><i style="font-weight: 900;" class="fa fa-angle-right"
+        <a href="#"><span> Weitere Artikel über</span><span><i style="font-weight: 900;" class="fa fa-angle-right"
               aria-hidden="true"></i></span></a>
       </div>
     </div>

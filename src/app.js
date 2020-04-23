@@ -14,14 +14,13 @@ import expressValidator from "express-validator";
 import http from "http";
 import _view from "./helpers/_dailyViews";
 import install from "./helpers/install";
+import cors from 'cors';
 const MongoStore = require("connect-mongo")(session);
 // Load environment variables from.env file, where API keys and passwords are configured.
 dotenv.config({ path: "./.env" });
-
 const app = express();
-
 const port = process.env.PORT || 3000;
-
+app.use(cors());
 let server = http.createServer(app);
 server.listen(port, () => console.log(`App started on port: ${port}`));
 server.on("connection", function(socket) {

@@ -31,7 +31,7 @@
 
         <div class="col-12 col-lg-auto mb-20 text-right">
             <div class="page-heading">
-                <a href="/publisher/<%= user.username.toLowerCase()%>/<%= article.category.slug.toLowerCase();%>/<%= article.slug %>" target="_blank"><button
+                <a href="/p/<%= article.category.slug.toLowerCase();%>/<%= article.slug %>" target="_blank"><button
                         class="btn btn-primary">View Post</button></a>
             </div>
         </div>
@@ -284,7 +284,7 @@
     tinymce.init({
         selector: '#body',
         plugins: 'image code print preview fullpage searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern help',
-        toolbar: 'formatselect | bold italic strikethrough forecolor backcolor permanentpen formatpainter | link image media code | numlist bullist outdent indent | removeformat',
+        toolbar: 'formatselect | bold italic strikethrough forecolor backcolor permanentpen formatpainter | link image media | numlist bullist outdent indent | removeformat',
         image_advtab: true,
         image_caption: true,
         relative_urls: false,

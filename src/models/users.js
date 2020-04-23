@@ -44,7 +44,7 @@ const userSchema = new Schema(
       facebook: String,
       twitter: String,
       instagram: String,
-      pinterest: String
+      linkedin: String
     },
     provider: String,
     facebookId: String,
@@ -59,7 +59,12 @@ const userSchema = new Schema(
     fromlinkedin: String,
     frominstagram: String,
     fromother: String,
-    signupProcess: String
+    signupProcess: String,
+    categoryList: Array,
+    birthday: Date,
+    phone: String,
+    postenable: String,
+    tax: String
   },
   { timestamps: true }
 );

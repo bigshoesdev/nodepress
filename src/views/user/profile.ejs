@@ -1,8 +1,33 @@
 <%- include ./partials/header %>
+<style>
+    .progress {
+        height: 15px;
+        border-color: transparent;
+        margin-bottom: 20px;
+        background-color: #f1f1f1;
+        box-shadow: none;
+        border-radius: 0px;
+    }
+
+    .progress-bar {
+        float: left;
+        width: 0;
+        height: 100%;
+        font-size: 10px;
+        line-height: 16px;
+        color: #fff;
+        text-align: center;
+        background-color: #005bff !important;
+        -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .15);
+        box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .15);
+        -webkit-transition: width .6s ease;
+        -o-transition: width .6s ease;
+        transition: width .6s ease;
+    }
+</style>
 <%- include ./partials/sidebar %>
 <!-- Content Body Start -->
 <div class="content-body">
-
     <!-- Page Headings Start -->
     <div class="row justify-content-between align-items-center mb-10">
 
@@ -12,11 +37,8 @@
                 <h3>Author Profile</h3>
             </div>
         </div><!-- Page Heading End -->
-
     </div><!-- Page Headings End -->
-
     <div class="row mbn-50">
-
         <!--Author Top Start-->
         <div class="col-12 mb-50">
             <div class="author-top">
@@ -35,8 +57,16 @@
                     </div>
                 </div>
             </div>
+            <div class="text-center">
+                <h3>Please fill your information. Then you can post the articles</h3>
+            </div>
+            <div class="progress">
+                <div class="progress-bar" style="width:0%">
+                </div>
+            </div>
         </div>
         <!--Author Top End-->
+
         <!--Author Information Start-->
         <div class="col-xlg-12 col-lg-12 col-12 mb-30">
             <%- include ../partials/msg %>
@@ -50,28 +80,55 @@
                             <div class="row row-10 mbn-20">
                                 <div class="col-sm-6 col-12 mb-20">
                                     <label for="">Firstname</label>
+                                    <input type="hidden" name="postenable" id="postenable"/>
                                     <input type="text" class="form-control" name="firstName"
-                                        value="<%= user.firstName %>" required>
+                                        value="<%= user.firstName %>" id="firstname" required>
                                 </div>
                                 <div class="col-sm-6 col-12 mb-20">
                                     <label for="">Lastname</label>
                                     <input type="text" class="form-control" name="lastName" value="<%= user.lastName %>"
-                                        required>
+                                        id="lastname" required>
                                 </div>
                                 <div class="col-sm-6 col-12 mb-20">
                                     <label for="">Email</label>
                                     <input type="email" name="email" class="form-control" value="<%= user.email %>"
-                                        required>
+                                        id="email" required>
                                 </div>
                                 <div class="col-sm-6 col-12 mb-20">
                                     <label for="">Username</label>
                                     <input type="text" name="username" class="form-control" value="<%= user.username %>"
                                         required>
                                 </div>
+                                <div class="col-sm-6 col-12 mb-20">
+                                    <label for="">Birthday</label>
+                                    <input type="date" name="birthday" class="form-control"
+                                        value="<% if(user.birthday){%><%= 1900+user.birthday.getYear()%>-<%if(user.birthday.getMonth() < 10){%><%=0%><%}%><%= 1+user.birthday.getMonth()%>-<%if(user.birthday.getDate() < 10){%><%=0%><%}%><%= user.birthday.getDate()%><%}%>"
+                                        id="birthday" required />
+                                </div>
+                                <div class="col-sm-6 col-12 mb-20">
+                                    <label for="">Phone Number(Format: 123-456-7890)</label>
+                                    <input type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" name="phone" id="phone"
+                                        class="form-control" value="<%= user.phone %>" required />
+                                </div>
+                                <div class="col-sm-12 col-12 mb-20">
+                                    <label for="">Tax number</label>
+                                    <input type="text" name="tax" class="form-control" value="<%= user.tax %>" id="tax"
+                                        required>
+                                </div>
                                 <div class="col-12 mb-20">
                                     <label for="">About Me</label>
-                                    <textarea name="about" id="about" cols="30" rows="10"
-                                        class="form-control"><%= user.about %></textarea>
+                                    <textarea name="about" id="about" cols="30" rows="10" class="form-control"
+                                        maxlength="150"><%= user.about %></textarea>
+                                </div>
+                                <div class="col-12 mb-20">
+                                    <label for="">Categories</label>
+                                    <% for(var i = 0; i < user.categoryList.length; i ++){%>
+                                    <label class="badge badge-primary"
+                                        style="font-size: 14px;"><%=user.categoryList[i]%></label>
+                                    <%}%>
+                                </div>
+                                <div class="col-12 mb-20">
+                                    <a style="color:blue" href="/onboarding?redirect=true">Change the Categories</a>
                                 </div>
                                 <div class="col-12 mb-20">
                                     <b>Social Accounts</b>
@@ -79,22 +136,22 @@
                                 <div class="col-sm-6 col-12 mb-20">
                                     <label for="">Facebook</label>
                                     <input type="text" name="social.facebook" class="form-control"
-                                        value="<%= user.social.facebook %>">
+                                       id="socialfacebook" value="<%= user.social.facebook %>">
                                 </div>
                                 <div class="col-sm-6 col-12 mb-20">
                                     <label for="">Twitter</label>
-                                    <input type="text" name="social.twitter" class="form-control"
+                                    <input type="text" name="social.twitter" class="form-control" id="socialtwitter"
                                         value="<%= user.social.twitter %>">
                                 </div>
                                 <div class="col-sm-6 col-12 mb-20">
                                     <label for="">Instagram</label>
-                                    <input type="text" name="social.instagram" class="form-control"
+                                    <input type="text" name="social.instagram" class="form-control" id="socialinstagram"
                                         value="<%= user.social.instagram %>">
                                 </div>
                                 <div class="col-sm-6 col-12 mb-20">
-                                    <label for="">Pinterest</label>
-                                    <input type="text" name="social.pinterest" class="form-control"
-                                        value="<%= user.social.pinterest %>">
+                                    <label for="">Linkedin</label>
+                                    <input type="text" name="social.linkedin" class="form-control" id="sociallinkedin"
+                                        value="<%= user.social.linkedin %>">
                                 </div>
                                 <div class="col-12 mt-10 mb-20">
                                     <input type="submit" class="button button-primary button-outline"
@@ -140,7 +197,8 @@
 
     </div>
 
-    <form action="/user/dashboard/update/profile-picture" method="POST" id="profilePicForm" enctype="multipart/form-data" class="d-none">
+    <form action="/user/dashboard/update/profile-picture" method="POST" id="profilePicForm"
+        enctype="multipart/form-data" class="d-none">
         <input type="file" name="profilePicture" id="clickMe">
     </form>
 </div><!-- Content Body End -->
@@ -148,7 +206,6 @@
 <!-- Footer Section Start -->
 <div class="footer-section">
     <div class="container-fluid">
-
         <div class="footer-copyright text-center">
             <p class="text-body-light">
                 <script>document.write(new Date().getFullYear())</script> &copy; <a
@@ -179,7 +236,53 @@
 <script src="/assets/js/plugins/moment/moment.min.js"></script>
 
 <script>
-
+    $(function () {
+        var firstname = $('#firstname').val();
+        var lastname = $('#lastname').val();
+        var email = $('#email').val();
+        var birthday = $('#birthday').val();
+        var phone = $('#phone').val();
+        var sociallinkedin = $('#sociallinkedin').val();
+        var socialtwitter = $('#socialtwitter').val();
+        var socialinstagram = $('#socialinstagram').val();
+        var socialfacebook = $('#socialfacebook').val();
+        var tax = $('#tax').val();
+        var percent = 0;
+        if (firstname != 'Not Specified') {
+            percent = percent + 10;
+        }
+        if (lastname != 'Not Specified') {
+            percent = percent + 10;
+        }
+        if (email != "") {
+            percent = percent + 10;
+        }
+        if (birthday != "") {
+            percent = percent + 10;
+        }
+        if (phone != "") {
+            percent = percent + 10;
+        }
+        if (sociallinkedin != "") {
+            percent = percent + 10;
+        }
+        if (socialinstagram != "") {
+            percent = percent + 10;
+        }
+        if (socialtwitter != "") {
+            percent = percent + 10;
+        }
+        if (socialfacebook != "") {
+            percent = percent + 10;
+        }
+        if (tax != "") {
+            percent = percent + 10;
+        }
+        if(percent == 100){
+            $('#postenable').val("true");
+        }
+        $('.progress-bar').css('width', percent + "%");
+    })
     // Avatar Switcher
     function avatarSwitcher() {
         var readURL = function (input) {

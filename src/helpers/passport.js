@@ -101,19 +101,19 @@ set.then(data => {
   passport.use(
     new GoogleStrategy(
       {
-        clientID: "995280985287-f759obd464jold46547s2skat034q2qi.apps.googleusercontent.com",
-          // data != null
-          //   ? data.socialLogin.google.clientId !== undefined
-          //     ? data.socialLogin.google.clientId
-          //     : " "
-          //   : " ",
-        clientSecret: "nDT3CZ1UGJm2mYIBFQjpDm7H",
-          // data != null
-          //   ? data.socialLogin.google.clientSecret !== undefined
-          //     ? data.socialLogin.google.clientSecret
-          //     : " "
-          //   : " ",
-        callbackURL: "/auth/google/callback"
+        clientID: 
+          data != null
+            ? data.socialLogin.google.clientId !== undefined
+              ? data.socialLogin.google.clientId
+              : " "
+            : " ",
+        clientSecret: 
+          data != null
+            ? data.socialLogin.google.clientSecret !== undefined
+              ? data.socialLogin.google.clientSecret
+              : " "
+            : " ",
+        callbackURL: "https://dype.me/auth/google/callback"
       },
       function(accessToken, refreshToken, profile, done) {
         process.nextTick(() => {

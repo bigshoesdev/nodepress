@@ -12,15 +12,17 @@ import url from 'url';
 import Ads from '../models/ads';
 import install from '../helpers/install';
 import Menu from '../models/menu';
+var fs = require('fs');
 
 const router = express.Router();
 
 dotenv.config({ path: './.env' });
 
 router.use(flash());
-router.use(async function(req, res, next) {
+router.use(async function (req, res, next) {
 	let settingsInfo = await Settings.find({});
 	res.locals.mainMenu = await Menu.find().sort({ position: 1 });
+	res.locals.footercategory = await Category.find({}).sort({name: 1});
 	res.locals.time = ev => {
 		const wordsPerMinute = 250; // Average case.
 		let result;
@@ -82,14 +84,14 @@ router.use(async function(req, res, next) {
 		settingsInfo == ''
 			? 'Pls edit site title in the admin dashboard'
 			: typeof settingsInfo[0].siteName == 'undefined'
-			? 'Pls edit site title in the admin dashboard'
-			: `${settingsInfo[0].siteName}`;
+				? 'Pls edit site title in the admin dashboard'
+				: `${settingsInfo[0].siteName}`;
 	res.locals.siteDescription =
 		settingsInfo == ''
 			? 'Edit site description in the admin dashboard'
 			: typeof settingsInfo[0].siteDescription == 'undefined'
-			? 'edit site title in the admin dashboard'
-			: `${settingsInfo[0].siteDescription}`;
+				? 'edit site title in the admin dashboard'
+				: `${settingsInfo[0].siteDescription}`;
 	res.locals.recent = await Article.find({
 		slug: {
 			$ne: url
@@ -249,84 +251,84 @@ router.use(async function(req, res, next) {
 			},
 		},
 	]);
-	res.locals.formatDate = function(arg) {
+	res.locals.formatDate = function (arg) {
 		return moment(arg).fromNow();
 	};
-	res.locals.strip = function(stringWithHTML) {
+	res.locals.strip = function (stringWithHTML) {
 		let text = stringWithHTML
 			.replace(/<!--[\s\S]*?(-->|$)/g, '')
 			.replace(/<(script|style)[^>]*>[\s\S]*?(<\/\1>|$)/gi, '')
 			.replace(/<\/?[a-z][\s\S]*?(>|$)/gi, '');
 		return text;
 	};
-	res.locals.siteLink = `${req.protocol}://${req.headers.host}`;
+	res.locals.siteLink = `https://${req.headers.host}`;
 	res.locals.facebook =
 		settingsInfo == ''
 			? 'https://facebook.com'
 			: typeof settingsInfo[0].socialMedia.facebook == 'undefined'
-			? 'https://facebook.com'
-			: `${settingsInfo[0].socialMedia.facebook}`;
+				? 'https://facebook.com'
+				: `${settingsInfo[0].socialMedia.facebook}`;
 	res.locals.twitter =
 		settingsInfo == ''
 			? 'https://twitter.com'
 			: typeof settingsInfo[0].socialMedia.twitter == 'undefined'
-			? 'https://twitter.com'
-			: `${settingsInfo[0].socialMedia.twitter}`;
+				? 'https://twitter.com'
+				: `${settingsInfo[0].socialMedia.twitter}`;
 	res.locals.instagram =
 		settingsInfo == ''
 			? 'https://instagram.com'
 			: typeof settingsInfo[0].socialMedia.instagram == 'undefined'
-			? 'https://instagram.com'
-			: `${settingsInfo[0].socialMedia.instagram}`;
+				? 'https://instagram.com'
+				: `${settingsInfo[0].socialMedia.instagram}`;
 	res.locals.linkedin =
 		settingsInfo == ''
 			? 'https://linkedin.com'
 			: typeof settingsInfo[0].socialMedia.linkedin == 'undefined'
-			? 'https://linkedin.com'
-			: `${settingsInfo[0].socialMedia.linkedin}`;
+				? 'https://linkedin.com'
+				: `${settingsInfo[0].socialMedia.linkedin}`;
 	res.locals.youtube =
 		settingsInfo == ''
 			? 'https://youtube.com'
 			: typeof settingsInfo[0].socialMedia.youtube == 'undefined'
-			? 'https://youtube.com'
-			: `${settingsInfo[0].socialMedia.youtube}`;
+				? 'https://youtube.com'
+				: `${settingsInfo[0].socialMedia.youtube}`;
 	res.locals.pinterest =
 		settingsInfo == ''
 			? 'https://pinterest.com'
 			: typeof settingsInfo[0].socialMedia.pinterest == 'undefined'
-			? 'https://pinterest.com'
-			: `${settingsInfo[0].socialMedia.pinterest}`;
+				? 'https://pinterest.com'
+				: `${settingsInfo[0].socialMedia.pinterest}`;
 	res.locals.textAsIcon = settingsInfo == '' ? false : settingsInfo[0].textAsIcon;
 	res.locals.siteLogo =
 		settingsInfo == ''
 			? 'default.png'
 			: typeof settingsInfo[0].siteLogo == 'undefined'
-			? 'default.png'
-			: settingsInfo[0].siteLogo;
+				? 'default.png'
+				: settingsInfo[0].siteLogo;
 	res.locals.favicon =
 		settingsInfo == ''
 			? 'default.png'
 			: typeof settingsInfo[0].favicon == 'undefined'
-			? 'default.png'
-			: settingsInfo[0].favicon;
+				? 'default.png'
+				: settingsInfo[0].favicon;
 	res.locals.siteEmail =
 		settingsInfo == ''
 			? 'update site email in the admin dashboard'
 			: typeof settingsInfo[0].contactInfo.email == 'undefined'
-			? 'update site email in the admin dashboard'
-			: settingsInfo[0].contactInfo.email;
+				? 'update site email in the admin dashboard'
+				: settingsInfo[0].contactInfo.email;
 	res.locals.siteNumber =
 		settingsInfo == ''
 			? 'update Phone number in the admin dashboard'
 			: typeof settingsInfo[0].contactInfo.phoneNumber == 'undefined'
-			? 'update phone number in the admin dashboard'
-			: settingsInfo[0].contactInfo.phoneNumber;
+				? 'update phone number in the admin dashboard'
+				: settingsInfo[0].contactInfo.phoneNumber;
 	res.locals.otherInfo =
 		settingsInfo == ''
 			? 'update this in the admin dashboard'
 			: typeof settingsInfo[0].contactInfo.otherInfo == 'undefined'
-			? 'update this in the admin dashboard'
-			: settingsInfo[0].contactInfo.otherInfo;
+				? 'update this in the admin dashboard'
+				: settingsInfo[0].contactInfo.otherInfo;
 	res.locals.headerCategory = await Category.find()
 		.populate('parent')
 		.sort({ createdAt: -1 })
@@ -363,25 +365,31 @@ router.use(async function(req, res, next) {
 // });
 
 
-router.get('/publisher', install.redirectToLogin, async(req, res, next) => {
+router.get('/publisher', install.redirectToLogin, async (req, res, next) => {
 	res.render('publisher', {
 		title: "Publisher"
 	});
 });
 
-router.get('/lostpassword', install.redirectToLogin, async(req, res, next) => {
+router.get('/sitemap.xml', install.redirectToLogin, async (req, res, next) => {
+	fs.readFile('./survey.xml', function (err, data) {
+		console.log(data);
+	});
+});
+
+router.get('/lostpassword', install.redirectToLogin, async (req, res, next) => {
 	res.render('lostpassword', {
 		title: "Lost Passowrd"
 	});
 });
 
-router.get('/paycontent', install.redirectToLogin, async(req, res, next) => {
+router.get('/paycontent', install.redirectToLogin, async (req, res, next) => {
 	res.render('paycontent', {
 		title: "Pay Content"
 	});
 });
 
-router.get('/blogrecent',  async(req, res, next) => {
+router.get('/blogrecent', async (req, res, next) => {
 	res.render('blogrecent', {
 		title: "Blog Recent"
 	});
@@ -749,11 +757,11 @@ router.get('/author/:username', install.redirectToLogin, async (req, res, next) 
 	}
 });
 
-router.get('/vision', install.redirectToLogin, async(req, res, next) => {
+router.get('/vision', install.redirectToLogin, async (req, res, next) => {
 	res.render('vision');
 })
 
-router.get('/membership', install.redirectToLogin, async(req, res, next) => {
+router.get('/membership', install.redirectToLogin, async (req, res, next) => {
 	res.render('membership');
 })
 

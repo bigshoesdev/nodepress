@@ -1,5 +1,5 @@
 .section-1 {
-  background-color: #151515;
+  background-color: #f4f4f4;
   padding: 160px 0px 50px 0px;
 }
 .inner-section-1 {
@@ -8,13 +8,14 @@
 }
 .section-1-left-first-img {
   background-image: linear-gradient(#00000073, #00000061), url(/images/img-1.jpeg);
+  width: 100%;
   height: 380px;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
   border-radius: 5px;
   margin-bottom: 20px;
-  margin-top: 63px;
+  margin-top: 10px;
   padding: 20px;
   transition: 0.5s;
   display: inline-table;
@@ -212,20 +213,20 @@
   padding: 40px 0px;
 }
 .section-1-right-heading1 h1 {
-  color: #fff;
+  color: black;
   text-align: center;
   font-weight: 300;
   font-size: 41px;
 }
 
 .section-1-right-heading2 h2 {
-  color: #fff;
+  color: black;
   font-size: 25px;
   text-align: center;
 }
 
 .section-1-right-heading2 h3 {
-  color: #fff;
+  color: black;
   text-align: center;
   padding: 20px 0px;
   font-style: italic;
@@ -233,14 +234,14 @@
 }
 
 .section-1-right-content p {
-  color: #fff;
+  color: black;
   text-align: center;
   padding: 20px 5px;
   line-height: 27px;
   font-size: 16px;
 }
 .section-1-right-content p {
-  color: #fff;
+  color: black;
   text-align: center;
   padding: 20px 0px;
 }
@@ -250,9 +251,9 @@
   margin: 33px 0px;
 }
 .section-1-right-btn a {
-  border: 1px solid #98e0f2;
+  border: 1px solid black;
   padding: 12px 12px;
-  color: #98e0f2;
+  color: black;
   border-radius: 4px;
   text-decoration: none !important;
   transition: 0.5s;
@@ -271,7 +272,7 @@
 
 .section-2-left {
   background: #f4f4f4;
-  padding: 200px 140px 125px 140px;
+  padding: 50px 140px 50px 140px;
 }
 .section-2-heading h3 {
   font-size: 18px;
@@ -306,7 +307,7 @@
 }
 .section-3-right {
   background: #f4f4f4;
-  padding: 90px 140px 200px 140px;
+  padding: 90px 140px 150px 140px;
 }
 .section-3-heading h3 {
   font-size: 18px;
@@ -342,7 +343,7 @@
   box-shadow: 0px 10px 10px -3px rgba(0, 0, 0, 0.5);
 }
 .section-4 {
-  background-image: url(/images/back.jpeg);
+  background-image: url(/images/Publisher_Page_Section.jpeg);
   height: 700px;
   background-size: cover;
   background-repeat: no-repeat;
@@ -783,6 +784,7 @@
 }
 .recommnet-img {
   overflow: hidden;
+  max-height: 170px;
 }
 .recommnet-img img {
   width: 100%;
@@ -796,6 +798,12 @@
 .recommended-for-you {
   padding: 60px 0px 120px 0px;
   background: #efefef;
+}
+.recommnet-heading {
+  min-height: 120px;
+}
+.recommnet-heading2 {
+  height: 250px;
 }
 .recommnet-heading-main h2 {
   font-family: initial;
@@ -3493,11 +3501,6 @@ li {
   border-left: 5px solid gray;
   padding-left: 10px;
   padding-top: 50px;
-  user-select: none; /* supported by Chrome and Opera */
-  -webkit-user-select: none; /* Safari */
-  -khtml-user-select: none; /* Konqueror HTML */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
 }
 .inner-dark-blog-content-one p {
   font-family: "EB Garamond";

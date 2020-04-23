@@ -39,6 +39,7 @@ $(function () {
          }
       });
    });
+   
    var categoryCountLimit = $('#categoryCount').val();
    var selectCount = 0;
    var selectCategory = [];
@@ -74,5 +75,8 @@ $(function () {
          }
       })
    }
+   $('#saveCategory').click(function(){
+      $('#categoryList').val(selectCategory);
+   })
 
 });

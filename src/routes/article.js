@@ -71,6 +71,8 @@ router.post(
             month: `${months[newDate.getMonth()]}`,
             year: `${newDate.getFullYear()}`,
             title: req.body.title.trim(),
+            metatitle: req.body.metatitle,
+            metadescription: req.body.metadescription,
             body: req.body.body.trim(),
             summary: req.body.summary.trim(),
             keywords: req.body.keywords.trim(),
@@ -114,6 +116,11 @@ router.post(
             showPostOnSlider: !req.body.showPostOnSlider
               ? false
               : req.body.showPostOnSlider
+                ? true
+                : false,
+            addToNoIndex: !req.body.addToNoIndex
+              ? false
+              : req.body.addToNoIndex
                 ? true
                 : false,
             addToFeatured: !req.body.addToFeatured
@@ -389,6 +396,7 @@ router.post(
       }
       req.body.tags ? (req.body.tags = req.body.tags.split(",")) : undefined;
       req.body.showPostOnSlider = req.body.showPostOnSlider ? true : false;
+      req.body.addToNoIndex = req.body.addToNoIndex ? true : false;
       req.body.addToFeatured = req.body.addToFeatured ? true : false;
       req.body.addToBreaking = req.body.addToBreaking ? true : false;
       req.body.addToRecommended = !req.body.addToRecommended ? false : true;
@@ -494,10 +502,10 @@ router.post(
       await Article.deleteMany({ _id: req.body.ids });
       if (!req.body.ids) {
         req.flash("success_msg", "Nothing Has Been Deleted");
-        return res.redirect("/dashboard/all-posts");
+        return res.redirect('back');
       } else {
         req.flash("success_msg", "Posts Has Been Deleted");
-        return res.redirect("/dashboard/all-posts");
+        return res.redirect('back');
       }
     } catch (error) {
       next(error);
@@ -552,7 +560,7 @@ router.post(
     }
   }
 );
-router.get("/publisher/:user/:category/:slug", install.redirectToLogin, async (req, res, next) => {
+router.get("/p/:category/:slug", install.redirectToLogin, async (req, res, next) => {
   try {
     let settings = await Settings.findOne();
     let user = req.params.user;
@@ -686,7 +694,7 @@ router.get("/publisher/:user/:category/:slug", install.redirectToLogin, async (r
         .limit(12);
       let related = await Article.find({
         active: true,
-        slug: { $ne: article[0].slug }
+        slug: { $ne: article[0].slug },
       })
         .populate("postedBy")
         .populate("category")
@@ -699,7 +707,7 @@ router.get("/publisher/:user/:category/:slug", install.redirectToLogin, async (r
         req.connection.remoteAddress ||
         req.socket.remoteAddress ||
         (req.connection.socket ? req.connection.socket.remoteAddress : null);
-      let articleCount = await Article.count();
+      let articleCount = await Article.countDocuments();
       if (art.viewers.indexOf(ips) !== -1) {
         res.render("single", {
           articleCount: articleCount,
@@ -715,6 +723,7 @@ router.get("/publisher/:user/:category/:slug", install.redirectToLogin, async (r
           bookmark: book,
           bookmarkId: bookmark == null ? null : bookmark._id
         });
+
       } else {
         let ip =
           req.headers["x-forwarded-for"] ||
@@ -725,12 +734,12 @@ router.get("/publisher/:user/:category/:slug", install.redirectToLogin, async (r
           { slug: req.params.slug.trim() },
           { $push: { viewers: ip } }
         );
-
         Article.updateOne(
           { slug: req.params.slug.trim() },
           { $inc: { views: 1 } }
         )
           .then(views => {
+            
             res.render("single", {
               articleCount: articleCount,
               title: article[0].title,
@@ -754,7 +763,7 @@ router.get("/publisher/:user/:category/:slug", install.redirectToLogin, async (r
   }
 });
 // Get single article page
-router.get("/dype/:category/:slug", install.redirectToLogin, async (req, res, next) => {
+router.get("/d/:category/:slug", install.redirectToLogin, async (req, res, next) => {
   try {
     let settings = await Settings.findOne();
     let article = await Article.aggregate([
@@ -900,7 +909,7 @@ router.get("/dype/:category/:slug", install.redirectToLogin, async (req, res, ne
         req.connection.remoteAddress ||
         req.socket.remoteAddress ||
         (req.connection.socket ? req.connection.socket.remoteAddress : null);
-      let articleCount = await Article.count();
+      let articleCount = await Article.countDocuments();
       if (art.viewers.indexOf(ips) !== -1) {
         res.render("single", {
           articleCount: articleCount,
@@ -1018,7 +1027,7 @@ router.get(
           .sort({ createdAt: -1 })
           .populate("category")
           .populate("postedBy")
-          .limit(4);
+          .limit(5);
         let featured = await Article.find({ active: true, addToFeatured: true })
           .populate("category")
           .sort({ createdAt: -1 })
@@ -1027,7 +1036,7 @@ router.get(
           .populate("category")
           .populate("postedBy")
           .sort({ views: -1 })
-          .limit(4);
+          .limit(3);
         res.render("category", {
           title: cat.name,
           cat: cat.name,
@@ -1067,7 +1076,6 @@ router.post("/article/add-to-slider", (req, res, next) => {
     next(error);
   }
 });
-
 // Add to recommended
 router.post("/article/add-to-recommended", (req, res, next) => {
   try {

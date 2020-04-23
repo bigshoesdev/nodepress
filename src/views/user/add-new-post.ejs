@@ -87,8 +87,17 @@
                         <b>Publish</b>
                     </div>
                     <div class="card-body">
+                        <% if(user.postenable != "true"){%>
                         <div class="form-group">
+                            You have to verify your account!
+                        </div>
+                        <%}%>
+                        <div class="form-group mt-2">
+                            <% if(user.postenable == "true"){%>
                             <button class="btn btn-primary">Publish</button>
+                            <%} else {%>
+                            <button class="btn btn-primary" disabled>Publish</button>
+                            <%}%>
                         </div>
                     </div>
                 </div>
@@ -143,87 +152,92 @@
             <p class="text-body-light">
                 <script>document.write(new Date().getFullYear())</script> &copy; <a
                     href="<%= siteLink %>"><%= siteTitle %></a></p>
-        </div>
+                        </div>
 
-    </div>
-</div><!-- Footer Section End -->
+                    </div>
+                </div><!-- Footer Section End -->
 
-<div id="cdn-browser-modal" class="modal fade" style="z-index: 9999;">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div id="cdn-browser" class="cdn-browser d-flex flex-column" v-cloak>
-                <div class="files-nav flex-shrink-0">
-                    <div class="d-flex justify-content-between">
-                        <div class="col-left d-flex align-items-center">
-                            <div class="filter-item">
-                                <input type="text" placeholder="Search file name...." class="form-control"
-                                    v-model="filter.s" @keyup.enter="filter.page = 1;reloadLists()">
-                            </div>
-                            <div class="filter-item">
-                                <button class="btn btn-default" @click="filter.page = 1;reloadLists()">
-                                    <i class="fa fa-search"></i> Search</button>
-                            </div>
-                            <div class="filter-item">
-                                <small><i>Total: {{total}} files</i></small>
+                <div id="cdn-browser-modal" class="modal fade" style="z-index: 9999;">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div id="cdn-browser" class="cdn-browser d-flex flex-column" v-cloak>
+                                <div class="files-nav flex-shrink-0">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="col-left d-flex align-items-center">
+                                            <div class="filter-item">
+                                                <input type="text" placeholder="Search file name...."
+                                                    class="form-control" v-model="filter.s"
+                                                    @keyup.enter="filter.page = 1;reloadLists()">
+                                            </div>
+                                            <div class="filter-item">
+                                                <button class="btn btn-default" @click="filter.page = 1;reloadLists()">
+                                                    <i class="fa fa-search"></i> Search</button>
+                                            </div>
+                                            <div class="filter-item">
+                                                <small><i>Total: {{total}} files</i></small>
+                                            </div>
+                                        </div>
+                                        <div class="col-right">
+                                            <i class="fa-spin fa fa-spinner icon-loading"></i>
+                                            <button class="btn btn-success btn-pick-files">
+                                                <span><i class="fa fa-upload"></i> Upload</span>
+                                                <input multiple type="file" name="files[]" ref="files">
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="upload-new" v-show="showUploader" display="none">
+                                    <input type="file" name="filepond[]" class="my-pond">
+                                </div>
+                                <div class="files-list">
+                                    <div class="files-wraps " :class="'view-'+viewType">
+                                        <file-item v-for="(file,index) in files" :key="index" :view-type="viewType"
+                                            :selected="selected" :file="file" v-on:select-file="selectFile"></file-item>
+                                    </div>
+                                    <p class="no-files-text text-center" v-show="!total && apiFinished"
+                                        style="display: none">No file
+                                        found</p>
+                                    <div class="text-center" v-if="totalPage > 1">
+                                        <nav aria-label="Page navigation example">
+                                            <ul class="pagination">
+                                                <li class="page-item" :class="{disabled:filter.page <= 1}">
+                                                    <a class="page-link" v-if="filter.page <=1">Previous</a>
+                                                    <a class="page-link" href="#" v-if="filter.page > 1"
+                                                        v-on:click="changePage(filter.page-1,$event)">Previous</a>
+                                                </li>
+                                                <li class="page-item"
+                                                    v-if="p >= (filter.page-3) && p <= (filter.page+3)"
+                                                    :class="{active: p == filter.page}" v-for="p in totalPage"
+                                                    @click="changePage(p,$event)">
+                                                    <a class="page-link" href="#">{{p}}</a></li>
+                                                <li class="page-item" :class="{disabled:filter.page >= totalPage}">
+                                                    <a v-if="filter.page >= totalPage" class="page-link">Next</a>
+                                                    <a href="#" class="page-link" v-if="filter.page < totalPage"
+                                                        v-on:click="changePage(filter.page+1,$event)">Next</a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                                <div class="browser-actions d-flex justify-content-between flex-shrink-0"
+                                    v-if="selected.length">
+                                    <div class="col-left" v-show="selected.length">
+                                        <div v-if="selected && selected.length">
+                                            <div class="count-selected">{{selected.length}} file selected</div>
+                                            <div class="clear-selected" @click="selected=[]"><i>unselect</i></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-right" v-show="selected.length">
+                                        <button class="btn btn-success" :class="{disabled:!selected.length}"
+                                            @click="sendFiles">Use
+                                            file</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-right">
-                            <i class="fa-spin fa fa-spinner icon-loading"></i>
-                            <button class="btn btn-success btn-pick-files">
-                                <span><i class="fa fa-upload"></i> Upload</span>
-                                <input multiple type="file" name="files[]" ref="files">
-                            </button>
-                        </div>
                     </div>
                 </div>
-                <div class="upload-new" v-show="showUploader" display="none">
-                    <input type="file" name="filepond[]" class="my-pond">
-                </div>
-                <div class="files-list">
-                    <div class="files-wraps " :class="'view-'+viewType">
-                        <file-item v-for="(file,index) in files" :key="index" :view-type="viewType" :selected="selected"
-                            :file="file" v-on:select-file="selectFile"></file-item>
-                    </div>
-                    <p class="no-files-text text-center" v-show="!total && apiFinished" style="display: none">No file
-                        found</p>
-                    <div class="text-center" v-if="totalPage > 1">
-                        <nav aria-label="Page navigation example">
-                            <ul class="pagination">
-                                <li class="page-item" :class="{disabled:filter.page <= 1}">
-                                    <a class="page-link" v-if="filter.page <=1">Previous</a>
-                                    <a class="page-link" href="#" v-if="filter.page > 1"
-                                        v-on:click="changePage(filter.page-1,$event)">Previous</a>
-                                </li>
-                                <li class="page-item" v-if="p >= (filter.page-3) && p <= (filter.page+3)"
-                                    :class="{active: p == filter.page}" v-for="p in totalPage"
-                                    @click="changePage(p,$event)">
-                                    <a class="page-link" href="#">{{p}}</a></li>
-                                <li class="page-item" :class="{disabled:filter.page >= totalPage}">
-                                    <a v-if="filter.page >= totalPage" class="page-link">Next</a>
-                                    <a href="#" class="page-link" v-if="filter.page < totalPage"
-                                        v-on:click="changePage(filter.page+1,$event)">Next</a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-                <div class="browser-actions d-flex justify-content-between flex-shrink-0" v-if="selected.length">
-                    <div class="col-left" v-show="selected.length">
-                        <div v-if="selected && selected.length">
-                            <div class="count-selected">{{selected.length}} file selected</div>
-                            <div class="clear-selected" @click="selected=[]"><i>unselect</i></div>
-                        </div>
-                    </div>
-                    <div class="col-right" v-show="selected.length">
-                        <button class="btn btn-success" :class="{disabled:!selected.length}" @click="sendFiles">Use
-                            file</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<script type="text/x-template" id="file-item-template">
+                <script type="text/x-template" id="file-item-template">
     <div class="file-item" :class="fileClass(file)">
         <div class="inner" :class="{active:selected.indexOf(file._id) !== -1 }" @click="selectFile(file)" :title="file.file_name.split('/').pop()">
             <div class="file-thumb" v-if="viewType=='grid'" v-html="getFileThumb(file)">
@@ -236,43 +250,43 @@
     </div>
 </script>
 
-<!-- JS
+                <!-- JS
 ============================================ -->
 
-<!-- Global Vendor, plugins & Activation JS -->
-<script src="/assets/js/vendor/modernizr-3.6.0.min.js"></script>
-<script src="/assets/js/vendor/jquery-3.3.1.min.js"></script>
-<script src="/assets/js/vendor/popper.min.js"></script>
-<script src="/assets/js/vendor/bootstrap.min.js"></script>
-<!--Plugins JS-->
-<script src="/assets/js/plugins/perfect-scrollbar.min.js"></script>
-<script src="/assets/js/plugins/tippy4.min.js.js"></script>
-<!--Main JS-->
-<script src="/assets/js/main.js"></script>
-<script src="/assets/js/plugins/nice-select/jquery.nice-select.min.js"></script>
-<script src="/js/vue.min.js"></script>
-<script src="/js/upload.js"></script>
-<script src="/js/tags.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $('select').niceSelect();
-        $("#tags").tagsInput({ width: "auto" })
-        //document.querySelector('.nice-select').setAttribute('id', 'subCategory');
-        //$('.nice-select')[0].attr('id', 'subCategory')
-    });
+                <!-- Global Vendor, plugins & Activation JS -->
+                <script src="/assets/js/vendor/modernizr-3.6.0.min.js"></script>
+                <script src="/assets/js/vendor/jquery-3.3.1.min.js"></script>
+                <script src="/assets/js/vendor/popper.min.js"></script>
+                <script src="/assets/js/vendor/bootstrap.min.js"></script>
+                <!--Plugins JS-->
+                <script src="/assets/js/plugins/perfect-scrollbar.min.js"></script>
+                <script src="/assets/js/plugins/tippy4.min.js.js"></script>
+                <!--Main JS-->
+                <script src="/assets/js/main.js"></script>
+                <script src="/assets/js/plugins/nice-select/jquery.nice-select.min.js"></script>
+                <script src="/js/vue.min.js"></script>
+                <script src="/js/upload.js"></script>
+                <script src="/js/tags.min.js"></script>
+                <script>
+                    $(document).ready(function () {
+                        $('select').niceSelect();
+                        $("#tags").tagsInput({ width: "auto" })
+                        //document.querySelector('.nice-select').setAttribute('id', 'subCategory');
+                        //$('.nice-select')[0].attr('id', 'subCategory')
+                    });
 
-    function uploadImages() {
-        uploaderModal.show({
-            multiple: false,
-            file_type: 'image',
-            onSelect: function onSelect(files) {
-                if (files.length) {
-                    document.querySelector('#image').setAttribute('value', files[0].file_name);
-                    document.querySelector('#imgBox').setAttribute('src', files[0].file_name)
-                };
-            }
-        });
-    }
+                    function uploadImages() {
+                        uploaderModal.show({
+                            multiple: false,
+                            file_type: 'image',
+                            onSelect: function onSelect(files) {
+                                if (files.length) {
+                                    document.querySelector('#image').setAttribute('value', files[0].file_name);
+                                    document.querySelector('#imgBox').setAttribute('src', files[0].file_name)
+                                };
+                            }
+                        });
+                    }
 
     // function get_sub_categories(b) {
     //     $.ajax({
@@ -290,53 +304,53 @@
     //         }
     //     })
     // }
-</script>
+                </script>
 
-<script>
-    tinymce.init({
-        selector: '#body',
-        plugins: 'image print preview fullpage searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern help',
-        toolbar: 'formatselect | bold italic strikethrough forecolor backcolor permanentpen formatpainter | link image media | numlist bullist outdent indent | removeformat example',
-        image_advtab: true,
-        image_caption: true,
-        relative_urls: true,
-        remove_script_host: false,
-        convert_urls: true,
-        // menubar: "",
-        //images_upload_url: '/media/create', 
-        file_picker_callback: function file_picker_callback(callback, value, meta) {
-            /* Provide file and text for the link dialog */
-            if (meta.filetype === 'file') {
-                uploaderModal.show({
-                    multiple: false,
-                    file_type: 'video',
-                    onSelect: function onSelect(files) {
-                        if (files.length) callback(files[0].file_name);
-                    }
-                });
-            }
-            if (meta.filetype === 'image') {
-                uploaderModal.show({
-                    multiple: false,
-                    file_type: 'image',
-                    onSelect: function onSelect(files) {
-                        if (files.length) callback(files[0].file_name);
-                    }
-                });
-            }
-            if (meta.filetype === 'media') {
-                uploaderModal.show({
-                    multiple: false,
-                    file_type: 'video',
-                    onSelect: function onSelect(files) {
-                        if (files.length) callback(files[0].file_name);
-                    }
-                });
-            }
-        }
-    });
-</script>
+                <script>
+                    tinymce.init({
+                        selector: '#body',
+                        plugins: 'image print preview fullpage searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern help',
+                        toolbar: 'formatselect | bold italic strikethrough forecolor backcolor permanentpen formatpainter | link image media | numlist bullist outdent indent | removeformat example',
+                        image_advtab: true,
+                        image_caption: true,
+                        relative_urls: true,
+                        remove_script_host: false,
+                        convert_urls: true,
+                        menubar: "",
+                        //images_upload_url: '/media/create', 
+                        file_picker_callback: function file_picker_callback(callback, value, meta) {
+                            /* Provide file and text for the link dialog */
+                            if (meta.filetype === 'file') {
+                                uploaderModal.show({
+                                    multiple: false,
+                                    file_type: 'video',
+                                    onSelect: function onSelect(files) {
+                                        if (files.length) callback(files[0].file_name);
+                                    }
+                                });
+                            }
+                            if (meta.filetype === 'image') {
+                                uploaderModal.show({
+                                    multiple: false,
+                                    file_type: 'image',
+                                    onSelect: function onSelect(files) {
+                                        if (files.length) callback(files[0].file_name);
+                                    }
+                                });
+                            }
+                            if (meta.filetype === 'media') {
+                                uploaderModal.show({
+                                    multiple: false,
+                                    file_type: 'video',
+                                    onSelect: function onSelect(files) {
+                                        if (files.length) callback(files[0].file_name);
+                                    }
+                                });
+                            }
+                        }
+                    });
+                </script>
 
-</body>
+                </body>
 
-</html>
+                </html>
