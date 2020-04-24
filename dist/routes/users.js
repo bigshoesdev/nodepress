@@ -806,7 +806,7 @@ router.get("/login", _install["default"].redirectToLogin, checkIfLoggedIn, funct
 });
 router.get('/afterlogin', _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref12 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee12(req, res, next) {
-    var editorsPicker, a, i, usercategory, _category, article, b;
+    var editorsPicker, a, i, usercategory, _category, article, b, authorarticle, popular, random;
 
     return _regenerator["default"].wrap(function _callee12$(_context12) {
       while (1) {
@@ -890,13 +890,36 @@ router.get('/afterlogin', _install["default"].redirectToLogin, /*#__PURE__*/func
             break;
 
           case 27:
-            // console.log(editorsPicker);
+            _context12.next = 29;
+            return _articles["default"].find({
+              postedBy: req.user.id
+            }).populate('category');
+
+          case 29:
+            authorarticle = _context12.sent;
+            _context12.next = 32;
+            return _articles["default"].find({
+              active: true
+            }).populate('category').sort({
+              views: -1
+            }).limit(10);
+
+          case 32:
+            popular = _context12.sent;
+            _context12.next = 35;
+            return _articles["default"].find({}).populate('category');
+
+          case 35:
+            random = _context12.sent;
             res.render('afterloginuser', {
               title: "After Login",
-              editorsPicker: editorsPicker
+              editorsPicker: editorsPicker,
+              authorarticle: authorarticle,
+              popular: popular,
+              random: random
             });
 
-          case 28:
+          case 37:
           case "end":
             return _context12.stop();
         }

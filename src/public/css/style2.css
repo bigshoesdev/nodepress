@@ -1205,8 +1205,8 @@
   text-transform: uppercase;
 }
 .content-one-img a:hover {
-  background-color: #ff561e;
-  border-color: #ff561e;
+  background-color: blue;
+  border-color: blue;
   transition: 0.3s;
 }
 .content-two-zoom {
@@ -1241,8 +1241,8 @@
   text-transform: uppercase;
 }
 .content-two-btn a:hover {
-  background-color: #ff561e;
-  border-color: #ff561e;
+  background-color: blue;
+  border-color: blue;
   transition: 0.3s;
 }
 .content-two-text {
@@ -1284,8 +1284,8 @@
   text-transform: uppercase;
 }
 .content-three-text-btn a:hover {
-  background-color: #ff561e;
-  border-color: #ff561e;
+  background-color: blue;
+  border-color: blue;
   transition: 0.3s;
   color: #fff;
 }
@@ -1644,12 +1644,9 @@
   margin-bottom: 30px;
 }
 .category-search-content-img img {
-  width: auto;
+  width: 100%;
   border-radius: 10px;
-  height: 75px;
-}
-.category-search-content-text {
-  margin-left: 20px;
+  height: auto;
 }
 .category-search-content-text h3 {
   font-size: 16px;
