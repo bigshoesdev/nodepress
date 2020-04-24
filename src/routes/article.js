@@ -1146,18 +1146,18 @@ router.post("/article/upvote", auth, async (req, res, next) => {
   // res.status(200).send("Post Has been Upvoted");
   return res.redirect(`back`);
 });
-router.post('/article/upvote-ajax', auth, async (req, res, next) => {
+router.post('/article/upvote-ajax', async (req, res, next) => {
   let articleId = req.body.articleId;
   let userId = req.body.userId;
+  
   await Article.updateOne(
     { _id: req.body.articleId },
-    { $push: { "update.users": req.user.id }, $inc: { "upvote.count": 1 } }
+    { $inc: { "upvote.count": 1 } }
   );
   let article = await Article.findOne({ _id: articleId });
   let upvotecount = article.upvote.count;
   res.json(upvotecount);
 });
-
 // Downvote a post
 router.post("/article/downvote", auth, async (req, res, next) => {
   await Article.updateOne(

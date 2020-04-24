@@ -116,6 +116,17 @@ router.post(
   }
 );
 
+router.get('/show-category-all', async (req, res, next) => {
+  try {
+    var categories = await Category.find({}).limit(20);
+    res.render('showcategory', {
+      categories: categories,
+    })
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post('/category/show-more', install.redirectToLogin, async (req, res, next) => {
   try {
     let showCnt = req.body.categoryCount;
@@ -474,10 +485,19 @@ router.get('/afterlogin', install.redirectToLogin, async (req, res, next) => {
       }
     }
   }
-  console.log(editorsPicker);
+  let authorarticle = await Article.find({postedBy: req.user.id}).populate('category');
+  let popular = await Article.find({
+    active: true,
+  }).populate('category')
+    .sort({ views: -1 })
+    .limit(10);
+  let random = await Article.find({}).populate('category');
   res.render('afterloginuser', {
     title: "After Login",
-    editorsPicker: editorsPicker
+    editorsPicker: editorsPicker,
+    authorarticle: authorarticle,
+    popular: popular,
+    random: random
   });
 });
 
@@ -643,20 +663,19 @@ router.post(
       let user = await User.findById(req.user.id);
       if (user.email == req.body.email) {
         var status = 0;
-        if (req.body.firstname != 'Not Specified') { status = status + 10;}
-        if (req.body.lastname != 'Not Specified') { status = status + 10;}
-        if (req.body.email != '') { status = status + 10;}
-        if (req.body.birthday != '') { status = status + 10;}
-        if (req.body.phone != '') { status = status + 10;}
-        if (req.body.sociallinkedin != "" || req.body.socialinstagram != "" || req.body.socialtwitter != "" || req.body.socialfacebook != "") { req.body.status = status + 50;}
-        var postenable = "false";
-        console.log(status);
-        if(status == 100){
-          postenable = "true";
+        if (req.body.firstname != 'Not Specified') { status = status + 10; }
+        if (req.body.lastname != 'Not Specified') { status = status + 10; }
+        if (req.body.email != '') { status = status + 10; }
+        if (req.body.birthday != '') { status = status + 10; }
+        if (req.body.phone != '') { status = status + 10; }
+        if (req.body['social.linkedin'] != "" || req.body['social.instagram'] != "" || req.body['social.twitter'] != "" || req.body['social.facebook'] != "") { status = status + 50; }
+        req.body.postenable = "false";
+        if (status == 100) {
+          req.body.postenable = "true";
         }
-        User.updateOne({ _id: req.user.id }, req.body);
-        User.updateOne({ _id: req.user.id }, { $set: { postenable: postenable }})
+        User.updateOne({ _id: req.user.id }, req.body)
           .then(user => {
+                
             req.flash(
               "success_msg",
               "Your profile has been updated successfully"
