@@ -1513,7 +1513,7 @@ router.post("/article/upvote", _auth["default"], /*#__PURE__*/function () {
     return _ref9.apply(this, arguments);
   };
 }());
-router.post('/article/upvote-ajax', _auth["default"], /*#__PURE__*/function () {
+router.post('/article/upvote-ajax', /*#__PURE__*/function () {
   var _ref10 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee10(req, res, next) {
     var articleId, userId, article, upvotecount;
     return _regenerator["default"].wrap(function _callee10$(_context10) {
