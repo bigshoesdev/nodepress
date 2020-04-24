@@ -854,13 +854,13 @@ router.get('/afterlogin', _install["default"].redirectToLogin, /*#__PURE__*/func
             break;
 
           case 27:
-            console.log(editorsPicker);
+            // console.log(editorsPicker);
             res.render('afterloginuser', {
               title: "After Login",
               editorsPicker: editorsPicker
             });
 
-          case 29:
+          case 28:
           case "end":
             return _context11.stop();
         }
