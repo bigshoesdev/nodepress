@@ -13,7 +13,10 @@
               if(left > 0){index ++}%>
               <div class="col-md-4 first-column">
                 <% for(var i = index * 0; i < index; i ++){%>
-                <div class="section-1-left-first-img"
+                <%
+                  var url = "/kategorie/" + categories[i].slug;
+                  %>
+                <div class="section-1-left-first-img" url="<%= url%>"
                   style="background-image: linear-gradient(#0000003d, #00000040), url('<%= categories[i].background %>');">
                   <div class="section-1-left-first-contant">
                     <i class="fa fa-compass" aria-hidden="true"></i>
@@ -26,7 +29,10 @@
               <div class="col-md-4 second-column">
                 <% 
                  for(var i = index * 1; i < index * 2; i ++){%>
-                <div class="section-1-left-first-img"
+                <%
+                  var url = "/kategorie/" + categories[i].slug;
+                  %>
+                <div class="section-1-left-first-img" url="<%= url%>"
                   style="background-image: linear-gradient(#0000003d, #00000040), url('<%= categories[i].background %>');">
                   <div class="section-1-left-first-contant">
                     <i class="fa fa-compass" aria-hidden="true"></i>
@@ -39,7 +45,10 @@
               <div class="col-md-4 third-column">
                 <% 
                  for(var i = index * 2; i < categories.length; i ++){%>
-                <div class="section-1-left-first-img"
+                <%
+                  var url = "/kategorie/" + categories[i].slug;
+                  %>
+                <div class="section-1-left-first-img" url="<%= url%>"
                   style="background-image: linear-gradient(#0000003d, #00000040), url('<%= categories[i].background %>');">
                   <div class="section-1-left-first-contant">
                     <i class="fa fa-compass" aria-hidden="true"></i>
@@ -70,112 +79,125 @@
                 Künstlern, die mit Begeisterung ihr Wissen teilen. Unser Versprechen: Keine Werbung, kein Up-Selling,
                 hochqualitative Beiträge.</p>
             </div>
-            <div class="section-1-right-btn">
-              <a href="/onboarding"><span>Jetzt Artikel entdecken</span><span><i class="fa fa-long-arrow-right"
-                    aria-hidden="true"></i></span></a>
+            <% if(!user){%>
+                <div class="section-1-right-btn">
+                  <a href="/show-category-all"><span>Jetzt Artikel entdecken</span><span><i
+                        class="fa fa-long-arrow-right" aria-hidden="true"></i></span></a>
+                </div>
+                <% }%>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<div class="section-2">
-  <div class="container-fluid">
-    <div class="inner-section-2">
-      <div class="row" style="background: #f4f4f4;">
-        <div style="padding: 0px;" class="col-md-12">
-          <div class="section-2-right" style="text-align: center; justify-content: center; display: flex;">
-            <ul>
-              <li>
-                <a class='list-item icon-1' href=''>
-                  <i class='fa fa-home'></i>
-                </a>
-              </li>
-              <li>
-                <a class='list-item icon-2' href=''>
-                  <i class='fa fa-file-o'></i>
-                </a>
-              </li>
-              <li>
-                <a class='list-item icon-3' href=''>
-                  <i class='fa fa-th-large'></i>
-                </a>
-              </li>
-              <li>
-                <a class='list-item icon-4' href=''>
-                  <i class='fa fa-users'></i>
-                </a>
-              </li>
-              <li>
-                <a class='list-item icon-5' href=''>
-                  <i class='fa fa-user-circle-o'></i>
-                </a>
-              </li>
-              <li>
-                <a class='list-item icon-6' href=''>
-                  <i class='fa fa-book'></i>
-                </a>
-              </li>
-              <li>
-                <a class='list-item icon-7' href=''>
-                  <i class='fa fa-mars'></i>
-                </a>
-              </li>
-              <li>
-                <a class='list-item icon-8' href=''>
-                  <i class='fa fa-ticket'></i>
-                </a>
-              </li>
-              <li>
-                <a class='list-item icon-9' href=''>
-                  <i class='fa fa-id-badge'></i>
-                </a>
-              </li>
-              <li>
-                <a class='list-item icon-10' href=''>
-                  <i class='fa fa-money'></i>
-                </a>
-              </li>
-            </ul>
+    <div class="section-2">
+      <div class="container-fluid">
+        <div class="inner-section-2">
+          <div class="row" style="background: #f4f4f4;">
+            <div style="padding: 0px;" class="col-md-12">
+              <div class="section-2-right" style="text-align: center; justify-content: center; display: flex;">
+                <ul>
+                  <li>
+                    <a class='list-item icon-1' href=''>
+                      <i class='fa fa-home'></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a class='list-item icon-2' href=''>
+                      <i class='fa fa-file-o'></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a class='list-item icon-3' href=''>
+                      <i class='fa fa-th-large'></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a class='list-item icon-4' href=''>
+                      <i class='fa fa-users'></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a class='list-item icon-5' href=''>
+                      <i class='fa fa-user-circle-o'></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a class='list-item icon-6' href=''>
+                      <i class='fa fa-book'></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a class='list-item icon-7' href=''>
+                      <i class='fa fa-mars'></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a class='list-item icon-8' href=''>
+                      <i class='fa fa-ticket'></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a class='list-item icon-9' href=''>
+                      <i class='fa fa-id-badge'></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a class='list-item icon-10' href=''>
+                      <i class='fa fa-money'></i>
+                    </a>
+                  </li>
+                </ul>
+                <h3 class="list-icon-1" style="display:none;position: absolute;  right: 1vw; top: 10px;">Neue Follower,
+                  Upvotes, Besucherzahlen und die gesamte Lesezeit.</h3>
+                <h3 class="list-icon-2" style="display:none;position: absolute;  right: 35%; top: 50px;">Beitrag
+                  hinzufügen.</h3>
+                <h3 class="list-icon-3" style="display:none;position: absolute;  right: 35%; top: 80px">Alle Beiträge.
+                </h3>
+                <h3 class="list-icon-4" style="display:none;position: absolute;  right: 20%; top: 100px;">Überblick über
+                  deine
+                  Follower.</h3>
+                <h3 class="list-icon-5" style="display:none;position: absolute;  right: 28%; top: 150px;">Wem du folgst.
+                </h3>
+                <h3 class="list-icon-6" style="display:none;position: absolute;  right: 18%; top: 180px;">Gespeicherte
+                  Beiträge.</h3>
+                <h3 class="list-icon-7" style="display:none;position: absolute;  left: 35%; top: 250px;">Gespeicherte
+                  Sätze.</h3>
+                <h3 class="list-icon-8" style="display:none;position: absolute;  left: 45%; top: 280px;">Statistiken.
+                </h3>
+                <h3 class="list-icon-9" style="display:none;position: absolute;  left: 44%; top: 320px;">
+                  Profileinstellungen.</h3>
+                <h3 class="list-icon-10" style="display:none;position: absolute; right: 1vw; top: 350px;">Auszahlungen
+                  einsehen und
+                  bearbeiten.</h3>
 
-            <h3 class="list-icon-1" style="position: absolute;  right: 10%; top: 50px;">Neue Follower, Upvotes, Besucherzahlen und die gesamte Lesezeit.</h3>
-            <h3 class="list-icon-2" style="position: absolute;  right: 10%; top: 100px;">Beitrag hinzufügen.</h3>
-            <h3 class="list-icon-3" style="position: absolute;  right: 10%; top: 150px">Alle Beiträge.</h3>
-            <h3 class="list-icon-4" style="position: absolute;  right: 10%; top: 200px;">Überblick über deine Follower.</h3>
-            <h3 class="list-icon-5" style="position: absolute;  right: 10%; top: 250px;">Wem du folgst.</h3>
-            <h3 class="list-icon-6" style="position: absolute;  left: 10%; top: 100px;">Gespeicherte Beiträge.</h3>
-            <h3 class="list-icon-7" style="position: absolute;  left: 10%; top: 150px;">Gespeicherte Sätze.</h3>
-            <h3 class="list-icon-8" style="position: absolute;  left: 10%; top: 200px;">Statistiken.</h3>
-            <h3 class="list-icon-9" style="position: absolute;  left: 10%; top: 250px;">Profileinstellungen.</h3>
-            <h3 class="list-icon-10" style="position: absolute; left: 10%; top: 300px;">Auszahlungen einsehen und bearbeiten.</h3>
-
-            <div class="section-1-right-btn" style="position: absolute; bottom: 0;">
-              <a href="/sign-up"><span>jetzt kostenlos starten</span><span><i class="fa fa-long-arrow-right"
-                    aria-hidden="true"></i></span></a>
+                <div class="section-1-right-btn" style="position: absolute; bottom: 0;">
+                  <a href="/sign-up"><span>jetzt kostenlos starten</span><span><i class="fa fa-long-arrow-right"
+                        aria-hidden="true"></i></span></a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<div class="section-2">
-  <div class="container-fluid">
-    <div class="inner-section-2">
-      <div class="row" style="background: #f4f4f4;">
-        <div style="padding: 0px;" class="col-md-6">
-          <div class="section-2-left">
-            <div class="section-2-heading">
-              <h3>Auf den Punkt gebracht.</h3>
-            </div>
-            <div class="section-2-content">
-              <h1>Keine theoretischen, ellenlange Bücher - Komprimiertes, praxisnahes und anwendbares Wissen für die
-                tägliche Wissensspritze.</h1>
-            </div>
-            <!-- <div class="section-2-content-2">
+    <div class="section-2">
+      <div class="container-fluid">
+        <div class="inner-section-2">
+          <div class="row" style="background: #f4f4f4;">
+            <div style="padding: 0px;" class="col-md-6">
+              <div class="section-2-left">
+                <div class="section-2-heading">
+                  <h3>Auf den Punkt gebracht.</h3>
+                </div>
+                <div class="section-2-content">
+                  <h1>Keine theoretischen, ellenlange Bücher - Komprimiertes, praxisnahes und anwendbares Wissen für die
+                    tägliche Wissensspritze.</h1>
+                </div>
+                <!-- <div class="section-2-content-2">
               <div class="section-2-content-2-icon">
                 <i class="fa fa-check" aria-hidden="true"></i>
               </div>
@@ -185,18 +207,18 @@
                 <p>Konsumiere jeden Tag Inhalte zu deinen Lieblingsthemen, ganz ohne Limitierung und Werbung.</p>
               </div>
             </div> -->
-          </div>
-        </div>
-        <div style="padding: 0px;" class="col-md-6" >
-          <div class="section-2-right" >
-            <div class="text">
-              <p style="padding-left: 10px;">&nbsp;
-                <span class="word midnight">Dype ist Social Content.</span>
-                <span class="word belize">Dype ist dein Wort.</span>
-                <span class="word pomegranate">Dype ist deine Geschichte.</span>
-                <span class="word green">Dype ist dein Content.</span>
-                <span class="word belize">Dype bist du.</span>
-                <!-- <span class="word wisteria">smart.</span>
+              </div>
+            </div>
+            <div style="padding: 0px;" class="col-md-6">
+              <div class="section-2-right">
+                <div class="text">
+                  <p style="padding-left: 10px;">Dype&nbsp;
+                    <span class="word midnight">ist Social Content.</span>
+                    <span class="word belize">ist dein Wort.</span>
+                    <span class="word pomegranate">ist deine Geschichte.</span>
+                    <span class="word green">ist dein Content.</span>
+                    <span class="word belize">bist du.</span>
+                    <!-- <span class="word wisteria">smart.</span>
                 <span class="word midnight">free.</span>
                 <span class="word pomegranate">love.</span>
                 <span class="word green">strength.</span>
@@ -205,305 +227,342 @@
                 <span class="word pomegranate">cool</span>
                 <span class="word green">hip.</span>
                 <span class="word midnight">wealth.</span> -->
-              </p>
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<div class="section-2">
-  <div class="container-fluid">
-    <div class="inner-section-2">
-      <div class="row" style="background: #f4f4f4;">
-        <div style="padding: 0px;" class="col-md-12">
-          <div class="section-2-right" style="text-align: center;">
-            <div class="box">
-              <p class="split">Die Plattform für Weisheiten, Erfahrungen, Geschichten, Anekdoten, Anschauungen und Interpretationen einzigartiger Persönlichkeiten.
-              </p>
+    <div class="section-2">
+      <div class="container-fluid">
+        <div class="inner-section-2">
+          <div class="row" style="background: #f4f4f4;">
+            <div style="padding: 0px;" class="col-md-12">
+              <div class="section-2-right" style="text-align: center;">
+                <div class="box">
+                  <p class="split">Die Plattform für Weisheiten, Erfahrungen, Geschichten, Anekdoten, Anschauungen und Interpretationen einzigartiger Persönlichkeiten.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
-<div class="section-5" style="background-image:linear-gradient(#00000073, #00000061), url(/images/Dype_Vision_VideoImage.png)">
-  <div class="container">
-    <div class="inner-section-5 vision-our" >
-      <div class="section-5-heading">
-        <h1>Vision</h1>
-      </div>
-      <div class="section-5-btn">
-        <a href="https://www.youtube.com/watch?v=6oTurM7gESE" target="_blank"
-        class="video-play-button"><i class="fa fa-play" style="padding-left: 5px;"></i></a>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="section-4">
-  <div class="container-fluid">
-    <div class="inner-section-4">
-      <div class="row align-items-center">
-        <div class="col-md-6">
-          <div class="section-4-left-2">
-            <div class="section-4-left-2-content">
-              <h2>Unbegrenzte Vielfalt genießen</h2>
-              <p>Genieße die unbegrenzte Vielfalt unserer qualifizierten Autoren. Folge ihnen, damit du keine ihrer Veröffentlichungen mehr verpasst. Markiere Passagen oder einen ganzen Beitrag, der dich begeistert, damit du ihn später noch einmal lesen kannst.</p>
-            </div>
-            <div class="section-1-right-btn">
-              <a class="free-test-button" href="/sign-up" 
-              style="border: 1px solid white; color: white"><span>Jetzt kostenlos starten
-                  </span><span><i class="fa fa-long-arrow-right" aria-hidden="true"></i></span></a>
-            </div>
+    <div class="section-5"
+      style="background-image:linear-gradient(#00000073, #00000061), url(/images/Dype_Vision_VideoImage.png)">
+      <div class="container">
+        <div class="inner-section-5 vision-our">
+          <div class="section-5-heading">
+            <h1>Vision</h1>
           </div>
-        </div>
-        <div style="padding: 0px;" class="col-md-6">
-          <div class="section-4-right-2 text-center">
-            <a href="/sign-up"><img src="/images/img-8.png" class="dype-image" /></a>
+          <div class="section-5-btn">
+            <a href="https://www.youtube.com/watch?v=6oTurM7gESE" target="_blank" class="video-play-button"><i
+                class="fa fa-play" style="padding-left: 5px;"></i></a>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
-
-
-<div class="section-3">
-  <div class="container-fluid">
-    <div class="inner-section-3">
-      <div class="row">
-        <div style="padding: 0px;max-height: 400px;" class="col-md-6 text-center" >
-          <img src="/images/security.png" style="width: 10%; margin-top:150px; position:relative;" />
-          <h1 style="position: relative; top: 50%; margin-bottom: 100px; color:#444;" class="text-center">Dype schützt deine Daten.</h1>
-        </div>
-        <div style="padding: 0px;max-height: 800px;" class="col-md-6">
-          <div class="section-3-right">
-            <div class="section-3-heading">
-              <h3>Du stehst im Mittelpunkt.</h3>
+    <div class="section-4">
+      <div class="container-fluid">
+        <div class="inner-section-4">
+          <div class="row align-items-center">
+            <div class="col-md-6">
+              <div class="section-4-left-2">
+                <div class="section-4-left-2-content">
+                  <h2>Unbegrenzte Vielfalt genießen</h2>
+                  <p>Genieße die unbegrenzte Vielfalt unserer qualifizierten Autoren. Folge ihnen, damit du keine ihrer
+                    Veröffentlichungen mehr verpasst. Markiere Passagen oder einen ganzen Beitrag, der dich begeistert,
+                    damit du ihn später noch einmal lesen kannst.</p>
+                </div>
+                <div class="section-1-right-btn">
+                  <a class="free-test-button" href="/sign-up" style="border: 1px solid white; color: white"><span>Jetzt
+                      kostenlos starten
+                    </span><span><i class="fa fa-long-arrow-right" aria-hidden="true"></i></span></a>
+                </div>
+              </div>
             </div>
-            <div class="section-3-content">
-              <h1>Keine Werbung, kein Datenverkauf - deine Interessen bleiben geheim. </h1>
-            </div>
-            <div class="section-3-content-2-brief">
-              <p>Du wirst schnell bemerken, dass wir ganzlich auf Werbung verzichten. Unsere Autoren erhalten
-                eine faire. Entlohnung fur ihre geleistenten Beitrage.</p>
-              <p>Dies biebet dir ein werbefresis Wissenszentrum.</p>
+            <div style="padding: 0px;" class="col-md-6">
+              <div class="section-4-right-2 text-center">
+                <a href="/sign-up"><img src="/images/img-8.png" class="dype-image" /></a>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
-<script src="/js/jquery-2.1.3.min.js" type="text/javascript"></script>
-<script src="/js/splittext.js" type="text/javascript"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js"></script>
-<script type="text/javascript">
-  // word part
-  var words = document.getElementsByClassName('word');
-  var wordArray = [];
-  var currentWord = 0;
-  words[currentWord].style.opacity = 1;
-  for (var i = 0; i < words.length; i++) {
-    splitLetters(words[i]);
-  }
-  function changeWord() {
-    var cw = wordArray[currentWord];
-    var nw = currentWord == words.length - 1 ? wordArray[0] : wordArray[currentWord + 1];
-    for (var i = 0; i < cw.length; i++) {
-      animateLetterOut(cw, i);
-    }
-    for (var i = 0; i < nw.length; i++) {
-      nw[i].className = 'letter behind';
-      nw[0].parentElement.style.opacity = 1;
-      animateLetterIn(nw, i);
-    }
-    currentWord = (currentWord == wordArray.length - 1) ? 0 : currentWord + 1;
-  }
 
-  function animateLetterOut(cw, i) {
-    setTimeout(function () {
-      cw[i].className = 'letter out';
-    }, i * 80);
-  }
 
-  function animateLetterIn(nw, i) {
-    setTimeout(function () {
-      nw[i].className = 'letter in';
-    }, 340 + (i * 80));
-  }
-
-  function splitLetters(word) {
-    var content = word.innerHTML;
-    word.innerHTML = '';
-    var letters = [];
-    for (var i = 0; i < content.length; i++) {
-      var letter = document.createElement('span');
-      letter.className = 'letter';
-      if (content.charAt(i) == " ") {
-        letter.innerHTML = '&nbsp;';
-      } else {
-        letter.innerHTML = content.charAt(i);
+    <div class="section-3">
+      <div class="container-fluid">
+        <div class="inner-section-3">
+          <div class="row">
+            <div style="padding: 0px;max-height: 400px;" class="col-md-6 text-center">
+              <img src="/images/security.png" style="width: 10%; margin-top:150px; position:relative;" />
+              <h1 style="position: relative; top: 50%; margin-bottom: 100px; color:#444;" class="text-center">Dype
+                schützt deine Daten.</h1>
+            </div>
+            <div style="padding: 0px;max-height: 800px;" class="col-md-6">
+              <div class="section-3-right">
+                <div class="section-3-heading">
+                  <h3>Du stehst im Mittelpunkt.</h3>
+                </div>
+                <div class="section-3-content">
+                  <h1>Keine Werbung, kein Datenverkauf - deine Interessen bleiben geheim. </h1>
+                </div>
+                <div class="section-3-content-2-brief">
+                  <p>Du wirst schnell bemerken, dass wir ganzlich auf Werbung verzichten. Unsere Autoren erhalten
+                    eine faire. Entlohnung fur ihre geleistenten Beitrage.</p>
+                  <p>Dies biebet dir ein werbefresis Wissenszentrum.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="/js/jquery-2.1.3.min.js" type="text/javascript"></script>
+    <script src="/js/splittext.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js"></script>
+    <script type="text/javascript">
+      // word part
+      var words = document.getElementsByClassName('word');
+      var wordArray = [];
+      var currentWord = 0;
+      words[currentWord].style.opacity = 1;
+      for (var i = 0; i < words.length; i++) {
+        splitLetters(words[i]);
       }
-      word.appendChild(letter);
-      letters.push(letter);
-    }
-    wordArray.push(letters);
-  }
-  changeWord();
-  setInterval(changeWord, 4000);
-  // text split part
-  var text = $(".split");
+      function changeWord() {
+        var cw = wordArray[currentWord];
+        var nw = currentWord == words.length - 1 ? wordArray[0] : wordArray[currentWord + 1];
+        for (var i = 0; i < cw.length; i++) {
+          animateLetterOut(cw, i);
+        }
+        for (var i = 0; i < nw.length; i++) {
+          nw[i].className = 'letter behind';
+          nw[0].parentElement.style.opacity = 1;
+          animateLetterIn(nw, i);
+        }
+        currentWord = (currentWord == wordArray.length - 1) ? 0 : currentWord + 1;
+      }
 
-  var split = new SplitText(text);
+      function animateLetterOut(cw, i) {
+        setTimeout(function () {
+          cw[i].className = 'letter out';
+        }, i * 80);
+      }
 
-  function random(min, max) {
-    return (Math.random() * (max - min)) + min;
-  }
-  $(split.chars).each(function (i) {
-    TweenMax.from($(this), 2.5, {
-      opacity: 0,
-      x: random(-500, 500),
-      y: random(-500, 500),
-      z: random(-500, 500),
-      scale: .1,
-      delay: i * .02,
-      yoyo: true,
-      repeat: -1,
-      repeatDelay: 10
-    });
-  });
+      function animateLetterIn(nw, i) {
+        setTimeout(function () {
+          nw[i].className = 'letter in';
+        }, 340 + (i * 80));
+      }
+
+      function splitLetters(word) {
+        var content = word.innerHTML;
+        word.innerHTML = '';
+        var letters = [];
+        for (var i = 0; i < content.length; i++) {
+          var letter = document.createElement('span');
+          letter.className = 'letter';
+          if (content.charAt(i) == " ") {
+            letter.innerHTML = '&nbsp;';
+          } else {
+            letter.innerHTML = content.charAt(i);
+          }
+          word.appendChild(letter);
+          letters.push(letter);
+        }
+        wordArray.push(letters);
+      }
+      changeWord();
+      setInterval(changeWord, 4000);
+
+      // text split part
+      var winheight = $(window).height();
+      var text = $(".split");
+      var split = new SplitText(text);
+      var startcount = 0;
+      window.addEventListener('scroll', function () {
+        var y = window.scrollY;
+        if (y > 1500) {
+          start();
+          startcount++;
+        }
+      })
+      function random(min, max) {
+        return (Math.random() * (max - min)) + min;
+      }
+      function start() {
+        if (startcount == 1) {
+          $(split.chars).each(function (i) {
+            TweenMax.from($(this), 2.5, {
+              opacity: 0,
+              x: random(-500, 500),
+              y: random(-500, 500),
+              z: random(-500, 500),
+              scale: .1,
+              delay: i * .02,
+              yoyo: true,
+              repeat: -1,
+              repeatDelay: 10
+            });
+          });
+        }
+      }
+      $(function () {
+        var height_first = $('.first-column').height();
+        var height_second = $('.second-column').height();
+        var height_third = $('.third-column').height();
+
+        var deltaheight_first = -height_first + 'px';
+        var deltaheight_second = -height_second + 'px';
+        var deltaheight_third = -height_third + 'px';
+
+        function loop() {
+          $('.first-column')
+            .animate({ top: '0px' }, 1000, 'linear')
+            .animate({ top: deltaheight_first }, 200000, 'linear', loop);
+          $('.second-column')
+            .animate({ top: '0px' }, 3000, 'linear')
+            .animate({ top: deltaheight_second }, 60000, 'linear', loop);
+          $('.third-column')
+            .animate({ top: '0px' }, 5000, 'linear')
+            .animate({ top: deltaheight_third }, 140000, 'linear', loop);
+        }
+        loop();
+        $('.first-column').hover(function () {
+          $(this).stop();
+        }, function () {
+          $(this)
+            .animate({ top: deltaheight_first }, 200000, 'linear', loop);
+        }
+        );
+        $('.second-column').hover(function () {
+          $(this).stop();
+        }, function () {
+          $(this)
+            .animate({ top: deltaheight_second }, 60000, 'linear', loop);
+        }
+        );
+        $('.third-column').hover(function () {
+          $(this).stop();
+        }, function () {
+          $(this)
+            .animate({ top: deltaheight_third }, 140000, 'linear', loop);
+        }
+        );
+      });
 
 
+      $('.icon-1').hover(function () {
+        $('.list-icon-1').css('color', 'blue');
+        $('.list-icon-1').css('font-size', '25px');
+        $('.list-icon-1').css('display', 'block');
+      }, function () {
+        $('.list-icon-1').css('color', '#222');
+        $('.list-icon-1').css('font-size', '24px');
+        $('.list-icon-1').css('display', 'none');
+      });
+
+      $('.icon-2').hover(function () {
+        $('.list-icon-2').css('color', 'blue');
+        $('.list-icon-2').css('font-size', '25px');
+        $('.list-icon-2').css('display', 'block');
+      }, function () {
+        $('.list-icon-2').css('color', '#222');
+        $('.list-icon-2').css('font-size', '24px');
+        $('.list-icon-2').css('display', 'none');
+      });
+
+      $('.icon-3').hover(function () {
+        $('.list-icon-3').css('color', 'blue');
+        $('.list-icon-3').css('font-size', '25px');
+        $('.list-icon-3').css('display', 'block');
+      }, function () {
+        $('.list-icon-3').css('color', '#222');
+        $('.list-icon-3').css('font-size', '24px');
+        $('.list-icon-3').css('display', 'none');
+      });
+
+      $('.icon-4').hover(function () {
+        $('.list-icon-4').css('color', 'blue');
+        $('.list-icon-4').css('font-size', '25px');
+        $('.list-icon-4').css('display', 'block');
+      }, function () {
+        $('.list-icon-4').css('color', '#222');
+        $('.list-icon-4').css('font-size', '24px');
+        $('.list-icon-4').css('display', 'none');
+      });
+
+      $('.icon-5').hover(function () {
+        $('.list-icon-5').css('color', 'blue');
+        $('.list-icon-5').css('font-size', '25px');
+        $('.list-icon-5').css('display', 'block');
+      }, function () {
+        $('.list-icon-5').css('color', '#222');
+        $('.list-icon-5').css('font-size', '24px');
+        $('.list-icon-5').css('display', 'none');
+      });
+
+      $('.icon-6').hover(function () {
+        $('.list-icon-6').css('color', 'blue');
+        $('.list-icon-6').css('font-size', '25px');
+        $('.list-icon-6').css('display', 'block');
+      }, function () {
+        $('.list-icon-6').css('color', '#222');
+        $('.list-icon-6').css('font-size', '24px');
+        $('.list-icon-6').css('display', 'none');
+      });
+
+      $('.icon-7').hover(function () {
+        $('.list-icon-7').css('color', 'blue');
+        $('.list-icon-7').css('font-size', '25px');
+        $('.list-icon-7').css('display', 'block');
+      }, function () {
+        $('.list-icon-7').css('color', '#222');
+        $('.list-icon-7').css('font-size', '24px');
+        $('.list-icon-7').css('display', 'none');
+      });
+
+      $('.icon-8').hover(function () {
+        $('.list-icon-8').css('color', 'blue');
+        $('.list-icon-8').css('font-size', '25px');
+        $('.list-icon-8').css('display', 'block');
+      }, function () {
+        $('.list-icon-8').css('color', '#222');
+        $('.list-icon-8').css('font-size', '24px');
+        $('.list-icon-8').css('display', 'none');
+      });
+
+      $('.icon-9').hover(function () {
+        $('.list-icon-9').css('color', 'blue');
+        $('.list-icon-9').css('font-size', '25px');
+        $('.list-icon-9').css('display', 'block');
+      }, function () {
+        $('.list-icon-9').css('color', '#222');
+        $('.list-icon-9').css('font-size', '24px');
+        $('.list-icon-9').css('display', 'none');
+      });
+
+      $('.icon-10').hover(function () {
+        $('.list-icon-10').css('color', 'blue');
+        $('.list-icon-10').css('font-size', '25px');
+        $('.list-icon-10').css('display', 'block');
+      }, function () {
+        $('.list-icon-10').css('color', '#222');
+        $('.list-icon-10').css('font-size', '24px');
+        $('.list-icon-10').css('display', 'none');
+      });
 
 
-
-  // $(function () {
-  //   var height_first = $('.first-column').height();
-  //   var height_second = $('.second-column').height();
-  //   var height_third = $('.third-column').height();
-
-  //   var deltaheight_first = -height_first + 'px';
-  //   var deltaheight_second = -height_second + 'px';
-  //   var deltaheight_third = -height_third + 'px';
-
-  //   function loop() {
-  //     $('.first-column')
-  //       .animate({ top: '0px' }, 1000, 'linear')
-  //       .animate({ top: deltaheight_first }, 200000, 'linear', loop);
-  //     $('.second-column')
-  //       .animate({ top: '0px' }, 3000, 'linear')
-  //       .animate({ top: deltaheight_second }, 60000, 'linear', loop);
-  //     $('.third-column')
-  //       .animate({ top: '0px' }, 5000, 'linear')
-  //       .animate({ top: deltaheight_third }, 140000, 'linear', loop);
-  //   }
-  //   loop();
-  //   $('.first-column').hover(function () {
-  //     $(this).stop();
-  //   }, function () {
-  //     $(this)
-  //       .animate({ top: deltaheight_first }, 200000, 'linear', loop);
-  //   }
-  //   );
-  //   $('.second-column').hover(function () {
-  //     $(this).stop();
-  //   }, function () {
-  //     $(this)
-  //       .animate({ top: deltaheight_second }, 60000, 'linear', loop);
-  //   }
-  //   );
-  //   $('.third-column').hover(function () {
-  //     $(this).stop();
-  //   }, function () {
-  //     $(this)
-  //       .animate({ top: deltaheight_third }, 140000, 'linear', loop);
-  //   }
-  //   );
-  // });
-
-  $('.icon-1').hover(function () {
-    $('.list-icon-1').css('color', 'blue');
-    $('.list-icon-1').css('font-size', '25px');
-  }, function () {
-    $('.list-icon-1').css('color', '#222');
-    $('.list-icon-1').css('font-size', '24px');
-  });
-
-  $('.icon-2').hover(function () {
-    $('.list-icon-2').css('color', 'blue');
-    $('.list-icon-2').css('font-size', '25px');
-  }, function () {
-    $('.list-icon-2').css('color', '#222');
-    $('.list-icon-2').css('font-size', '24px');
-  });
-
-  $('.icon-3').hover(function () {
-    $('.list-icon-3').css('color', 'blue');
-    $('.list-icon-3').css('font-size', '25px');
-  }, function () {
-    $('.list-icon-3').css('color', '#222');
-    $('.list-icon-3').css('font-size', '24px');
-  });
-
-  $('.icon-4').hover(function () {
-    $('.list-icon-4').css('color', 'blue');
-    $('.list-icon-4').css('font-size', '25px');
-  }, function () {
-    $('.list-icon-4').css('color', '#222');
-    $('.list-icon-4').css('font-size', '24px');
-  });
-
-  $('.icon-5').hover(function () {
-    $('.list-icon-5').css('color', 'blue');
-    $('.list-icon-5').css('font-size', '25px');
-  }, function () {
-    $('.list-icon-5').css('color', '#222');
-    $('.list-icon-5').css('font-size', '24px');
-  });
-
-  $('.icon-6').hover(function () {
-    $('.list-icon-6').css('color', 'blue');
-    $('.list-icon-6').css('font-size', '25px');
-  }, function () {
-    $('.list-icon-6').css('color', '#222');
-    $('.list-icon-6').css('font-size', '24px');
-  });
-
-  $('.icon-7').hover(function () {
-    $('.list-icon-7').css('color', 'blue');
-    $('.list-icon-7').css('font-size', '25px');
-  }, function () {
-    $('.list-icon-7').css('color', '#222');
-    $('.list-icon-7').css('font-size', '24px');
-  });
-
-  $('.icon-8').hover(function () {
-    $('.list-icon-8').css('color', 'blue');
-    $('.list-icon-8').css('font-size', '25px');
-  }, function () {
-    $('.list-icon-8').css('color', '#222');
-    $('.list-icon-8').css('font-size', '24px');
-  });
-
-  $('.icon-9').hover(function () {
-    $('.list-icon-9').css('color', 'blue');
-    $('.list-icon-9').css('font-size', '25px');
-  }, function () {
-    $('.list-icon-9').css('color', '#222');
-    $('.list-icon-9').css('font-size', '24px');
-  });
-
-  $('.icon-10').hover(function () {
-    $('.list-icon-10').css('color', 'blue');
-    $('.list-icon-10').css('font-size', '25px');
-  }, function () {
-    $('.list-icon-10').css('color', '#222');
-    $('.list-icon-10').css('font-size', '24px');
-  });
-
-</script>
-<%- include ./partials/footer %>
+      $('.section-1-left-first-img').click(function () {
+        var url = $(this).attr('url');
+        window.open(url);
+      });
+    </script>
+    <%- include ./partials/footer %>
