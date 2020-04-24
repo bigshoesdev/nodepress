@@ -1037,7 +1037,7 @@ router.post("/reset/:token", _install["default"].redirectToLogin, function (req,
 
 router.post("/user/dashboard/update/info", _install["default"].redirectToLogin, _auth["default"], /*#__PURE__*/function () {
   var _ref13 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee13(req, res, next) {
-    var user, status, postenable, use;
+    var user, status, use;
     return _regenerator["default"].wrap(function _callee13$(_context13) {
       while (1) {
         switch (_context13.prev = _context13.next) {
@@ -1050,7 +1050,7 @@ router.post("/user/dashboard/update/info", _install["default"].redirectToLogin, 
             user = _context13.sent;
 
             if (!(user.email == req.body.email)) {
-              _context13.next = 19;
+              _context13.next = 17;
               break;
             }
 
@@ -1076,55 +1076,16 @@ router.post("/user/dashboard/update/info", _install["default"].redirectToLogin, 
               status = status + 10;
             }
 
-            if (req.body.sociallinkedin != "" || req.body.socialinstagram != "" || req.body.socialtwitter != "" || req.body.socialfacebook != "") {
-              req.body.status = status + 50;
+            if (req.body['social.linkedin'] != "" || req.body['social.instagram'] != "" || req.body['social.twitter'] != "" || req.body['social.facebook'] != "") {
+              status = status + 50;
             }
 
-            postenable = "false";
-            console.log(status);
+            req.body.postenable = "false";
 
             if (status == 100) {
-              postenable = "true";
+              req.body.postenable = "true";
             }
 
-            _users["default"].updateOne({
-              _id: req.user.id
-            }, req.body);
-
-            _users["default"].updateOne({
-              _id: req.user.id
-            }, {
-              $set: {
-                postenable: postenable
-              }
-            }).then(function (user) {
-              req.flash("success_msg", "Your profile has been updated successfully");
-              return res.redirect("back");
-            })["catch"](function (err) {
-              return next(err);
-            });
-
-            _context13.next = 28;
-            break;
-
-          case 19:
-            _context13.next = 21;
-            return _users["default"].findOne({
-              email: req.body.email
-            });
-
-          case 21:
-            use = _context13.sent;
-
-            if (!use) {
-              _context13.next = 27;
-              break;
-            }
-
-            req.flash("success_msg", "The Email you provided has been used");
-            return _context13.abrupt("return", res.redirect("back"));
-
-          case 27:
             _users["default"].updateOne({
               _id: req.user.id
             }, req.body).then(function (user) {
@@ -1134,21 +1095,51 @@ router.post("/user/dashboard/update/info", _install["default"].redirectToLogin, 
               return next(err);
             });
 
-          case 28:
-            _context13.next = 33;
+            _context13.next = 26;
             break;
 
-          case 30:
-            _context13.prev = 30;
+          case 17:
+            _context13.next = 19;
+            return _users["default"].findOne({
+              email: req.body.email
+            });
+
+          case 19:
+            use = _context13.sent;
+
+            if (!use) {
+              _context13.next = 25;
+              break;
+            }
+
+            req.flash("success_msg", "The Email you provided has been used");
+            return _context13.abrupt("return", res.redirect("back"));
+
+          case 25:
+            _users["default"].updateOne({
+              _id: req.user.id
+            }, req.body).then(function (user) {
+              req.flash("success_msg", "Your profile has been updated successfully");
+              return res.redirect("back");
+            })["catch"](function (err) {
+              return next(err);
+            });
+
+          case 26:
+            _context13.next = 31;
+            break;
+
+          case 28:
+            _context13.prev = 28;
             _context13.t0 = _context13["catch"](0);
             next(_context13.t0);
 
-          case 33:
+          case 31:
           case "end":
             return _context13.stop();
         }
       }
-    }, _callee13, null, [[0, 30]]);
+    }, _callee13, null, [[0, 28]]);
   }));
 
   return function (_x36, _x37, _x38) {
