@@ -1526,9 +1526,6 @@ router.post('/article/upvote-ajax', /*#__PURE__*/function () {
             return _articles["default"].updateOne({
               _id: req.body.articleId
             }, {
-              $push: {
-                "update.users": req.user.id
-              },
               $inc: {
                 "upvote.count": 1
               }
