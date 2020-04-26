@@ -44,6 +44,10 @@
    font-size: 35px;
 }
 
+.authorname{
+   font-family: Montserrat !important;
+}
+
 .switch {
    position: relative;
    display: inline-block;

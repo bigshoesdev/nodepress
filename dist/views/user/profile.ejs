@@ -58,7 +58,7 @@
                 </div>
             </div>
             <div class="text-center">
-                <h3>Please fill your information. Then you can post the articles</h3>
+                <h3 class="profile_text">Please fill your information. Then you can post the articles</h3>
             </div>
             <div class="progress">
                 <div class="progress-bar" style="width:0%">
@@ -113,7 +113,7 @@
                                 <div class="col-sm-12 col-12 mb-20">
                                     <label for="">Tax number</label>
                                     <input type="text" name="tax" class="form-control" value="<%= user.tax %>" id="tax"
-                                        required>
+                                        >
                                 </div>
                                 <div class="col-12 mb-20">
                                     <label for="">About Me</label>
@@ -267,6 +267,7 @@
         }
         if(percent == 100){
             $('#postenable').val("true");
+            $('.profile_text').text('Glückwunsch! Veröffentliche jetzt deinen ersten Artikel.');
         }else {
             $('#postenable').val("false");
         }

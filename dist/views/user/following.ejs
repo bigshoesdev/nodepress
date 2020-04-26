@@ -143,18 +143,16 @@
                         <table class="table table-vertical-middle">
                             <thead>
                                 <tr>
-                                    <th>User's Email</th>
-                                    <th>First Name</th>
-                                    <th>Last Name</th>
+                                    <th>Avatar</th>
+                                    <th>User Name</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <% following.following.map(data => { %>
                                     <tr>
-                                        <td><%=data.email %> </td>
-                                        <td><%= data.firstName %></td>
-                                        <td><%= data.lastName %></td>
+                                        <td><img src="<%= data.profilePicture%>" style="width: 90px;height: 90px; border-radius: 50px; object-fit: cover;"/> </td>
+                                        <td><%= data.firstName %> <%= data.lastName %></td>
                                         <td>
                                             <a href="/author/<%= data.username %>" target="_blank"><button type="button" class="btn btn-success btn-sm">View User's Profile</button></a>
                                             <a href="/unfollow-user?followerId=<%= data._id %>"><button class="btn btn-danger btn-sm" type="button">Unfollow</button></a>

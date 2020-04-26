@@ -806,110 +806,177 @@ router.get("/login", _install["default"].redirectToLogin, checkIfLoggedIn, funct
 });
 router.get('/afterlogin', _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref12 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee12(req, res, next) {
-    var editorsPicker, a, i, usercategory, _category, article, b, authorarticle, popular, random;
+    var _editorsPicker, a, i, usercategory, _category, article, b, followers, _authorarticle, art, j, _popular, _random, _random2, random;
 
     return _regenerator["default"].wrap(function _callee12$(_context12) {
       while (1) {
         switch (_context12.prev = _context12.next) {
           case 0:
-            _context12.next = 2;
+            if (!req.user) {
+              _context12.next = 50;
+              break;
+            }
+
+            _context12.next = 3;
             return _articles["default"].find({
-              showPostOnSlider: true
+              addToBreaking: true
             }).populate('category');
 
-          case 2:
-            editorsPicker = _context12.sent;
+          case 3:
+            _editorsPicker = _context12.sent;
 
-            if (!(editorsPicker.length == 0)) {
-              _context12.next = 27;
+            if (!(_editorsPicker.length == 0)) {
+              _context12.next = 28;
               break;
             }
 
             a = [];
             i = 0;
 
-          case 6:
+          case 7:
             if (!(i < req.user.categoryList.length)) {
-              _context12.next = 18;
+              _context12.next = 19;
               break;
             }
 
             usercategory = req.user.categoryList[i];
-            _context12.next = 10;
+            _context12.next = 11;
             return _category2["default"].find({
               slug: usercategory
             });
 
-          case 10:
+          case 11:
             _category = _context12.sent;
-            _context12.next = 13;
+            _context12.next = 14;
             return _articles["default"].find({
               category: _category[0]._id
             }).populate('category');
 
-          case 13:
+          case 14:
             article = _context12.sent;
 
             for (b in article) {
               a.push(article[b]);
             }
 
-          case 15:
+          case 16:
             i++;
-            _context12.next = 6;
+            _context12.next = 7;
             break;
 
-          case 18:
+          case 19:
             _context12.t0 = _regenerator["default"].keys(a);
 
-          case 19:
+          case 20:
             if ((_context12.t1 = _context12.t0()).done) {
-              _context12.next = 27;
+              _context12.next = 28;
               break;
             }
 
             i = _context12.t1.value;
 
             if (!(a[i]["short"].split(' ').length > 900)) {
+              _context12.next = 26;
+              break;
+            }
+
+            if (!(_editorsPicker.length > 2)) {
               _context12.next = 25;
               break;
             }
 
-            if (!(editorsPicker.length > 2)) {
-              _context12.next = 24;
+            return _context12.abrupt("break", 28);
+
+          case 25:
+            _editorsPicker.push(a[i]);
+
+          case 26:
+            _context12.next = 20;
+            break;
+
+          case 28:
+            _context12.next = 30;
+            return _users["default"].find({
+              following: {
+                $in: req.user.id
+              }
+            }).populate("following").sort({
+              createdAt: -1
+            });
+
+          case 30:
+            followers = _context12.sent;
+            _authorarticle = [];
+            _context12.t2 = _regenerator["default"].keys(followers);
+
+          case 33:
+            if ((_context12.t3 = _context12.t2()).done) {
+              _context12.next = 41;
               break;
             }
 
-            return _context12.abrupt("break", 27);
+            i = _context12.t3.value;
+            _context12.next = 37;
+            return _articles["default"].find({
+              postedBy: followers[i]._id
+            }).populate('category').sort({
+              createdAt: -1
+            });
 
-          case 24:
-            editorsPicker.push(a[i]);
+          case 37:
+            art = _context12.sent;
 
-          case 25:
-            _context12.next = 19;
+            for (j in art) {
+              _authorarticle.push(art[j]);
+            }
+
+            _context12.next = 33;
             break;
 
-          case 27:
-            _context12.next = 29;
-            return _articles["default"].find({
-              postedBy: req.user.id
-            }).populate('category');
-
-          case 29:
-            authorarticle = _context12.sent;
-            _context12.next = 32;
+          case 41:
+            _context12.next = 43;
             return _articles["default"].find({
               active: true
             }).populate('category').sort({
               views: -1
             }).limit(10);
 
-          case 32:
-            popular = _context12.sent;
-            _context12.next = 35;
+          case 43:
+            _popular = _context12.sent;
+            _context12.next = 46;
             return _articles["default"].find({}).populate('category');
 
-          case 35:
+          case 46:
+            _random = _context12.sent;
+            res.render('afterloginuser', {
+              title: "After Login",
+              editorsPicker: _editorsPicker,
+              authorarticle: _authorarticle,
+              popular: _popular,
+              random: _random
+            });
+            _context12.next = 54;
+            break;
+
+          case 50:
+            _context12.next = 52;
+            return _articles["default"].find({}).populate('category');
+
+          case 52:
+            _random2 = _context12.sent;
+            res.render('afterloginuser', {
+              title: "After Login",
+              editorsPicker: _random2,
+              authorarticle: _random2,
+              popular: _random2,
+              random: _random2
+            });
+
+          case 54:
+            _context12.next = 56;
+            return _articles["default"].find({}).populate('category');
+
+          case 56:
             random = _context12.sent;
             res.render('afterloginuser', {
               title: "After Login",
@@ -919,7 +986,7 @@ router.get('/afterlogin', _install["default"].redirectToLogin, /*#__PURE__*/func
               random: random
             });
 
-          case 37:
+          case 58:
           case "end":
             return _context12.stop();
         }

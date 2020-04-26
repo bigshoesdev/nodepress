@@ -18,7 +18,11 @@
                <div class="Basic-plan-btn">
                  <form action="/onboarding" method="POST">
                   <input type="hidden" name="categoryCount" value="2"/>
-                 <button type="submit"><span>Basic-Member werden</span><span><i class="fa fa-long-arrow-right" aria-hidden="true"></i></span></button>
+                  <% if(user.paid == "paid"){%>
+                 <button type="submit"><span>DownGrade</span><span><i class="fa fa-long-arrow-right" aria-hidden="true"></i></span></button>
+                 <%} else {%>
+                  <!-- <button type="submit"><span>Basic-Member werden</span><span><i class="fa fa-long-arrow-right" aria-hidden="true"></i></span></button> -->
+                  <% }%>
                 </form>
                </div>
              </div>
@@ -39,7 +43,9 @@
                <div class="premium-plan-btn">
                 <form action="/onboarding" method="POST">
                 <input type="hidden" name="categoryCount" value="10"/>
+                <% if(user.paid == "free"){%>
                  <button type="button" id="premium"><span>Premium-Member werden</span><span><i class="fa fa-long-arrow-right" aria-hidden="true"></i></span></button>
+                 <% }%>
                  </form>
                </div>
              </div>

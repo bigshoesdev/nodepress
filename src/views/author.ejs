@@ -59,17 +59,36 @@
 								  <div class="row">
 										<div class="col-md-1">
 											 <div class="dark-blog-makedby-img">
-												  <img src="<%= user.profilePicture%>">
+												  <img src="<%= author.profilePicture%>">
 											 </div>
 										</div>
 										<div class="col-md-3">
 											 <div class="dark-blog-makedby-details">
-												  <h2><%= user.firstName%> <%= user.lastName%></h2>
-												  <p>Follower: <%= user.following.length%> </p>
+												  <h2><%= author.firstName%> <%= author.lastName%></h2>
+												  <p>Follower: <%= author.following.length%> </p>
 											 </div>
 										</div>
-										<div class="col-md-8">
-											<span style="font-size: 16px;"><%= user.about%></span>
+										<div class="col-md-6">
+											<span style="font-size: 16px;"><%= author.about%></span>
+										</div>
+										<div class="col-md-2">
+											<%if(user){%>
+                                    <% if(author._id != user.id){%>
+                                    <% for(var i = 0; i < author.following.length;  i ++){
+                            if(author.following[i] == user.id){
+                               var existuser = true;
+                           } }%>
+                                    <div class="follow-btn">
+                                        <% if(author.following.length < 1) {%>
+                                        <a href="/follow-user?followerId=<%= author._id %>">Follow</a>
+                                        <%} else if(!existuser) {%>
+                                        <a href="/follow-user?followerId=<%= author._id %>">Follow</a>
+                                        <% } else {%>
+                                        <a href="/unfollow-user?authorId=<%= author._id %>">Unfollow</a>
+                                        <%};%>
+                                    </div>
+												<%}%>
+												<%}%>
 										</div>
 								  </div>
 							 </div>
@@ -77,8 +96,9 @@
 				  </div>
 					<% if(article == "") { %>
 					<h4>No Post for now</h4>
-					<% } %> <% for(let item of article) { %>
-						<div class="row">
+					<% } %> 
+					<div class="row">
+					<% for(let item of article) { %>
                      <div class="col-md-4 col-sm-6">
                         <div class="startresult">
                            <div class="bg-1">
@@ -103,8 +123,8 @@
                            </div>
                         </div>
                      </div>
-                  </div>
 					  <%}%>
+					</div>
 				</div>
 			</div>
 		</div>

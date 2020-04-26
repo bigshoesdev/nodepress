@@ -103,6 +103,7 @@
         transition: all ease-in-out 200ms;
         font-weight: 500 !important;
     }
+
     .btn-bsa {
         background: #acbb16;
         color: #fff;
@@ -112,6 +113,20 @@
     .btn-bsa:hover {
         background: #000;
         color: #fff;
+    }
+
+    .bookmark-view {
+        position: absolute;
+        border: 1px solid white;
+        border-radius: 5px;
+        padding: 3px;
+        color: white !important;
+        bottom: 20%;
+        right: 7vw;
+    }
+    .bookmark-view:hover {
+        background: blue;
+        border: 1px solid blue;
     }
 </style>
 <%- include ./partials/sidebar %>
@@ -131,14 +146,39 @@
     <%- include ../partials/msg %>
 
     <div class="row ">
-
+        <% bookmark.map(data => { %>
+        <div class="col-3" style="margin-top: 10px;">
+            <div
+                style="background-image: linear-gradient(#0000003d, #00000040), url('<%= data.articleId.file%>'); height: 400px; background-size: cover; display: flex;">
+                <!-- <img src="<%= data.articleId.file%>"/> -->
+                <p style="border: 1px solid white;
+                position: absolute;
+                left: 10%;
+                border-radius: 30px;
+                padding-right: 10px;
+                padding-left: 10px;
+                top: 10%;
+                color: white;"><%= data.articleId.category.name %></p>
+                <h4 style="position: absolute;
+                overflow-wrap: break-word;
+                top: 20%;
+                margin: 10px;
+                color: white;"><%= data.articleId.title %></h4>
+                <a class="bookmark-view">View Post</a>
+                <button type="button" class="btn btn-danger btn-sm" style="position: absolute;
+                bottom: 10%;
+                right: 7vw;">Remove</button>
+            </div>
+        </div>
+        <%})%>
         <!--Manage Product List Start-->
-        <div class="col-12">
+        <!-- <div class="col-12">
             <form action method="GET" id="bulkDeleteForm">
                 <div class="table-responsive bg-white shadow-sm">
                     <% if(bookmark == "") { %>
                     <div class="alert alert-primary">No Article in your Reading List</div>
                     <% } %>
+                    
                     <table class="table table-vertical-middle">
                         <thead>
                             <tr>
@@ -182,7 +222,7 @@
                     </table>
                 </div>
             </form>
-        </div>
+        </div> -->
         <!--Manage Product List End-->
     </div>
 </div><!-- Content Body End -->

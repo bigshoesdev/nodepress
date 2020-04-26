@@ -448,7 +448,6 @@ router.get(
     }
   }
 );
-
 // Get login route
 router.get(
   "/login",
@@ -459,38 +458,70 @@ router.get(
   }
 );
 router.get('/afterlogin', install.redirectToLogin, async (req, res, next) => {
-  let editorsPicker = await Article.find({
-    showPostOnSlider: true
-  }).populate('category');
-  if (editorsPicker.length == 0) {
-    let a = [];
-    for (var i = 0; i < req.user.categoryList.length; i++) {
-      var usercategory = req.user.categoryList[i];
-      let _category = await Category.find({
-        slug: usercategory
-      });
-      let article = await Article.find({
-        category: _category[0]._id
-      }).populate('category');
-      for (var b in article) {
-        a.push(article[b]);
-      }
-    }
-    for (var i in a) {
-      if (a[i].short.split(' ').length > 900) {
-        if (editorsPicker.length > 2) {
-          break;
+  if (req.user) {
+    let editorsPicker = await Article.find({
+      addToBreaking: true
+    }).populate('category');
+    if (editorsPicker.length == 0) {
+      let a = [];
+      for (var i = 0; i < req.user.categoryList.length; i++) {
+        var usercategory = req.user.categoryList[i];
+        let _category = await Category.find({
+          slug: usercategory
+        });
+        let article = await Article.find({
+          category: _category[0]._id
+        }).populate('category');
+        for (var b in article) {
+          a.push(article[b]);
         }
-        editorsPicker.push(a[i]);
+      }
+      for (var i in a) {
+        if (a[i].short.split(' ').length > 900) {
+          if (editorsPicker.length > 2) {
+            break;
+          }
+          editorsPicker.push(a[i]);
+        }
       }
     }
+    let followers = await User.find({
+      following: { $in: req.user.id }
+    }).populate("following").sort({ createdAt: -1 });
+
+    let authorarticle = [];
+    for (var i in followers) {
+      let art = await Article.find({
+        postedBy: followers[i]._id
+      }).populate('category').sort({ createdAt: -1 });
+      for (var j in art) {
+        authorarticle.push(art[j]);
+      }
+    }
+    // let authorarticle = await Article.find({ postedBy: req.user.id }).populate('category');
+    let popular = await Article.find({
+      active: true,
+    }).populate('category')
+      .sort({ views: -1 })
+      .limit(10);
+    let random = await Article.find({}).populate('category');
+    res.render('afterloginuser', {
+      title: "After Login",
+      editorsPicker: editorsPicker,
+      authorarticle: authorarticle,
+      popular: popular,
+      random: random
+    });
+  } else {
+    let random = await Article.find({}).populate('category');
+    res.render('afterloginuser', {
+      title: "After Login",
+      editorsPicker: random,
+      authorarticle: random,
+      popular: random,
+      random: random
+    });
   }
-  let authorarticle = await Article.find({postedBy: req.user.id}).populate('category');
-  let popular = await Article.find({
-    active: true,
-  }).populate('category')
-    .sort({ views: -1 })
-    .limit(10);
   let random = await Article.find({}).populate('category');
   res.render('afterloginuser', {
     title: "After Login",
@@ -675,7 +706,7 @@ router.post(
         }
         User.updateOne({ _id: req.user.id }, req.body)
           .then(user => {
-                
+
             req.flash(
               "success_msg",
               "Your profile has been updated successfully"

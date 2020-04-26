@@ -1087,7 +1087,7 @@
   left: 9%;
   z-index: 10;
   top: 35%;
-  right: 50%;
+  right: 20%;
   padding-top: 20px;
   padding-bottom: 20px;
   color: #fff;
@@ -1380,7 +1380,7 @@
   padding: 10px;
   text-align: center;
   border-radius: 4px;
-  margin-top: 35px;
+  margin-top: 5px;
 }
 .follow-btn a {
   color: #fff;
