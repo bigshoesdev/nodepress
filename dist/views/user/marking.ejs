@@ -130,11 +130,21 @@
 
    </div><!-- Page Headings End -->
    <%- include ../partials/msg %>
-
    <div class="row ">
-
+      <% if(marking == "") { %>
+      <div class="alert alert-primary">No Article in your Reading List</div>
+      <% } %>
+      <% marking.map(data => { %>
+         <div class="col-3">
+            <div style="background:linear-gradient(#0000003d, #00000040), url('<%= data.articleId.file%>'); background-size: cover; background-position: center; color: white;padding: 10px;margin: 5px;max-height: 300px; min-height: 300px;">
+               <p style="font-size: 20px; max-height: 250px; overflow: hidden;"><%= data.text %></p>
+               <a href="/savetext/delete?markingId=<%= data._id %>" class="btn btn-danger btn-sm"
+                  style="position: absolute;top: 40%; right: 40%;">Delete</a>
+            </div>
+         </div>
+      <% })%>
       <!--Manage Product List Start-->
-      <div class="col-12">
+      <!-- <div class="col-12">
          <form action method="GET" id="bulkDeleteForm">
             <div class="table-responsive bg-white shadow-sm">
                <% if(marking == "") { %>
@@ -164,7 +174,7 @@
                </table>
             </div>
          </form>
-      </div>
+      </div> -->
       <!--Manage Product List End-->
    </div>
 </div><!-- Content Body End -->

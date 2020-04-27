@@ -164,10 +164,14 @@
                 top: 20%;
                 margin: 10px;
                 color: white;"><%= data.articleId.title %></h4>
-                <a class="bookmark-view">View Post</a>
-                <button type="button" class="btn btn-danger btn-sm" style="position: absolute;
+                <% if(data.articleId.postedBy.roleId == 'user'){%>
+                    <a href="/p/<%= data.articleId.category.slug%>/<%= data.articleId.slug %>" target="_blank" class="bookmark-view">View Post</a>
+                    <%} else {%>
+                        <a href="/d/<%= data.articleId.slug %>" target="_blank" class="bookmark-view">View Post</a>
+                        <%}%>
+                <a type="button" class="btn btn-danger btn-sm" style="position: absolute;
                 bottom: 10%;
-                right: 7vw;">Remove</button>
+                right: 7vw;" href="/bookmark/delete?bookmarkId=<%= data._id %>">Remove</a>
             </div>
         </div>
         <%})%>

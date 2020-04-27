@@ -183,6 +183,8 @@
                         <% } %>
                         </ul>
                     </div>
+                    <a class="searchbar" href="#"><span style="font-size:20px; padding-left: 10px;cursor:pointer"
+                        onclick="openNav()"><i class="fa fa-bell-o" aria-hidden="true"></i></span></a>
                     <% } else {%>
                     <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Publisher
                             werden</span></a>
@@ -538,13 +540,13 @@
                     var selectedText = "";
                     function saveText() {
                         let userId = "<%if(user){%><%= user._id%><%}%>";
-                        console.log(userId);
+                        let articleId = "<%= article._id%>";
                         if (userId != "") {
                             $.ajax({
                                 url: '/savetext',
                                 dataType: 'json',
                                 type: 'post',
-                                data: { userId: userId, text: selectedText },
+                                data: { userId: userId, text: selectedText, articleId: articleId},
                                 success: function (data) {
 
                                 }

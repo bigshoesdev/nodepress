@@ -15,6 +15,10 @@ var savetextSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User"
   },
+  articleId: {
+    type: Schema.Types.ObjectId,
+    ref: "Article"
+  },
   text: String
 }, {
   timestamps: true
