@@ -151,7 +151,7 @@
                         </thead>
                         <tbody>
                             <% following.following.map(data => { 
-                                    if(data.roleId == "admin") {%>
+                                    if(data.roleId != "admin") {%>
                             <tr>
                                 <td><img src="<%= data.profilePicture%>" style="width: 90px;height: 90px; border-radius: 50px; object-fit: cover;"/></td>
                                 <td><%= data.firstName %> <%= data.lastName %></td>
