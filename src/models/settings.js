@@ -114,6 +114,8 @@ const settingsSchema = new Schema(
     approveUpdatedUserPost: Boolean,
     htmlHeadCode: String,
     googleAnalyticsCode: String,
+    homeMeta: String,
+    publisherMeta: String,
     installed: {
       option: {
         type: Boolean,

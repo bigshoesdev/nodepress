@@ -204,7 +204,7 @@ ul {
 }
 @media screen and (min-width: 1000px) {
    .text {
-      margin-top: 250px;
+      margin-top: 12vw;
       font-size: 3vw;
    }
 }

@@ -1335,6 +1335,7 @@
   margin-bottom: 30px;
   display: flex;
   align-items: center;
+  margin: 30px;
 }
 .content-four:hover {
   background-color: #1e83ec;

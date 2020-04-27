@@ -215,8 +215,8 @@
                                 <th>Category</th>
                                 <th>Article Type</th>
                                 <th>Post Type</th>
+                                <th>Editor's Picker?</th>
                                 <th>Author</th>
-                                <!-- <th>Comments</th> -->
                                 <th>Date</th>
                                 <th>Status</th>
                             </tr>
@@ -243,6 +243,11 @@
                                 </td>
                                 <td class="text-center">
                                     <span class="badge badge-primary"><%= article[key].postType %></span>
+                                </td>
+                                <td class="text-center">
+                                    <% if(article[key].showPostOnSlider == true){%>
+                                    <span class="badge badge-default">Yes</span>
+                                    <% }%>
                                 </td>
                                 <td><%= article[key].postedBy.email %></td>
                                 <!-- <td class="text-center"> -->

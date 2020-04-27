@@ -806,7 +806,7 @@ router.get("/login", _install["default"].redirectToLogin, checkIfLoggedIn, funct
 });
 router.get('/afterlogin', _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref12 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee12(req, res, next) {
-    var _editorsPicker, a, i, usercategory, _category, article, b, followers, _authorarticle, art, j, _popular, _random, _random2, random;
+    var editorsPicker, a, i, usercategory, _category, article, b, followers, authorarticle, art, j, popular, random, _random;
 
     return _regenerator["default"].wrap(function _callee12$(_context12) {
       while (1) {
@@ -823,9 +823,9 @@ router.get('/afterlogin', _install["default"].redirectToLogin, /*#__PURE__*/func
             }).populate('category');
 
           case 3:
-            _editorsPicker = _context12.sent;
+            editorsPicker = _context12.sent;
 
-            if (!(_editorsPicker.length == 0)) {
+            if (!(editorsPicker.length == 0)) {
               _context12.next = 28;
               break;
             }
@@ -880,7 +880,7 @@ router.get('/afterlogin', _install["default"].redirectToLogin, /*#__PURE__*/func
               break;
             }
 
-            if (!(_editorsPicker.length > 2)) {
+            if (!(editorsPicker.length > 2)) {
               _context12.next = 25;
               break;
             }
@@ -888,7 +888,7 @@ router.get('/afterlogin', _install["default"].redirectToLogin, /*#__PURE__*/func
             return _context12.abrupt("break", 28);
 
           case 25:
-            _editorsPicker.push(a[i]);
+            editorsPicker.push(a[i]);
 
           case 26:
             _context12.next = 20;
@@ -906,7 +906,7 @@ router.get('/afterlogin', _install["default"].redirectToLogin, /*#__PURE__*/func
 
           case 30:
             followers = _context12.sent;
-            _authorarticle = [];
+            authorarticle = [];
             _context12.t2 = _regenerator["default"].keys(followers);
 
           case 33:
@@ -927,7 +927,7 @@ router.get('/afterlogin', _install["default"].redirectToLogin, /*#__PURE__*/func
             art = _context12.sent;
 
             for (j in art) {
-              _authorarticle.push(art[j]);
+              authorarticle.push(art[j]);
             }
 
             _context12.next = 33;
@@ -942,18 +942,18 @@ router.get('/afterlogin', _install["default"].redirectToLogin, /*#__PURE__*/func
             }).limit(10);
 
           case 43:
-            _popular = _context12.sent;
+            popular = _context12.sent;
             _context12.next = 46;
             return _articles["default"].find({}).populate('category');
 
           case 46:
-            _random = _context12.sent;
+            random = _context12.sent;
             res.render('afterloginuser', {
               title: "After Login",
-              editorsPicker: _editorsPicker,
-              authorarticle: _authorarticle,
-              popular: _popular,
-              random: _random
+              editorsPicker: editorsPicker,
+              authorarticle: authorarticle,
+              popular: popular,
+              random: random
             });
             _context12.next = 54;
             break;
@@ -963,30 +963,16 @@ router.get('/afterlogin', _install["default"].redirectToLogin, /*#__PURE__*/func
             return _articles["default"].find({}).populate('category');
 
           case 52:
-            _random2 = _context12.sent;
+            _random = _context12.sent;
             res.render('afterloginuser', {
               title: "After Login",
-              editorsPicker: _random2,
-              authorarticle: _random2,
-              popular: _random2,
-              random: _random2
+              editorsPicker: _random,
+              authorarticle: _random,
+              popular: _random,
+              random: _random
             });
 
           case 54:
-            _context12.next = 56;
-            return _articles["default"].find({}).populate('category');
-
-          case 56:
-            random = _context12.sent;
-            res.render('afterloginuser', {
-              title: "After Login",
-              editorsPicker: editorsPicker,
-              authorarticle: authorarticle,
-              popular: popular,
-              random: random
-            });
-
-          case 58:
           case "end":
             return _context12.stop();
         }

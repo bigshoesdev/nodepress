@@ -791,7 +791,32 @@ router.get('/dashboard/pages/edit-homepage', auth, install.redirectToLogin, role
   } catch (error) {
     next(error);
   }
+});
 
+router.get('/dashboard/pages/edit-description', auth, install.redirectToLogin, role('admin'), async (req, res, next) => {
+  try {
+    let set = await Settings.findOne();
+    let homeMeta = set.homeMeta;
+    let publisherMeta = set.publisherMeta;
+    res.render('./admin/edit-description', {
+      title: "Dashboard - Edit Meta Description",
+      homeMeta: homeMeta,
+      publisherMeta: publisherMeta
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post('/dashboard/meta-save', auth, install.redirectToLogin, role('admin'), async (req, res, next) => {
+  try {
+    let homeMeta = req.body.homeMeta;
+    let publisherMeta = req.body.publisherMeta;
+    let set = await Settings.find();
+    await Settings.updateOne({ _id: set[0]._id }, {homeMeta: homeMeta, publisherMeta: publisherMeta});
+    req.flash("success_msg", "Meta Description Updated Successfully");
+    res.redirect('back');
+  } catch (error) { next(error); }
 });
 
 router.get(

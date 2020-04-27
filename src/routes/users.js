@@ -522,14 +522,6 @@ router.get('/afterlogin', install.redirectToLogin, async (req, res, next) => {
       random: random
     });
   }
-  let random = await Article.find({}).populate('category');
-  res.render('afterloginuser', {
-    title: "After Login",
-    editorsPicker: editorsPicker,
-    authorarticle: authorarticle,
-    popular: popular,
-    random: random
-  });
 });
 
 router.get('/kategorie', install.redirectToLogin, (req, res, next) => {
