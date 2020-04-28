@@ -2,3 +2,4 @@
 /src
 .env
 package-lock.json
+.env

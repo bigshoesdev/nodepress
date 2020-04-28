@@ -1,6 +1,3 @@
-.section-1 {
-   max-height: 800px;
-}
 .slide-part {
    position: relative;
    overflow: hidden;
@@ -188,9 +185,14 @@ ul {
   -webkit-transform: skewY(-45deg);
           transform: skewY(-45deg);
 }
-
+.slide-part-mobile{
+   overflow: hidden;
+}
+.mobile{
+   max-height: 400px;
+   position: relative;
+}
 /* //////////////////////// */
-
 @media screen and (max-width: 1000px) {
    .text {
       font-size: 7vw;
@@ -198,13 +200,26 @@ ul {
    .slide-part {
       display: none;
    }
+   .slide-part-mobile{
+      display: block;
+   }
    .box {
       font-size: 20px;
    }
+   .inner-section-2{
+      display: none;
+   }
+   
 }
 @media screen and (min-width: 1000px) {
    .text {
       margin-top: 12vw;
       font-size: 3vw;
+   }
+   .slide-part-mobile{
+      display: none;
+   }
+   .section-1{
+      max-height: 800px;
    }
 }
