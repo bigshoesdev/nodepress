@@ -11,6 +11,7 @@ var _crypto = _interopRequireDefault(require("crypto"));
 var Schema = _mongoose["default"].Schema;
 var userSchema = new Schema({
   username: String,
+  usernameslug: String,
   email: {
     type: String,
     unique: true

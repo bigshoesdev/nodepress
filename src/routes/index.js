@@ -22,7 +22,7 @@ router.use(flash());
 router.use(async function (req, res, next) {
 	let settingsInfo = await Settings.find({});
 	res.locals.mainMenu = await Menu.find().sort({ position: 1 });
-	res.locals.footercategory = await Category.find({}).sort({name: 1});
+	res.locals.footercategory = await Category.find({}).sort({ name: 1 });
 	res.locals.time = ev => {
 		const wordsPerMinute = 250; // Average case.
 		let result;
@@ -633,6 +633,19 @@ router.get('/search', install.redirectToLogin, async (req, res, next) => {
 				.skip(perPage * page - perPage)
 				.limit(perPage)
 				.sort({ createdAt: -1 });
+			let datacategory = await Category.find({
+				name: { $regex: req.query.q, $options: '$i' }
+			})
+				.skip(perPage * page - perPage)
+				.limit(perPage)
+				.sort({ createdAt: -1 });
+			let datauser = await User.find({
+				active: true,
+				username: { $regex: req.query.q, $options: '$i' }
+			})
+				.skip(perPage * page - perPage)
+				.limit(perPage)
+				.sort({ createdAt: -1 });
 			let random = await Article.aggregate([
 				{
 					$match: {
@@ -667,12 +680,21 @@ router.get('/search', install.redirectToLogin, async (req, res, next) => {
 					$unwind: '$category',
 				},
 			]);
+			let popular = await Article.find({})
+				.populate("category")
+				.populate("postedBy")
+				.sort({ views: -1 })
+				.limit(3);
+			console.log(datacategory.length);
 			res.render('search', {
 				data: data,
+				datacategory: datacategory,
+				datauser: datauser,
 				search: req.query.q,
 				current: page,
 				pages: Math.ceil(count / perPage),
 				random: random,
+				popular: popular
 			});
 		} else {
 			res.render('404');
@@ -682,8 +704,26 @@ router.get('/search', install.redirectToLogin, async (req, res, next) => {
 	}
 });
 
-router.get('/author/:username', install.redirectToLogin, async (req, res, next) => {
-	let user = await User.findOne({ username: req.params.username });
+router.get('/author/:usernameslug', install.redirectToLogin, async (req, res, next) => {
+	// let users = await User.find({});
+	// users.forEach(async element => {
+	// 	let username = element.username.toLowerCase();
+	// 	let array = username.split('');
+	// 	array.forEach((item, index) => {
+	// 	if(item == "ß"){
+	// 		array[index] = "ss";
+	// 	}
+	// 	if(item == "ö"){array[index] = "oe";}
+	// 	if(item == "ä"){array[index] = "ae";}
+	// 	if(item == "ü"){array[index] = "ue";}
+	// 	});
+	// 	let usernameslug = array.join("");
+	// 	await User.updateOne(
+	// 		{ _id: element._id},
+	// 		{ usernameslug : usernameslug }
+	// 	 );
+	// });
+	let user = await User.findOne({ usernameslug: req.params.usernameslug });
 	let featured = await Article.aggregate([
 		{
 			$match: {

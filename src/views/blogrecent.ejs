@@ -28,24 +28,9 @@
       rel="stylesheet">
 
    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-   <style>
-      .float-right {
-         float: right !important;
-      }
-
-      @media screen and (max-width: 1000px) {
-         .menu-small {
-            width: 90%;
-         }
-         .section-logo{
-            width: 10%;
-         }
-         .dropdown-menu{
-            z-index: 999999999;
-         }
-      }
-   </style>
+   <link rel="stylesheet" href="/css/blogrecent.css">
 </head>
+
 <body class="Blog-recent-post">
    <div class="sidenav" id="sidenav">
       <a class="cancelNav">
@@ -163,6 +148,8 @@
                   <% } %>
                   </ul>
                </div>
+               <a class="searchbar" href="#"><span style="font-size:20px; padding-left: 10px;cursor:pointer"
+                     onclick="openNotification()"><i class="fa fa-bell-o" aria-hidden="true"></i></span></a>
                <% } else {%>
                <a class="searchbar" href="/publisher"><span class="menu-title">Publisher
                      werden</span></a>
@@ -943,6 +930,23 @@
             <a href="#" id="scroll" style="display: none;"><span></span></a>
             </div>
          </section>
+         <div class="notification">
+            <div class="row">
+               <div class="col-md-9 col-sm-9 col-xs-9">Noticaition </div>
+               <div class="col-md-3 col-sm-3 col-xs-3">
+                  <h3 style="color: black;"><i class="fa fa-trash-o clear-notification"></i></h3>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-md-4 col-sm-4 col-xs-4">
+                  <img src="<% if(user){%><%= user.profilePicture%><%}%>" style="border-radius: 50px; width: 50px; height: 50px;background-position: center;">
+              </div>
+              <div class="col-md-8 col-sm-8 col-xs-8">
+                <p><%if(user){%><%= user.username%><%}%></p>
+              </div>
+            </div>
+            <hr>
+          </div>
          <!-- footer end -->
          <script src="/js/jquery-2.1.3.min.js"></script>
          <script src="/js/popper.min.js"></script>
@@ -956,6 +960,13 @@
          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
          <script>
             AOS.init();
+            $('.notification').hide();
+            function openNotification() {
+               $('.notification').toggle();
+            }
+            $('.clear-notification').click(function () {
+               $('.notification').hide();
+            });
          </script>
          <script>
             $(document).ready(function () {

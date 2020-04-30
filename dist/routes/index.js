@@ -811,7 +811,7 @@ router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
 
 router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref8 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee8(req, res, next) {
-    var perPage, page, count, data, random;
+    var perPage, page, count, data, datacategory, datauser, random, popular;
     return _regenerator["default"].wrap(function _callee8$(_context8) {
       while (1) {
         switch (_context8.prev = _context8.next) {
@@ -819,7 +819,7 @@ router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function
             _context8.prev = 0;
 
             if (!req.query.q) {
-              _context8.next = 16;
+              _context8.next = 26;
               break;
             }
 
@@ -864,6 +864,31 @@ router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function
           case 9:
             data = _context8.sent;
             _context8.next = 12;
+            return _category["default"].find({
+              name: {
+                $regex: req.query.q,
+                $options: '$i'
+              }
+            }).skip(perPage * page - perPage).limit(perPage).sort({
+              createdAt: -1
+            });
+
+          case 12:
+            datacategory = _context8.sent;
+            _context8.next = 15;
+            return _users["default"].find({
+              active: true,
+              username: {
+                $regex: req.query.q,
+                $options: '$i'
+              }
+            }).skip(perPage * page - perPage).limit(perPage).sort({
+              createdAt: -1
+            });
+
+          case 15:
+            datauser = _context8.sent;
+            _context8.next = 18;
             return _articles["default"].aggregate([{
               $match: {
                 active: true
@@ -892,43 +917,54 @@ router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function
               $unwind: '$category'
             }]);
 
-          case 12:
+          case 18:
             random = _context8.sent;
+            _context8.next = 21;
+            return _articles["default"].find({}).populate("category").populate("postedBy").sort({
+              views: -1
+            }).limit(3);
+
+          case 21:
+            popular = _context8.sent;
+            console.log(datacategory.length);
             res.render('search', {
               data: data,
+              datacategory: datacategory,
+              datauser: datauser,
               search: req.query.q,
               current: page,
               pages: Math.ceil(count / perPage),
-              random: random
+              random: random,
+              popular: popular
             });
-            _context8.next = 17;
+            _context8.next = 27;
             break;
 
-          case 16:
+          case 26:
             res.render('404');
 
-          case 17:
-            _context8.next = 22;
+          case 27:
+            _context8.next = 32;
             break;
 
-          case 19:
-            _context8.prev = 19;
+          case 29:
+            _context8.prev = 29;
             _context8.t0 = _context8["catch"](0);
             next(_context8.t0);
 
-          case 22:
+          case 32:
           case "end":
             return _context8.stop();
         }
       }
-    }, _callee8, null, [[0, 19]]);
+    }, _callee8, null, [[0, 29]]);
   }));
 
   return function (_x22, _x23, _x24) {
     return _ref8.apply(this, arguments);
   };
 }());
-router.get('/author/:username', _install["default"].redirectToLogin, /*#__PURE__*/function () {
+router.get('/author/:usernameslug', _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref9 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee9(req, res, next) {
     var user, featured, perPage, page, article, count;
     return _regenerator["default"].wrap(function _callee9$(_context9) {
@@ -937,7 +973,7 @@ router.get('/author/:username', _install["default"].redirectToLogin, /*#__PURE__
           case 0:
             _context9.next = 2;
             return _users["default"].findOne({
-              username: req.params.username
+              usernameslug: req.params.usernameslug
             });
 
           case 2:

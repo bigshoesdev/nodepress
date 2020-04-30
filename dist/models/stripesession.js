@@ -15,6 +15,10 @@ var _Schema;
 
 var Schema = _mongoose["default"].Schema;
 var stripe_sessionSchema = new Schema((_Schema = {
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: "User"
+  },
   id: String,
   object: String,
   billing_address: String,

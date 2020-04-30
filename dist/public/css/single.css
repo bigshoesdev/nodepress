@@ -3,7 +3,16 @@
    z-index: 1;
    height: 100%;
 }
-
+.notification{
+   position: fixed;
+   top: 0;
+   right: 0;
+   z-index: 99999;
+   width: 300px;
+   height: 100%;
+   background-color: white;
+   padding: 30px;
+}
 #return-to-top {
    padding: 10px;
    position: fixed;

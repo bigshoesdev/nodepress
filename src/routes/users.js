@@ -136,6 +136,11 @@ router.post('/category/show-more', install.redirectToLogin, async (req, res, nex
     next(error);
   }
 });
+router.get('/downgrade', install.redirectToLogin, async (req, res, next) => {
+  await User.updateOne({_id: req.query.user}, {paid: "free"});
+  res.redirect('back');
+});
+
 router.get('/onboarding', install.redirectToLogin, async (req, res, next) => {
   let redirect = req.query.redirect ? true : false;
   try {
@@ -144,7 +149,8 @@ router.get('/onboarding', install.redirectToLogin, async (req, res, next) => {
     if (stripeSession_id) {
       //paid account for paid account stripe connection successfully
       let session = await stripe.checkout.sessions.retrieve(stripeSession_id);
-      await StripeSession.create(session);
+      let stripesession = await StripeSession.create(session);
+      console.log(stripesession._id);
       categoryCount = 10
     }
     if (req.user.paid == "paid") {
@@ -262,11 +268,23 @@ router.post(
         let set = await Settings.findOne();
         // SOLVED SETTINGS BUG, USED SET[0] INSTEAD OF SET
         if (set.registrationSystem == true) {
+          let username = req.body.username.trim().toLowerCase();
+          let array = username.split('');
+          array.forEach((element, index) => {
+            if(element == "ß"){
+              array[index] = "ss";
+            }
+            if(element == "ö"){array[index] = "oe";}
+            if(element == "ä"){array[index] = "ae";}
+            if(element == "ü"){array[index] = "ue";}
+          });
+          let usernameslug = array.join("");
           let payload = {
             email: req.body.email.trim(),
             password: req.body.password.trim(),
             token: crypto.randomBytes(16).toString("hex"),
-            username: req.body.username.trim(),
+            username: req.body.username.trim().toLowerCase(),
+            usernameslug: usernameslug,
             profilePicture:
               "https://gravatar.com/avatar/" +
               crypto
@@ -461,7 +479,8 @@ router.get('/afterlogin', install.redirectToLogin, async (req, res, next) => {
   if (req.user) {
     let editorsPicker = await Article.find({
       addToBreaking: true
-    }).populate('category');
+    }).populate('category').populate('postedBy');
+    
     if (editorsPicker.length == 0) {
       let a = [];
       for (var i = 0; i < req.user.categoryList.length; i++) {
@@ -471,9 +490,11 @@ router.get('/afterlogin', install.redirectToLogin, async (req, res, next) => {
         });
         let article = await Article.find({
           category: _category[0]._id
-        }).populate('category');
+        }).populate('category').populate('postedBy');
         for (var b in article) {
-          a.push(article[b]);
+          if (article[b].category.slug != 'official') {
+            a.push(article[b]);
+          }
         }
       }
       for (var i in a) {
@@ -504,7 +525,14 @@ router.get('/afterlogin', install.redirectToLogin, async (req, res, next) => {
     }).populate('category')
       .sort({ views: -1 })
       .limit(10);
-    let random = await Article.find({}).populate('category');
+    let random = await Article.find({}).populate('category').populate('postedBy');
+    let e = [];
+    editorsPicker.forEach(element => {
+      if(element.category.slug != 'official'){
+        e.push(element);
+      }
+    });
+    editorsPicker = e;
     res.render('afterloginuser', {
       title: "After Login",
       editorsPicker: editorsPicker,
@@ -513,10 +541,19 @@ router.get('/afterlogin', install.redirectToLogin, async (req, res, next) => {
       random: random
     });
   } else {
-    let random = await Article.find({}).populate('category');
+    let random = await Article.find({}).populate('category').populate('postedBy');
+    let popular = await Article.find({}).populate('category').populate('postedBy').sort({ views: -1 }).limit(10);
+    let e = [];
+    let editorsPicker = [];
+    random.forEach(element => {
+      if(element.category.slug != 'official'){
+        e.push(element);
+      }
+    });
+    editorsPicker = e;
     res.render('afterloginuser', {
       title: "After Login",
-      editorsPicker: random,
+      editorsPicker: editorsPicker,
       authorarticle: random,
       popular: random,
       random: random

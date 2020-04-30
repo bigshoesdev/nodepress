@@ -19,7 +19,8 @@ var savetextSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Article"
   },
-  text: String
+  text: String,
+  url: String
 }, {
   timestamps: true
 });
