@@ -705,24 +705,24 @@ router.get('/search', install.redirectToLogin, async (req, res, next) => {
 });
 
 router.get('/author/:usernameslug', install.redirectToLogin, async (req, res, next) => {
-	// let users = await User.find({});
-	// users.forEach(async element => {
-	// 	let username = element.username.toLowerCase();
-	// 	let array = username.split('');
-	// 	array.forEach((item, index) => {
-	// 	if(item == "ß"){
-	// 		array[index] = "ss";
-	// 	}
-	// 	if(item == "ö"){array[index] = "oe";}
-	// 	if(item == "ä"){array[index] = "ae";}
-	// 	if(item == "ü"){array[index] = "ue";}
-	// 	});
-	// 	let usernameslug = array.join("");
-	// 	await User.updateOne(
-	// 		{ _id: element._id},
-	// 		{ usernameslug : usernameslug }
-	// 	 );
-	// });
+	let users = await User.find({});
+	users.forEach(async element => {
+		let username = element.username.toLowerCase();
+		let array = username.split('');
+		array.forEach((item, index) => {
+		if(item == "ß"){
+			array[index] = "ss";
+		}
+		if(item == "ö"){array[index] = "oe";}
+		if(item == "ä"){array[index] = "ae";}
+		if(item == "ü"){array[index] = "ue";}
+		});
+		let usernameslug = array.join("");
+		await User.updateOne(
+			{ _id: element._id},
+			{ usernameslug : usernameslug }
+		 );
+	});
 	let user = await User.findOne({ usernameslug: req.params.usernameslug });
 	let featured = await Article.aggregate([
 		{

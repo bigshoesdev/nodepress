@@ -965,20 +965,71 @@ router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function
   };
 }());
 router.get('/author/:usernameslug', _install["default"].redirectToLogin, /*#__PURE__*/function () {
-  var _ref9 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee9(req, res, next) {
-    var user, featured, perPage, page, article, count;
-    return _regenerator["default"].wrap(function _callee9$(_context9) {
+  var _ref9 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee10(req, res, next) {
+    var users, user, featured, perPage, page, article, count;
+    return _regenerator["default"].wrap(function _callee10$(_context10) {
       while (1) {
-        switch (_context9.prev = _context9.next) {
+        switch (_context10.prev = _context10.next) {
           case 0:
-            _context9.next = 2;
+            _context10.next = 2;
+            return _users["default"].find({});
+
+          case 2:
+            users = _context10.sent;
+            users.forEach( /*#__PURE__*/function () {
+              var _ref10 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee9(element) {
+                var username, array, usernameslug;
+                return _regenerator["default"].wrap(function _callee9$(_context9) {
+                  while (1) {
+                    switch (_context9.prev = _context9.next) {
+                      case 0:
+                        username = element.username.toLowerCase();
+                        array = username.split('');
+                        array.forEach(function (item, index) {
+                          if (item == "ß") {
+                            array[index] = "ss";
+                          }
+
+                          if (item == "ö") {
+                            array[index] = "oe";
+                          }
+
+                          if (item == "ä") {
+                            array[index] = "ae";
+                          }
+
+                          if (item == "ü") {
+                            array[index] = "ue";
+                          }
+                        });
+                        usernameslug = array.join("");
+                        _context9.next = 6;
+                        return _users["default"].updateOne({
+                          _id: element._id
+                        }, {
+                          usernameslug: usernameslug
+                        });
+
+                      case 6:
+                      case "end":
+                        return _context9.stop();
+                    }
+                  }
+                }, _callee9);
+              }));
+
+              return function (_x28) {
+                return _ref10.apply(this, arguments);
+              };
+            }());
+            _context10.next = 6;
             return _users["default"].findOne({
               usernameslug: req.params.usernameslug
             });
 
-          case 2:
-            user = _context9.sent;
-            _context9.next = 5;
+          case 6:
+            user = _context10.sent;
+            _context10.next = 9;
             return _articles["default"].aggregate([{
               $match: {
                 addToFeatured: true,
@@ -1023,22 +1074,22 @@ router.get('/author/:usernameslug', _install["default"].redirectToLogin, /*#__PU
               $limit: 4
             }]);
 
-          case 5:
-            featured = _context9.sent;
+          case 9:
+            featured = _context10.sent;
 
             if (user) {
-              _context9.next = 10;
+              _context10.next = 14;
               break;
             }
 
             res.render('404');
-            _context9.next = 19;
+            _context10.next = 23;
             break;
 
-          case 10:
+          case 14:
             perPage = 9;
             page = req.query.page || 1;
-            _context9.next = 14;
+            _context10.next = 18;
             return _articles["default"].find({
               active: true,
               postedBy: user._id
@@ -1046,16 +1097,16 @@ router.get('/author/:usernameslug', _install["default"].redirectToLogin, /*#__PU
               createdAt: -1
             });
 
-          case 14:
-            article = _context9.sent;
-            _context9.next = 17;
+          case 18:
+            article = _context10.sent;
+            _context10.next = 21;
             return _articles["default"].countDocuments({
               active: true,
               postedBy: user._id
             });
 
-          case 17:
-            count = _context9.sent;
+          case 21:
+            count = _context10.sent;
             res.render('author', {
               author: user,
               article: article,
@@ -1064,27 +1115,7 @@ router.get('/author/:usernameslug', _install["default"].redirectToLogin, /*#__PU
               pages: Math.ceil(count / perPage)
             });
 
-          case 19:
-          case "end":
-            return _context9.stop();
-        }
-      }
-    }, _callee9);
-  }));
-
-  return function (_x25, _x26, _x27) {
-    return _ref9.apply(this, arguments);
-  };
-}());
-router.get('/vision', _install["default"].redirectToLogin, /*#__PURE__*/function () {
-  var _ref10 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee10(req, res, next) {
-    return _regenerator["default"].wrap(function _callee10$(_context10) {
-      while (1) {
-        switch (_context10.prev = _context10.next) {
-          case 0:
-            res.render('vision');
-
-          case 1:
+          case 23:
           case "end":
             return _context10.stop();
         }
@@ -1092,17 +1123,17 @@ router.get('/vision', _install["default"].redirectToLogin, /*#__PURE__*/function
     }, _callee10);
   }));
 
-  return function (_x28, _x29, _x30) {
-    return _ref10.apply(this, arguments);
+  return function (_x25, _x26, _x27) {
+    return _ref9.apply(this, arguments);
   };
 }());
-router.get('/membership', _install["default"].redirectToLogin, /*#__PURE__*/function () {
+router.get('/vision', _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref11 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee11(req, res, next) {
     return _regenerator["default"].wrap(function _callee11$(_context11) {
       while (1) {
         switch (_context11.prev = _context11.next) {
           case 0:
-            res.render('membership');
+            res.render('vision');
 
           case 1:
           case "end":
@@ -1112,8 +1143,28 @@ router.get('/membership', _install["default"].redirectToLogin, /*#__PURE__*/func
     }, _callee11);
   }));
 
-  return function (_x31, _x32, _x33) {
+  return function (_x29, _x30, _x31) {
     return _ref11.apply(this, arguments);
+  };
+}());
+router.get('/membership', _install["default"].redirectToLogin, /*#__PURE__*/function () {
+  var _ref12 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee12(req, res, next) {
+    return _regenerator["default"].wrap(function _callee12$(_context12) {
+      while (1) {
+        switch (_context12.prev = _context12.next) {
+          case 0:
+            res.render('membership');
+
+          case 1:
+          case "end":
+            return _context12.stop();
+        }
+      }
+    }, _callee12);
+  }));
+
+  return function (_x32, _x33, _x34) {
+    return _ref12.apply(this, arguments);
   };
 }());
 module.exports = router;
