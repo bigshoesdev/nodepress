@@ -7,7 +7,7 @@
     <meta name="robots" content="noindex">
     <% }%>
     <meta charset="utf-8" />
-    <meta itemprop="name" content="<%= article.metatitle%>" />
+    <meta name="name" content="<%= article.metatitle%>" />
     <meta name="description" content="<%= article.metadescription%>" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta itemprop="name" content="<%= article.metatitle%>" />
@@ -51,7 +51,7 @@
               "@context": "http://schema.org",
               "@type": "WebSite",
               "name": "<%= article.metatitle %>",
-              "url": "<%= siteLink%>",
+              "url": "https://dype.me",
               "description": "<%= article.metadescription %>",
               "image": "<%= siteLink%><%= article.file %>"
             }
