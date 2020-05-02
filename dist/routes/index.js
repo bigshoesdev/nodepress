@@ -823,7 +823,7 @@ router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function
               break;
             }
 
-            perPage = 9;
+            perPage = 3;
             page = req.query.page || 1;
             _context8.next = 6;
             return _articles["default"].countDocuments({

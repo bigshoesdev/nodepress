@@ -473,7 +473,7 @@ router.get(
 );
 
 router.get(
-  "/dashboard/posts/categories/edit/:name",
+  "/dashboard/posts/categories/edit/:slug",
   auth,
   install.redirectToLogin,
   role("admin"),
@@ -481,7 +481,7 @@ router.get(
     try {
       let category = await Category.findOne({
         parent: undefined,
-        name: req.params.name
+        slug: req.params.slug
       });
       if (!category) {
         res.render("404");

@@ -719,7 +719,7 @@ router.get("/dashboard/posts/categories", _auth["default"], _install["default"].
     return _ref8.apply(this, arguments);
   };
 }());
-router.get("/dashboard/posts/categories/edit/:name", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+router.get("/dashboard/posts/categories/edit/:slug", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref9 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee9(req, res, next) {
     var category;
     return _regenerator["default"].wrap(function _callee9$(_context9) {
@@ -730,7 +730,7 @@ router.get("/dashboard/posts/categories/edit/:name", _auth["default"], _install[
             _context9.next = 3;
             return _category["default"].findOne({
               parent: undefined,
-              name: req.params.name
+              slug: req.params.slug
             });
 
           case 3:
