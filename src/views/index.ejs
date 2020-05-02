@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 
 <head>
   <title>Entdecke einzigartige Inhalte und Artikel von unzähligen Autoren.</title>
@@ -7,7 +7,6 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="<%= mainSettings.homeMeta%>" />
-
   <!-- css -->
   <link rel="stylesheet" href="/css/bootstrap.min.css" async>
   <link rel="stylesheet" href="/css/ionicons.min.css" async>
@@ -259,7 +258,7 @@
         <div class="col-md-4 col-sm-12">
           <div class="section-1-right">
             <div class="section-1-right-heading1">
-              <h1>Einzigartige Inhalte.</h1>
+              <p style="color: black; text-align: center; font-size: 41px; font-weight: 300;">Einzigartige Inhalte.</p>
             </div>
             <div class="section-1-right-heading2">
               <h2>Erweitere deinen Horizont.</h2>
@@ -395,7 +394,7 @@
 
                     </div>
                     <div class="section-2-content">
-                      <h1>Komprimiertes, praxisnahes und anwendbare Inhalte für die tägliche Wissensspritze.</h1>
+                      <p style="color: #444; font-weight: 400; font-size: 36px;">Komprimiertes, praxisnahes und anwendbare Inhalte für die tägliche Wissensspritze.</p>
                     </div>
                     <!-- <div class="section-2-content-2">
               <div class="section-2-content-2-icon">
@@ -441,7 +440,7 @@
           <div class="container">
             <div class="inner-section-5 vision-our">
               <div class="section-5-heading">
-                <h1>Vision</h1>
+                <p style="font-size: 56px; text-align: center; font-weight: 400; color: white;">Vision</p>
               </div>
               <div class="section-5-btn">
                 <a href="https://www.youtube.com/watch?v=6oTurM7gESE" target="_blank" class="video-play-button"><i
@@ -457,16 +456,10 @@
               <div class="row" style="background: #f4f4f4;">
                 <div style="padding: 0px;" class="col-md-12">
                   <div class="section-2-right" style="text-align: center;">
-                    <div class="box">
-                      <div class="inner">
-                        <span>Die Plattform für Weisheiten, Erfahrungen, Geschichten, Anekdoten, Anschauungen und
-                          Interpretationen einzigartiger Persönlichkeiten.</span>
-                      </div>
-                      <div class="inner">
-                        <span>Die Plattform für Weisheiten, Erfahrungen, Geschichten, Anekdoten, Anschauungen und
-                          Interpretationen einzigartiger Persönlichkeiten.</span>
-                      </div>
-                    </div>
+                    <p style="min-height: 200px;font-size: 3em; margin: 150px;">
+                      Die Plattform für Weisheiten, Erfahrungen, Geschichten, Anekdoten, Anschauungen und
+                          Interpretationen einzigartiger Persönlichkeiten.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -510,11 +503,6 @@
           <div class="container-fluid">
             <div class="inner-section-3">
               <div class="row">
-                <div style="padding: 0px;max-height: 400px;" class="col-md-6 text-center">
-                  <img src="/images/security.png" style="width: 10%; margin-top:150px; position:relative;" />
-                  <h1 style="position: relative; top: 50%; margin-bottom: 100px; color:#444;" class="text-center">Dype
-                    schützt deine Daten.</h1>
-                </div>
                 <div style="padding: 0px;max-height: 800px;" class="col-md-6">
                   <div class="section-3-right">
                     <div class="section-3-heading">
@@ -522,7 +510,7 @@
                       </h3>
                     </div>
                     <div class="section-3-content">
-                      <h1>Keine Werbung, kein Datenverkauf - deine Interessen bleiben geheim. </h1>
+                      <p style="color: #444; font-weight: 400;  font-size: 35px;">Keine Werbung, kein Datenverkauf - deine Interessen bleiben geheim. </p>
                     </div>
                     <div class="section-3-content-2-brief">
                       <p>Du wirst schnell bemerken, dass Dype gänzlich auf Werbung verzichtet. All deine Daten werden
@@ -531,6 +519,11 @@
                       <p>Dies bietet dir ein werbefreies und bedenkenloses Wissenszentrum.</p>
                     </div>
                   </div>
+                </div>
+                <div style="padding: 0px;max-height: 400px;" class="col-md-6 text-center">
+                  <img src="/images/security.png" style="width: 10%; margin-top:150px; position:relative;" />
+                  <p style="position: relative; top: 50%; font-size: 35px; font-weight: 400; margin-bottom: 100px; color:#444;" class="text-center">Dype
+                    schützt deine Daten.</p>
                 </div>
               </div>
             </div>
@@ -560,13 +553,4 @@
         <script src="/js/gsap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
         <script src="/js/index.js"></script>
-        <script>
-          $('.notification').hide();
-          function openNotification() {
-            $('.notification').toggle();
-          }
-          $('.clear-notification').click(function () {
-            $('.notification').hide();
-          });
-        </script>
         <%- include ./partials/footer %>

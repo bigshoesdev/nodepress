@@ -612,7 +612,7 @@ router.get('/', install.redirectToLogin, async (req, res, next) => {
 router.get('/search', install.redirectToLogin, async (req, res, next) => {
 	try {
 		if (req.query.q) {
-			let perPage = 9;
+			let perPage = 3;
 			let page = req.query.page || 1;
 			let count = await Article.countDocuments({
 				active: true,
