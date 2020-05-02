@@ -1101,7 +1101,38 @@ router.post("/login", _install["default"].redirectToLogin, checkIfLoggedIn, func
       });
     })(req, res, next);
   }
-}); // Get forgot password page
+});
+router.get('/user/qualfy', _install["default"].redirectToLogin, /*#__PURE__*/function () {
+  var _ref14 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee14(req, res, next) {
+    var article;
+    return _regenerator["default"].wrap(function _callee14$(_context14) {
+      while (1) {
+        switch (_context14.prev = _context14.next) {
+          case 0:
+            _context14.next = 2;
+            return _articles["default"].update({
+              _id: req.query.articleId
+            }, {
+              qualify: "waiting"
+            });
+
+          case 2:
+            article = _context14.sent;
+            req.flash("success_msg", "Request Qualify");
+            return _context14.abrupt("return", res.redirect("back"));
+
+          case 5:
+          case "end":
+            return _context14.stop();
+        }
+      }
+    }, _callee14);
+  }));
+
+  return function (_x39, _x40, _x41) {
+    return _ref14.apply(this, arguments);
+  };
+}()); // Get forgot password page
 
 router.get("/forgot-password", _install["default"].redirectToLogin, checkIfLoggedIn, function (req, res, next) {
   res.render("lostpassword", {
@@ -1189,21 +1220,21 @@ router.post("/reset/:token", _install["default"].redirectToLogin, function (req,
 }); // Update user info route
 
 router.post("/user/dashboard/update/info", _install["default"].redirectToLogin, _auth["default"], /*#__PURE__*/function () {
-  var _ref14 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee14(req, res, next) {
+  var _ref15 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee15(req, res, next) {
     var user, status, use;
-    return _regenerator["default"].wrap(function _callee14$(_context14) {
+    return _regenerator["default"].wrap(function _callee15$(_context15) {
       while (1) {
-        switch (_context14.prev = _context14.next) {
+        switch (_context15.prev = _context15.next) {
           case 0:
-            _context14.prev = 0;
-            _context14.next = 3;
+            _context15.prev = 0;
+            _context15.next = 3;
             return _users["default"].findById(req.user.id);
 
           case 3:
-            user = _context14.sent;
+            user = _context15.sent;
 
             if (!(user.email == req.body.email)) {
-              _context14.next = 17;
+              _context15.next = 17;
               break;
             }
 
@@ -1248,25 +1279,25 @@ router.post("/user/dashboard/update/info", _install["default"].redirectToLogin, 
               return next(err);
             });
 
-            _context14.next = 26;
+            _context15.next = 26;
             break;
 
           case 17:
-            _context14.next = 19;
+            _context15.next = 19;
             return _users["default"].findOne({
               email: req.body.email
             });
 
           case 19:
-            use = _context14.sent;
+            use = _context15.sent;
 
             if (!use) {
-              _context14.next = 25;
+              _context15.next = 25;
               break;
             }
 
             req.flash("success_msg", "The Email you provided has been used");
-            return _context14.abrupt("return", res.redirect("back"));
+            return _context15.abrupt("return", res.redirect("back"));
 
           case 25:
             _users["default"].updateOne({
@@ -1279,24 +1310,24 @@ router.post("/user/dashboard/update/info", _install["default"].redirectToLogin, 
             });
 
           case 26:
-            _context14.next = 31;
+            _context15.next = 31;
             break;
 
           case 28:
-            _context14.prev = 28;
-            _context14.t0 = _context14["catch"](0);
-            next(_context14.t0);
+            _context15.prev = 28;
+            _context15.t0 = _context15["catch"](0);
+            next(_context15.t0);
 
           case 31:
           case "end":
-            return _context14.stop();
+            return _context15.stop();
         }
       }
-    }, _callee14, null, [[0, 28]]);
+    }, _callee15, null, [[0, 28]]);
   }));
 
-  return function (_x39, _x40, _x41) {
-    return _ref14.apply(this, arguments);
+  return function (_x42, _x43, _x44) {
+    return _ref15.apply(this, arguments);
   };
 }()); // Update user profile picture
 
@@ -1305,20 +1336,20 @@ router.post("/user/dashboard/update/info", _install["default"].redirectToLogin, 
  */
 
 router.post("/user/dashboard/update/profile-picture", _install["default"].redirectToLogin, _auth["default"], /*#__PURE__*/function () {
-  var _ref15 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee18(req, res, next) {
+  var _ref16 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee19(req, res, next) {
     var set, form, s3, awsForm, cloudForm;
-    return _regenerator["default"].wrap(function _callee18$(_context18) {
+    return _regenerator["default"].wrap(function _callee19$(_context19) {
       while (1) {
-        switch (_context18.prev = _context18.next) {
+        switch (_context19.prev = _context19.next) {
           case 0:
-            _context18.prev = 0;
-            _context18.next = 3;
+            _context19.prev = 0;
+            _context19.next = 3;
             return _settings["default"].find();
 
           case 3:
-            set = _context18.sent;
-            _context18.t0 = set[0].media.provider;
-            _context18.next = _context18.t0 === "local" ? 7 : _context18.t0 === "amazons3" ? 10 : _context18.t0 === "cloudinary" ? 15 : 20;
+            set = _context19.sent;
+            _context19.t0 = set[0].media.provider;
+            _context19.next = _context19.t0 === "local" ? 7 : _context19.t0 === "amazons3" ? 10 : _context19.t0 === "cloudinary" ? 15 : 20;
             break;
 
           case 7:
@@ -1350,7 +1381,7 @@ router.post("/user/dashboard/update/profile-picture", _install["default"].redire
                 return next(err);
               });
             });
-            return _context18.abrupt("break", 20);
+            return _context19.abrupt("break", 20);
 
           case 10:
             // AWS configuration
@@ -1376,10 +1407,10 @@ router.post("/user/dashboard/update/profile-picture", _install["default"].redire
                   processData: false
                 };
                 s3.upload(params, /*#__PURE__*/function () {
-                  var _ref16 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee15(err, data) {
-                    return _regenerator["default"].wrap(function _callee15$(_context15) {
+                  var _ref17 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee16(err, data) {
+                    return _regenerator["default"].wrap(function _callee16$(_context16) {
                       while (1) {
-                        switch (_context15.prev = _context15.next) {
+                        switch (_context16.prev = _context16.next) {
                           case 0:
                             if (err) next(err);else {
                               _users["default"].updateOne({
@@ -1398,19 +1429,19 @@ router.post("/user/dashboard/update/profile-picture", _install["default"].redire
 
                           case 1:
                           case "end":
-                            return _context15.stop();
+                            return _context16.stop();
                         }
                       }
-                    }, _callee15);
+                    }, _callee16);
                   }));
 
-                  return function (_x45, _x46) {
-                    return _ref16.apply(this, arguments);
+                  return function (_x48, _x49) {
+                    return _ref17.apply(this, arguments);
                   };
                 }());
               }
             });
-            return _context18.abrupt("break", 20);
+            return _context19.abrupt("break", 20);
 
           case 15:
             // Cloudinary configuration
@@ -1423,21 +1454,21 @@ router.post("/user/dashboard/update/profile-picture", _install["default"].redire
             cloudForm = new _formidable["default"].IncomingForm();
             cloudForm.parse(req, function (err, fields, files) {});
             cloudForm.on("end", /*#__PURE__*/function () {
-              var _ref17 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee17(fields, files) {
+              var _ref18 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee18(fields, files) {
                 var _this = this;
 
                 var _loop, x;
 
-                return _regenerator["default"].wrap(function _callee17$(_context17) {
+                return _regenerator["default"].wrap(function _callee18$(_context18) {
                   while (1) {
-                    switch (_context17.prev = _context17.next) {
+                    switch (_context18.prev = _context18.next) {
                       case 0:
                         _loop = function _loop(x) {
                           _cloudinary.v2.uploader.upload(_this.openedFiles[x].path, /*#__PURE__*/function () {
-                            var _ref18 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee16(err, result) {
-                              return _regenerator["default"].wrap(function _callee16$(_context16) {
+                            var _ref19 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee17(err, result) {
+                              return _regenerator["default"].wrap(function _callee17$(_context17) {
                                 while (1) {
-                                  switch (_context16.prev = _context16.next) {
+                                  switch (_context17.prev = _context17.next) {
                                     case 0:
                                       _fs["default"].unlinkSync(_this.openedFiles[x].path);
 
@@ -1456,14 +1487,14 @@ router.post("/user/dashboard/update/profile-picture", _install["default"].redire
 
                                     case 2:
                                     case "end":
-                                      return _context16.stop();
+                                      return _context17.stop();
                                   }
                                 }
-                              }, _callee16);
+                              }, _callee17);
                             }));
 
-                            return function (_x49, _x50) {
-                              return _ref18.apply(this, arguments);
+                            return function (_x52, _x53) {
+                              return _ref19.apply(this, arguments);
                             };
                           }());
                         };
@@ -1474,37 +1505,37 @@ router.post("/user/dashboard/update/profile-picture", _install["default"].redire
 
                       case 2:
                       case "end":
-                        return _context17.stop();
+                        return _context18.stop();
                     }
                   }
-                }, _callee17, this);
+                }, _callee18, this);
               }));
 
-              return function (_x47, _x48) {
-                return _ref17.apply(this, arguments);
+              return function (_x50, _x51) {
+                return _ref18.apply(this, arguments);
               };
             }());
-            return _context18.abrupt("break", 20);
+            return _context19.abrupt("break", 20);
 
           case 20:
-            _context18.next = 25;
+            _context19.next = 25;
             break;
 
           case 22:
-            _context18.prev = 22;
-            _context18.t1 = _context18["catch"](0);
-            next(_context18.t1);
+            _context19.prev = 22;
+            _context19.t1 = _context19["catch"](0);
+            next(_context19.t1);
 
           case 25:
           case "end":
-            return _context18.stop();
+            return _context19.stop();
         }
       }
-    }, _callee18, null, [[0, 22]]);
+    }, _callee19, null, [[0, 22]]);
   }));
 
-  return function (_x42, _x43, _x44) {
-    return _ref15.apply(this, arguments);
+  return function (_x45, _x46, _x47) {
+    return _ref16.apply(this, arguments);
   };
 }()); // Update user password
 
@@ -1559,13 +1590,13 @@ router.get("/log-out", function (req, res, next) {
 }); // Delete Many User
 
 router.post("/user/dashboard/deleteMany", _install["default"].redirectToLogin, _auth["default"], /*#__PURE__*/function () {
-  var _ref19 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee19(req, res, next) {
-    return _regenerator["default"].wrap(function _callee19$(_context19) {
+  var _ref20 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee20(req, res, next) {
+    return _regenerator["default"].wrap(function _callee20$(_context20) {
       while (1) {
-        switch (_context19.prev = _context19.next) {
+        switch (_context20.prev = _context20.next) {
           case 0:
-            _context19.prev = 0;
-            _context19.next = 3;
+            _context20.prev = 0;
+            _context20.next = 3;
             return _articles["default"].deleteMany({
               postedBy: req.body.ids
             });
@@ -1585,43 +1616,43 @@ router.post("/user/dashboard/deleteMany", _install["default"].redirectToLogin, _
               return next(e);
             });
 
-            _context19.next = 9;
+            _context20.next = 9;
             break;
 
           case 6:
-            _context19.prev = 6;
-            _context19.t0 = _context19["catch"](0);
-            next(_context19.t0);
+            _context20.prev = 6;
+            _context20.t0 = _context20["catch"](0);
+            next(_context20.t0);
 
           case 9:
           case "end":
-            return _context19.stop();
+            return _context20.stop();
         }
       }
-    }, _callee19, null, [[0, 6]]);
+    }, _callee20, null, [[0, 6]]);
   }));
 
-  return function (_x51, _x52, _x53) {
-    return _ref19.apply(this, arguments);
+  return function (_x54, _x55, _x56) {
+    return _ref20.apply(this, arguments);
   };
 }()); // Update another user info
 
 router.post("/user/edit", _auth["default"], /*#__PURE__*/function () {
-  var _ref20 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee20(req, res, next) {
+  var _ref21 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee21(req, res, next) {
     var user, use;
-    return _regenerator["default"].wrap(function _callee20$(_context20) {
+    return _regenerator["default"].wrap(function _callee21$(_context21) {
       while (1) {
-        switch (_context20.prev = _context20.next) {
+        switch (_context21.prev = _context21.next) {
           case 0:
-            _context20.prev = 0;
-            _context20.next = 3;
+            _context21.prev = 0;
+            _context21.next = 3;
             return _users["default"].findById(req.body.userId);
 
           case 3:
-            user = _context20.sent;
+            user = _context21.sent;
 
             if (!(user.email == req.body.email)) {
-              _context20.next = 8;
+              _context21.next = 8;
               break;
             }
 
@@ -1634,25 +1665,25 @@ router.post("/user/edit", _auth["default"], /*#__PURE__*/function () {
               return next(err);
             });
 
-            _context20.next = 17;
+            _context21.next = 17;
             break;
 
           case 8:
-            _context20.next = 10;
+            _context21.next = 10;
             return _users["default"].findOne({
               email: req.body.email
             });
 
           case 10:
-            use = _context20.sent;
+            use = _context21.sent;
 
             if (!use) {
-              _context20.next = 16;
+              _context21.next = 16;
               break;
             }
 
             req.flash("success_msg", "The Email you provided has been used");
-            return _context20.abrupt("return", res.redirect("back"));
+            return _context21.abrupt("return", res.redirect("back"));
 
           case 16:
             _users["default"].updateOne({
@@ -1665,24 +1696,24 @@ router.post("/user/edit", _auth["default"], /*#__PURE__*/function () {
             });
 
           case 17:
-            _context20.next = 22;
+            _context21.next = 22;
             break;
 
           case 19:
-            _context20.prev = 19;
-            _context20.t0 = _context20["catch"](0);
-            next(_context20.t0);
+            _context21.prev = 19;
+            _context21.t0 = _context21["catch"](0);
+            next(_context21.t0);
 
           case 22:
           case "end":
-            return _context20.stop();
+            return _context21.stop();
         }
       }
-    }, _callee20, null, [[0, 19]]);
+    }, _callee21, null, [[0, 19]]);
   }));
 
-  return function (_x54, _x55, _x56) {
-    return _ref20.apply(this, arguments);
+  return function (_x57, _x58, _x59) {
+    return _ref21.apply(this, arguments);
   };
 }()); // Update another user password
 
@@ -1712,54 +1743,6 @@ router.post("/user/password/edit", _auth["default"], function (req, res, next) {
 }); // Confirm user email
 
 router.post("/user/dashboard/confirm-user-email", _auth["default"], /*#__PURE__*/function () {
-  var _ref21 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee21(req, res, next) {
-    return _regenerator["default"].wrap(function _callee21$(_context21) {
-      while (1) {
-        switch (_context21.prev = _context21.next) {
-          case 0:
-            _context21.prev = 0;
-
-            if (req.body.ids) {
-              _context21.next = 4;
-              break;
-            }
-
-            req.flash("success_msg", "Nothing was Updated");
-            return _context21.abrupt("return", res.redirect("back"));
-
-          case 4:
-            _context21.next = 6;
-            return _users["default"].updateOne({
-              _id: req.body.ids
-            }, {
-              $set: {
-                active: true
-              }
-            });
-
-          case 6:
-            req.flash("success_msg", "Users Email Activated successfully");
-            return _context21.abrupt("return", res.redirect("back"));
-
-          case 10:
-            _context21.prev = 10;
-            _context21.t0 = _context21["catch"](0);
-            next(_context21.t0);
-
-          case 13:
-          case "end":
-            return _context21.stop();
-        }
-      }
-    }, _callee21, null, [[0, 10]]);
-  }));
-
-  return function (_x57, _x58, _x59) {
-    return _ref21.apply(this, arguments);
-  };
-}()); // Ban user
-
-router.post("/user/dashboard/ban-user", _auth["default"], (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref22 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee22(req, res, next) {
     return _regenerator["default"].wrap(function _callee22$(_context22) {
       while (1) {
@@ -1781,12 +1764,12 @@ router.post("/user/dashboard/ban-user", _auth["default"], (0, _role["default"])(
               _id: req.body.ids
             }, {
               $set: {
-                banned: true
+                active: true
               }
             });
 
           case 6:
-            req.flash("success_msg", "Users has been banned successfully");
+            req.flash("success_msg", "Users Email Activated successfully");
             return _context22.abrupt("return", res.redirect("back"));
 
           case 10:
@@ -1805,15 +1788,63 @@ router.post("/user/dashboard/ban-user", _auth["default"], (0, _role["default"])(
   return function (_x60, _x61, _x62) {
     return _ref22.apply(this, arguments);
   };
-}()); // Follow a user
+}()); // Ban user
 
-router.get("/follow-user", _auth["default"], /*#__PURE__*/function () {
+router.post("/user/dashboard/ban-user", _auth["default"], (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref23 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee23(req, res, next) {
     return _regenerator["default"].wrap(function _callee23$(_context23) {
       while (1) {
         switch (_context23.prev = _context23.next) {
           case 0:
-            _context23.next = 2;
+            _context23.prev = 0;
+
+            if (req.body.ids) {
+              _context23.next = 4;
+              break;
+            }
+
+            req.flash("success_msg", "Nothing was Updated");
+            return _context23.abrupt("return", res.redirect("back"));
+
+          case 4:
+            _context23.next = 6;
+            return _users["default"].updateOne({
+              _id: req.body.ids
+            }, {
+              $set: {
+                banned: true
+              }
+            });
+
+          case 6:
+            req.flash("success_msg", "Users has been banned successfully");
+            return _context23.abrupt("return", res.redirect("back"));
+
+          case 10:
+            _context23.prev = 10;
+            _context23.t0 = _context23["catch"](0);
+            next(_context23.t0);
+
+          case 13:
+          case "end":
+            return _context23.stop();
+        }
+      }
+    }, _callee23, null, [[0, 10]]);
+  }));
+
+  return function (_x63, _x64, _x65) {
+    return _ref23.apply(this, arguments);
+  };
+}()); // Follow a user
+
+router.get("/follow-user", _auth["default"], /*#__PURE__*/function () {
+  var _ref24 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee24(req, res, next) {
+    return _regenerator["default"].wrap(function _callee24$(_context24) {
+      while (1) {
+        switch (_context24.prev = _context24.next) {
+          case 0:
+            _context24.next = 2;
             return _users["default"].updateOne({
               _id: req.query.followerId
             }, {
@@ -1823,59 +1854,9 @@ router.get("/follow-user", _auth["default"], /*#__PURE__*/function () {
             });
 
           case 2:
-            return _context23.abrupt("return", res.redirect("back"));
+            return _context24.abrupt("return", res.redirect("back"));
 
           case 3:
-          case "end":
-            return _context23.stop();
-        }
-      }
-    }, _callee23);
-  }));
-
-  return function (_x63, _x64, _x65) {
-    return _ref23.apply(this, arguments);
-  };
-}()); // unfollow a user
-
-router.get("/unfollow-user", _auth["default"], /*#__PURE__*/function () {
-  var _ref24 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee24(req, res, next) {
-    return _regenerator["default"].wrap(function _callee24$(_context24) {
-      while (1) {
-        switch (_context24.prev = _context24.next) {
-          case 0:
-            if (!req.query.authorId) {
-              _context24.next = 5;
-              break;
-            }
-
-            _context24.next = 3;
-            return _users["default"].updateOne({
-              _id: req.query.authorId
-            }, {
-              $pull: {
-                following: req.user.id
-              }
-            });
-
-          case 3:
-            _context24.next = 7;
-            break;
-
-          case 5:
-            _context24.next = 7;
-            return _users["default"].updateOne({
-              _id: req.query.followerId
-            }, {
-              $pull: {
-                following: req.user.id
-              }
-            });
-
-          case 7:
-            return _context24.abrupt("return", res.redirect('back'));
-
-          case 8:
           case "end":
             return _context24.stop();
         }
@@ -1886,14 +1867,46 @@ router.get("/unfollow-user", _auth["default"], /*#__PURE__*/function () {
   return function (_x66, _x67, _x68) {
     return _ref24.apply(this, arguments);
   };
-}()); // Subscribe a user to a newsletter digest (Daily / Weekly)
+}()); // unfollow a user
 
-router.post("/subscribe/digest", _auth["default"], /*#__PURE__*/function () {
+router.get("/unfollow-user", _auth["default"], /*#__PURE__*/function () {
   var _ref25 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee25(req, res, next) {
     return _regenerator["default"].wrap(function _callee25$(_context25) {
       while (1) {
         switch (_context25.prev = _context25.next) {
           case 0:
+            if (!req.query.authorId) {
+              _context25.next = 5;
+              break;
+            }
+
+            _context25.next = 3;
+            return _users["default"].updateOne({
+              _id: req.query.authorId
+            }, {
+              $pull: {
+                following: req.user.id
+              }
+            });
+
+          case 3:
+            _context25.next = 7;
+            break;
+
+          case 5:
+            _context25.next = 7;
+            return _users["default"].updateOne({
+              _id: req.query.followerId
+            }, {
+              $pull: {
+                following: req.user.id
+              }
+            });
+
+          case 7:
+            return _context25.abrupt("return", res.redirect('back'));
+
+          case 8:
           case "end":
             return _context25.stop();
         }
@@ -1904,23 +1917,14 @@ router.post("/subscribe/digest", _auth["default"], /*#__PURE__*/function () {
   return function (_x69, _x70, _x71) {
     return _ref25.apply(this, arguments);
   };
-}());
-router.get("/checkout-session", /*#__PURE__*/function () {
-  var _ref26 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee26(req, res) {
-    var sessionId, session;
+}()); // Subscribe a user to a newsletter digest (Daily / Weekly)
+
+router.post("/subscribe/digest", _auth["default"], /*#__PURE__*/function () {
+  var _ref26 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee26(req, res, next) {
     return _regenerator["default"].wrap(function _callee26$(_context26) {
       while (1) {
         switch (_context26.prev = _context26.next) {
           case 0:
-            sessionId = req.query.sessionId;
-            _context26.next = 3;
-            return stripe.checkout.sessions.retrieve(sessionId);
-
-          case 3:
-            session = _context26.sent;
-            res.send(session);
-
-          case 5:
           case "end":
             return _context26.stop();
         }
@@ -1928,20 +1932,47 @@ router.get("/checkout-session", /*#__PURE__*/function () {
     }, _callee26);
   }));
 
-  return function (_x72, _x73) {
+  return function (_x72, _x73, _x74) {
     return _ref26.apply(this, arguments);
   };
 }());
-router.post("/create-checkout-session", /*#__PURE__*/function () {
+router.get("/checkout-session", /*#__PURE__*/function () {
   var _ref27 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee27(req, res) {
-    var planId, domainURL, session;
+    var sessionId, session;
     return _regenerator["default"].wrap(function _callee27$(_context27) {
       while (1) {
         switch (_context27.prev = _context27.next) {
           case 0:
+            sessionId = req.query.sessionId;
+            _context27.next = 3;
+            return stripe.checkout.sessions.retrieve(sessionId);
+
+          case 3:
+            session = _context27.sent;
+            res.send(session);
+
+          case 5:
+          case "end":
+            return _context27.stop();
+        }
+      }
+    }, _callee27);
+  }));
+
+  return function (_x75, _x76) {
+    return _ref27.apply(this, arguments);
+  };
+}());
+router.post("/create-checkout-session", /*#__PURE__*/function () {
+  var _ref28 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee28(req, res) {
+    var planId, domainURL, session;
+    return _regenerator["default"].wrap(function _callee28$(_context28) {
+      while (1) {
+        switch (_context28.prev = _context28.next) {
+          case 0:
             planId = process.env.SUBSCRIPTION_PLAN_ID;
             domainURL = process.env.DOMAIN;
-            _context27.next = 4;
+            _context28.next = 4;
             return stripe.checkout.sessions.create({
               payment_method_types: ["card"],
               subscription_data: {
@@ -1954,21 +1985,21 @@ router.post("/create-checkout-session", /*#__PURE__*/function () {
             });
 
           case 4:
-            session = _context27.sent;
+            session = _context28.sent;
             res.send({
               checkoutSessionId: session.id
             });
 
           case 6:
           case "end":
-            return _context27.stop();
+            return _context28.stop();
         }
       }
-    }, _callee27);
+    }, _callee28);
   }));
 
-  return function (_x74, _x75) {
-    return _ref27.apply(this, arguments);
+  return function (_x77, _x78) {
+    return _ref28.apply(this, arguments);
   };
 }());
 router.get("/public-key", function (req, res) {

@@ -60,7 +60,9 @@
                             <select name="category" id="category" class="form-control mb-4" required>
                                 <option selected="selected" disabled="disabled">-- Please Select a Category --</option>
                                 <% for(let key in category2) { %>
+                                    <% if(category2[key].slug != 'official'){%>
                                 <option value="<%= category2[key]._id %>"><%= category2[key].name %></option>
+                                <% } %>
                                 <% } %>
                             </select>
                         </div>
@@ -93,6 +95,10 @@
                         </div>
                         <%}%>
                         <div class="form-group mt-2">
+                            <label><input type="radio" name="status" value="deactivate"> Draft
+                            </label>
+                        </div>
+                        <div class="form-group mt-4">
                             <% if(user.postenable == "true"){%>
                             <button class="btn btn-primary">Publish</button>
                             <% } else { %>

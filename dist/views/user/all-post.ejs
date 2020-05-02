@@ -16,7 +16,6 @@
     .form-control {
         padding: 5px 11px !important;
     }
-
     input[type=checkbox] {
         border: 1px solid #b4b9be;
         background: #fff;
@@ -207,6 +206,7 @@
                                 <th>Comments</th>
                                 <th>Date</th>
                                 <th>Status</th>
+                                <th>Qualify Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -238,6 +238,20 @@
                                     <span class="badge badge-success">Published</span>
                                     <%} else { %>
                                     <span class="badge badge-danger">Inactive</span>
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <% if(article[key].qualify == "waiting"){ %>
+                                        <span class="badge badge-info">Waiting</span>
+                                    <% } %>
+                                    <% if(article[key].qualify == "message"){ %>
+                                        <span class="badge badge-warning">Message Sent</span>
+                                    <% } %>
+                                    <% if(article[key].qualify == "notqualify"){ %>
+                                        <span class="badge badge-danger">Not Qualified</span>
+                                    <% } %>
+                                    <% if(article[key].qualify == "qualify"){ %>
+                                        <span class="badge badge-success">Online & Qualifed</span>
                                     <% } %>
                                 </td>
                             </tr>

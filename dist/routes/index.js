@@ -553,19 +553,41 @@ router.get('/blogrecent', /*#__PURE__*/function () {
   return function (_x16, _x17, _x18) {
     return _ref6.apply(this, arguments);
   };
-}()); // Get index page
-
-router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
+}());
+router.get('/ourwork', /*#__PURE__*/function () {
   var _ref7 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee7(req, res, next) {
-    var perPage, page, slider1, featured, post, count, popularNews, popNews, img, recommended, breakingNews, video, categories;
     return _regenerator["default"].wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
-            _context7.prev = 0;
+            res.render('ourwork', {
+              title: "Our Work"
+            });
+
+          case 1:
+          case "end":
+            return _context7.stop();
+        }
+      }
+    }, _callee7);
+  }));
+
+  return function (_x19, _x20, _x21) {
+    return _ref7.apply(this, arguments);
+  };
+}()); // Get index page
+
+router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
+  var _ref8 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee8(req, res, next) {
+    var perPage, page, slider1, featured, post, count, popularNews, popNews, img, recommended, breakingNews, video, categories;
+    return _regenerator["default"].wrap(function _callee8$(_context8) {
+      while (1) {
+        switch (_context8.prev = _context8.next) {
+          case 0:
+            _context8.prev = 0;
             perPage = 9;
             page = req.query.page || 1;
-            _context7.next = 5;
+            _context8.next = 5;
             return _articles["default"].aggregate([{
               $match: {
                 showPostOnSlider: true,
@@ -611,8 +633,8 @@ router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
             }]);
 
           case 5:
-            slider1 = _context7.sent;
-            _context7.next = 8;
+            slider1 = _context8.sent;
+            _context8.next = 8;
             return _articles["default"].aggregate([{
               $match: {
                 addToFeatured: true,
@@ -658,8 +680,8 @@ router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
             }]);
 
           case 8:
-            featured = _context7.sent;
-            _context7.next = 11;
+            featured = _context8.sent;
+            _context8.next = 11;
             return _articles["default"].find({
               active: true
             }).populate('postedBy').populate('category').sort({
@@ -667,15 +689,15 @@ router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
             }).skip(perPage * page - perPage).limit(perPage);
 
           case 11:
-            post = _context7.sent;
-            _context7.next = 14;
+            post = _context8.sent;
+            _context8.next = 14;
             return _articles["default"].countDocuments({
               active: true
             });
 
           case 14:
-            count = _context7.sent;
-            _context7.next = 17;
+            count = _context8.sent;
+            _context8.next = 17;
             return _articles["default"].find({
               active: true
             }).sort({
@@ -683,8 +705,8 @@ router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
             }).populate('category').populate('postedBy').limit(1);
 
           case 17:
-            popularNews = _context7.sent;
-            _context7.next = 20;
+            popularNews = _context8.sent;
+            _context8.next = 20;
             return _articles["default"].find({
               active: true
             }).sort({
@@ -692,8 +714,8 @@ router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
             }).populate('category').limit(3);
 
           case 20:
-            popNews = _context7.sent;
-            _context7.next = 23;
+            popNews = _context8.sent;
+            _context8.next = 23;
             return _articles["default"].find({
               active: true
             }).sort({
@@ -701,8 +723,8 @@ router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
             }).limit(12);
 
           case 23:
-            img = _context7.sent;
-            _context7.next = 26;
+            img = _context8.sent;
+            _context8.next = 26;
             return _articles["default"].find({
               active: true,
               addToRecommended: true
@@ -711,8 +733,8 @@ router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
             }).limit(4);
 
           case 26:
-            recommended = _context7.sent;
-            _context7.next = 29;
+            recommended = _context8.sent;
+            _context8.next = 29;
             return _articles["default"].find({
               active: true,
               addToBreaking: true
@@ -721,8 +743,8 @@ router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
             }).limit(4);
 
           case 29:
-            breakingNews = _context7.sent;
-            _context7.next = 32;
+            breakingNews = _context8.sent;
+            _context8.next = 32;
             return _articles["default"].aggregate([{
               $match: {
                 postType: 'video',
@@ -768,12 +790,12 @@ router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
             }]);
 
           case 32:
-            video = _context7.sent;
-            _context7.next = 35;
+            video = _context8.sent;
+            _context8.next = 35;
             return _category["default"].find({});
 
           case 35:
-            categories = _context7.sent;
+            categories = _context8.sent;
             res.render('index', {
               categories: categories,
               post: post,
@@ -788,44 +810,44 @@ router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
               video: video,
               recommended: recommended
             });
-            _context7.next = 42;
+            _context8.next = 42;
             break;
 
           case 39:
-            _context7.prev = 39;
-            _context7.t0 = _context7["catch"](0);
-            next(_context7.t0);
+            _context8.prev = 39;
+            _context8.t0 = _context8["catch"](0);
+            next(_context8.t0);
 
           case 42:
           case "end":
-            return _context7.stop();
+            return _context8.stop();
         }
       }
-    }, _callee7, null, [[0, 39]]);
+    }, _callee8, null, [[0, 39]]);
   }));
 
-  return function (_x19, _x20, _x21) {
-    return _ref7.apply(this, arguments);
+  return function (_x22, _x23, _x24) {
+    return _ref8.apply(this, arguments);
   };
 }()); // Get search page
 
 router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function () {
-  var _ref8 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee8(req, res, next) {
+  var _ref9 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee9(req, res, next) {
     var perPage, page, count, data, datacategory, datauser, random, popular;
-    return _regenerator["default"].wrap(function _callee8$(_context8) {
+    return _regenerator["default"].wrap(function _callee9$(_context9) {
       while (1) {
-        switch (_context8.prev = _context8.next) {
+        switch (_context9.prev = _context9.next) {
           case 0:
-            _context8.prev = 0;
+            _context9.prev = 0;
 
             if (!req.query.q) {
-              _context8.next = 26;
+              _context9.next = 26;
               break;
             }
 
             perPage = 3;
             page = req.query.page || 1;
-            _context8.next = 6;
+            _context9.next = 6;
             return _articles["default"].countDocuments({
               active: true,
               $or: [{
@@ -842,8 +864,8 @@ router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function
             });
 
           case 6:
-            count = _context8.sent;
-            _context8.next = 9;
+            count = _context9.sent;
+            _context9.next = 9;
             return _articles["default"].find({
               active: true,
               $or: [{
@@ -862,8 +884,8 @@ router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function
             });
 
           case 9:
-            data = _context8.sent;
-            _context8.next = 12;
+            data = _context9.sent;
+            _context9.next = 12;
             return _category["default"].find({
               name: {
                 $regex: req.query.q,
@@ -874,8 +896,8 @@ router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function
             });
 
           case 12:
-            datacategory = _context8.sent;
-            _context8.next = 15;
+            datacategory = _context9.sent;
+            _context9.next = 15;
             return _users["default"].find({
               active: true,
               username: {
@@ -887,8 +909,8 @@ router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function
             });
 
           case 15:
-            datauser = _context8.sent;
-            _context8.next = 18;
+            datauser = _context9.sent;
+            _context9.next = 18;
             return _articles["default"].aggregate([{
               $match: {
                 active: true
@@ -918,14 +940,14 @@ router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function
             }]);
 
           case 18:
-            random = _context8.sent;
-            _context8.next = 21;
+            random = _context9.sent;
+            _context9.next = 21;
             return _articles["default"].find({}).populate("category").populate("postedBy").sort({
               views: -1
             }).limit(3);
 
           case 21:
-            popular = _context8.sent;
+            popular = _context9.sent;
             console.log(datacategory.length);
             res.render('search', {
               data: data,
@@ -937,51 +959,51 @@ router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function
               random: random,
               popular: popular
             });
-            _context8.next = 27;
+            _context9.next = 27;
             break;
 
           case 26:
             res.render('404');
 
           case 27:
-            _context8.next = 32;
+            _context9.next = 32;
             break;
 
           case 29:
-            _context8.prev = 29;
-            _context8.t0 = _context8["catch"](0);
-            next(_context8.t0);
+            _context9.prev = 29;
+            _context9.t0 = _context9["catch"](0);
+            next(_context9.t0);
 
           case 32:
           case "end":
-            return _context8.stop();
+            return _context9.stop();
         }
       }
-    }, _callee8, null, [[0, 29]]);
+    }, _callee9, null, [[0, 29]]);
   }));
 
-  return function (_x22, _x23, _x24) {
-    return _ref8.apply(this, arguments);
+  return function (_x25, _x26, _x27) {
+    return _ref9.apply(this, arguments);
   };
 }());
 router.get('/author/:usernameslug', _install["default"].redirectToLogin, /*#__PURE__*/function () {
-  var _ref9 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee10(req, res, next) {
+  var _ref10 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee11(req, res, next) {
     var users, user, featured, perPage, page, article, count;
-    return _regenerator["default"].wrap(function _callee10$(_context10) {
+    return _regenerator["default"].wrap(function _callee11$(_context11) {
       while (1) {
-        switch (_context10.prev = _context10.next) {
+        switch (_context11.prev = _context11.next) {
           case 0:
-            _context10.next = 2;
+            _context11.next = 2;
             return _users["default"].find({});
 
           case 2:
-            users = _context10.sent;
+            users = _context11.sent;
             users.forEach( /*#__PURE__*/function () {
-              var _ref10 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee9(element) {
+              var _ref11 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee10(element) {
                 var username, array, usernameslug;
-                return _regenerator["default"].wrap(function _callee9$(_context9) {
+                return _regenerator["default"].wrap(function _callee10$(_context10) {
                   while (1) {
-                    switch (_context9.prev = _context9.next) {
+                    switch (_context10.prev = _context10.next) {
                       case 0:
                         username = element.username.toLowerCase();
                         array = username.split('');
@@ -1003,7 +1025,7 @@ router.get('/author/:usernameslug', _install["default"].redirectToLogin, /*#__PU
                           }
                         });
                         usernameslug = array.join("");
-                        _context9.next = 6;
+                        _context10.next = 6;
                         return _users["default"].updateOne({
                           _id: element._id
                         }, {
@@ -1012,24 +1034,24 @@ router.get('/author/:usernameslug', _install["default"].redirectToLogin, /*#__PU
 
                       case 6:
                       case "end":
-                        return _context9.stop();
+                        return _context10.stop();
                     }
                   }
-                }, _callee9);
+                }, _callee10);
               }));
 
-              return function (_x28) {
-                return _ref10.apply(this, arguments);
+              return function (_x31) {
+                return _ref11.apply(this, arguments);
               };
             }());
-            _context10.next = 6;
+            _context11.next = 6;
             return _users["default"].findOne({
               usernameslug: req.params.usernameslug
             });
 
           case 6:
-            user = _context10.sent;
-            _context10.next = 9;
+            user = _context11.sent;
+            _context11.next = 9;
             return _articles["default"].aggregate([{
               $match: {
                 addToFeatured: true,
@@ -1075,21 +1097,21 @@ router.get('/author/:usernameslug', _install["default"].redirectToLogin, /*#__PU
             }]);
 
           case 9:
-            featured = _context10.sent;
+            featured = _context11.sent;
 
             if (user) {
-              _context10.next = 14;
+              _context11.next = 14;
               break;
             }
 
             res.render('404');
-            _context10.next = 23;
+            _context11.next = 23;
             break;
 
           case 14:
             perPage = 9;
             page = req.query.page || 1;
-            _context10.next = 18;
+            _context11.next = 18;
             return _articles["default"].find({
               active: true,
               postedBy: user._id
@@ -1098,15 +1120,15 @@ router.get('/author/:usernameslug', _install["default"].redirectToLogin, /*#__PU
             });
 
           case 18:
-            article = _context10.sent;
-            _context10.next = 21;
+            article = _context11.sent;
+            _context11.next = 21;
             return _articles["default"].countDocuments({
               active: true,
               postedBy: user._id
             });
 
           case 21:
-            count = _context10.sent;
+            count = _context11.sent;
             res.render('author', {
               author: user,
               article: article,
@@ -1117,43 +1139,23 @@ router.get('/author/:usernameslug', _install["default"].redirectToLogin, /*#__PU
 
           case 23:
           case "end":
-            return _context10.stop();
-        }
-      }
-    }, _callee10);
-  }));
-
-  return function (_x25, _x26, _x27) {
-    return _ref9.apply(this, arguments);
-  };
-}());
-router.get('/vision', _install["default"].redirectToLogin, /*#__PURE__*/function () {
-  var _ref11 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee11(req, res, next) {
-    return _regenerator["default"].wrap(function _callee11$(_context11) {
-      while (1) {
-        switch (_context11.prev = _context11.next) {
-          case 0:
-            res.render('vision');
-
-          case 1:
-          case "end":
             return _context11.stop();
         }
       }
     }, _callee11);
   }));
 
-  return function (_x29, _x30, _x31) {
-    return _ref11.apply(this, arguments);
+  return function (_x28, _x29, _x30) {
+    return _ref10.apply(this, arguments);
   };
 }());
-router.get('/membership', _install["default"].redirectToLogin, /*#__PURE__*/function () {
+router.get('/vision', _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref12 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee12(req, res, next) {
     return _regenerator["default"].wrap(function _callee12$(_context12) {
       while (1) {
         switch (_context12.prev = _context12.next) {
           case 0:
-            res.render('membership');
+            res.render('vision');
 
           case 1:
           case "end":
@@ -1165,6 +1167,26 @@ router.get('/membership', _install["default"].redirectToLogin, /*#__PURE__*/func
 
   return function (_x32, _x33, _x34) {
     return _ref12.apply(this, arguments);
+  };
+}());
+router.get('/membership', _install["default"].redirectToLogin, /*#__PURE__*/function () {
+  var _ref13 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee13(req, res, next) {
+    return _regenerator["default"].wrap(function _callee13$(_context13) {
+      while (1) {
+        switch (_context13.prev = _context13.next) {
+          case 0:
+            res.render('membership');
+
+          case 1:
+          case "end":
+            return _context13.stop();
+        }
+      }
+    }, _callee13);
+  }));
+
+  return function (_x35, _x36, _x37) {
+    return _ref13.apply(this, arguments);
   };
 }());
 module.exports = router;

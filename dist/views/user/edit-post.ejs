@@ -68,7 +68,9 @@
                                 <option selected="selected" value="<%= article.category._id %>">
                                     <%= article.category.name %></option>
                                 <% for(let key in category2) { %>
+                                    <% if(category2[key].slug != 'official'){%>
                                 <option value="<%= category2[key]._id %>"><%= category2[key].name %></option>
+                                <% } %>
                                 <% } %>
                             </select>
                         </div>
@@ -96,6 +98,7 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group">
+                            <a href="/user/qualfy?articleId=<%= article.id%>" class="btn btn-success" style="color: white;">Quaify</a>
                             <button class="btn btn-primary">Update</button>
                         </div>
                     </div>
