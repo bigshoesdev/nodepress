@@ -89,7 +89,6 @@ var newstring = "<span style='color:" + firstlettercolor + "; font-size:80px;'>"
 firstchild[0].innerHTML = newstring;
 function upvote() {
    // $('#upvoteForm').submit();
-   console.log("this is the ajax call part");
    var articleId = $('#articleId').val();
    var uId = $('#userId').val();
    $.ajax({
