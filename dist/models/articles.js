@@ -72,6 +72,10 @@ var articleSchema = new Schema({
   month: String,
   year: String,
   "short": String,
+  qualify: {
+    type: String,
+    "default": "waiting"
+  },
   upvote: {
     count: {
       type: Number,

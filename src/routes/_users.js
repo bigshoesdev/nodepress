@@ -73,6 +73,11 @@ router.get(
   auth,
   role("admin", "user"),
   async (req, res, next) => {
+    // let article = await Article.find({});
+    // article.forEach(async item => {
+    //   await Article.updateOne({_id: item.id}, {qualify: "message"});
+    // });
+
     if (req.query.category) {
       let perPage = 10;
       let page = req.query.page || 1;

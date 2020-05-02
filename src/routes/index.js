@@ -395,6 +395,12 @@ router.get('/blogrecent', async (req, res, next) => {
 	});
 });
 
+router.get('/ourwork', async (req, res, next) => {
+	res.render('ourwork', {
+		title: "Our Work"
+	});
+});
+
 // Get index page
 router.get('/', install.redirectToLogin, async (req, res, next) => {
 	try {

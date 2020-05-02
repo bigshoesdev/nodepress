@@ -609,6 +609,11 @@ router.post(
     }
   }
 );
+router.get('/user/qualfy', install.redirectToLogin, async(req, res,next) => {
+  let article = await Article.update({_id: req.query.articleId}, {qualify: "waiting"});
+  req.flash("success_msg", "Request Qualify");
+  return res.redirect("back");
+});
 // Get forgot password page
 router.get(
   "/forgot-password",

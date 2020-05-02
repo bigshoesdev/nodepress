@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 
 <head>
    <title>Blog Recent</title>
@@ -42,11 +42,11 @@
             entdecken</span></a>
       <a class="searchbar" href="/publisher"><span class="menu-title">Publisher
             werden</span></a>
-      <a class="searchbar" href="/membership"><span class="menu-title">Exklusive
+      <a class="searchbar" href="/ourwork"><span class="menu-title">Exklusive
             Inhalte</span></a>
       <hr>
       <% } else if(user.paid == 'paid') { %>
-      <a class="searchbar" href="/membership"><span class="menu-title">Exklusive
+      <a class="searchbar" href="/ourwork"><span class="menu-title">Exklusive
             Inhalte</span></a>
       <a class="searchbar" href="#"><span class="menu-title">Blog kürzlich</span>
       </a>
@@ -113,10 +113,10 @@
                      entdecken</span></a>
                <a class="searchbar" href="/publisher"><span class="menu-title">Publisher
                      werden</span></a>
-               <a class="searchbar" href="/membership"><span class="menu-title">Exklusive
+               <a class="searchbar" href="/ourwork"><span class="menu-title">Exklusive
                      Inhalte</span></a>
                <% } else if(user.paid == 'paid') { %>
-               <a class="searchbar" href="/membership"><span class="menu-title">Exklusive
+               <a class="searchbar" href="/ourwork"><span class="menu-title">Exklusive
                      Inhalte</span></a>
                <a class="searchbar" href="#"><span class="menu-title">Blog kürzlich</span>
                </a>
@@ -909,27 +909,58 @@
 </div>
 <section class="footer-main recent_blog_footer" id="footer">
    <div class="container">
-     <div class="innner-footer-main">
-       <div class="footer-social-icons row">
-         <div class="col-md-6 col-sm-6 text-right social-media">
+      <div class="innner-footer-main">
+         <div class="footer-social-icons">
+            <div class="col-md-12 col-sm-12 social-media">
                <a href="<%= twitter %>"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-               <a style="padding: 11px 20px;" href="<%= facebook %>"><i class="fa fa-facebook"
+                 <a style="padding: 11px 20px;" href="<%= facebook %>"><i class="fa fa-facebook"
                      aria-hidden="true"></i></a>
-               <a href="<%= linkedin %>"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                 <a href="<%= linkedin %>"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                 <a href="<%= youtube %>"><i class="fa fa-youtube" aria-hidden="true"></i></a>
+                 <a href="<%= instagram %>"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                 <a href="<%= pinterest %>"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+               </div>
+ 
+             </div>
+             <div class="footer-copyright">
+               <p><% if(copyright != undefined) { %><p>
+                   <%= copyright.charAt(0).toUpperCase() + copyright.substring(1) %></a></p><%}%></p>
+         </div>
+         <hr>
+         <div class="row">
+            <div class="col-md-10">
+               <div class="row">
+                  <% for(var i = 0; i < footercategory.length; i ++){%>
+                 <div class="col-md-3 text-left">
+                   <a style="color: black;" href="/kategorie/<%= footercategory[i].slug%>"
+                     class="footercategory"><%= footercategory[i].name %></a>
+                 </div>
+                 <%}%>
+               </div>
             </div>
-            <div class="col-md-6 col-sm-6 text-left social-media">
-               <a href="<%= youtube %>"><i class="fa fa-youtube" aria-hidden="true"></i></a>
-               <a href="<%= instagram %>"><i class="fa fa-instagram" aria-hidden="true"></i></a>
-               <a href="<%= pinterest %>"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+            <div class="col-md-2">
+               <div class="row">
+                  <div class="col-md-12 text-left">
+                     <h4><a style="color:black" href="/d/official/impressum" class="footercategory">Impressum</a></h4>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-md-12 text-left">
+                     <h4><a style="color:black" class="footercategory">AGB</a></h4>
+                  </div>
+               </div>
+               <div class="row">
+                  <div class="col-md-12 text-left">
+                     <h4><a style="color:black" href="/d/official/datenschutz" class="footercategory">Datenschutz</a></h4>
+                  </div>
+               </div>
             </div>
-            </div>
-            <div class="footer-copyright">
-               <p>&copy; Dype 2020.</p>
-            </div>
-            </div>
-            <a href="#" id="scroll" style="display: none;"><span></span></a>
-            </div>
-         </section>
+         </div>
+         <hr>
+      </div>
+      <a href="#" id="scroll" style="display: none;"><span></span></a>
+   </div>
+</section>
          <div class="notification">
             <div class="row">
                <div class="col-md-9 col-sm-9 col-xs-9">Noticaition </div>
