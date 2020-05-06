@@ -1246,25 +1246,346 @@ router.get("/dashboard/newsletter/compose", _auth["default"], _install["default"
     return _ref16.apply(this, arguments);
   };
 }());
-router.get("/dashboard/pages", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+router.get("/dashboard/qualify", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])('admin'), /*#__PURE__*/function () {
   var _ref17 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee17(req, res, next) {
-    var perPage, page, query, search, pages, count;
+    var perPage, page, category, article, coun, count, _perPage3, _page3, _article3, _coun2, _count4, _perPage4, _page4, _article4, _count5;
+
     return _regenerator["default"].wrap(function _callee17$(_context17) {
       while (1) {
         switch (_context17.prev = _context17.next) {
           case 0:
-            _context17.prev = 0;
+            if (!req.query.category) {
+              _context17.next = 16;
+              break;
+            }
+
+            perPage = 10;
+            page = req.query.page || 1;
+            _context17.next = 5;
+            return _category["default"].findOne({
+              name: req.query.category
+            });
+
+          case 5:
+            category = _context17.sent;
+            _context17.next = 8;
+            return _articles["default"].aggregate([{
+              $match: {
+                $or: [{
+                  category: _mongoose["default"].Types.ObjectId(category._id)
+                }, {
+                  subCategory: _mongoose["default"].Types.ObjectId(category._id)
+                }]
+              }
+            }, {
+              $sort: {
+                createdAt: -1
+              }
+            }, {
+              $skip: perPage * page - perPage
+            }, {
+              $limit: perPage
+            }, {
+              $lookup: {
+                from: "comments",
+                localField: "slug",
+                foreignField: "slug",
+                as: "comments"
+              }
+            }, {
+              $lookup: {
+                from: "categories",
+                localField: "category",
+                foreignField: "_id",
+                as: "category"
+              }
+            }, {
+              $unwind: {
+                path: "$category",
+                preserveNullAndEmptyArrays: true
+              }
+            }, {
+              $lookup: {
+                from: "users",
+                localField: "postedBy",
+                foreignField: "_id",
+                as: "postedBy"
+              }
+            }, {
+              $unwind: {
+                path: "$postedBy",
+                preserveNullAndEmptyArrays: true
+              }
+            }]);
+
+          case 8:
+            article = _context17.sent;
+            _context17.next = 11;
+            return _articles["default"].aggregate([{
+              $match: {
+                category: _mongoose["default"].Types.ObjectId(category._id)
+              }
+            }, {
+              $sort: {
+                createdAt: -1
+              }
+            }, {
+              $lookup: {
+                from: "comments",
+                localField: "slug",
+                foreignField: "slug",
+                as: "comments"
+              }
+            }, {
+              $lookup: {
+                from: "categories",
+                localField: "category",
+                foreignField: "_id",
+                as: "category"
+              }
+            }, {
+              $unwind: {
+                path: "$category",
+                preserveNullAndEmptyArrays: true
+              }
+            }, {
+              $lookup: {
+                from: "users",
+                localField: "postedBy",
+                foreignField: "_id",
+                as: "postedBy"
+              }
+            }, {
+              $unwind: {
+                path: "$postedBy",
+                preserveNullAndEmptyArrays: true
+              }
+            }]);
+
+          case 11:
+            coun = _context17.sent;
+            count = coun.length;
+            res.render("./admin/qualify", {
+              title: "Qualify - Content",
+              article: article,
+              current: page,
+              pages: Math.ceil(count / perPage),
+              query: "yes",
+              searchName: req.query.category
+            });
+            _context17.next = 38;
+            break;
+
+          case 16:
+            if (!req.query.q) {
+              _context17.next = 29;
+              break;
+            }
+
+            _perPage3 = 10;
+            _page3 = req.query.page || 1;
+            _context17.next = 21;
+            return _articles["default"].aggregate([{
+              $match: {
+                title: {
+                  $regex: req.query.q,
+                  $options: "$i"
+                }
+              }
+            }, {
+              $sort: {
+                createdAt: -1
+              }
+            }, {
+              $skip: _perPage3 * _page3 - _perPage3
+            }, {
+              $limit: _perPage3
+            }, {
+              $lookup: {
+                from: "comments",
+                localField: "slug",
+                foreignField: "slug",
+                as: "comments"
+              }
+            }, {
+              $lookup: {
+                from: "categories",
+                localField: "category",
+                foreignField: "_id",
+                as: "category"
+              }
+            }, {
+              $unwind: {
+                path: "$category",
+                preserveNullAndEmptyArrays: true
+              }
+            }, {
+              $lookup: {
+                from: "users",
+                localField: "postedBy",
+                foreignField: "_id",
+                as: "postedBy"
+              }
+            }, {
+              $unwind: {
+                path: "$postedBy",
+                preserveNullAndEmptyArrays: true
+              }
+            }]);
+
+          case 21:
+            _article3 = _context17.sent;
+            _context17.next = 24;
+            return _articles["default"].aggregate([{
+              $match: {
+                title: {
+                  $regex: req.query.q,
+                  $options: "$i"
+                }
+              }
+            }, {
+              $sort: {
+                createdAt: -1
+              }
+            }, {
+              $lookup: {
+                from: "comments",
+                localField: "slug",
+                foreignField: "slug",
+                as: "comments"
+              }
+            }, {
+              $lookup: {
+                from: "categories",
+                localField: "category",
+                foreignField: "_id",
+                as: "category"
+              }
+            }, {
+              $unwind: {
+                path: "$category",
+                preserveNullAndEmptyArrays: true
+              }
+            }, {
+              $lookup: {
+                from: "users",
+                localField: "postedBy",
+                foreignField: "_id",
+                as: "postedBy"
+              }
+            }, {
+              $unwind: {
+                path: "$postedBy",
+                preserveNullAndEmptyArrays: true
+              }
+            }]);
+
+          case 24:
+            _coun2 = _context17.sent;
+            _count4 = _coun2.length;
+            res.render("./admin/qualify", {
+              title: "Qualify - Content",
+              article: _article3,
+              current: _page3,
+              pages: Math.ceil(_count4 / _perPage3),
+              query: true,
+              searchName: req.query.q
+            });
+            _context17.next = 38;
+            break;
+
+          case 29:
+            _perPage4 = 10;
+            _page4 = req.query.page || 1;
+            _context17.next = 33;
+            return _articles["default"].aggregate([{
+              $sort: {
+                createdAt: -1
+              }
+            }, {
+              $skip: _perPage4 * _page4 - _perPage4
+            }, {
+              $limit: _perPage4
+            }, {
+              $lookup: {
+                from: "comments",
+                localField: "slug",
+                foreignField: "slug",
+                as: "comments"
+              }
+            }, // Am not preserving comments because i need it to be an array to be able to get the length
+            {
+              $lookup: {
+                from: "categories",
+                localField: "category",
+                foreignField: "_id",
+                as: "category"
+              }
+            }, {
+              $unwind: {
+                path: "$category",
+                preserveNullAndEmptyArrays: true
+              }
+            }, {
+              $lookup: {
+                from: "users",
+                localField: "postedBy",
+                foreignField: "_id",
+                as: "postedBy"
+              }
+            }, {
+              $unwind: {
+                path: "$postedBy",
+                preserveNullAndEmptyArrays: true
+              }
+            }]);
+
+          case 33:
+            _article4 = _context17.sent;
+            _context17.next = 36;
+            return _articles["default"].countDocuments();
+
+          case 36:
+            _count5 = _context17.sent;
+            res.render("./admin/qualify", {
+              title: "Qualify - Content",
+              article: _article4,
+              current: _page4,
+              pages: Math.ceil(_count5 / _perPage4),
+              query: "no"
+            });
+
+          case 38:
+          case "end":
+            return _context17.stop();
+        }
+      }
+    }, _callee17);
+  }));
+
+  return function (_x49, _x50, _x51) {
+    return _ref17.apply(this, arguments);
+  };
+}());
+router.get("/dashboard/pages", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+  var _ref18 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee18(req, res, next) {
+    var perPage, page, query, search, pages, count;
+    return _regenerator["default"].wrap(function _callee18$(_context18) {
+      while (1) {
+        switch (_context18.prev = _context18.next) {
+          case 0:
+            _context18.prev = 0;
             perPage = 10;
             page = req.query.page || 1;
             query = req.query.q ? true : false;
             search = req.query.q ? req.query.q : undefined;
 
             if (!req.query.q) {
-              _context17.next = 11;
+              _context18.next = 11;
               break;
             }
 
-            _context17.next = 8;
+            _context18.next = 8;
             return _pages["default"].find({
               name: {
                 $regex: req.query.q,
@@ -1273,28 +1594,28 @@ router.get("/dashboard/pages", _auth["default"], _install["default"].redirectToL
             }).populate("author");
 
           case 8:
-            _context17.t0 = _context17.sent;
-            _context17.next = 14;
+            _context18.t0 = _context18.sent;
+            _context18.next = 14;
             break;
 
           case 11:
-            _context17.next = 13;
+            _context18.next = 13;
             return _pages["default"].find().populate("author").sort({
               createdAt: -1
             }).skip(perPage * page - perPage).limit(perPage);
 
           case 13:
-            _context17.t0 = _context17.sent;
+            _context18.t0 = _context18.sent;
 
           case 14:
-            pages = _context17.t0;
+            pages = _context18.t0;
 
             if (!req.query.q) {
-              _context17.next = 21;
+              _context18.next = 21;
               break;
             }
 
-            _context17.next = 18;
+            _context18.next = 18;
             return _pages["default"].countDocuments({
               name: {
                 $regex: req.query.q,
@@ -1303,19 +1624,19 @@ router.get("/dashboard/pages", _auth["default"], _install["default"].redirectToL
             });
 
           case 18:
-            _context17.t1 = _context17.sent;
-            _context17.next = 24;
+            _context18.t1 = _context18.sent;
+            _context18.next = 24;
             break;
 
           case 21:
-            _context17.next = 23;
+            _context18.next = 23;
             return _pages["default"].countDocuments();
 
           case 23:
-            _context17.t1 = _context17.sent;
+            _context18.t1 = _context18.sent;
 
           case 24:
-            count = _context17.t1;
+            count = _context18.t1;
             res.render("./admin/pages", {
               title: "Dashboard - Pages",
               allpages: pages,
@@ -1324,24 +1645,24 @@ router.get("/dashboard/pages", _auth["default"], _install["default"].redirectToL
               query: query,
               search: search
             });
-            _context17.next = 31;
+            _context18.next = 31;
             break;
 
           case 28:
-            _context17.prev = 28;
-            _context17.t2 = _context17["catch"](0);
-            next(_context17.t2);
+            _context18.prev = 28;
+            _context18.t2 = _context18["catch"](0);
+            next(_context18.t2);
 
           case 31:
           case "end":
-            return _context17.stop();
+            return _context18.stop();
         }
       }
-    }, _callee17, null, [[0, 28]]);
+    }, _callee18, null, [[0, 28]]);
   }));
 
-  return function (_x49, _x50, _x51) {
-    return _ref17.apply(this, arguments);
+  return function (_x52, _x53, _x54) {
+    return _ref18.apply(this, arguments);
   };
 }());
 router.get("/dashboard/pages/add-new", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), function (req, res, next) {
@@ -1354,51 +1675,51 @@ router.get("/dashboard/pages/add-new", _auth["default"], _install["default"].red
   }
 });
 router.get("/dashboard/pages/edit/:name", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
-  var _ref18 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee18(req, res, next) {
+  var _ref19 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee19(req, res, next) {
     var page;
-    return _regenerator["default"].wrap(function _callee18$(_context18) {
+    return _regenerator["default"].wrap(function _callee19$(_context19) {
       while (1) {
-        switch (_context18.prev = _context18.next) {
+        switch (_context19.prev = _context19.next) {
           case 0:
-            _context18.prev = 0;
-            _context18.next = 3;
+            _context19.prev = 0;
+            _context19.next = 3;
             return _pages["default"].findOne({
               name: req.params.name
             });
 
           case 3:
-            page = _context18.sent;
+            page = _context19.sent;
             if (!page) res.render("404");else {
               res.render("./admin/edit-page", {
                 title: "Edit Page - ".concat(page.name),
                 page: page
               });
             }
-            _context18.next = 10;
+            _context19.next = 10;
             break;
 
           case 7:
-            _context18.prev = 7;
-            _context18.t0 = _context18["catch"](0);
-            next(_context18.t0);
+            _context19.prev = 7;
+            _context19.t0 = _context19["catch"](0);
+            next(_context19.t0);
 
           case 10:
           case "end":
-            return _context18.stop();
+            return _context19.stop();
         }
       }
-    }, _callee18, null, [[0, 7]]);
+    }, _callee19, null, [[0, 7]]);
   }));
 
-  return function (_x52, _x53, _x54) {
-    return _ref18.apply(this, arguments);
+  return function (_x55, _x56, _x57) {
+    return _ref19.apply(this, arguments);
   };
 }());
 router.get('/dashboard/pages/edit-homepage', _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])('admin'), /*#__PURE__*/function () {
-  var _ref19 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee19(req, res, next) {
-    return _regenerator["default"].wrap(function _callee19$(_context19) {
+  var _ref20 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee20(req, res, next) {
+    return _regenerator["default"].wrap(function _callee20$(_context20) {
       while (1) {
-        switch (_context19.prev = _context19.next) {
+        switch (_context20.prev = _context20.next) {
           case 0:
             try {
               res.render('./admin/edit-home-page', {
@@ -1410,29 +1731,29 @@ router.get('/dashboard/pages/edit-homepage', _auth["default"], _install["default
 
           case 1:
           case "end":
-            return _context19.stop();
+            return _context20.stop();
         }
       }
-    }, _callee19);
+    }, _callee20);
   }));
 
-  return function (_x55, _x56, _x57) {
-    return _ref19.apply(this, arguments);
+  return function (_x58, _x59, _x60) {
+    return _ref20.apply(this, arguments);
   };
 }());
 router.get('/dashboard/pages/edit-description', _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])('admin'), /*#__PURE__*/function () {
-  var _ref20 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee20(req, res, next) {
+  var _ref21 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee21(req, res, next) {
     var set, homeMeta, publisherMeta;
-    return _regenerator["default"].wrap(function _callee20$(_context20) {
+    return _regenerator["default"].wrap(function _callee21$(_context21) {
       while (1) {
-        switch (_context20.prev = _context20.next) {
+        switch (_context21.prev = _context21.next) {
           case 0:
-            _context20.prev = 0;
-            _context20.next = 3;
+            _context21.prev = 0;
+            _context21.next = 3;
             return _settings["default"].findOne();
 
           case 3:
-            set = _context20.sent;
+            set = _context21.sent;
             homeMeta = set.homeMeta;
             publisherMeta = set.publisherMeta;
             res.render('./admin/edit-description', {
@@ -1440,42 +1761,42 @@ router.get('/dashboard/pages/edit-description', _auth["default"], _install["defa
               homeMeta: homeMeta,
               publisherMeta: publisherMeta
             });
-            _context20.next = 12;
+            _context21.next = 12;
             break;
 
           case 9:
-            _context20.prev = 9;
-            _context20.t0 = _context20["catch"](0);
-            next(_context20.t0);
+            _context21.prev = 9;
+            _context21.t0 = _context21["catch"](0);
+            next(_context21.t0);
 
           case 12:
           case "end":
-            return _context20.stop();
+            return _context21.stop();
         }
       }
-    }, _callee20, null, [[0, 9]]);
+    }, _callee21, null, [[0, 9]]);
   }));
 
-  return function (_x58, _x59, _x60) {
-    return _ref20.apply(this, arguments);
+  return function (_x61, _x62, _x63) {
+    return _ref21.apply(this, arguments);
   };
 }());
 router.post('/dashboard/meta-save', _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])('admin'), /*#__PURE__*/function () {
-  var _ref21 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee21(req, res, next) {
+  var _ref22 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee22(req, res, next) {
     var homeMeta, publisherMeta, set;
-    return _regenerator["default"].wrap(function _callee21$(_context21) {
+    return _regenerator["default"].wrap(function _callee22$(_context22) {
       while (1) {
-        switch (_context21.prev = _context21.next) {
+        switch (_context22.prev = _context22.next) {
           case 0:
-            _context21.prev = 0;
+            _context22.prev = 0;
             homeMeta = req.body.homeMeta;
             publisherMeta = req.body.publisherMeta;
-            _context21.next = 5;
+            _context22.next = 5;
             return _settings["default"].find();
 
           case 5:
-            set = _context21.sent;
-            _context21.next = 8;
+            set = _context22.sent;
+            _context22.next = 8;
             return _settings["default"].updateOne({
               _id: set[0]._id
             }, {
@@ -1486,44 +1807,44 @@ router.post('/dashboard/meta-save', _auth["default"], _install["default"].redire
           case 8:
             req.flash("success_msg", "Meta Description Updated Successfully");
             res.redirect('back');
-            _context21.next = 15;
+            _context22.next = 15;
             break;
 
           case 12:
-            _context21.prev = 12;
-            _context21.t0 = _context21["catch"](0);
-            next(_context21.t0);
+            _context22.prev = 12;
+            _context22.t0 = _context22["catch"](0);
+            next(_context22.t0);
 
           case 15:
           case "end":
-            return _context21.stop();
+            return _context22.stop();
         }
       }
-    }, _callee21, null, [[0, 12]]);
+    }, _callee22, null, [[0, 12]]);
   }));
 
-  return function (_x61, _x62, _x63) {
-    return _ref21.apply(this, arguments);
+  return function (_x64, _x65, _x66) {
+    return _ref22.apply(this, arguments);
   };
 }());
 router.get("/dashboard/comments", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
-  var _ref22 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee22(req, res, next) {
-    var perPage, page, comment, coun, count, _count4, _comment;
+  var _ref23 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee23(req, res, next) {
+    var perPage, page, comment, coun, count, _count6, _comment;
 
-    return _regenerator["default"].wrap(function _callee22$(_context22) {
+    return _regenerator["default"].wrap(function _callee23$(_context23) {
       while (1) {
-        switch (_context22.prev = _context22.next) {
+        switch (_context23.prev = _context23.next) {
           case 0:
-            _context22.prev = 0;
+            _context23.prev = 0;
             perPage = 10;
             page = req.query.page || 1;
 
             if (!req.query.q) {
-              _context22.next = 14;
+              _context23.next = 14;
               break;
             }
 
-            _context22.next = 6;
+            _context23.next = 6;
             return _comment2["default"].aggregate([{
               $lookup: {
                 from: "articles",
@@ -1583,8 +1904,8 @@ router.get("/dashboard/comments", _auth["default"], _install["default"].redirect
             }]);
 
           case 6:
-            comment = _context22.sent;
-            _context22.next = 9;
+            comment = _context23.sent;
+            _context23.next = 9;
             return _comment2["default"].aggregate([{
               $lookup: {
                 from: "articles",
@@ -1640,7 +1961,7 @@ router.get("/dashboard/comments", _auth["default"], _install["default"].redirect
             }]);
 
           case 9:
-            coun = _context22.sent;
+            coun = _context23.sent;
             count = coun.length;
             res.render("./admin/comments", {
               title: "Dashboard - Comments",
@@ -1650,16 +1971,16 @@ router.get("/dashboard/comments", _auth["default"], _install["default"].redirect
               query: true,
               search: req.query.q
             });
-            _context22.next = 21;
+            _context23.next = 21;
             break;
 
           case 14:
-            _context22.next = 16;
+            _context23.next = 16;
             return _comment2["default"].countDocuments();
 
           case 16:
-            _count4 = _context22.sent;
-            _context22.next = 19;
+            _count6 = _context23.sent;
+            _context23.next = 19;
             return _comment2["default"].aggregate([{
               $sort: {
                 createdAt: -1
@@ -1683,96 +2004,96 @@ router.get("/dashboard/comments", _auth["default"], _install["default"].redirect
             }]);
 
           case 19:
-            _comment = _context22.sent;
+            _comment = _context23.sent;
             res.render("./admin/comments", {
               title: "Dashboard - Comments",
               comment: _comment,
               current: page,
-              pages: Math.ceil(_count4 / perPage),
+              pages: Math.ceil(_count6 / perPage),
               query: false
             });
 
           case 21:
-            _context22.next = 26;
+            _context23.next = 26;
             break;
 
           case 23:
-            _context22.prev = 23;
-            _context22.t0 = _context22["catch"](0);
-            next(_context22.t0);
-
-          case 26:
-          case "end":
-            return _context22.stop();
-        }
-      }
-    }, _callee22, null, [[0, 23]]);
-  }));
-
-  return function (_x64, _x65, _x66) {
-    return _ref22.apply(this, arguments);
-  };
-}());
-router.get("/dashboard/comments/edit/:id", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
-  var _ref23 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee23(req, res, next) {
-    var comment;
-    return _regenerator["default"].wrap(function _callee23$(_context23) {
-      while (1) {
-        switch (_context23.prev = _context23.next) {
-          case 0:
-            _context23.prev = 0;
-            _context23.next = 3;
-            return _comment2["default"].findOne({
-              _id: req.params.id
-            });
-
-          case 3:
-            comment = _context23.sent;
-            if (!comment) res.render("404");else {
-              res.render("./admin/edit-comment", {
-                title: "Edit Comment - ".concat(comment.email),
-                comment: comment
-              });
-            }
-            _context23.next = 10;
-            break;
-
-          case 7:
-            _context23.prev = 7;
+            _context23.prev = 23;
             _context23.t0 = _context23["catch"](0);
             next(_context23.t0);
 
-          case 10:
+          case 26:
           case "end":
             return _context23.stop();
         }
       }
-    }, _callee23, null, [[0, 7]]);
+    }, _callee23, null, [[0, 23]]);
   }));
 
   return function (_x67, _x68, _x69) {
     return _ref23.apply(this, arguments);
   };
 }());
-router.get("/dashboard/contacts", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+router.get("/dashboard/comments/edit/:id", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref24 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee24(req, res, next) {
-    var perPage, page, query, search, contact, count;
+    var comment;
     return _regenerator["default"].wrap(function _callee24$(_context24) {
       while (1) {
         switch (_context24.prev = _context24.next) {
           case 0:
             _context24.prev = 0;
+            _context24.next = 3;
+            return _comment2["default"].findOne({
+              _id: req.params.id
+            });
+
+          case 3:
+            comment = _context24.sent;
+            if (!comment) res.render("404");else {
+              res.render("./admin/edit-comment", {
+                title: "Edit Comment - ".concat(comment.email),
+                comment: comment
+              });
+            }
+            _context24.next = 10;
+            break;
+
+          case 7:
+            _context24.prev = 7;
+            _context24.t0 = _context24["catch"](0);
+            next(_context24.t0);
+
+          case 10:
+          case "end":
+            return _context24.stop();
+        }
+      }
+    }, _callee24, null, [[0, 7]]);
+  }));
+
+  return function (_x70, _x71, _x72) {
+    return _ref24.apply(this, arguments);
+  };
+}());
+router.get("/dashboard/contacts", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+  var _ref25 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee25(req, res, next) {
+    var perPage, page, query, search, contact, count;
+    return _regenerator["default"].wrap(function _callee25$(_context25) {
+      while (1) {
+        switch (_context25.prev = _context25.next) {
+          case 0:
+            _context25.prev = 0;
             perPage = 10;
             page = req.query.page || 1;
             query = req.query.q ? true : false;
             search = req.query.q ? req.query.q : undefined;
 
             if (!req.query.q) {
-              _context24.next = 11;
+              _context25.next = 11;
               break;
             }
 
-            _context24.next = 8;
+            _context25.next = 8;
             return _contact["default"].find({
               $or: [{
                 fullname: {
@@ -1793,28 +2114,28 @@ router.get("/dashboard/contacts", _auth["default"], _install["default"].redirect
             }).skip(perPage * page - perPage).limit(perPage);
 
           case 8:
-            _context24.t0 = _context24.sent;
-            _context24.next = 14;
+            _context25.t0 = _context25.sent;
+            _context25.next = 14;
             break;
 
           case 11:
-            _context24.next = 13;
+            _context25.next = 13;
             return _contact["default"].find().sort({
               createdAt: -1
             }).skip(perPage * page - perPage).limit(perPage);
 
           case 13:
-            _context24.t0 = _context24.sent;
+            _context25.t0 = _context25.sent;
 
           case 14:
-            contact = _context24.t0;
+            contact = _context25.t0;
 
             if (!req.query.q) {
-              _context24.next = 21;
+              _context25.next = 21;
               break;
             }
 
-            _context24.next = 18;
+            _context25.next = 18;
             return _contact["default"].countDocuments({
               $or: [{
                 fullname: {
@@ -1835,19 +2156,19 @@ router.get("/dashboard/contacts", _auth["default"], _install["default"].redirect
             });
 
           case 18:
-            _context24.t1 = _context24.sent;
-            _context24.next = 24;
+            _context25.t1 = _context25.sent;
+            _context25.next = 24;
             break;
 
           case 21:
-            _context24.next = 23;
+            _context25.next = 23;
             return _contact["default"].countDocuments();
 
           case 23:
-            _context24.t1 = _context24.sent;
+            _context25.t1 = _context25.sent;
 
           case 24:
-            count = _context24.t1;
+            count = _context25.t1;
             res.render("./admin/contact", {
               title: "Dashboard - Contacts",
               contact: contact,
@@ -1856,199 +2177,77 @@ router.get("/dashboard/contacts", _auth["default"], _install["default"].redirect
               query: query,
               search: search
             });
-            _context24.next = 31;
+            _context25.next = 31;
             break;
 
           case 28:
-            _context24.prev = 28;
-            _context24.t2 = _context24["catch"](0);
-            next(_context24.t2);
+            _context25.prev = 28;
+            _context25.t2 = _context25["catch"](0);
+            next(_context25.t2);
 
           case 31:
-          case "end":
-            return _context24.stop();
-        }
-      }
-    }, _callee24, null, [[0, 28]]);
-  }));
-
-  return function (_x70, _x71, _x72) {
-    return _ref24.apply(this, arguments);
-  };
-}());
-router.get("/dashboard/contacts/view/:id", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
-  var _ref25 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee25(req, res, next) {
-    var contact;
-    return _regenerator["default"].wrap(function _callee25$(_context25) {
-      while (1) {
-        switch (_context25.prev = _context25.next) {
-          case 0:
-            _context25.prev = 0;
-
-            if (!_mongoose["default"].Types.ObjectId.isValid(req.params.id)) {
-              _context25.next = 8;
-              break;
-            }
-
-            _context25.next = 4;
-            return _contact["default"].findById(req.params.id);
-
-          case 4:
-            contact = _context25.sent;
-            res.render("./admin/view-contact", {
-              title: "Contact - View Full Message",
-              contact: contact
-            });
-            _context25.next = 9;
-            break;
-
-          case 8:
-            res.render("404");
-
-          case 9:
-            _context25.next = 14;
-            break;
-
-          case 11:
-            _context25.prev = 11;
-            _context25.t0 = _context25["catch"](0);
-            next(_context25.t0);
-
-          case 14:
           case "end":
             return _context25.stop();
         }
       }
-    }, _callee25, null, [[0, 11]]);
+    }, _callee25, null, [[0, 28]]);
   }));
 
   return function (_x73, _x74, _x75) {
     return _ref25.apply(this, arguments);
   };
 }());
-router.get("/dashboard/users", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+router.get("/dashboard/contacts/view/:id", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref26 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee26(req, res, next) {
-    var perPage, page, users, count;
+    var contact;
     return _regenerator["default"].wrap(function _callee26$(_context26) {
       while (1) {
         switch (_context26.prev = _context26.next) {
           case 0:
             _context26.prev = 0;
-            perPage = 10;
-            page = req.query.page || 1;
 
-            if (!req.query.q) {
-              _context26.next = 9;
+            if (!_mongoose["default"].Types.ObjectId.isValid(req.params.id)) {
+              _context26.next = 8;
               break;
             }
 
-            _context26.next = 6;
-            return _users["default"].find({
-              roleId: {
-                $ne: "admin"
-              },
-              $or: [{
-                username: {
-                  $regex: req.query.q,
-                  $options: "i"
-                }
-              }, {
-                email: {
-                  $regex: req.query.q,
-                  $options: "i"
-                }
-              }]
-            }).skip(perPage * page - perPage).limit(perPage);
+            _context26.next = 4;
+            return _contact["default"].findById(req.params.id);
 
-          case 6:
-            _context26.t0 = _context26.sent;
-            _context26.next = 12;
+          case 4:
+            contact = _context26.sent;
+            res.render("./admin/view-contact", {
+              title: "Contact - View Full Message",
+              contact: contact
+            });
+            _context26.next = 9;
             break;
+
+          case 8:
+            res.render("404");
 
           case 9:
-            _context26.next = 11;
-            return _users["default"].find({
-              roleId: {
-                $ne: "admin"
-              }
-            }).sort({
-              createdAt: -1
-            }).skip(perPage * page - perPage).limit(perPage);
+            _context26.next = 14;
+            break;
 
           case 11:
-            _context26.t0 = _context26.sent;
+            _context26.prev = 11;
+            _context26.t0 = _context26["catch"](0);
+            next(_context26.t0);
 
-          case 12:
-            users = _context26.t0;
-
-            if (!req.query.q) {
-              _context26.next = 19;
-              break;
-            }
-
-            _context26.next = 16;
-            return _users["default"].countDocuments({
-              roleId: {
-                $ne: "admin"
-              },
-              $or: [{
-                username: {
-                  $regex: req.query.q,
-                  $options: "i"
-                }
-              }, {
-                email: {
-                  $regex: req.query.q,
-                  $options: "i"
-                }
-              }]
-            });
-
-          case 16:
-            _context26.t1 = _context26.sent;
-            _context26.next = 22;
-            break;
-
-          case 19:
-            _context26.next = 21;
-            return _users["default"].countDocuments({
-              roleId: {
-                $ne: "admin"
-              }
-            });
-
-          case 21:
-            _context26.t1 = _context26.sent;
-
-          case 22:
-            count = _context26.t1;
-            res.render("./admin/users", {
-              title: "Dashboard - Users",
-              allusers: users,
-              current: page,
-              pages: Math.ceil(count / perPage)
-            });
-            _context26.next = 29;
-            break;
-
-          case 26:
-            _context26.prev = 26;
-            _context26.t2 = _context26["catch"](0);
-            next(_context26.t2);
-
-          case 29:
+          case 14:
           case "end":
             return _context26.stop();
         }
       }
-    }, _callee26, null, [[0, 26]]);
+    }, _callee26, null, [[0, 11]]);
   }));
 
   return function (_x76, _x77, _x78) {
     return _ref26.apply(this, arguments);
   };
 }());
-router.get("/dashboard/administrators", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+router.get("/dashboard/users", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref27 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee27(req, res, next) {
     var perPage, page, users, count;
     return _regenerator["default"].wrap(function _callee27$(_context27) {
@@ -2066,7 +2265,9 @@ router.get("/dashboard/administrators", _auth["default"], _install["default"].re
 
             _context27.next = 6;
             return _users["default"].find({
-              roleId: "admin",
+              roleId: {
+                $ne: "admin"
+              },
               $or: [{
                 username: {
                   $regex: req.query.q,
@@ -2088,7 +2289,9 @@ router.get("/dashboard/administrators", _auth["default"], _install["default"].re
           case 9:
             _context27.next = 11;
             return _users["default"].find({
-              roleId: "admin"
+              roleId: {
+                $ne: "admin"
+              }
             }).sort({
               createdAt: -1
             }).skip(perPage * page - perPage).limit(perPage);
@@ -2106,7 +2309,9 @@ router.get("/dashboard/administrators", _auth["default"], _install["default"].re
 
             _context27.next = 16;
             return _users["default"].countDocuments({
-              roleId: "admin",
+              roleId: {
+                $ne: "admin"
+              },
               $or: [{
                 username: {
                   $regex: req.query.q,
@@ -2128,7 +2333,9 @@ router.get("/dashboard/administrators", _auth["default"], _install["default"].re
           case 19:
             _context27.next = 21;
             return _users["default"].countDocuments({
-              roleId: "admin"
+              roleId: {
+                $ne: "admin"
+              }
             });
 
           case 21:
@@ -2136,8 +2343,8 @@ router.get("/dashboard/administrators", _auth["default"], _install["default"].re
 
           case 22:
             count = _context27.t1;
-            res.render("./admin/admin", {
-              title: "Dashboard - Administrators",
+            res.render("./admin/users", {
+              title: "Dashboard - Users",
               allusers: users,
               current: page,
               pages: Math.ceil(count / perPage)
@@ -2162,82 +2369,170 @@ router.get("/dashboard/administrators", _auth["default"], _install["default"].re
     return _ref27.apply(this, arguments);
   };
 }());
-router.get("/dashboard/users/edit/:username", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+router.get("/dashboard/administrators", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref28 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee28(req, res, next) {
-    var userInfo;
+    var perPage, page, users, count;
     return _regenerator["default"].wrap(function _callee28$(_context28) {
       while (1) {
         switch (_context28.prev = _context28.next) {
           case 0:
             _context28.prev = 0;
-            _context28.next = 3;
-            return _users["default"].findOne({
-              username: req.params.username
-            });
+            perPage = 10;
+            page = req.query.page || 1;
 
-          case 3:
-            userInfo = _context28.sent;
-            if (!userInfo) res.render("404");else {
-              res.render("./admin/edit-users", {
-                title: "Edit User - ".concat(userInfo.username),
-                userInfo: userInfo
-              });
+            if (!req.query.q) {
+              _context28.next = 9;
+              break;
             }
-            _context28.next = 10;
+
+            _context28.next = 6;
+            return _users["default"].find({
+              roleId: "admin",
+              $or: [{
+                username: {
+                  $regex: req.query.q,
+                  $options: "i"
+                }
+              }, {
+                email: {
+                  $regex: req.query.q,
+                  $options: "i"
+                }
+              }]
+            }).skip(perPage * page - perPage).limit(perPage);
+
+          case 6:
+            _context28.t0 = _context28.sent;
+            _context28.next = 12;
             break;
 
-          case 7:
-            _context28.prev = 7;
-            _context28.t0 = _context28["catch"](0);
-            next(_context28.t0);
+          case 9:
+            _context28.next = 11;
+            return _users["default"].find({
+              roleId: "admin"
+            }).sort({
+              createdAt: -1
+            }).skip(perPage * page - perPage).limit(perPage);
 
-          case 10:
+          case 11:
+            _context28.t0 = _context28.sent;
+
+          case 12:
+            users = _context28.t0;
+
+            if (!req.query.q) {
+              _context28.next = 19;
+              break;
+            }
+
+            _context28.next = 16;
+            return _users["default"].countDocuments({
+              roleId: "admin",
+              $or: [{
+                username: {
+                  $regex: req.query.q,
+                  $options: "i"
+                }
+              }, {
+                email: {
+                  $regex: req.query.q,
+                  $options: "i"
+                }
+              }]
+            });
+
+          case 16:
+            _context28.t1 = _context28.sent;
+            _context28.next = 22;
+            break;
+
+          case 19:
+            _context28.next = 21;
+            return _users["default"].countDocuments({
+              roleId: "admin"
+            });
+
+          case 21:
+            _context28.t1 = _context28.sent;
+
+          case 22:
+            count = _context28.t1;
+            res.render("./admin/admin", {
+              title: "Dashboard - Administrators",
+              allusers: users,
+              current: page,
+              pages: Math.ceil(count / perPage)
+            });
+            _context28.next = 29;
+            break;
+
+          case 26:
+            _context28.prev = 26;
+            _context28.t2 = _context28["catch"](0);
+            next(_context28.t2);
+
+          case 29:
           case "end":
             return _context28.stop();
         }
       }
-    }, _callee28, null, [[0, 7]]);
+    }, _callee28, null, [[0, 26]]);
   }));
 
   return function (_x82, _x83, _x84) {
     return _ref28.apply(this, arguments);
   };
 }());
-router.get("/dashboard/users/add-new", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+router.get("/dashboard/users/edit/:username", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref29 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee29(req, res, next) {
+    var userInfo;
     return _regenerator["default"].wrap(function _callee29$(_context29) {
       while (1) {
         switch (_context29.prev = _context29.next) {
           case 0:
-            try {
-              res.render("./admin/add-new-user", {
-                title: "Users - Add New"
-              });
-            } catch (error) {
-              next(error);
-            }
+            _context29.prev = 0;
+            _context29.next = 3;
+            return _users["default"].findOne({
+              username: req.params.username
+            });
 
-          case 1:
+          case 3:
+            userInfo = _context29.sent;
+            if (!userInfo) res.render("404");else {
+              res.render("./admin/edit-users", {
+                title: "Edit User - ".concat(userInfo.username),
+                userInfo: userInfo
+              });
+            }
+            _context29.next = 10;
+            break;
+
+          case 7:
+            _context29.prev = 7;
+            _context29.t0 = _context29["catch"](0);
+            next(_context29.t0);
+
+          case 10:
           case "end":
             return _context29.stop();
         }
       }
-    }, _callee29);
+    }, _callee29, null, [[0, 7]]);
   }));
 
   return function (_x85, _x86, _x87) {
     return _ref29.apply(this, arguments);
   };
 }());
-router.get("/profile", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+router.get("/dashboard/users/add-new", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref30 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee30(req, res, next) {
     return _regenerator["default"].wrap(function _callee30$(_context30) {
       while (1) {
         switch (_context30.prev = _context30.next) {
           case 0:
             try {
-              res.render("./admin/profile", {
-                title: "My Profile"
+              res.render("./admin/add-new-user", {
+                title: "Users - Add New"
               });
             } catch (error) {
               next(error);
@@ -2255,44 +2550,33 @@ router.get("/profile", _auth["default"], _install["default"].redirectToLogin, (0
     return _ref30.apply(this, arguments);
   };
 }());
-router.get("/dashboard/settings/general", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+router.get("/profile", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref31 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee31(req, res, next) {
-    var settings;
     return _regenerator["default"].wrap(function _callee31$(_context31) {
       while (1) {
         switch (_context31.prev = _context31.next) {
           case 0:
-            _context31.prev = 0;
-            _context31.next = 3;
-            return _settings["default"].findOne();
+            try {
+              res.render("./admin/profile", {
+                title: "My Profile"
+              });
+            } catch (error) {
+              next(error);
+            }
 
-          case 3:
-            settings = _context31.sent;
-            res.render("./admin/general-settings", {
-              title: "General Settings",
-              settings: settings
-            });
-            _context31.next = 10;
-            break;
-
-          case 7:
-            _context31.prev = 7;
-            _context31.t0 = _context31["catch"](0);
-            next(_context31.t0);
-
-          case 10:
+          case 1:
           case "end":
             return _context31.stop();
         }
       }
-    }, _callee31, null, [[0, 7]]);
+    }, _callee31);
   }));
 
   return function (_x91, _x92, _x93) {
     return _ref31.apply(this, arguments);
   };
 }());
-router.get("/dashboard/settings/email", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+router.get("/dashboard/settings/general", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref32 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee32(req, res, next) {
     var settings;
     return _regenerator["default"].wrap(function _callee32$(_context32) {
@@ -2305,8 +2589,8 @@ router.get("/dashboard/settings/email", _auth["default"], _install["default"].re
 
           case 3:
             settings = _context32.sent;
-            res.render("./admin/email-settings", {
-              title: "Email Settings",
+            res.render("./admin/general-settings", {
+              title: "General Settings",
               settings: settings
             });
             _context32.next = 10;
@@ -2329,7 +2613,7 @@ router.get("/dashboard/settings/email", _auth["default"], _install["default"].re
     return _ref32.apply(this, arguments);
   };
 }());
-router.get("/dashboard/settings/media", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+router.get("/dashboard/settings/email", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref33 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee33(req, res, next) {
     var settings;
     return _regenerator["default"].wrap(function _callee33$(_context33) {
@@ -2342,8 +2626,8 @@ router.get("/dashboard/settings/media", _auth["default"], _install["default"].re
 
           case 3:
             settings = _context33.sent;
-            res.render("./admin/media-settings", {
-              title: "Media Settings",
+            res.render("./admin/email-settings", {
+              title: "Email Settings",
               settings: settings
             });
             _context33.next = 10;
@@ -2366,11 +2650,48 @@ router.get("/dashboard/settings/media", _auth["default"], _install["default"].re
     return _ref33.apply(this, arguments);
   };
 }());
-router.get("/dashboard/ad-spaces", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+router.get("/dashboard/settings/media", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref34 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee34(req, res, next) {
+    var settings;
     return _regenerator["default"].wrap(function _callee34$(_context34) {
       while (1) {
         switch (_context34.prev = _context34.next) {
+          case 0:
+            _context34.prev = 0;
+            _context34.next = 3;
+            return _settings["default"].findOne();
+
+          case 3:
+            settings = _context34.sent;
+            res.render("./admin/media-settings", {
+              title: "Media Settings",
+              settings: settings
+            });
+            _context34.next = 10;
+            break;
+
+          case 7:
+            _context34.prev = 7;
+            _context34.t0 = _context34["catch"](0);
+            next(_context34.t0);
+
+          case 10:
+          case "end":
+            return _context34.stop();
+        }
+      }
+    }, _callee34, null, [[0, 7]]);
+  }));
+
+  return function (_x100, _x101, _x102) {
+    return _ref34.apply(this, arguments);
+  };
+}());
+router.get("/dashboard/ad-spaces", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+  var _ref35 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee35(req, res, next) {
+    return _regenerator["default"].wrap(function _callee35$(_context35) {
+      while (1) {
+        switch (_context35.prev = _context35.next) {
           case 0:
             try {
               res.render("./admin/ad-spaces", {
@@ -2382,27 +2703,27 @@ router.get("/dashboard/ad-spaces", _auth["default"], _install["default"].redirec
 
           case 1:
           case "end":
-            return _context34.stop();
+            return _context35.stop();
         }
       }
-    }, _callee34);
+    }, _callee35);
   }));
 
-  return function (_x100, _x101, _x102) {
-    return _ref34.apply(this, arguments);
+  return function (_x103, _x104, _x105) {
+    return _ref35.apply(this, arguments);
   };
 }());
 router.get("/dashboard/library", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
-  var _ref35 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee35(req, res, next) {
+  var _ref36 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee36(req, res, next) {
     var perPage, page, media, count;
-    return _regenerator["default"].wrap(function _callee35$(_context35) {
+    return _regenerator["default"].wrap(function _callee36$(_context36) {
       while (1) {
-        switch (_context35.prev = _context35.next) {
+        switch (_context36.prev = _context36.next) {
           case 0:
-            _context35.prev = 0;
+            _context36.prev = 0;
             perPage = 48;
             page = req.query.page || 1;
-            _context35.next = 5;
+            _context36.next = 5;
             return _media["default"].find({
               file_type: {
                 $regex: "image",
@@ -2413,8 +2734,8 @@ router.get("/dashboard/library", _auth["default"], _install["default"].redirectT
             }).skip(perPage * page - perPage).limit(perPage);
 
           case 5:
-            media = _context35.sent;
-            _context35.next = 8;
+            media = _context36.sent;
+            _context36.next = 8;
             return _media["default"].countDocuments({
               file_type: {
                 $regex: "image",
@@ -2423,31 +2744,31 @@ router.get("/dashboard/library", _auth["default"], _install["default"].redirectT
             });
 
           case 8:
-            count = _context35.sent;
+            count = _context36.sent;
             res.render("./admin/media", {
               title: "Dashboard Media",
               media: media,
               current: page,
               pages: Math.ceil(count / perPage)
             });
-            _context35.next = 15;
+            _context36.next = 15;
             break;
 
           case 12:
-            _context35.prev = 12;
-            _context35.t0 = _context35["catch"](0);
-            next(_context35.t0);
+            _context36.prev = 12;
+            _context36.t0 = _context36["catch"](0);
+            next(_context36.t0);
 
           case 15:
           case "end":
-            return _context35.stop();
+            return _context36.stop();
         }
       }
-    }, _callee35, null, [[0, 12]]);
+    }, _callee36, null, [[0, 12]]);
   }));
 
-  return function (_x103, _x104, _x105) {
-    return _ref35.apply(this, arguments);
+  return function (_x106, _x107, _x108) {
+    return _ref36.apply(this, arguments);
   };
 }());
 router.get("/dashboard/media/add-new", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), function (req, res, next) {
@@ -2460,43 +2781,6 @@ router.get("/dashboard/media/add-new", _auth["default"], _install["default"].red
   }
 });
 router.get("/dashboard/social-login", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
-  var _ref36 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee36(req, res, next) {
-    var settings;
-    return _regenerator["default"].wrap(function _callee36$(_context36) {
-      while (1) {
-        switch (_context36.prev = _context36.next) {
-          case 0:
-            _context36.prev = 0;
-            _context36.next = 3;
-            return _settings["default"].findOne();
-
-          case 3:
-            settings = _context36.sent;
-            res.render("./admin/social-login", {
-              title: "Social Login Configuration",
-              settings: settings
-            });
-            _context36.next = 10;
-            break;
-
-          case 7:
-            _context36.prev = 7;
-            _context36.t0 = _context36["catch"](0);
-            next(_context36.t0);
-
-          case 10:
-          case "end":
-            return _context36.stop();
-        }
-      }
-    }, _callee36, null, [[0, 7]]);
-  }));
-
-  return function (_x106, _x107, _x108) {
-    return _ref36.apply(this, arguments);
-  };
-}());
-router.get("/dashboard/preferences", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref37 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee37(req, res, next) {
     var settings;
     return _regenerator["default"].wrap(function _callee37$(_context37) {
@@ -2509,8 +2793,8 @@ router.get("/dashboard/preferences", _auth["default"], _install["default"].redir
 
           case 3:
             settings = _context37.sent;
-            res.render("./admin/preferences", {
-              title: "Preferences",
+            res.render("./admin/social-login", {
+              title: "Social Login Configuration",
               settings: settings
             });
             _context37.next = 10;
@@ -2533,23 +2817,60 @@ router.get("/dashboard/preferences", _auth["default"], _install["default"].redir
     return _ref37.apply(this, arguments);
   };
 }());
-router.get("/dashboard/posts/sub-categories", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+router.get("/dashboard/preferences", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref38 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee38(req, res, next) {
-    var perPage, page, category, count2, count;
+    var settings;
     return _regenerator["default"].wrap(function _callee38$(_context38) {
       while (1) {
         switch (_context38.prev = _context38.next) {
           case 0:
             _context38.prev = 0;
+            _context38.next = 3;
+            return _settings["default"].findOne();
+
+          case 3:
+            settings = _context38.sent;
+            res.render("./admin/preferences", {
+              title: "Preferences",
+              settings: settings
+            });
+            _context38.next = 10;
+            break;
+
+          case 7:
+            _context38.prev = 7;
+            _context38.t0 = _context38["catch"](0);
+            next(_context38.t0);
+
+          case 10:
+          case "end":
+            return _context38.stop();
+        }
+      }
+    }, _callee38, null, [[0, 7]]);
+  }));
+
+  return function (_x112, _x113, _x114) {
+    return _ref38.apply(this, arguments);
+  };
+}());
+router.get("/dashboard/posts/sub-categories", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+  var _ref39 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee39(req, res, next) {
+    var perPage, page, category, count2, count;
+    return _regenerator["default"].wrap(function _callee39$(_context39) {
+      while (1) {
+        switch (_context39.prev = _context39.next) {
+          case 0:
+            _context39.prev = 0;
             perPage = 10;
             page = req.query.page || 1;
 
             if (!req.query.q) {
-              _context38.next = 9;
+              _context39.next = 9;
               break;
             }
 
-            _context38.next = 6;
+            _context39.next = 6;
             return _category["default"].aggregate([{
               $match: {
                 name: {
@@ -2585,12 +2906,12 @@ router.get("/dashboard/posts/sub-categories", _auth["default"], _install["defaul
             }]);
 
           case 6:
-            _context38.t0 = _context38.sent;
-            _context38.next = 12;
+            _context39.t0 = _context39.sent;
+            _context39.next = 12;
             break;
 
           case 9:
-            _context38.next = 11;
+            _context39.next = 11;
             return _category["default"].aggregate([{
               $match: {
                 parent: {
@@ -2622,11 +2943,11 @@ router.get("/dashboard/posts/sub-categories", _auth["default"], _install["defaul
             }]);
 
           case 11:
-            _context38.t0 = _context38.sent;
+            _context39.t0 = _context39.sent;
 
           case 12:
-            category = _context38.t0;
-            _context38.next = 15;
+            category = _context39.t0;
+            _context39.next = 15;
             return _category["default"].aggregate([{
               $match: {
                 parent: {
@@ -2650,14 +2971,14 @@ router.get("/dashboard/posts/sub-categories", _auth["default"], _install["defaul
             }]);
 
           case 15:
-            count2 = _context38.sent;
+            count2 = _context39.sent;
 
             if (!req.query.q) {
-              _context38.next = 22;
+              _context39.next = 22;
               break;
             }
 
-            _context38.next = 19;
+            _context39.next = 19;
             return _category["default"].aggregate([{
               $match: {
                 name: {
@@ -2673,50 +2994,50 @@ router.get("/dashboard/posts/sub-categories", _auth["default"], _install["defaul
             }]);
 
           case 19:
-            _context38.t1 = _context38.sent;
-            _context38.next = 23;
+            _context39.t1 = _context39.sent;
+            _context39.next = 23;
             break;
 
           case 22:
-            _context38.t1 = count2.length;
+            _context39.t1 = count2.length;
 
           case 23:
-            count = _context38.t1;
+            count = _context39.t1;
             res.render("./admin/subcategory", {
               title: "Categories - Sub Categories",
               category: category,
               current: page,
               pages: Math.ceil(count.length / perPage)
             });
-            _context38.next = 30;
+            _context39.next = 30;
             break;
 
           case 27:
-            _context38.prev = 27;
-            _context38.t2 = _context38["catch"](0);
-            next(_context38.t2);
+            _context39.prev = 27;
+            _context39.t2 = _context39["catch"](0);
+            next(_context39.t2);
 
           case 30:
           case "end":
-            return _context38.stop();
+            return _context39.stop();
         }
       }
-    }, _callee38, null, [[0, 27]]);
+    }, _callee39, null, [[0, 27]]);
   }));
 
-  return function (_x112, _x113, _x114) {
-    return _ref38.apply(this, arguments);
+  return function (_x115, _x116, _x117) {
+    return _ref39.apply(this, arguments);
   };
 }());
 router.get("/dashboard/posts/subcategory/edit/:name", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
-  var _ref39 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee39(req, res, next) {
+  var _ref40 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee40(req, res, next) {
     var category;
-    return _regenerator["default"].wrap(function _callee39$(_context39) {
+    return _regenerator["default"].wrap(function _callee40$(_context40) {
       while (1) {
-        switch (_context39.prev = _context39.next) {
+        switch (_context40.prev = _context40.next) {
           case 0:
-            _context39.prev = 0;
-            _context39.next = 3;
+            _context40.prev = 0;
+            _context40.next = 3;
             return _category["default"].findOne({
               parent: {
                 $ne: undefined
@@ -2725,7 +3046,7 @@ router.get("/dashboard/posts/subcategory/edit/:name", _auth["default"], _install
             }).populate("parent");
 
           case 3:
-            category = _context39.sent;
+            category = _context40.sent;
 
             if (!category) {
               res.render("404");
@@ -2736,31 +3057,31 @@ router.get("/dashboard/posts/subcategory/edit/:name", _auth["default"], _install
               });
             }
 
-            _context39.next = 10;
+            _context40.next = 10;
             break;
 
           case 7:
-            _context39.prev = 7;
-            _context39.t0 = _context39["catch"](0);
-            next(_context39.t0);
+            _context40.prev = 7;
+            _context40.t0 = _context40["catch"](0);
+            next(_context40.t0);
 
           case 10:
           case "end":
-            return _context39.stop();
+            return _context40.stop();
         }
       }
-    }, _callee39, null, [[0, 7]]);
+    }, _callee40, null, [[0, 7]]);
   }));
 
-  return function (_x115, _x116, _x117) {
-    return _ref39.apply(this, arguments);
+  return function (_x118, _x119, _x120) {
+    return _ref40.apply(this, arguments);
   };
 }());
 router.get('/dashboard/visual', _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])('admin'), /*#__PURE__*/function () {
-  var _ref40 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee40(req, res, next) {
-    return _regenerator["default"].wrap(function _callee40$(_context40) {
+  var _ref41 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee41(req, res, next) {
+    return _regenerator["default"].wrap(function _callee41$(_context41) {
       while (1) {
-        switch (_context40.prev = _context40.next) {
+        switch (_context41.prev = _context41.next) {
           case 0:
             res.render('./admin/visual', {
               title: 'Visual Settings'
@@ -2768,58 +3089,58 @@ router.get('/dashboard/visual', _auth["default"], _install["default"].redirectTo
 
           case 1:
           case "end":
-            return _context40.stop();
+            return _context41.stop();
         }
       }
-    }, _callee40);
+    }, _callee41);
   }));
 
-  return function (_x118, _x119, _x120) {
-    return _ref40.apply(this, arguments);
+  return function (_x121, _x122, _x123) {
+    return _ref41.apply(this, arguments);
   };
 }());
 router.get('/dashboard/menu', _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])('admin'), /*#__PURE__*/function () {
-  var _ref41 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee41(req, res, next) {
+  var _ref42 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee42(req, res, next) {
     var menu, adminCat, adminPage, adminTag, adminAuthor;
-    return _regenerator["default"].wrap(function _callee41$(_context41) {
+    return _regenerator["default"].wrap(function _callee42$(_context42) {
       while (1) {
-        switch (_context41.prev = _context41.next) {
+        switch (_context42.prev = _context42.next) {
           case 0:
-            _context41.next = 2;
+            _context42.next = 2;
             return _menu["default"].find().sort({
               position: 1
             });
 
           case 2:
-            menu = _context41.sent;
-            _context41.next = 5;
+            menu = _context42.sent;
+            _context42.next = 5;
             return _category["default"].find().sort({
               createdAt: -1
             });
 
           case 5:
-            adminCat = _context41.sent;
-            _context41.next = 8;
+            adminCat = _context42.sent;
+            _context42.next = 8;
             return _pages["default"].find().sort({
               createdAt: -1
             });
 
           case 8:
-            adminPage = _context41.sent;
-            _context41.next = 11;
+            adminPage = _context42.sent;
+            _context42.next = 11;
             return _tags["default"].find().sort({
               createdAt: -1
             });
 
           case 11:
-            adminTag = _context41.sent;
-            _context41.next = 14;
+            adminTag = _context42.sent;
+            _context42.next = 14;
             return _users["default"].find().sort({
               createdAt: -1
             });
 
           case 14:
-            adminAuthor = _context41.sent;
+            adminAuthor = _context42.sent;
             res.render('./admin/menu', {
               title: 'Menu',
               menu: menu,
@@ -2831,14 +3152,14 @@ router.get('/dashboard/menu', _auth["default"], _install["default"].redirectToLo
 
           case 16:
           case "end":
-            return _context41.stop();
+            return _context42.stop();
         }
       }
-    }, _callee41);
+    }, _callee42);
   }));
 
-  return function (_x121, _x122, _x123) {
-    return _ref41.apply(this, arguments);
+  return function (_x124, _x125, _x126) {
+    return _ref42.apply(this, arguments);
   };
 }());
 module.exports = router;

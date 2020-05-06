@@ -30,15 +30,30 @@ router.get("/bookmark/delete", auth, async (req, res, next) => {
   return res.redirect("back");
 });
 
-router.post("/savetext", auth, async(req, res, next) => {
+router.post("/savetext", auth, async (req, res, next) => {
   let userId = req.body.userId;
   let selectedString = req.body.text;
-  await SaveText.create(req.body);
+  let articleId = req.body.articleId;
+  let saveText = await SaveText.find({ articleId: articleId , userId: userId });
+  if (saveText.length == 0) {
+    let textArray = [];
+    textArray.push(selectedString);
+    let payload = {
+      userId: userId,
+      text: textArray,
+      articleId: articleId
+    }
+    await SaveText.create(payload);
+  } else {
+    let textArray = saveText[0].text;
+    textArray.push(selectedString);
+    await SaveText.updateOne({ _id: saveText[0].id }, {text: textArray});
+  }
   res.json("successful");
 })
-router.get('/savetext/delete', auth, async(req, res, next) => {
+router.get('/savetext/delete', auth, async (req, res, next) => {
   console.log(req.query.markingId);
-  await SaveText.deleteOne({_id: req.query.markingId});
+  await SaveText.deleteOne({ _id: req.query.markingId });
   req.flash("success_msg", "Marking has been removed from marking list");
   return res.redirect("back");
 })

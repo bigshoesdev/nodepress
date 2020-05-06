@@ -74,7 +74,7 @@ var articleSchema = new Schema({
   "short": String,
   qualify: {
     type: String,
-    "default": "waiting"
+    "default": "notqualify"
   },
   upvote: {
     count: {

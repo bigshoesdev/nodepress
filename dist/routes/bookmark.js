@@ -99,20 +99,59 @@ router.get("/bookmark/delete", _auth["default"], /*#__PURE__*/function () {
 }());
 router.post("/savetext", _auth["default"], /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(req, res, next) {
-    var userId, selectedString;
+    var userId, selectedString, articleId, saveText, textArray, payload, _textArray;
+
     return _regenerator["default"].wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
             userId = req.body.userId;
             selectedString = req.body.text;
-            _context3.next = 4;
-            return _savetext["default"].create(req.body);
-
-          case 4:
-            res.json("successful");
+            articleId = req.body.articleId;
+            _context3.next = 5;
+            return _savetext["default"].find({
+              articleId: articleId,
+              userId: userId
+            });
 
           case 5:
+            saveText = _context3.sent;
+
+            if (!(saveText.length == 0)) {
+              _context3.next = 14;
+              break;
+            }
+
+            textArray = [];
+            textArray.push(selectedString);
+            payload = {
+              userId: userId,
+              text: textArray,
+              articleId: articleId
+            };
+            _context3.next = 12;
+            return _savetext["default"].create(payload);
+
+          case 12:
+            _context3.next = 18;
+            break;
+
+          case 14:
+            _textArray = saveText[0].text;
+
+            _textArray.push(selectedString);
+
+            _context3.next = 18;
+            return _savetext["default"].updateOne({
+              _id: saveText[0].id
+            }, {
+              text: _textArray
+            });
+
+          case 18:
+            res.json("successful");
+
+          case 19:
           case "end":
             return _context3.stop();
         }

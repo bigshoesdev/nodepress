@@ -97,10 +97,18 @@
                         <b>Publish</b>
                     </div>
                     <div class="card-body">
+                        <% if(article.active != true){ %>
                         <div class="form-group">
+                            <button class="btn btn-primary">Publish</button>
+                        </div>
+                        <%} else {%>
+                        <div class="form-group">
+                            <% if(article.qualify == "notqualify" || article.qualify == "declined"){ %>
                             <a href="/user/qualfy?articleId=<%= article.id%>" class="btn btn-success" style="color: white;">Quaify</a>
+                            <% }%>
                             <button class="btn btn-primary">Update</button>
                         </div>
+                        <% }%>
                     </div>
                 </div>
 

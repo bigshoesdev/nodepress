@@ -124,28 +124,12 @@
         <!-- Page Heading Start -->
         <div class="col-md-8 col-lg-auto mb-20">
             <div class="page-heading">
-                <h3>All Posts <span>/ Manage Posts</span></h3>
+                <h3>Qualfied <span>/ Manage Posts</span></h3>
             </div>
         </div><!-- Page Heading End -->
-
-        <div class="col-md-4 text-right">
-            <div class="dropdown">
-                <a href="javascript:void(0);" class="btn text-white button button-info dropdown-toggle btn-sm"
-                    data-toggle="dropdown" aria-expanded="false">Add New</a>
-                <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-start"
-                    style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 40px, 0px);">
-                    <a class="dropdown-item" href="/dashboard/posts/add-new">Add New Article</a>
-                    <a class="dropdown-item" href="/dashboard/posts/add-new-audio">Add new Audio</a>
-                    <a class="dropdown-item" href="/dashboard/posts/add-new-video">Add new Video</a>
-                </div>
-            </div>
-        </div>
-
     </div><!-- Page Headings End -->
     <%- include ../partials/msg %>
-
     <div class="row justify-content-between align-items-center mb-10">
-
         <!-- Page Heading Start -->
         <div class="col-md-4  mb-20">
             <div class="form-group d-flex">
@@ -211,22 +195,26 @@
                                 <th>
                                     <input type="checkbox" name="" id="selectAll" class="">
                                 </th>
-                                <th>Title</th>
+                                <th>User</th>
+                                <th>Page</th>
+                                <th>Article TypeStatus</th>
                                 <th>Category</th>
-                                <th>Article Type</th>
-                                <th>Post Type</th>
-                                <th>Editor's Picker?</th>
-                                <th>Author</th>
-                                <th>Date</th>
-                                <th>Status</th>
-                                <th>Qualify Status</th>
+                                <th>Content Views</th>
+                                <th>Date of Qualification</th>
+                                <!-- <th>Article</th> -->
+                                <!-- <th>Last Message</th> -->
+                                <th>Message to author</th>
                             </tr>
                         </thead>
                         <tbody>
                             <% for(var key in article) { %>
                             <tr>
                                 <td class="">
-                                    <input type="checkbox" name="ids" value="<%= article[key]._id %>">
+                                    <input type="checkbox" name="ids" 
+                                    value="<%= article[key]._id %>" />
+                                </td>
+                                <td>
+                                   <%= article[key].postedBy.firstName%> <%= article[key].postedBy.lastName%>
                                 </td>
                                 <td class="format" style="width: 160px;" data-toggle="tooltip" data-placement="bottom"
                                     title="Edit Post">
@@ -234,53 +222,49 @@
                                         <%= article[key].title %>
                                     </a>
                                 </td>
+                                <td>
+                                    <% if(article[key].qualify == "waiting"){ %>
+                                       <span class="badge badge-info">Waiting</span>
+                                 <% } %>
+                                 <% if(article[key].qualify == "message"){ %>
+                                       <span class="badge badge-warning">Message Sent</span>
+                                 <% } %>
+                                 <% if(article[key].qualify == "notqualify"){ %>
+                                       <span class="badge badge-danger">Not Qualified</span>
+                                 <% } %>
+                                 <% if(article[key].qualify == "qualify"){ %>
+                                       <span class="badge badge-success">Online & Qualifed</span>
+                                 <% } %>
+                                 <% if(article[key].qualify == "declined"){ %>
+                                       <span class="badge badge-danger">Declined</span>
+                                 <% } %>
+                                </td>
                                 <td><%= article[key].category.name %></td>
                                 <td class="text-center">
-                                    <% if(article[key].showOnlyToRegisteredUsers == true) {%>
+                                   <%= article[key].views%>
+                                    <!-- <% if(article[key].showOnlyToRegisteredUsers == true) {%>
                                     <span class="badge badge-success">Qualified</span>
                                     <%} else {%>
                                     <span class="badge badge-warning">Free</span>
-                                    <%}%>
+                                    <%}%> -->
                                 </td>
                                 <td class="text-center">
-                                    <span class="badge badge-primary"><%= article[key].postType %></span>
+                                    <%= article[key].createdAt.toLocaleDateString() %>
                                 </td>
-                                <td class="text-center">
+                                <!-- <td class="text-center">
                                     <% if(article[key].showPostOnSlider == true){%>
                                     <span class="badge badge-default">Yes</span>
                                     <% }%>
-                                </td>
-                                <td><%= article[key].postedBy.email %></td>
+                                </td> -->
                                 <!-- <td class="text-center"> -->
                                     <!-- <span class="count-comment"> -->
                                         <!-- <i class="zmdi zmdi-comments"></i> -->
                                         <!-- <%= article[key].comments.length %> -->
                                     <!-- </span> -->
                                 <!-- </td> -->
-                                <td><%= article[key].createdAt.toLocaleDateString() %></td>
+                                <!-- <td><%= article[key].createdAt.toLocaleDateString() %></td> -->
                                 <td>
-                                    <% if(article[key].active== true){ %>
-                                    <span class="badge badge-success">Published</span>
-                                    <%} else { %>
-                                    <span class="badge badge-danger">Inactive</span>
-                                    <% } %>
-                                </td>
-                                <td>
-                                    <% if(article[key].qualify == "waiting"){ %>
-                                        <span class="badge badge-info">Waiting</span>
-                                    <% } %>
-                                    <% if(article[key].qualify == "message"){ %>
-                                        <span class="badge badge-warning">Message Sent</span>
-                                    <% } %>
-                                    <% if(article[key].qualify == "notqualify"){ %>
-                                        <span class="badge badge-danger">Not Qualified</span>
-                                    <% } %>
-                                    <% if(article[key].qualify == "qualify"){ %>
-                                        <span class="badge badge-success">Online & Qualifed</span>
-                                    <% } %>
-                                    <% if(article[key].qualify == "declined"){ %>
-                                        <span class="badge badge-danger">Declined</span>
-                                    <% } %>
+                                    <button class="btn btn-warning btn-sm">Send Message</button>
                                 </td>
                             </tr>
                             <% } %>
@@ -495,7 +479,6 @@
         $('.dropdown').on('show.bs.dropdown', function () {
             $(this).find('.dropdown-menu').first().stop(true, true).slideDown();
         });
-
         // Add slideUp animation to Bootstrap dropdown when collapsing.
         $('.dropdown').on('hide.bs.dropdown', function () {
             $(this).find('.dropdown-menu').first().stop(true, true).slideUp();

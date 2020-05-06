@@ -713,6 +713,308 @@ router.get(
   }
 );
 
+router.get(
+  "/dashboard/qualify", 
+  auth, 
+  install.redirectToLogin, 
+  role('admin'), 
+  async (req, res, next) => {
+    if (req.query.category) {
+      let perPage = 10;
+      let page = req.query.page || 1;
+      let category = await Category.findOne({ name: req.query.category });
+      let article = await Article.aggregate([
+        {
+          $match: {
+            $or: [
+              { category: mongoose.Types.ObjectId(category._id) },
+              { subCategory: mongoose.Types.ObjectId(category._id) }
+            ]
+          }
+        },
+        {
+          $sort: {
+            createdAt: -1
+          }
+        },
+        {
+          $skip: perPage * page - perPage
+        },
+        {
+          $limit: perPage
+        },
+        {
+          $lookup: {
+            from: "comments",
+            localField: "slug",
+            foreignField: "slug",
+            as: "comments"
+          }
+        },
+        {
+          $lookup: {
+            from: "categories",
+            localField: "category",
+            foreignField: "_id",
+            as: "category"
+          }
+        },
+        {
+          $unwind: {
+            path: "$category",
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "postedBy",
+            foreignField: "_id",
+            as: "postedBy"
+          }
+        },
+        {
+          $unwind: {
+            path: "$postedBy",
+            preserveNullAndEmptyArrays: true
+          }
+        }
+      ]);
+      let coun = await Article.aggregate([
+        {
+          $match: {
+            category: mongoose.Types.ObjectId(category._id)
+          }
+        },
+        {
+          $sort: {
+            createdAt: -1
+          }
+        },
+        {
+          $lookup: {
+            from: "comments",
+            localField: "slug",
+            foreignField: "slug",
+            as: "comments"
+          }
+        },
+        {
+          $lookup: {
+            from: "categories",
+            localField: "category",
+            foreignField: "_id",
+            as: "category"
+          }
+        },
+        {
+          $unwind: {
+            path: "$category",
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "postedBy",
+            foreignField: "_id",
+            as: "postedBy"
+          }
+        },
+        {
+          $unwind: {
+            path: "$postedBy",
+            preserveNullAndEmptyArrays: true
+          }
+        }
+      ]);
+      let count = coun.length;
+      res.render("./admin/qualify", {
+        title: "Qualify - Content",
+        article: article,
+        current: page,
+        pages: Math.ceil(count / perPage),
+        query: "yes",
+        searchName: req.query.category
+      });
+    } else if (req.query.q) {
+      let perPage = 10;
+      let page = req.query.page || 1;
+      let article = await Article.aggregate([
+        {
+          $match: {
+            title: { $regex: req.query.q, $options: "$i" }
+          }
+        },
+        {
+          $sort: {
+            createdAt: -1
+          }
+        },
+        {
+          $skip: perPage * page - perPage
+        },
+        {
+          $limit: perPage
+        },
+        {
+          $lookup: {
+            from: "comments",
+            localField: "slug",
+            foreignField: "slug",
+            as: "comments"
+          }
+        },
+        {
+          $lookup: {
+            from: "categories",
+            localField: "category",
+            foreignField: "_id",
+            as: "category"
+          }
+        },
+        {
+          $unwind: {
+            path: "$category",
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "postedBy",
+            foreignField: "_id",
+            as: "postedBy"
+          }
+        },
+        {
+          $unwind: {
+            path: "$postedBy",
+            preserveNullAndEmptyArrays: true
+          }
+        }
+      ]);
+      let coun = await Article.aggregate([
+        {
+          $match: {
+            title: { $regex: req.query.q, $options: "$i" }
+          }
+        },
+        {
+          $sort: {
+            createdAt: -1
+          }
+        },
+        {
+          $lookup: {
+            from: "comments",
+            localField: "slug",
+            foreignField: "slug",
+            as: "comments"
+          }
+        },
+        {
+          $lookup: {
+            from: "categories",
+            localField: "category",
+            foreignField: "_id",
+            as: "category"
+          }
+        },
+        {
+          $unwind: {
+            path: "$category",
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "postedBy",
+            foreignField: "_id",
+            as: "postedBy"
+          }
+        },
+        {
+          $unwind: {
+            path: "$postedBy",
+            preserveNullAndEmptyArrays: true
+          }
+        }
+      ]);
+      let count = coun.length;
+      res.render("./admin/qualify", {
+        title: "Qualify - Content",
+        article: article,
+        current: page,
+        pages: Math.ceil(count / perPage),
+        query: true,
+        searchName: req.query.q
+      });
+    } else {
+      let perPage = 10;
+      let page = req.query.page || 1;
+      let article = await Article.aggregate([
+        {
+          $sort: {
+            createdAt: -1
+          }
+        },
+        {
+          $skip: perPage * page - perPage
+        },
+        {
+          $limit: perPage
+        },
+        {
+          $lookup: {
+            from: "comments",
+            localField: "slug",
+            foreignField: "slug",
+            as: "comments"
+          }
+        }, // Am not preserving comments because i need it to be an array to be able to get the length
+        {
+          $lookup: {
+            from: "categories",
+            localField: "category",
+            foreignField: "_id",
+            as: "category"
+          }
+        },
+        {
+          $unwind: {
+            path: "$category",
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "postedBy",
+            foreignField: "_id",
+            as: "postedBy"
+          }
+        },
+        {
+          $unwind: {
+            path: "$postedBy",
+            preserveNullAndEmptyArrays: true
+          }
+        }
+      ]);
+      let count = await Article.countDocuments();
+      res.render("./admin/qualify", {
+        title: "Qualify - Content",
+        article: article,
+        current: page,
+        pages: Math.ceil(count / perPage),
+        query: "no"
+      });
+    }
+  }
+);
+
 router.get("/dashboard/pages", auth, install.redirectToLogin, role("admin"), async (req, res, next) => {
   try {
     let perPage = 10;

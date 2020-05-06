@@ -11,6 +11,9 @@ import Flag from "../models/flag";
 import Bookmark from "../models/bookmark";
 const router = express.Router();
 
+
+
+
 // Create a new article
 router.post(
   "/article/create",
@@ -138,15 +141,16 @@ router.post(
               ? false
               : true
           };
-          if (req.user.roleId == "admin") {
-            payload1.active = !req.body.status
+          payload1.active = !req.body.status
               ? true
               : req.body.status == "activate"
                 ? true
                 : false;
-          } else {
-            payload1.active = set.approveAddedUserPost == false ? false : true;
-          }
+          // if (req.user.roleId == "admin") {
+            
+          // } else {
+          //   payload1.active = set.approveAddedUserPost == false ? false : true;
+          // }
           Article.create(payload1)
             .then(created => {
               req.flash(

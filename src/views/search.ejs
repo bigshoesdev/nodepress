@@ -82,12 +82,12 @@
                      
                      <% for(var i = 0; i < datauser.length ; i ++) { %>
                         <div class="col-md-4">
-                           <div class="startresult text-center" style="padding-bottom: 30px;">
-                           <img src="<%= datauser[i].profilePicture%>"
-                              style="padding: 10px;width: 90px; height: 90px; border-radius: 50%; object-fit: cover;" />
-                           <h3 ><%= datauser[i].firstName%> <%= datauser[i].lastName%></h3>
-                           <p >Follower: <%= datauser[i].following.length%> </p>
-                           <a href="/author/<%= datauser[i].usernameslug%>" target="_blank" ><button class="btn btn-primary" style="background-color: blue;">Profil</button></a>
+                           <div class="startresult text-center" style="padding-bottom: 30px; min-height: 300px;">
+                              <img src="<%= datauser[i].profilePicture%>"
+                                 style="padding: 10px;width: 90px; height: 90px; border-radius: 50%; object-fit: cover;" />
+                              <h3 style="min-height: 80px;"><%= datauser[i].firstName%> <%= datauser[i].lastName%></h3>
+                              <p >Follower: <%= datauser[i].following.length%> </p>
+                              <a href="/author/<%= datauser[i].usernameslug%>" target="_blank" ><button class="btn btn-primary" style="background-color: blue;">Profil</button></a>
                            </div>
                         </div>
                         <% }%>

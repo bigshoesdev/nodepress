@@ -253,6 +253,9 @@
                                     <% if(article[key].qualify == "qualify"){ %>
                                         <span class="badge badge-success">Online & Qualifed</span>
                                     <% } %>
+                                    <% if(article[key].qualify == "declined"){ %>
+                                        <span class="badge badge-danger">Declined</span>
+                                    <% } %>
                                 </td>
                             </tr>
                             <% } %>

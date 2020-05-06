@@ -132,12 +132,10 @@ router.post("/article/create", _install["default"].redirectToLogin, _auth["defau
               addToRecommended: !req.body.addToRecommended ? false : true,
               showOnlyToRegisteredUsers: !req.body.showOnlyToRegisteredUsers ? false : true
             };
-
-            if (req.user.roleId == "admin") {
-              payload1.active = !req.body.status ? true : req.body.status == "activate" ? true : false;
-            } else {
-              payload1.active = set.approveAddedUserPost == false ? false : true;
-            }
+            payload1.active = !req.body.status ? true : req.body.status == "activate" ? true : false; // if (req.user.roleId == "admin") {
+            // } else {
+            //   payload1.active = set.approveAddedUserPost == false ? false : true;
+            // }
 
             _articles["default"].create(payload1).then(function (created) {
               req.flash("success_msg", "New article has been posted successfully");

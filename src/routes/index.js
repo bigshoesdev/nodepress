@@ -16,6 +16,10 @@ var fs = require('fs');
 
 const router = express.Router();
 
+const SitemapGenerator = require('sitemap-generator');
+drowningsummer.228@gmail.com
+
+
 dotenv.config({ path: './.env' });
 
 router.use(flash());
