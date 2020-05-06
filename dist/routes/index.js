@@ -38,6 +38,9 @@ var fs = require('fs');
 
 var router = _express["default"].Router();
 
+var SitemapGenerator = require('sitemap-generator'); // drowningsummer.228@gmail.com
+
+
 _dotenv["default"].config({
   path: './.env'
 });
