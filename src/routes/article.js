@@ -11,9 +11,6 @@ import Flag from "../models/flag";
 import Bookmark from "../models/bookmark";
 const router = express.Router();
 
-
-
-
 // Create a new article
 router.post(
   "/article/create",
@@ -51,6 +48,18 @@ router.post(
           req.assert("title", "Title Field cannot be left blank").notEmpty();
           req.assert("category", "Please select a category").notEmpty();
           const errors = req.validationErrors();
+
+          let summary = req.body.summary.trim();
+          var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          if(re.test(summary)){
+            req.flash("success_msg", `Summary can't include the email address`);
+            return res.redirect(`back`);
+          }
+          var expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
+          if(expression.test(summary)){
+            req.flash("success_msg", `Summary can't include the Link`);
+            return res.redirect(`back`);
+          }
           if (errors) {
             req.flash("success_msg", `${errors[0].msg}`);
             return res.redirect(`back`);
@@ -69,6 +78,7 @@ router.post(
             );
             return res.redirect("back");
           }
+          
           let payload1 = {
             week: `${newDate.getWeek()}`,
             month: `${months[newDate.getMonth()]}`,

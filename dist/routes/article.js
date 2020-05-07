@@ -33,7 +33,7 @@ var router = _express["default"].Router(); // Create a new article
 
 router.post("/article/create", _install["default"].redirectToLogin, _auth["default"], /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res, next) {
-    var search, slug, content, textLength, set, newDate, months, errors, payload1, errors2, payload, errors3, payload2;
+    var search, slug, content, textLength, set, newDate, months, errors, summary, re, expression, payload1, errors2, payload, errors3, payload2;
     return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -70,41 +70,63 @@ router.post("/article/create", _install["default"].redirectToLogin, _auth["defau
             months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
             _context.prev = 14;
             _context.t0 = req.body.postType;
-            _context.next = _context.t0 === "post" ? 18 : _context.t0 === "audio" ? 34 : _context.t0 === "video" ? 47 : 60;
+            _context.next = _context.t0 === "post" ? 18 : _context.t0 === "audio" ? 43 : _context.t0 === "video" ? 56 : 69;
             break;
 
           case 18:
             req.assert("title", "Title Field cannot be left blank").notEmpty();
             req.assert("category", "Please select a category").notEmpty();
             errors = req.validationErrors();
+            summary = req.body.summary.trim();
+            re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
+            if (!re.test(summary)) {
+              _context.next = 26;
+              break;
+            }
+
+            req.flash("success_msg", "Summary can't include the email address");
+            return _context.abrupt("return", res.redirect("back"));
+
+          case 26:
+            expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
+
+            if (!expression.test(summary)) {
+              _context.next = 30;
+              break;
+            }
+
+            req.flash("success_msg", "Summary can't include the Link");
+            return _context.abrupt("return", res.redirect("back"));
+
+          case 30:
             if (!errors) {
-              _context.next = 24;
+              _context.next = 33;
               break;
             }
 
             req.flash("success_msg", "".concat(errors[0].msg));
             return _context.abrupt("return", res.redirect("back"));
 
-          case 24:
+          case 33:
             if (!slug) {
-              _context.next = 27;
+              _context.next = 36;
               break;
             }
 
             req.flash("success_msg", "That slug has been used, pls used another slug or just leave the field empty");
             return _context.abrupt("return", res.redirect("back"));
 
-          case 27:
+          case 36:
             if (!(textLength < 200)) {
-              _context.next = 30;
+              _context.next = 39;
               break;
             }
 
             req.flash("success_msg", "Das sieht doch garnicht mal so schlecht aus! Dennoch solltest du mindestens 200 Wörter schreiben, um deinen Lesern einen Mehrwert zu bieten");
             return _context.abrupt("return", res.redirect("back"));
 
-          case 30:
+          case 39:
             payload1 = {
               week: "".concat(newDate.getWeek()),
               month: "".concat(months[newDate.getMonth()]),
@@ -144,31 +166,31 @@ router.post("/article/create", _install["default"].redirectToLogin, _auth["defau
               return next(e);
             });
 
-            return _context.abrupt("break", 61);
+            return _context.abrupt("break", 70);
 
-          case 34:
+          case 43:
             req.assert("title", "Title Field cannot be left blank").notEmpty();
             req.assert("category", "Please select a category").notEmpty();
             errors2 = req.validationErrors();
 
             if (!errors2) {
-              _context.next = 40;
+              _context.next = 49;
               break;
             }
 
             req.flash("success_msg", "".concat(errors2[0].msg));
             return _context.abrupt("return", res.redirect("back"));
 
-          case 40:
+          case 49:
             if (!slug) {
-              _context.next = 43;
+              _context.next = 52;
               break;
             }
 
             req.flash("success_msg", "That slug has been used, pls used another slug or just leave the field empty");
             return _context.abrupt("return", res.redirect("back"));
 
-          case 43:
+          case 52:
             payload = {
               week: "".concat(newDate.getWeek()),
               month: "".concat(months[newDate.getMonth()]),
@@ -210,31 +232,31 @@ router.post("/article/create", _install["default"].redirectToLogin, _auth["defau
               return next(e);
             });
 
-            return _context.abrupt("break", 61);
+            return _context.abrupt("break", 70);
 
-          case 47:
+          case 56:
             req.assert("title", "Title Field cannot be left blank").notEmpty();
             req.assert("category", "Please select a category").notEmpty();
             errors3 = req.validationErrors();
 
             if (!errors3) {
-              _context.next = 53;
+              _context.next = 62;
               break;
             }
 
             req.flash("success_msg", "".concat(errors3[0].msg));
             return _context.abrupt("return", res.redirect("back"));
 
-          case 53:
+          case 62:
             if (!slug) {
-              _context.next = 56;
+              _context.next = 65;
               break;
             }
 
             req.flash("success_msg", "That slug has been used, pls used another slug or just leave the field empty");
             return _context.abrupt("return", res.redirect("back"));
 
-          case 56:
+          case 65:
             payload2 = {
               week: "".concat(newDate.getWeek()),
               month: "".concat(months[newDate.getMonth()]),
@@ -276,26 +298,26 @@ router.post("/article/create", _install["default"].redirectToLogin, _auth["defau
               return next(e);
             });
 
-            return _context.abrupt("break", 61);
+            return _context.abrupt("break", 70);
 
-          case 60:
-            return _context.abrupt("break", 61);
+          case 69:
+            return _context.abrupt("break", 70);
 
-          case 61:
-            _context.next = 66;
+          case 70:
+            _context.next = 75;
             break;
 
-          case 63:
-            _context.prev = 63;
+          case 72:
+            _context.prev = 72;
             _context.t1 = _context["catch"](14);
             next(_context.t1);
 
-          case 66:
+          case 75:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[14, 63]]);
+    }, _callee, null, [[14, 72]]);
   }));
 
   return function (_x, _x2, _x3) {

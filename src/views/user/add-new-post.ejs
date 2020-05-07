@@ -33,7 +33,7 @@
 
     </div><!-- Page Headings End -->
     <%- include ../partials/msg %>
-    <form action="/article/create" method="POST">
+    <form action="/article/create" method="POST" id="publish-form">
         <input type="hidden" name="postType" value="post">
         <div class="row">
             <div class="col-md-9">
@@ -94,14 +94,18 @@
                             You have to verify your account!
                         </div>
                         <%}%>
+                        
                         <div class="form-group mt-2">
                             <label>
                                 <input type="checkbox" name="status" value="deactivate"> Draft
                             </label>
                         </div>
                         <div class="form-group mt-4">
+                            <b><label class="adomx-switch"><input type="checkbox" name="addToNoIndex"> <i class="lever"></i> <span class="text">No Index</span></label></b>
+                        </div>
+                        <div class="form-group mt-4">
                             <% if(user.postenable == "true"){%>
-                        <button class="btn btn-primary">Publish</button>
+                        <button class="btn btn-primary" id="publish">Publish</button>
                         <% } else { %>
                         <button class="btn btn-primary" disabled>Publish</button>
                         <%}%>
@@ -187,6 +191,9 @@
                                             <span><i class="fa fa-upload"></i> Upload</span>
                                             <input multiple type="file" name="files[]" ref="files">
                                         </button>
+                                        <a style="padding-top: 7px;" href="https://unsplash.com" target="_blank" class="btn btn-info btn-pick-files">
+                                            <span><i class="fa fa-search"></i> Search</span>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -352,8 +359,14 @@
                         }
                     }
                 });
+                var submitted = false;
+                $('#publish-form').submit(function () {
+                    submitted = true;
+                });
                 window.onbeforeunload = function () {
-                    return "please save article, If you don't save the article, you can lost the article"
+                    if (!submitted) {
+                        return "please save article, If you don't save the article, you can lost the article";
+                    }
                 }
             </script>
 

@@ -1118,7 +1118,7 @@ router.get('/user/qualfy', _install["default"].redirectToLogin, /*#__PURE__*/fun
 
           case 2:
             article = _context14.sent;
-            req.flash("success_msg", "Es dauert bis zu 3 Tage, bis dein Artikel qualifiziert wurde. Unser Team meldet sich bei dir!");
+            req.flash("success_msg", "Es dauert bis zu 3 Tage, bis dein Artikel qualifiziert wirde. Unser Team meldet sich bei dir!");
             return _context14.abrupt("return", res.redirect("back"));
 
           case 5:

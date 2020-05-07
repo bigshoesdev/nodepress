@@ -204,6 +204,8 @@
                                 <!-- <th>Article</th> -->
                                 <!-- <th>Last Message</th> -->
                                 <th>Message to author</th>
+                                <th>Accept</th>
+                                <th>Decline</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -265,6 +267,12 @@
                                 <!-- <td><%= article[key].createdAt.toLocaleDateString() %></td> -->
                                 <td>
                                     <button class="btn btn-warning btn-sm">Send Message</button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-success btn-sm">Send Message</button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-danger btn-sm">Send Message</button>
                                 </td>
                             </tr>
                             <% } %>
@@ -354,9 +362,7 @@
             </div>
             <div class="clearfix"></div>
             <% } %>
-
             <% } %>
-
             <% if (query == 'no') { %>
             <% if (pages > 0) { %>
             <div class="pagination-container pagination-sm">

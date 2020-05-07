@@ -612,7 +612,7 @@ router.post(
 
 router.get('/user/qualfy', install.redirectToLogin, async(req, res,next) => {
   let article = await Article.update({_id: req.query.articleId}, {qualify: "waiting"});
-  req.flash("success_msg", "Es dauert bis zu 3 Tage, bis dein Artikel qualifiziert wurde. Unser Team meldet sich bei dir!");
+  req.flash("success_msg", "Es dauert bis zu 3 Tage, bis dein Artikel qualifiziert wirde. Unser Team meldet sich bei dir!");
   return res.redirect("back");
 });
 // Get forgot password page
