@@ -185,9 +185,13 @@ router.post('/onboarding', install.redirectToLogin, async (req, res, next) => {
   }
 });
 
-router.get('blogrecent', install.redirectToLogin, auth, role('user'), async (req, res, next) => {
-
-  res.render('blogrecent');
+router.get('/blogrecent', install.redirectToLogin, auth, role('user'), async (req, res, next) => {
+  let userId = req.user._id;
+  console.log(userId);
+  
+  res.render('blogrecent', {
+    title: 'Blog recent'
+  });
 });
 
 router.post(

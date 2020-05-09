@@ -435,15 +435,20 @@ router.post('/onboarding', _install["default"].redirectToLogin, /*#__PURE__*/fun
     return _ref7.apply(this, arguments);
   };
 }());
-router.get('blogrecent', _install["default"].redirectToLogin, _auth["default"], (0, _role["default"])('user'), /*#__PURE__*/function () {
+router.get('/blogrecent', _install["default"].redirectToLogin, _auth["default"], (0, _role["default"])('user'), /*#__PURE__*/function () {
   var _ref8 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee8(req, res, next) {
+    var userId;
     return _regenerator["default"].wrap(function _callee8$(_context8) {
       while (1) {
         switch (_context8.prev = _context8.next) {
           case 0:
-            res.render('blogrecent');
+            userId = req.user._id;
+            console.log(userId);
+            res.render('blogrecent', {
+              title: 'Blog recent'
+            });
 
-          case 1:
+          case 3:
           case "end":
             return _context8.stop();
         }

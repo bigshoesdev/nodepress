@@ -616,7 +616,7 @@
                                     $('.inner-dark-blog-content-one a').attr('rel', 'nofollow');
                                     $('.inner-dark-blog-content-one a').map( function() {
                                         var url = $(this).attr('href');
-                                        if(url.includes('https://dype.me')){
+                                        if(url.includes('https://dype.me') || url.includes('https://www.dype.me')){
                                             $(this).attr('rel', 'dofollow');
                                         }
                                     });
