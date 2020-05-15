@@ -170,46 +170,27 @@
 
 <div class="work_banner">
    <div class="banner_bg_clr">
-      <h1>Our Selected Work</h1>
+      <h1>Exklusive Inhalte für dich</h1>
    </div>
 </div>
 
 <div class="work_image_box">
    <div class="container-fluid">
       <div class="row">
-         <div class="col-md-12 col-lg-6 blue_laptop">
-            <section class="main">
-              <div class="wrap wrap--5">
-               <div class="paralax paralax--1">
-                  <div class="work_overley_item">
-                     <div class="parent blue_laptop_height" onclick="">
-                        <div class="child bg-five">
-                          <div class="content_border">
-                           <a href="#">
-                              <h2>The Bike Venture </h2>
-                              <p>Grab a helmet and let's go</p>
-                           </a>
-                          </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-              </div>
-            </section>
-         </div>
-             <div class="col-md-12 col-lg-6">
+         <div class="col-md-12 col-lg-12">
             <div class="row">
-               <div class="col-12 col-sm-6">
+               <% for(var i = 0; i < favorites.length; i ++){%>
+               <div class="col-12 col-sm-4 mb-5">
                   <section class="main">
                     <div class="wrap wrap--1">
                      <div class="paralax paralax--1">
                         <div class="work_overley_item">
                            <div class="parent" onclick="">
-                              <div class="child bg-one">
+                              <div class="child bg-one" style="background-image: url('<%= favorites[i].file%>');">
                                 <div class="content_border">
                                  <a href="#">
-                                    <h2>Night Sky App </h2>
-                                    <p>A simple application for Andriod</p>
+                                    <h2 style="font-size: 25px"><%= favorites[i].title%> </h2>
+                                    <p><%= favorites[i].category.name%></p>
                                  </a>
                                 </div>
                               </div>
@@ -219,67 +200,7 @@
                     </div>
                   </section>
                </div>
-               <div class="col-12 col-sm-6">
-                  <section class="main">
-                    <div class="wrap wrap--2">
-                     <div class="paralax paralax--1">
-                        <div class="work_overley_item">
-                           <div class="parent" onclick="">
-                              <div class="child bg-two">
-                              <div class="content_border">
-                                 <a href="#">
-                                    <h2>Waveform </h2>
-                                    <p>A short film</p>
-                                 </a>
-                              </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                    </div>
-                  </section>
-               </div>
-               <div class="blank_margin_box"></div>
-               <div class="col-12 col-sm-6">
-                  <section class="main">
-                    <div class="wrap wrap--3">
-                     <div class="paralax paralax--1">
-                        <div class="work_overley_item">
-                           <div class="parent" onclick="">
-                              <div class="child bg-three">
-                              <div class="content_border">
-                                 <a href="#">
-                                    <h2>Jack Graham </h2>
-                                    <p>Photo shoot</p>
-                                 </a>
-                              </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                    </div>
-                  </section>
-               </div>
-               <div class="col-12 col-sm-6">
-                  <section class="main">
-                    <div class="wrap wrap--4">
-                     <div class="paralax paralax--1">
-                        <div class="work_overley_item">
-                           <div class="parent" onclick="">
-                              <div class="child bg-four">
-                              <div class="content_border">
-                                 <a href="#">
-                                    <h2>Blog Design </h2>
-                                    <p>Pure eye candy</p>
-                                 </a>
-                              </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                    </div>
-                  </section>
-               </div>	
+               <% }%>
             </div>
          </div>				
       </div>

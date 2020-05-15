@@ -175,425 +175,225 @@
 <div class="list_top_featured">
    <section class="container">
       <div class="row featured_inner">
+         <% for(var i = 0; i < editorsPicker.length; i ++){%>
          <div class="col-md-12 col-lg-4">
-            <img class="img-fluid" src="/images/featured-r1.jpg">
-            <a class="underline" href="">
-               <p>Uncategorized</p>
+            <%
+             var url = "#";
+             if(editorsPicker[i].postedBy.roleId == "admmin"){
+               url = "/d/" + editorsPicker[i].category.slug + "/" + editorsPicker[i].slug;
+             }else {
+               url = "/p/" + editorsPicker[i].category.slug + "/" + editorsPicker[i].slug;
+             }
+            %>
+            <div class="img-fluid dein-image" url="<%= url%>" style="background-image: url('<%= editorsPicker[i].file %>');">
+            </div>
+            <a class="underline" target="_blank" href="/kategorie/<%= editorsPicker[i].category.slug%>" />
+               <p><%= editorsPicker[i].category.name%></p>
             </a>
-            <h3><a href="#">Our to-do list for a successful company outing</a></h3>
-            <p>Lorem Ipsum decided to leave for the far World of Grammar. The Big Oxmox advised…</p>
+            <h3><a href="<%= url%>" target="_blank"><%= editorsPicker[i].title%></a></h3>
+            <p><%= editorsPicker[i].summary%></p>
          </div>
-         <div class="col-md-12 col-lg-4">
-            <img class="img-fluid" src="/images/featured-r3.jpg">
-            <a class="underline" href="">
-               <p>Uncategorized</p>
-            </a>
-            <h3><a href="#">Exploring deep in the mystery of space</a></h3>
-            <p>Lorem Ipsum decided to leave for the far World of Grammar. The Big Oxmox advised…</p>
-         </div>
-         <div class="col-md-12 col-lg-4">
-            <img class="img-fluid" src="/images/featured-r2.jpg">
-            <a class="underline" href="">
-               <p>Uncategorized</p>
-            </a>
-            <h3><a href="#">We encountered an actual musical paradise</a></h3>
-            <p>Lorem Ipsum decided to leave for the far World of Grammar. The Big Oxmox advised…</p>
-         </div>
+         <% } %>
       </div>
-
       <div class="row">
+         <% var length = categories.length;
+            if(length > 6){ length = 6;}
+         %>
+         <% for(var i = 0; i < length; i ++) {%>
          <div class="col-sm-12 col-md-6 col-lg-4 featured_travel">
-            <a href="#">
-               <span class="fea_travel_img"><img class="img-fluid" src="/images/feat-col1.jpg"></span>
+            <a href="/kategorie/<%= categories[i].slug%>" target="_blank">
+               <span class="fea_travel_img">
+                  <img class="img-fluid" 
+                  src="<%= categories[i].background%>"></span>
                <span class="fea_travel_con">
-                  <p class="underline">Travel</p>
-                  <h6>The top 10 places to go hiking tomorrow</h6>
+                  <p class="underline"><%= categories[i].name%></p>
+                  <h6><%= categories[i].description%></h6>
                </span>
             </a>
          </div>
-         <!-- -->
-         <div class="col-sm-12 col-md-6 col-lg-4 featured_travel">
-            <a href="#">
-               <span class="fea_travel_img"><img class="img-fluid" src="/images/feat-col2.jpg"></span>
-               <span class="fea_travel_con">
-                  <p class="underline">Travel</p>
-                  <h6>Walking into gardens</h6>
-               </span>
-            </a>
-         </div>
-         <!-- -->
-         <div class="col-sm-12 col-md-6 col-lg-4 featured_travel">
-            <a href="#">
-               <span class="fea_travel_img"><img class="img-fluid" src="/images/feat-col3.jpg"></span>
-               <span class="fea_travel_con">
-                  <p class="underline">Fitness</p>
-                  <h6>Looking into the night</h6>
-               </span>
-            </a>
-         </div>
-         <!-- -->
-         <div class="col-sm-12 col-md-6 col-lg-4 featured_travel">
-            <a href="#">
-               <span class="fea_travel_img"><img class="img-fluid" src="/images/feat-col4.jpg"></span>
-               <span class="fea_travel_con">
-                  <p class="underline">Workshop</p>
-                  <h6>Nectar workshop</h6>
-               </span>
-            </a>
-         </div>
-         <!-- -->
-         <div class="col-sm-12 col-md-6 col-lg-4 featured_travel">
-            <a href="#">
-               <span class="fea_travel_img"><img class="img-fluid" src="/images/feat-col6.jpg"></span>
-               <span class="fea_travel_con">
-                  <p class="underline">Uncategorized</p>
-                  <h6>Where to go now</h6>
-               </span>
-            </a>
-         </div>
-         <!-- -->
-         <div class="col-sm-12 col-md-6 col-lg-4 featured_travel">
-            <a href="#">
-               <span class="fea_travel_img"><img class="img-fluid" src="/images/feat-col5.jpg"></span>
-               <span class="fea_travel_con">
-                  <p class="underline">Travel</p>
-                  <h6>Into the mountains</h6>
-               </span>
-            </a>
-         </div>
+         <% } %>
       </div>
    </section>
 </div>
-<!-- list top featured row end -->
 <!-- Multiple Visible Slider start -->
 <div class="multiple_visible_slider">
    <h3>Beliebt</h3>
    <div id="owl-carousel" class="owl-carousel owl-theme">
-      <div class="item">
+      <% for(var i = 0; i < trendings.length; i ++) {%>
+         <% 
+         var url="#";
+         if(trendings[i].postedBy.roleId == "admmin"){
+            url = "/d/" + trendings[i].category.slug + "/" + trendings[i].slug;
+          }else {
+            url = "/p/" + trendings[i].category.slug + "/" + trendings[i].slug;
+          }
+         %>
+      <div class="item trending-image" style="background-size: cover;
+      background-image: url('<%= trendings[i].file%>');" url="<%= url%>">
          <div class="slider_item">
             <span>
-               <h6><a href="">Fitness</a></h6>
-               <h3><a href="">Fitness is the way <br>to a good life</a></h3>
-               <a class="read_article btn" href="">Read Article</a>
+               <h6><a href=""><%= trendings[i].title%></a></h6>
+               <h3><a href=""><%= trendings[i].summary%></h3>
+               <a class="read_article btn" href="<%= url%>" target="_blank">Read Article</a>
             </span>
          </div>
       </div>
-      <!-- -->
-      <div class="item item2">
-         <div class="slider_item">
-            <span>
-               <h6><a href="">Travel</a></h6>
-               <h3><a href="">Into the<br>mountains</a></h3>
-               <a class="read_article btn" href="">Read Article</a>
-            </span>
-         </div>
-      </div>
-      <!-- -->
-      <div class="item item3">
-         <div class="slider_item">
-            <span>
-               <h6><a href="">Uncategorized</a></h6>
-               <h3><a href="">Where to go now</a></h3>
-               <a class="read_article btn" href="">Read Article</a>
-            </span>
-         </div>
-      </div>
-      <!-- -->
-      <div class="item item4">
-         <div class="slider_item">
-            <span>
-               <h6><a href="">Workshop</a></h6>
-               <h3><a href="">Nectar workshop</a></h3>
-               <a class="read_article btn" href="">Read Article</a>
-            </span>
-         </div>
-      </div>
-      <!-- -->
-      <div class="item item5">
-         <div class="slider_item">
-            <span>
-               <h6><a href="">Fitness</a></h6>
-               <h3><a href="">Looking into the <br>night</a></h3>
-               <a class="read_article btn" href="">Read Article</a>
-            </span>
-         </div>
-      </div>
-      <!-- -->
-      <div class="item item6">
-         <div class="slider_item">
-            <span>
-               <h6><a href="">Travel</a></h6>
-               <h3><a href="">Walking into<br>gardend</a></h3>
-               <a class="read_article btn" href="">Read Article</a>
-            </span>
-         </div>
-      </div>
-      <!-- -->
+      <% }%>
    </div>
 </div>
-<!-- Multiple Visible Slider end -->
-
 <!-- Classic Enhanced Style start -->
 <div class="classic_enhanced_style">
    <section class="container">
       <!-- <h6>Classic Enhanced Style</h6> -->
       <div class="inner-after-login-page-content">
          <div class="row">
+            <% for(var i = 0; i < authorarticle.length; i ++) {%>
+               <% 
+               var url="#";
+               if(authorarticle[i].postedBy.roleId == "admmin"){
+                  url = "/d/" + authorarticle[i].category.slug + "/" + authorarticle[i].slug;
+               }else {
+                  url = "/p/" + authorarticle[i].category.slug + "/" + authorarticle[i].slug;
+               }
+               %>
             <div class="col-md-12 col-lg-4">
                <div class="content-one">
-                  <div class="content-one-img">
-                     <img src="/images/slider-img1.jpg">
-                     <a href="#">Fitness</a>
+                  <div class="content-one-img authorarticle-image" url="<%= url%>">
+                     <img src="<%= authorarticle[i].file%>">
+                     <a href="#"><%= authorarticle[i].category.name%></a>
                   </div>
                   <div class="content-one-text">
-                     <p>March 17, 2017</p>
-                     <h2>Fitness is the way to a good life</h2>
-                     <p>Lorem Ipsum decided to leave for the far World of Grammar. The Big Oxmox advised her not to do
-                        so....</p>
+                     <p><%= authorarticle[i].createdAt.toDateString()%></p>
+                     <h2><%= authorarticle[i].title%></h2>
+                     <p><%= authorarticle[i].summary%></p>
                   </div>
                   <div class="content-one-likeshare">
-                     <span><i class="fa fa-user" aria-hidden="true"></i> Profile</span>
+                     <a style="color: black;" href="/author/<%= authorarticle[i].postedBy.usernameslug%>" target="_blank"><i class="fa fa-user" aria-hidden="true"></i> <%= authorarticle[i].postedBy.firstName%> <%= authorarticle[i].postedBy.lastName%></a>
                      <!-- <span><i class="fa fa-comment-o" aria-hidden="true"></i> 33</span> -->
-                     <span><i class="fa fa-heart-o" aria-hidden="true"></i> 1339</span>
+                     <a style="color: black;" href="javascript: void();"><i class="fa fa-heart-o" aria-hidden="true"></i> <%= authorarticle[i].views%></a>
                   </div>
                </div>
             </div>
-            <div class="col-md-12 col-lg-4">
-               <div class="content-one">
-                  <div class="content-one-img">
-                     <img src="/images/slider-img2.jpg">
-                     <a href="#">Travel</a>
-                  </div>
-                  <div class="content-one-text">
-                     <p>March 17, 2017</p>
-                     <h2>Into the mountains</h2>
-                     <p>Lorem Ipsum decided to leave for the far World of Grammar. The Big Oxmox advised her not to do
-                        so....</p>
-                  </div>
-                  <div class="content-one-likeshare">
-                     <span><i class="fa fa-user" aria-hidden="true"></i> Profile</span>
-                     <!-- <span><i class="fa fa-comment-o" aria-hidden="true"></i> 33</span> -->
-                     <span><i class="fa fa-heart-o" aria-hidden="true"></i> 1339</span>
-                  </div>
-               </div>
-            </div>
-            <div class="col-md-12 col-lg-4">
-               <div class="content-one">
-                  <div class="content-one-img">
-                     <img src="/images/slider-img3.jpg">
-                     <a href="#">Uncategorized</a>
-                  </div>
-                  <div class="content-one-text">
-                     <p>March 17, 2017</p>
-                     <h2>Where to go now</h2>
-                     <p>Lorem Ipsum decided to leave for the far World of Grammar. The Big Oxmox advised her not to do
-                        so....</p>
-                  </div>
-                  <div class="content-one-likeshare">
-                     <span><i class="fa fa-user" aria-hidden="true"></i> Profile</span>
-                     <!-- <span><i class="fa fa-comment-o" aria-hidden="true"></i> 33</span> -->
-                     <span><i class="fa fa-heart-o" aria-hidden="true"></i> 1339</span>
-                  </div>
-               </div>
-            </div>
+            <% } %>
          </div>
       </div>
    </section>
 </div>
 <!-- Classic Enhanced Style end -->
-
 <!-- Posts Processbar Slider Style start -->
 <div class="posts_processbar_slider">
    <div id="owl-carousel6" class="owl-carousel owl-theme">
-      <div class="item item_bg1">
+      <% for(var i = 0; i < authorarticle.length; i ++) {%>
+         <% 
+         var url="#";
+         if(authorarticle[i].postedBy.roleId == "admmin"){
+            url = "/d/" + authorarticle[i].category.slug + "/" + authorarticle[i].slug;
+         }else {
+            url = "/p/" + authorarticle[i].category.slug + "/" + authorarticle[i].slug;
+         }
+         %>
+      <div class="item item_bg1" style="background-image: url('<%= authorarticle[i].file%>');">
          <div class="slider_item">
-            <a href="#"><img src="/images/p-slider-lodo.jpg">By themenecter In Travel</a>
-            <h1>The top 10 places to go hiking<br>tomorrow</h1>
-            <a class="slider_button" href="#">Read more<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+            <a href="/author/<%= authorarticle[i].postedBy.usernameslug%>" target="_blank">
+               <img src="<%= authorarticle[i].postedBy.profilePicture%>" />
+               <%= authorarticle[i].postedBy.username%></a>
+            <h1><%= authorarticle[i].title%></h1>
+            <a class="slider_button" href="<%= url%>" target="_blank">Read more<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
          </div>
       </div>
-      <!-- -->
-      <div class="item item_bg2">
-         <div class="slider_item">
-            <a href="#"><img src="/images/p-slider-lodo.jpg">By themenecter In Travel</a>
-            <h1>We encountered an actual<br>musical paradise</h1>
-            <a class="slider_button" href="#">Read more<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
-         </div>
-      </div>
-      <!-- -->
-      <div class="item item_bg3">
-         <div class="slider_item">
-            <a href="#"><img src="/images/p-slider-lodo.jpg">By themenecter In Travel</a>
-            <h1>Exploring deep in the mystery<br>of space</h1>
-            <a class="slider_button" href="#">Read more<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
-         </div>
-      </div>
-      <!-- -->
-      <div class="item item_bg4">
-         <div class="slider_item">
-            <a href="#"><img src="/images/p-slider-lodo.jpg">By themenecter In Travel</a>
-            <h1>Our to-do list for a successful <br>company outing</h1>
-            <a class="slider_button" href="#">Read more<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
-         </div>
-      </div>
-      <!-- -->
+      <% } %>
    </div>
 </div>
-<!-- Posts Processbar Slider Style end -->
-
 <!-- Our Recent Writings start -->
 <div class="our_recent_writings">
    <section class="container">
       <h3>Neueste Beiträge</h3>
       <div class="inner-after-login-page-content">
          <div class="row">
-            <div class="col-md-12 col-lg-6">
-               <div class="content-one">
-                  <div class="content-one-img">
-                     <img src="/images/slider-img1.jpg">
-                     <a href="#">
-                        <h5>Fitness</h5>
-                        <h3>Fitness is the way to a<br> good life</h3>
-                     </a>
-                  </div>
-               </div>
-            </div>
+            <% for(var i = 0; i < newest.length; i ++) {%>          
+               <% 
+               var url="#";
+               if(newest[i].postedBy.roleId == "admmin"){
+                  url = "/d/" + newest[i].category.slug + "/" + newest[i].slug;
+               }else {
+                  url = "/p/" + newest[i].category.slug + "/" + newest[i].slug;
+               }
+               %>  
             <div class="col-12 col-md-6 col-lg-3">
                <div class="content-one">
-                  <div class="content-one-img">
-                     <img src="/images/slider-img2.jpg">
+                  <div class="content-one-img new-image" url="<%= url%>">
+                     <img src="<%= newest[i].file%>">
                      <a href="#">
-                        <h5>Travel</h5>
-                        <h3>Into the<br> mountains</h3>
+                        <h5><%= newest[i].category.name%></h5>
+                        <h3 style="overflow-wrap: anywhere; margin-right: 10px;
+                        color: white;"><%= newest[i].title%></h3>
                      </a>
                   </div>
                </div>
             </div>
-            <div class="col-12 col-md-6 col-lg-3">
-               <div class="content-one">
-                  <div class="content-one-img">
-                     <img src="/images/slider-img3.jpg">
-                     <a href="#">
-                        <h5>Uncategorized</h5>
-                        <h3>Where to go<br> now</h3>
-                     </a>
-                  </div>
-               </div>
-            </div>
+            <% }%>
          </div>
       </div>
    </section>
 </div>
 <!-- Our Recent Writings end -->
-
-<!-- Classic Enhanced Alt Style start -->
-
-<!-- Classic Enhanced Alt Style end -->
-
-<!-- Minimal Stlye end -->
 <div class="classic_enhanced_style minimal_stlye">
    <section class="container">
       <h3>Entdecken</h3>
       <div class="inner-after-login-page-content">
          <div class="row">
+            <% for(var i = 0; i < random.length; i ++) {%>
+               <% 
+               var url="#";
+               if(random[i].postedBy.roleId == "admmin"){
+                  url = "/d/" + random[i].category.slug + "/" + random[i].slug;
+               }else {
+                  url = "/p/" + random[i].category.slug + "/" + random[i].slug;
+               }
+               %>
             <div class="col-md-12 col-lg-4">
                <div class="content-two-text">
-                  <p>March 17, 2017 in Travel</p>
-                  <h2>Into the mountains</h2>
-                  <p>Lorem Ipsum decided to leave for the far World of Grammar. The Big Oxmox advised her not to go...
-                  </p>
-                  <a class="read-more" href="#">Read more<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                  <p><%= random[i].category.name%></p>
+                  <h2><%= random[i].title%></h2>
+                  <p><%= random[i].summary%></p>
+                  <a class="read-more" href="<%= url%>" target="_blank">Read more<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                </div>
             </div>
-            <div class="col-md-12 col-lg-4">
-               <div class="content-two-text">
-                  <p>March 17, 2017 in Uncategorized</p>
-                  <h2>Where to go now</h2>
-                  <p>Lorem Ipsum decided to leave for the far World of Grammar. The Big Oxmox advised her not to go...
-                  </p>
-                  <a class="read-more" href="#">Read more<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
-               </div>
-            </div>
-            <div class="col-md-12 col-lg-4">
-               <div class="content-two-text">
-                  <p>March 17, 2017 in Workshop</p>
-                  <h2>Nectar workshop</h2>
-                  <p>Lorem Ipsum decided to leave for the far World of Grammar. The Big Oxmox advised her not to go...
-                  </p>
-                  <a class="read-more" href="#">Read more<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
-               </div>
-            </div>
+            <% }%>
          </div>
       </div>
    </section>
 </div>
-<!-- Minimal Stlye end -->
 
-<!-- Posts Parallax Slider2 Style start -->
 <div class="posts_parallax_slider2">
-   <div class="container">
-      <div class="row align-items-center">
-         <div class="col-12 col-lg-8">
-            <div id="owl-carousel3" class="owl-carousel owl-theme">
+	<div class="container">
+		<div class="row align-items-center">
+			<div class="col-12 col-lg-12">
+				<div id="owl-carousel3" class="owl-carousel owl-theme">
                <!-- -->
-               <div class="item item_bg2">
-                  <div class="slider_item">
-                     <h5>Travel<span></span></h5>
-                     <h1>Into the mountains</h1>
+               <% for(var i = 0; i < favorites.length; i ++) {%>
+                  <% 
+                     var url="#";
+                     if(favorites[i].postedBy.roleId == "admmin"){
+                        url = "/d/" + favorites[i].category.slug + "/" + favorites[i].slug;
+                     }else {
+                        url = "/p/" + favorites[i].category.slug + "/" + favorites[i].slug;
+                     }
+                  %>
+					<div class="item item_bg2" url="<%= url%>" style="background-image: url('<%= favorites[i].file%>');">
+						<div class="slider_item">
+						   <h5><%= favorites[i].category.name%><span></span></h5>
+						   <h1><%= favorites[i].title%></h1>
                   </div>
                </div>
-               <!-- -->
-               <div class="item item_bg3">
-                  <div class="slider_item">
-                     <h5>Uncategorized<span></span></h5>
-                     <h1>Where to go now</h1>
-                  </div>
-               </div>
-               <!-- -->
-            </div>
-         </div>
-         <div class="col-12 col-lg-4">
-            <div class="desired_content">
-               <p>March 17, 2017 in Uncategorized</p>
-               <h2>Where to go now</h2>
-               <p>Lorem Ipsum decided to leave for the far World of Grammar. The Big Oxmox advised her not to go...</p>
-               <a class="read-more" href="#">Read more<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
-            </div>
-         </div>
-      </div>
-      <div class="row align-items-center mt-5">
-         <div class="col-12 col-lg-4">
-            <div class="desired_content">
-               <p>March 17, 2017 in Workshop</p>
-               <h2>Nectar workshop</h2>
-               <p>Lorem Ipsum decided to leave for the far World of Grammar. The Big Oxmox advised her not to go...</p>
-               <a class="read-more" href="#">Read more<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
-            </div>
-         </div>
-         <div class="col-12 col-lg-8">
-            <div id="owl-carousel4" class="owl-carousel owl-theme">
-               <!-- -->
-               <div class="item item_bg4">
-                  <div class="slider_item">
-                     <h5>Fitness<span></span></h5>
-                     <h1>Looking into the night</h1>
-                  </div>
-               </div>
-               <!-- -->
-               <div class="item item_bg5">
-                  <div class="slider_item">
-                     <h5>Travel<span></span></h5>
-                     <h1>Walking into gardens </h1>
-                  </div>
-               </div>
-               <!-- -->
-            </div>
-         </div>
-      </div>
-   </div>
+               <% } %>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-<!-- Posts Parallax Slider2 Style end -->
 
+<!-- Posts Parallax Slider2 Style end -->
 <section class="footer-main recent_blog_footer" id="footer">
    <div class="container">
       <div class="innner-footer-main">
@@ -607,7 +407,6 @@
                  <a href="<%= instagram %>"><i class="fa fa-instagram" aria-hidden="true"></i></a>
                  <a href="<%= pinterest %>"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
                </div>
- 
              </div>
              <div class="footer-copyright">
                <p><% if(copyright != undefined) { %><p>
@@ -755,6 +554,25 @@
          <script>
             // owlCarousel
             jQuery(document).ready(function () {
+               $('.dein-image').click(function(){
+                  window.open($(this).attr('url'));
+               });
+
+               $('.trending-image').click(function(){
+                  window.open($(this).attr('url'));
+               });
+               
+               $('.item_bg2').click(function(){
+                  window.open($(this).attr('url'));
+               });
+               $('.authorarticle-image').click(function(){
+                  window.open($(this).attr('url'));
+               });
+
+               $('.new-image').click(function(){
+                  window.open($(this).attr('url'));
+               });
+
                jQuery('#owl-carousel').owlCarousel({
                   loop: true,
                   margin: 0,
@@ -772,7 +590,6 @@
                         items: 3,
                         nav: true,
                         loop: false,
-
                      }
                   }
                })

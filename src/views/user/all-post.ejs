@@ -203,7 +203,6 @@
                                 <th>Category</th>
                                 <th>Post Type</th>
                                 <th>Author</th>
-                                <th>Comments</th>
                                 <th>Date</th>
                                 <th>Status</th>
                                 <th>Qualify Status</th>
@@ -226,12 +225,7 @@
                                     <span class="badge badge-info"><%= article[key].postType %></span>
                                 </td>
                                 <td><%= article[key].postedBy.email %></td>
-                                <td class="text-center">
-                                    <span class="count-comment">
-                                        <!-- <i class="zmdi zmdi-comments"></i> -->
-                                        <%= article[key].comments.length %>
-                                    </span>
-                                </td>
+                                
                                 <td><%= article[key].createdAt.toLocaleDateString() %></td>
                                 <td>
                                     <% if(article[key].active== true){ %>

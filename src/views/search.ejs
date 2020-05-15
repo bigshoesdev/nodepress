@@ -3,7 +3,7 @@
 <div class="banner">
    <div class="container">
       <div class="inner-header">
-         <h2>Results For "<%= search.charAt(0).toUpperCase() + search.substring(1) %>"</h2>
+         <h2>Ergebnisse für "<%= search.charAt(0).toUpperCase() + search.substring(1) %>"</h2>
          <h5><%= data.length %> Results Found</h5>
       </div>
    </div>
@@ -13,7 +13,7 @@
       <div class="inner-showing-result">
          <div class="row">
             <div class="col-md-2 text-right">
-               <label class="control-label">Search Type: </label>
+               <label class="control-label">Filter: </label>
             </div>
             <div class="col-md-6">
                <select class="form-control" name="searchType" id="searchType">
@@ -34,17 +34,35 @@
                      <div class="col-md-12 col-sm-12">
                         <div class="startresult" style="margin-left: 30px; margin-right: 30px;">
                            <% var url = "#";
+                           var qualify = false;
+                          
                            if(data[i].postedBy.roleId == "admin"){
-                              url = "/d/" + data[i].category.slug.toLowerCase()+"/"+data[i].slug;
+                              if(user.paid == "free"){
+                                 if(data[i].qualify == "accept"){
+                                   qualify = true;
+                                 } else {
+                                    url = "/d/" + data[i].category.slug.toLowerCase()+"/"+data[i].slug;
+                                 }
+                               }else{
+                                 url = "/d/" + data[i].category.slug.toLowerCase()+"/"+data[i].slug;
+                               }
                            }else {
-                              url = "/p/" + data[i].category.slug.toLowerCase()+"/"+data[i].slug;
+                              if(user.paid == "free"){
+                                 if(data[i].qualify == "accept"){
+                                   qualify = true;
+                                 } else {
+                                    url = "/p/" + data[i].category.slug.toLowerCase()+"/"+data[i].slug;
+                                 }
+                               }else{
+                                 url = "/p/" + data[i].category.slug.toLowerCase()+"/"+data[i].slug;
+                               }
                            }
                            %>
-                           <div class="bg-1-contant item-article" url="<%= url%>"
+                           <div class="bg-1-contant item-article" url="<%= url%>" qualify="<%= qualify%>"
                               style="background: center; background-size: cover;padding-top: 50px;height: 400px; background-image: linear-gradient(#00000070, #00000096), url('<%= data[i].file%>');">
                               <% if(data[i].postedBy.roleId == "admin"){%>
-                              <p style="overflow-wrap: break-word; font-size: 18px;"><a target="_blank"
-                                    href="/d/<%= data[i].category.slug.toLowerCase()%>/<%= data[i].slug %>"
+                              <p style="overflow-wrap: break-word; font-size: 18px;">
+                                 <a target="_blank" href="/d/<%= data[i].category.slug.toLowerCase()%>/<%= data[i].slug %>"
                                     style="color:
                                    rgb(255, 255, 255);"><%= data[i].title.charAt(0).toUpperCase() + data[i].title.substring(1) %>
                                  </a>
@@ -250,7 +268,12 @@
          window.open($(this).attr('url'));
       });
       $('.item-article').click(function(){
-         window.open($(this).attr('url'));
+         var qualify = $(this).attr('qualify');
+         if(qualify == "true"){
+            alert('This is the qualify page');
+         }else {
+            window.open($(this).attr('url'));
+         }
       });
       $('#searchType').change(function () {
          var searchType = $(this).val();

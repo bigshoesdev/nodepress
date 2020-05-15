@@ -88,10 +88,10 @@
               <div id="myTopnav" class="topnav">
                 <form action="/search" method="get" class="search-form d-lg-flex float-right" id="searchForm">
                   <div class="container">
-                    <a type="button" href="javascript:void(0)" class="closebtn"
+                    <a type="button" href="javascript:void(0);" class="closebtn"
                       style="right: 15%; padding-left: 10px; padding-right: 10px;" onclick="searchForm()"
                       id="closebtn"><i class="fa fa-search"></i></a>
-                    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                    <a href="javascript:void(0);" class="closebtn" onclick="closeNav()">&times;</a>
                     <input id="q" type="text" placeholder="Suche" name="q" value="" onfocus="displaySearchbtn()" />
                     <label>Suche Inhalte, die dich begeistern</label>
                   </div>
@@ -200,22 +200,47 @@
                             <img src="<%= post[i*3 + j].file %>">
                           </div>
                           <div class="recommnet-cate">
-                            <a href="javascript:void(0);"><span><%= post[i*3 + j].category.name%></span></a>
+                            <a href="javascript:void(0);" style="font-family: Montserrat;"><span><%= post[i*3 + j].category.name%></span></a>
                           </div>
                           <div class="recommnet-heading2">
                             <p style="overflow-wrap: break-word;font-size: 18px;">
                               <% if(post[i*3 + j].postedBy.roleId == "admin"){%>
-                              <a href="/d/<%= post[i*3 + j].category.slug%>/<%= post[i*3 + j].slug %>" style="color:
-                          black;"><%= post[i*3 + j].title.charAt(0).toUpperCase() + post[i*3 + j].title.substring(1) %>
+                                <%
+                                var urladmin = "";
+                                var qualify = false;
+                                if(user.paid == "free"){
+                                  if(post[i * 3 + j].qualify == "accept"){
+                                    qualify = true;
+                                  } else {
+                                    urladmin = "/d/" + post[i*3 + j].category.slug + "/" + post[i*3 + j].slug;
+                                  }
+                                }else{
+                                  urladmin = "/d/" + post[i*3 + j].category.slug + "/" + post[i*3 + j].slug;
+                                }
+                                %>
+                              <a href="<%= urladmin%>" class="articlelink" qualify="<%= qualify%>" style="color:black;font-family: EB Garamond;"><%= post[i*3 + j].title.charAt(0).toUpperCase() + post[i*3 + j].title.substring(1) %>
                               </a>
                               <%} else {%>
-                              <a href="/p/<%= post[i*3+j].category.slug.toLowerCase()%>/<%= post[i*3 + j].slug %>"
-                                style="color:
-                          black;"><%= post[i*3 + j].title.charAt(0).toUpperCase() + post[i*3 + j].title.substring(1) %>
+
+                                <%
+                                var urluser = "";
+                                var qualify = false;
+                                if(user.paid == "free"){
+                                  if(post[i * 3 + j].qualify == "accept"){
+                                    qualify = true;
+                                  } else {
+                                    urluser = "/p/" + post[i*3 + j].category.slug + "/" + post[i*3 + j].slug;
+                                  }
+                                }else{
+                                  urluser = "/p/" + post[i*3 + j].category.slug + "/" + post[i*3 + j].slug;
+                                }
+                                %>
+                              <a href="<%= urluser%>" class="articlelink" qualify="<%= qualify%>" style="color:black;font-family: EB Garamond;">
+                                <%= post[i*3 + j].title.charAt(0).toUpperCase() + post[i*3 + j].title.substring(1) %>
                               </a>
                               <%}%>
                     </p>
-                    <p style="overflow-wrap: break-word;"><% if(post[i*3 + j].summary != undefined) { %>
+                    <p style="overflow-wrap: break-word; font-family: EB Garamond;"><% if(post[i*3 + j].summary != undefined) { %>
                               <%= post[i*3 + j].summary %> <% } %></p>
                           </div>
                           <div class="recommnet-madeby">
@@ -354,7 +379,7 @@
         </div>
       </div>
       <div class="publish5-btn">
-        <a href="#"><span> Weitere Artikel über</span><span><i style="font-weight: 900;" class="fa fa-angle-right"
+        <a href="#"><span> Weitere Artikel über <%= category.name%></span><span><i style="font-weight: 900;" class="fa fa-angle-right"
               aria-hidden="true"></i></span></a>
       </div>
     </div>
@@ -456,6 +481,12 @@
                         }
                         $('.clear-notification').click(function () {
                           $('.notification').hide();
+                        });
+                        $('.articlelink').click(function(){
+                          var qualify = $(this).attr('qualify');
+                          if(qualify == "true"){
+                            alert('This is the qualify page');
+                          }
                         });
                       </script>
 </body>

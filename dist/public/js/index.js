@@ -113,7 +113,7 @@ $(function () {
 
 
 $('.icon-1').hover(function () {
-  $('.list-icon-1').css('color', 'blue');
+  $('.list-icon-1').css('color', 'black');
   $('.list-icon-1').css('font-size', '25px');
   $('.list-icon-1').css('display', 'block');
 }, function () {
@@ -123,7 +123,7 @@ $('.icon-1').hover(function () {
 });
 
 $('.icon-2').hover(function () {
-  $('.list-icon-2').css('color', 'blue');
+  $('.list-icon-2').css('color', 'black');
   $('.list-icon-2').css('font-size', '25px');
   $('.list-icon-2').css('display', 'block');
 }, function () {
@@ -133,7 +133,7 @@ $('.icon-2').hover(function () {
 });
 
 $('.icon-3').hover(function () {
-  $('.list-icon-3').css('color', 'blue');
+  $('.list-icon-3').css('color', 'black');
   $('.list-icon-3').css('font-size', '25px');
   $('.list-icon-3').css('display', 'block');
 }, function () {
@@ -143,7 +143,7 @@ $('.icon-3').hover(function () {
 });
 
 $('.icon-4').hover(function () {
-  $('.list-icon-4').css('color', 'blue');
+  $('.list-icon-4').css('color', 'black');
   $('.list-icon-4').css('font-size', '25px');
   $('.list-icon-4').css('display', 'block');
 }, function () {
@@ -153,7 +153,7 @@ $('.icon-4').hover(function () {
 });
 
 $('.icon-5').hover(function () {
-  $('.list-icon-5').css('color', 'blue');
+  $('.list-icon-5').css('color', 'black');
   $('.list-icon-5').css('font-size', '25px');
   $('.list-icon-5').css('display', 'block');
 }, function () {
@@ -163,7 +163,7 @@ $('.icon-5').hover(function () {
 });
 
 $('.icon-6').hover(function () {
-  $('.list-icon-6').css('color', 'blue');
+  $('.list-icon-6').css('color', 'black');
   $('.list-icon-6').css('font-size', '25px');
   $('.list-icon-6').css('display', 'block');
 }, function () {
@@ -173,7 +173,7 @@ $('.icon-6').hover(function () {
 });
 
 $('.icon-7').hover(function () {
-  $('.list-icon-7').css('color', 'blue');
+  $('.list-icon-7').css('color', 'black');
   $('.list-icon-7').css('font-size', '25px');
   $('.list-icon-7').css('display', 'block');
 }, function () {
@@ -183,7 +183,7 @@ $('.icon-7').hover(function () {
 });
 
 $('.icon-8').hover(function () {
-  $('.list-icon-8').css('color', 'blue');
+  $('.list-icon-8').css('color', 'black');
   $('.list-icon-8').css('font-size', '25px');
   $('.list-icon-8').css('display', 'block');
 }, function () {
@@ -193,7 +193,7 @@ $('.icon-8').hover(function () {
 });
 
 $('.icon-9').hover(function () {
-  $('.list-icon-9').css('color', 'blue');
+  $('.list-icon-9').css('color', 'black');
   $('.list-icon-9').css('font-size', '25px');
   $('.list-icon-9').css('display', 'block');
 }, function () {
@@ -203,7 +203,7 @@ $('.icon-9').hover(function () {
 });
 
 $('.icon-10').hover(function () {
-  $('.list-icon-10').css('color', 'blue');
+  $('.list-icon-10').css('color', 'black');
   $('.list-icon-10').css('font-size', '25px');
   $('.list-icon-10').css('display', 'block');
 }, function () {

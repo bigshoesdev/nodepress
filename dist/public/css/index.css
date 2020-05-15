@@ -194,10 +194,10 @@ ul {
 }
 .list-item i {
    font-size: 22px;
-   color: white;
+   color: black;
 }
 .list-item:hover {
-  background: blue;
+  background: #98E0F2;
   color: #fffcfb;
   -webkit-transform: translate(0.9em, -0.9em);
           transform: translate(0.9em, -0.9em);
@@ -210,13 +210,13 @@ ul {
   transition: all .25s linear;
 }
 .list-item:hover:before {
-  background: rgb(0, 0, 182);
+  background: rgb(78, 188, 252);
   width: 1em;
   top: .5em;
   left: -1em;
 }
 .list-item:hover:after {
-  background: rgb(0, 0, 182);
+  background: rgb(78, 188, 252);
   width: 1em;
   bottom: -2.5em;
   left: 1em;

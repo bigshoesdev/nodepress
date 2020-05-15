@@ -223,7 +223,7 @@
                                 </div>
                                 <div class="dark-blog-banner-heading text-center row"
                                     style="text-align: center; margin-left: auto; margin-right: auto;">
-                                    <h1 style="color: white;overflow-wrap: break-word;">
+                                    <h1 style="color: white;overflow-wrap: break-word; font-family: EB Garamond;">
                                         <%= article.title%></h1>
                                 </div>
                                 <div class="dark-blog-banner-headingdown text-center row">
@@ -235,25 +235,22 @@
                                     </span>
                                     <span
                                         style="color: white; border-left: 3px solid white;"><%= time(article.short)%></span>
-                                    <% if(user){if(user.paid == 'paid'){ %>
                                     <span style="color: white; border-left: 3px solid white;">
                                         <% if(bookmark != true) {%>
                                         <i class="fa fa-star" style="margin-right: 10px;"></i>
-                                        <a style="color: white;" href="/bookmark/create?articleId=<%= article._id %>"">Artikel speichern</a>
+                                        <a style="color: white;" class="savearticle" href="/bookmark/create?articleId=<%= article._id %>"">Artikel speichern</a>
                                         <% } else {%>
-                                            <i class=" fa fa-star" style="margin-right: 10px; color: blue;"></i>
-                                            <a style=" color: white;"
-                                                href="/bookmark/delete?bookmarkId=<%= bookmarkId %>">Artikel abbrechen
-                                                speichern</a>
+                                            <i class=" fa fa-star" style="margin-right: 10px; color: #98E0F2;"></i>
+                                            <a style=" color: white;" class="deletearticle"
+                                                href="/bookmark/delete?bookmarkId=<%= bookmarkId %>">Artikel nicht mehr speichern</a>
                                             <%}%>
                                     </span>
-                                    <%}}%>
                                 </div>
                                 <div class="row">
                                     <div></div>
                                 </div>
                                 <div class="dark-blog-banner-heading text-center" style="width: 80%;margin: auto;">
-                                    <p style="color: white; font-size:  20px; overflow-wrap: break-word;">
+                                    <p style="color: white; font-size:  20px; overflow-wrap: break-word; font-family: EB Garamond">
                                         <%= article.summary%></p>
                                     <input type="hidden" id="firstlettercolor" value="<%= article.category.color%>">
                                 </div>
@@ -522,7 +519,7 @@
                         <p>Upvote <%= %></p>
                                 <p id="upvoteCount"><%= article.upvote.count%></p>
                                 </a>
-                                <p style="font-weight: 800px; color: #797474;">Dark
+                                <p style="font-weight: 800px; color: #000000;">Dark
                                     Mode
                                 </p>
                                 <label class="switch">
@@ -627,6 +624,12 @@
                                 }
                                 $('.clear-notification').click(function () {
                                     $('.notification').hide();
+                                });
+                                $('.savearticle').click(function(){
+                                    alert("article saved");
+                                });
+                                $('.deletearticle').click(function(){
+                                    alert("save article deleted");
                                 });
 
                             </script>

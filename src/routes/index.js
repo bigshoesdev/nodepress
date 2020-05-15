@@ -19,7 +19,6 @@ const router = express.Router();
 const SitemapGenerator = require('sitemap-generator');
 // drowningsummer.228@gmail.com
 
-
 dotenv.config({ path: './.env' });
 
 router.use(flash());
@@ -393,18 +392,112 @@ router.get('/paycontent', install.redirectToLogin, async (req, res, next) => {
 	});
 });
 
-router.get('/blogrecent', async (req, res, next) => {
+router.get('/blogrecent', install.redirectToLogin, async (req, res, next) => {
+	let userId = req.user._id;
+	let user = await User.findOne({ _id: userId });
+	let editorsPicker = await Article.find({
+		addToBreaking: true
+	}).populate('category')
+		.populate('postedBy')
+		.sort('create_at')
+		.limit(3);
+	let category = await Category.find({});
+	let usercategoryList = user.categoryList;
+	let categories = [];
+	category.forEach(element => {
+		usercategoryList.forEach(item => {
+			if (item == element.slug) {
+				categories.push(element);
+			}
+		});
+	});
+
+	let trendings = await Article.find({})
+		.populate('category')
+		.populate('postedBy')
+		.sort({ views: -1 });
+
+	let followers = await User.find({
+		following: { $in: req.user.id }
+	}).populate("following").sort({ createdAt: -1 });
+	
+	let authorarticle = [];
+	
+	for (var i in followers) {
+		let art = await Article.find({
+			postedBy: followers[i]._id
+		}).populate('category')
+		.populate('postedBy')
+		.sort({ createdAt: -1 });
+		for (var j in art) {
+			authorarticle.push(art[j]);
+		}
+	}
+
+	let newest = await Article.find({})
+	.sort({createdAt: -1})
+	.populate('category')
+	.populate('postedBy')
+	.limit(3);
+
+	let random = await Article.find({})
+	.populate('category')
+	.populate('postedBy')
+	.limit(3);
+	
+	let favorites = [];
+	let total_article = await Article.find({})
+	.populate('category')
+	.populate('postedBy').sort('create_at').limit(10);
+	categories.forEach(element => {
+		total_article.forEach(item => {
+			if(item.category.slug == element.slug){
+				favorites.push(item);
+			}
+		});
+	});
+	console.log(favorites[0].category.name);
 	res.render('blogrecent', {
-		title: "Blog Recent"
+		title: 'Blog recent',
+		editorsPicker: editorsPicker,
+		categories: categories,
+		trendings: trendings,
+		authorarticle: authorarticle,
+		newest: newest,
+		random: random,
+		favorites: favorites
 	});
 });
 
 router.get('/ourwork', async (req, res, next) => {
+	let userId = req.user._id;
+	let user = await User.findOne({ _id: userId });
+	let category = await Category.find({});
+	let usercategoryList = user.categoryList;
+	let categories = [];
+	category.forEach(element => {
+		usercategoryList.forEach(item => {
+			if (item == element.slug) {
+				categories.push(element);
+			}
+		});
+	});
+	let favorites = [];
+	let total_article = await Article.find({})
+	.populate('category')
+	.populate('postedBy').sort('create_at').limit(10);
+	categories.forEach(element => {
+		total_article.forEach(item => {
+			if(item.category.slug == element.slug){
+				favorites.push(item);
+			}
+		});
+	});
 	res.render('ourwork', {
-		title: "Our Work"
+		title: "Our Work",
+		favorites: favorites
 	});
 });
-
 // Get index page
 router.get('/', install.redirectToLogin, async (req, res, next) => {
 	try {
@@ -720,18 +813,18 @@ router.get('/author/:usernameslug', install.redirectToLogin, async (req, res, ne
 		let username = element.username.toLowerCase();
 		let array = username.split('');
 		array.forEach((item, index) => {
-		if(item == "ß"){
-			array[index] = "ss";
-		}
-		if(item == "ö"){array[index] = "oe";}
-		if(item == "ä"){array[index] = "ae";}
-		if(item == "ü"){array[index] = "ue";}
+			if (item == "ß") {
+				array[index] = "ss";
+			}
+			if (item == "ö") { array[index] = "oe"; }
+			if (item == "ä") { array[index] = "ae"; }
+			if (item == "ü") { array[index] = "ue"; }
 		});
 		let usernameslug = array.join("");
 		await User.updateOne(
-			{ _id: element._id},
-			{ usernameslug : usernameslug }
-		 );
+			{ _id: element._id },
+			{ usernameslug: usernameslug }
+		);
 	});
 	let user = await User.findOne({ usernameslug: req.params.usernameslug });
 	let featured = await Article.aggregate([

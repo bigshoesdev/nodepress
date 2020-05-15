@@ -535,17 +535,126 @@ router.get('/paycontent', _install["default"].redirectToLogin, /*#__PURE__*/func
     return _ref5.apply(this, arguments);
   };
 }());
-router.get('/blogrecent', /*#__PURE__*/function () {
+router.get('/blogrecent', _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(req, res, next) {
+    var userId, user, editorsPicker, category, usercategoryList, categories, trendings, followers, authorarticle, i, art, j, newest, random, favorites, total_article;
     return _regenerator["default"].wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
-            res.render('blogrecent', {
-              title: "Blog Recent"
+            userId = req.user._id;
+            _context6.next = 3;
+            return _users["default"].findOne({
+              _id: userId
             });
 
-          case 1:
+          case 3:
+            user = _context6.sent;
+            _context6.next = 6;
+            return _articles["default"].find({
+              addToBreaking: true
+            }).populate('category').populate('postedBy').sort('create_at').limit(3);
+
+          case 6:
+            editorsPicker = _context6.sent;
+            _context6.next = 9;
+            return _category["default"].find({});
+
+          case 9:
+            category = _context6.sent;
+            usercategoryList = user.categoryList;
+            categories = [];
+            category.forEach(function (element) {
+              usercategoryList.forEach(function (item) {
+                if (item == element.slug) {
+                  categories.push(element);
+                }
+              });
+            });
+            _context6.next = 15;
+            return _articles["default"].find({}).populate('category').populate('postedBy').sort({
+              views: -1
+            });
+
+          case 15:
+            trendings = _context6.sent;
+            _context6.next = 18;
+            return _users["default"].find({
+              following: {
+                $in: req.user.id
+              }
+            }).populate("following").sort({
+              createdAt: -1
+            });
+
+          case 18:
+            followers = _context6.sent;
+            authorarticle = [];
+            _context6.t0 = _regenerator["default"].keys(followers);
+
+          case 21:
+            if ((_context6.t1 = _context6.t0()).done) {
+              _context6.next = 29;
+              break;
+            }
+
+            i = _context6.t1.value;
+            _context6.next = 25;
+            return _articles["default"].find({
+              postedBy: followers[i]._id
+            }).populate('category').populate('postedBy').sort({
+              createdAt: -1
+            });
+
+          case 25:
+            art = _context6.sent;
+
+            for (j in art) {
+              authorarticle.push(art[j]);
+            }
+
+            _context6.next = 21;
+            break;
+
+          case 29:
+            _context6.next = 31;
+            return _articles["default"].find({}).sort({
+              createdAt: -1
+            }).populate('category').populate('postedBy').limit(3);
+
+          case 31:
+            newest = _context6.sent;
+            _context6.next = 34;
+            return _articles["default"].find({}).populate('category').populate('postedBy').limit(3);
+
+          case 34:
+            random = _context6.sent;
+            favorites = [];
+            _context6.next = 38;
+            return _articles["default"].find({}).populate('category').populate('postedBy').sort('create_at').limit(10);
+
+          case 38:
+            total_article = _context6.sent;
+            categories.forEach(function (element) {
+              total_article.forEach(function (item) {
+                if (item.category.slug == element.slug) {
+                  favorites.push(item);
+                }
+              });
+            });
+            console.log(favorites[0].category.name);
+            res.render('blogrecent', {
+              title: 'Blog recent',
+              editorsPicker: editorsPicker,
+              categories: categories,
+              trendings: trendings,
+              authorarticle: authorarticle,
+              newest: newest,
+              random: random,
+              favorites: favorites
+            });
+
+          case 42:
           case "end":
             return _context6.stop();
         }
@@ -559,15 +668,52 @@ router.get('/blogrecent', /*#__PURE__*/function () {
 }());
 router.get('/ourwork', /*#__PURE__*/function () {
   var _ref7 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee7(req, res, next) {
+    var userId, user, category, usercategoryList, categories, favorites, total_article;
     return _regenerator["default"].wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
-            res.render('ourwork', {
-              title: "Our Work"
+            userId = req.user._id;
+            _context7.next = 3;
+            return _users["default"].findOne({
+              _id: userId
             });
 
-          case 1:
+          case 3:
+            user = _context7.sent;
+            _context7.next = 6;
+            return _category["default"].find({});
+
+          case 6:
+            category = _context7.sent;
+            usercategoryList = user.categoryList;
+            categories = [];
+            category.forEach(function (element) {
+              usercategoryList.forEach(function (item) {
+                if (item == element.slug) {
+                  categories.push(element);
+                }
+              });
+            });
+            favorites = [];
+            _context7.next = 13;
+            return _articles["default"].find({}).populate('category').populate('postedBy').sort('create_at').limit(10);
+
+          case 13:
+            total_article = _context7.sent;
+            categories.forEach(function (element) {
+              total_article.forEach(function (item) {
+                if (item.category.slug == element.slug) {
+                  favorites.push(item);
+                }
+              });
+            });
+            res.render('ourwork', {
+              title: "Our Work",
+              favorites: favorites
+            });
+
+          case 16:
           case "end":
             return _context7.stop();
         }

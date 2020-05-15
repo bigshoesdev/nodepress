@@ -392,9 +392,10 @@
 
 .section-4-left-2-content p {
   color: #aba3a3;
-  font-size: 15px;
+  font-size: 20px;
   line-height: 26px;
   padding: 20px 0px;
+  font-family: EB Garamond;
 }
 
 .section-4-left {
@@ -1369,7 +1370,7 @@
   font-weight: 800;
   margin: 0;
   font-size: 14px;
-  color: #797474;
+  color: #000000;
 }
 /*.upvote-btn:hover{
     transition: 0.3s;

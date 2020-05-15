@@ -9082,7 +9082,7 @@ body.header-top-green .header-notification-area > li > a .user .name {
   display: -ms-flexbox;
   display: flex;
   font-size: 14px;
-  color: #8b8d9b;
+  color: #428bfa;
   line-height: 20px;
   padding: 12px 0 12px 25px;
 }
@@ -9121,7 +9121,7 @@ body.header-top-green .header-notification-area > li > a .user .name {
 }
 
 .side-header-menu > ul > li.active > a, .side-header-menu > ul > li:hover > a {
-  color: #428bfa;
+  color: gray;
 }
 
 .side-header-menu > ul > li.active > a::before, .side-header-menu > ul > li:hover > a::before {
@@ -11381,7 +11381,6 @@ body.side-header-green .side-header .side-header-close {
   -webkit-justify-content: center;
       -ms-flex-pack: center;
           justify-content: center;
-  background-image: url(../images/bg/author-top-bg.jpg);
   background-size: 100% 50%;
   background-repeat: no-repeat;
   padding: 65px 30px;
