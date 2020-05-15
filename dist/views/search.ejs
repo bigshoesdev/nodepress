@@ -26,7 +26,6 @@
          </div>
          <hr>
          <div class="row">
-
             <div class="col-md-8 total">
                <div class="results">
                   <div class="row">
@@ -35,19 +34,22 @@
                         <div class="startresult" style="margin-left: 30px; margin-right: 30px;">
                            <% var url = "#";
                            var qualify = false;
-                          
+                           
                            if(data[i].postedBy.roleId == "admin"){
-                              if(user.paid == "free"){
-                                 if(data[i].qualify == "accept"){
-                                   qualify = true;
-                                 } else {
+                              if(user){
+                                 if(user.paid == "free"){
+                                    if(data[i].qualify == "accept"){
+                                    qualify = true;
+                                    } else {
+                                       url = "/d/" + data[i].category.slug.toLowerCase()+"/"+data[i].slug;
+                                    }
+                                 }else{
                                     url = "/d/" + data[i].category.slug.toLowerCase()+"/"+data[i].slug;
                                  }
-                               }else{
-                                 url = "/d/" + data[i].category.slug.toLowerCase()+"/"+data[i].slug;
-                               }
-                           }else {
-                              if(user.paid == "free"){
+                              }
+                           } else {
+                              if(user){
+                               if(user.paid == "free"){
                                  if(data[i].qualify == "accept"){
                                    qualify = true;
                                  } else {
@@ -56,6 +58,7 @@
                                }else{
                                  url = "/p/" + data[i].category.slug.toLowerCase()+"/"+data[i].slug;
                                }
+                              }
                            }
                            %>
                            <div class="bg-1-contant item-article" url="<%= url%>" qualify="<%= qualify%>"
