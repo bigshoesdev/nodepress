@@ -175,9 +175,12 @@
 <div class="list_top_featured">
    <section class="container">
       <div class="row featured_inner">
-         <% for(var i = 0; i < 3; i ++){%>
+         <%  var editorsPickerLength = editorsPicker.length;
+         if(editorsPicker.length > 3) {
+            editorsPickerLength = 3;
+         }%>
+         <% for(var i = 0; i < editorsPickerLength; i ++){%>
          <div class="col-md-12 col-lg-4">
-            <%= editorsPicker[i].postedBy%>
             <%
              var url = "#";
              <!-- if(editorsPicker[i].postedBy.roleId == "admin"){
