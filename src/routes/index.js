@@ -462,7 +462,6 @@ router.get('/blogrecent', install.redirectToLogin, async (req, res, next) => {
 			}
 		});
 	});
-	console.log(favorites[0].category.name);
 	res.render('blogrecent', {
 		title: 'Blog recent',
 		editorsPicker: editorsPicker,

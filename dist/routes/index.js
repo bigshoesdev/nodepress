@@ -650,7 +650,6 @@ router.get('/blogrecent', _install["default"].redirectToLogin, /*#__PURE__*/func
                 }
               });
             });
-            console.log(favorites[0].category.name);
             res.render('blogrecent', {
               title: 'Blog recent',
               editorsPicker: editorsPicker,
@@ -662,7 +661,7 @@ router.get('/blogrecent', _install["default"].redirectToLogin, /*#__PURE__*/func
               favorites: favorites
             });
 
-          case 46:
+          case 45:
           case "end":
             return _context6.stop();
         }
