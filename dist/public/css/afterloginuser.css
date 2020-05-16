@@ -14,7 +14,7 @@
    bottom: 42%;
    margin-left: -10px;
    left: 0;
-   color: blue !important;
+   color: #98E0F2 !important;
  }
 
  .owl-next {
@@ -23,7 +23,7 @@
    bottom: 42%;
    margin-right: -10px;
    right: 0;
-   color: blue !important;
+   color: #98E0F2 !important;
  }
  .content-one-img {
 
@@ -82,7 +82,7 @@
 }
 
 #processbar {
-   background-color: #3452ff;
+   background-color: #98E0F2;
 }
 
 .show {
@@ -118,7 +118,7 @@
 }
 
 .sidenav a:hover {
-   color: blue;
+   color: #98E0F2;
 }
 
 .cancelNav {

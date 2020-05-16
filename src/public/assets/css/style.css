@@ -159,7 +159,7 @@ a:focus {
 
 a:hover {
   text-decoration: none;
-  color: #428bfa;
+  color: #98E0F2;
 }
 
 button, input[type="submit"] {
@@ -1954,12 +1954,12 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 
 .badge-primary {
-  background-color: #428bfa;
-  border-color: #428bfa;
+  background-color: #98E0F2;
+  border-color: #98E0F2;
 }
 
 .badge-primary.badge-outline {
-  color: #428bfa;
+  color: #98E0F2;
 }
 
 .badge-secondary {
@@ -2000,12 +2000,12 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 
 .badge-info {
-  background-color: #17a2b8;
-  border-color: #17a2b8;
+  background-color: #98E0F2;
+  border-color: #98E0F2;
 }
 
 .badge-info.badge-outline {
-  color: #17a2b8;
+  color: #98E0F2;
 }
 
 .badge-dark {
@@ -2346,25 +2346,25 @@ a.badge-dark.badge-outline {
 
 /*-- Button Colors --*/
 .button-primary, .swal-modal .swal-footer .button-primary, #toast-container .toast .toast-message .btn.btn-primary, .dataTables_wrapper .dt-buttons .dt-button, .footable.table thead tr th .footable-filtering-search .input-group .input-group-btn .btn, .footable.table thead tr th .footable-filtering-search .input-group .input-group-btn .btn.btn-primary, .footable.table tbody tr td.footable-editing .btn-group .btn.footable-edit, .footable.table tfoot tr.footable-editing td .btn.btn-primary, .smart-wizard .sw-toolbar .sw-btn-group .btn {
-  background-color: #428bfa;
-  border-color: #428bfa;
+  background-color: #98E0F2;
+  border-color: #98E0F2;
   color: #ffffff;
 }
 
 .button-primary.button-outline, .swal-modal .swal-footer .button-outline.button-primary, #toast-container .toast .toast-message .button-outline.btn.btn-primary, #toast-container .toast .toast-message .footable.table tfoot tr.footable-editing td .btn.btn-primary.footable-hide, .footable.table tfoot tr.footable-editing td #toast-container .toast .toast-message .btn.btn-primary.footable-hide, .dataTables_wrapper .dt-buttons .button-outline.dt-button, .dataTables_wrapper .dt-buttons .footable.table tfoot tr.footable-editing td .dt-button.btn.footable-hide, .footable.table tfoot tr.footable-editing td .dataTables_wrapper .dt-buttons .dt-button.btn.footable-hide, .footable.table thead tr th .footable-filtering-search .input-group .input-group-btn .button-outline.btn, .footable.table thead tfoot tr.footable-editing th .footable-filtering-search .input-group .input-group-btn td .btn.footable-hide, .footable.table tfoot thead tr.footable-editing th .footable-filtering-search .input-group .input-group-btn td .btn.footable-hide, .footable.table thead tfoot tr.footable-editing td th .footable-filtering-search .input-group .input-group-btn .btn.footable-hide, .footable.table tfoot thead tr.footable-editing td th .footable-filtering-search .input-group .input-group-btn .btn.footable-hide, .footable.table thead tfoot tr.footable-editing th .footable-filtering-search .input-group .input-group-btn td .btn.btn-primary.footable-hide, .footable.table tfoot thead tr.footable-editing th .footable-filtering-search .input-group .input-group-btn td .btn.btn-primary.footable-hide, .footable.table thead tfoot tr.footable-editing td th .footable-filtering-search .input-group .input-group-btn .btn.btn-primary.footable-hide, .footable.table tfoot thead tr.footable-editing td th .footable-filtering-search .input-group .input-group-btn .btn.btn-primary.footable-hide, .footable.table tbody tr td.footable-editing .btn-group .button-outline.btn.footable-edit, .footable.table tbody tfoot tr.footable-editing td.footable-editing .btn-group .btn.footable-edit.footable-hide, .footable.table tfoot tbody tr.footable-editing td.footable-editing .btn-group .btn.footable-edit.footable-hide, .footable.table tfoot tr.footable-editing td .button-outline.btn.btn-primary, .footable.table tfoot tr.footable-editing td .btn.btn-primary.footable-hide, .footable.table tfoot tr.footable-editing td .button-primary.btn.footable-hide, .smart-wizard .sw-toolbar .sw-btn-group .button-outline.btn, .smart-wizard .sw-toolbar .sw-btn-group .footable.table tfoot tr.footable-editing td .btn.footable-hide, .footable.table tfoot tr.footable-editing td .smart-wizard .sw-toolbar .sw-btn-group .btn.footable-hide {
   background-color: transparent;
-  color: #428bfa;
+  color: #98E0F2;
 }
 
 .button-primary.button-outline:hover, #toast-container .toast .toast-message .button-outline.btn.btn-primary:hover, #toast-container .toast .toast-message .footable.table tfoot tr.footable-editing td .btn.btn-primary.footable-hide:hover, .footable.table tfoot tr.footable-editing td #toast-container .toast .toast-message .btn.btn-primary.footable-hide:hover, .dataTables_wrapper .dt-buttons .button-outline.dt-button:hover, .dataTables_wrapper .dt-buttons .footable.table tfoot tr.footable-editing td .dt-button.btn.footable-hide:hover, .footable.table tfoot tr.footable-editing td .dataTables_wrapper .dt-buttons .dt-button.btn.footable-hide:hover, .footable.table thead tr th .footable-filtering-search .input-group .input-group-btn .button-outline.btn:hover, .footable.table thead tfoot tr.footable-editing th .footable-filtering-search .input-group .input-group-btn td .btn.footable-hide:hover, .footable.table tfoot thead tr.footable-editing th .footable-filtering-search .input-group .input-group-btn td .btn.footable-hide:hover, .footable.table thead tfoot tr.footable-editing td th .footable-filtering-search .input-group .input-group-btn .btn.footable-hide:hover, .footable.table tfoot thead tr.footable-editing td th .footable-filtering-search .input-group .input-group-btn .btn.footable-hide:hover, .footable.table thead tfoot tr.footable-editing th .footable-filtering-search .input-group .input-group-btn td .btn.btn-primary.footable-hide:hover, .footable.table tfoot thead tr.footable-editing th .footable-filtering-search .input-group .input-group-btn td .btn.btn-primary.footable-hide:hover, .footable.table thead tfoot tr.footable-editing td th .footable-filtering-search .input-group .input-group-btn .btn.btn-primary.footable-hide:hover, .footable.table tfoot thead tr.footable-editing td th .footable-filtering-search .input-group .input-group-btn .btn.btn-primary.footable-hide:hover, .footable.table tbody tr td.footable-editing .btn-group .button-outline.btn.footable-edit:hover, .footable.table tbody tfoot tr.footable-editing td.footable-editing .btn-group .btn.footable-edit.footable-hide:hover, .footable.table tfoot tbody tr.footable-editing td.footable-editing .btn-group .btn.footable-edit.footable-hide:hover, .footable.table tfoot tr.footable-editing td .button-outline.btn.btn-primary:hover, .footable.table tfoot tr.footable-editing td .btn.btn-primary.footable-hide:hover, .footable.table tfoot tr.footable-editing td .button-primary.btn.footable-hide:hover, .smart-wizard .sw-toolbar .sw-btn-group .button-outline.btn:hover, .smart-wizard .sw-toolbar .sw-btn-group .footable.table tfoot tr.footable-editing td .btn.footable-hide:hover, .footable.table tfoot tr.footable-editing td .smart-wizard .sw-toolbar .sw-btn-group .btn.footable-hide:hover {
-  background-color: #428bfa;
-  border-color: #428bfa;
+  background-color: #98E0F2;
+  border-color: #98E0F2;
   color: #ffffff;
 }
 
 .button-primary:hover, .swal-modal .swal-footer .button-primary:hover, #toast-container .toast .toast-message .btn.btn-primary:hover, .dataTables_wrapper .dt-buttons .dt-button:hover, .footable.table thead tr th .footable-filtering-search .input-group .input-group-btn .btn:hover, .footable.table tbody tr td.footable-editing .btn-group .btn.footable-edit:hover, .footable.table tfoot tr.footable-editing td .btn.btn-primary:hover, .smart-wizard .sw-toolbar .sw-btn-group .btn:hover {
-  background-color: #297cf9;
-  border-color: #297cf9;
+  background-color: #98E0F2;
+  border-color: #98E0F2;
   color: #ffffff;
 }
 
@@ -2461,25 +2461,25 @@ a.badge-dark.badge-outline {
 }
 
 .button-info, .swal-modal .swal-footer .button-info, #toast-container .toast .toast-message .btn.btn-info, .footable.table tfoot tr.footable-editing td .btn.footable-hide {
-  background-color: #17a2b8;
-  border-color: #17a2b8;
+  background-color: #98E0F2;
+  border-color: #98E0F2;
   color: #ffffff;
 }
 
 .button-info.button-outline, .swal-modal .swal-footer .button-outline.button-info, #toast-container .toast .toast-message .button-outline.btn.btn-info, #toast-container .toast .toast-message .footable.table tfoot tr.footable-editing td .btn.btn-info.footable-hide, .footable.table tfoot tr.footable-editing td #toast-container .toast .toast-message .btn.btn-info.footable-hide, .footable.table tfoot tr.footable-editing td .btn.footable-hide {
   background-color: transparent;
-  color: #17a2b8;
+  color: #98E0F2;
 }
 
 .button-info.button-outline:hover, #toast-container .toast .toast-message .button-outline.btn.btn-info:hover, #toast-container .toast .toast-message .footable.table tfoot tr.footable-editing td .btn.btn-info.footable-hide:hover, .footable.table tfoot tr.footable-editing td #toast-container .toast .toast-message .btn.btn-info.footable-hide:hover, .footable.table tfoot tr.footable-editing td .btn.footable-hide:hover {
-  background-color: #17a2b8;
-  border-color: #17a2b8;
+  background-color: #98E0F2;
+  border-color: #98E0F2;
   color: #ffffff;
 }
 
 .button-info:hover, .swal-modal .swal-footer .button-info:hover, #toast-container .toast .toast-message .btn.btn-info:hover, .footable.table tfoot tr.footable-editing td .btn.footable-hide:hover {
-  background-color: #148ea1;
-  border-color: #148ea1;
+  background-color: #98E0F2;
+  border-color: #98E0F2;
   color: #ffffff;
 }
 
@@ -4009,14 +4009,14 @@ a.badge-dark.badge-outline {
 }
 
 .pagination .page-item .page-link:hover {
-  background-color: #428bfa;
-  border-color: #428bfa;
+  background-color: #98E0F2;
+  border-color: #98E0F2;
   color: #ffffff;
 }
 
 .pagination .page-item.active .page-link {
-  background-color: #428bfa;
-  border-color: #428bfa;
+  background-color: #98E0F2;
+  border-color: #98E0F2;
   color: #ffffff;
 }
 
@@ -9082,9 +9082,17 @@ body.header-top-green .header-notification-area > li > a .user .name {
   display: -ms-flexbox;
   display: flex;
   font-size: 14px;
-  color: #428bfa;
+  color: #98E0F2;
   line-height: 20px;
   padding: 12px 0 12px 25px;
+}
+.btn.btn-primary {
+  background-color: #98E0F2;
+  border-color: #98E0F2;
+}
+.btn.btn-info {
+  background-color: #98E0F2;
+  border-color: #98E0F2;
 }
 
 .side-header-menu > ul > li > a::before {

@@ -401,6 +401,11 @@ router.get('/blogrecent', install.redirectToLogin, async (req, res, next) => {
 		.populate('postedBy')
 		.sort('create_at')
 		.limit(3);
+	let article = await Article.find({addToBreaking: true})
+	.populate('category')
+	.populate('postedBy')
+	.sort('create_at');
+	editorsPicker.push(article);
 	let category = await Category.find({});
 	let usercategoryList = user.categoryList;
 	let categories = [];
@@ -415,7 +420,8 @@ router.get('/blogrecent', install.redirectToLogin, async (req, res, next) => {
 	let trendings = await Article.find({})
 		.populate('category')
 		.populate('postedBy')
-		.sort({ views: -1 });
+		.sort({ views: -1 })
+		.limit(5);
 
 	let followers = await User.find({
 		following: { $in: req.user.id }
@@ -443,7 +449,7 @@ router.get('/blogrecent', install.redirectToLogin, async (req, res, next) => {
 	let random = await Article.find({})
 	.populate('category')
 	.populate('postedBy')
-	.limit(3);
+	.limit(6);
 	
 	let favorites = [];
 	let total_article = await Article.find({})

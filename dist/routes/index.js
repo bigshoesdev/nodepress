@@ -537,7 +537,7 @@ router.get('/paycontent', _install["default"].redirectToLogin, /*#__PURE__*/func
 }());
 router.get('/blogrecent', _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(req, res, next) {
-    var userId, user, editorsPicker, category, usercategoryList, categories, trendings, followers, authorarticle, i, art, j, newest, random, favorites, total_article;
+    var userId, user, editorsPicker, article, category, usercategoryList, categories, trendings, followers, authorarticle, i, art, j, newest, random, favorites, total_article;
     return _regenerator["default"].wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
@@ -558,9 +558,17 @@ router.get('/blogrecent', _install["default"].redirectToLogin, /*#__PURE__*/func
           case 6:
             editorsPicker = _context6.sent;
             _context6.next = 9;
-            return _category["default"].find({});
+            return _articles["default"].find({
+              addToBreaking: true
+            }).populate('category').populate('postedBy').sort('create_at');
 
           case 9:
+            article = _context6.sent;
+            editorsPicker.push(article);
+            _context6.next = 13;
+            return _category["default"].find({});
+
+          case 13:
             category = _context6.sent;
             usercategoryList = user.categoryList;
             categories = [];
@@ -571,14 +579,14 @@ router.get('/blogrecent', _install["default"].redirectToLogin, /*#__PURE__*/func
                 }
               });
             });
-            _context6.next = 15;
+            _context6.next = 19;
             return _articles["default"].find({}).populate('category').populate('postedBy').sort({
               views: -1
-            });
+            }).limit(5);
 
-          case 15:
+          case 19:
             trendings = _context6.sent;
-            _context6.next = 18;
+            _context6.next = 22;
             return _users["default"].find({
               following: {
                 $in: req.user.id
@@ -587,53 +595,53 @@ router.get('/blogrecent', _install["default"].redirectToLogin, /*#__PURE__*/func
               createdAt: -1
             });
 
-          case 18:
+          case 22:
             followers = _context6.sent;
             authorarticle = [];
             _context6.t0 = _regenerator["default"].keys(followers);
 
-          case 21:
+          case 25:
             if ((_context6.t1 = _context6.t0()).done) {
-              _context6.next = 29;
+              _context6.next = 33;
               break;
             }
 
             i = _context6.t1.value;
-            _context6.next = 25;
+            _context6.next = 29;
             return _articles["default"].find({
               postedBy: followers[i]._id
             }).populate('category').populate('postedBy').sort({
               createdAt: -1
             });
 
-          case 25:
+          case 29:
             art = _context6.sent;
 
             for (j in art) {
               authorarticle.push(art[j]);
             }
 
-            _context6.next = 21;
+            _context6.next = 25;
             break;
 
-          case 29:
-            _context6.next = 31;
+          case 33:
+            _context6.next = 35;
             return _articles["default"].find({}).sort({
               createdAt: -1
             }).populate('category').populate('postedBy').limit(3);
 
-          case 31:
+          case 35:
             newest = _context6.sent;
-            _context6.next = 34;
-            return _articles["default"].find({}).populate('category').populate('postedBy').limit(3);
-
-          case 34:
-            random = _context6.sent;
-            favorites = [];
             _context6.next = 38;
-            return _articles["default"].find({}).populate('category').populate('postedBy').sort('create_at').limit(10);
+            return _articles["default"].find({}).populate('category').populate('postedBy').limit(6);
 
           case 38:
+            random = _context6.sent;
+            favorites = [];
+            _context6.next = 42;
+            return _articles["default"].find({}).populate('category').populate('postedBy').sort('create_at').limit(10);
+
+          case 42:
             total_article = _context6.sent;
             categories.forEach(function (element) {
               total_article.forEach(function (item) {
@@ -654,7 +662,7 @@ router.get('/blogrecent', _install["default"].redirectToLogin, /*#__PURE__*/func
               favorites: favorites
             });
 
-          case 42:
+          case 46:
           case "end":
             return _context6.stop();
         }

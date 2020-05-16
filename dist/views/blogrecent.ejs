@@ -175,7 +175,7 @@
 <div class="list_top_featured">
    <section class="container">
       <div class="row featured_inner">
-         <% for(var i = 0; i < editorsPicker.length; i ++){%>
+         <% for(var i = 0; i < 3; i ++){%>
          <div class="col-md-12 col-lg-4">
             <%
              var url = "#";
@@ -191,7 +191,6 @@
                <p><%= editorsPicker[i].category.name%></p>
             </a>
             <h3><a href="<%= url%>" target="_blank"><%= editorsPicker[i].title%></a></h3>
-            <p><%= editorsPicker[i].summary%></p>
          </div>
          <% } %>
       </div>
@@ -242,11 +241,13 @@
    </div>
 </div>
 <!-- Classic Enhanced Style start -->
+<% if(authorarticle.length > 3) {%>
 <div class="classic_enhanced_style">
    <section class="container">
       <!-- <h6>Classic Enhanced Style</h6> -->
       <div class="inner-after-login-page-content">
          <div class="row">
+            
             <% for(var i = 0; i < authorarticle.length; i ++) {%>
                <% 
                var url="#";
@@ -279,6 +280,7 @@
       </div>
    </section>
 </div>
+<% }%>
 <!-- Classic Enhanced Style end -->
 <!-- Posts Processbar Slider Style start -->
 <div class="posts_processbar_slider">
@@ -319,10 +321,10 @@
                   url = "/p/" + newest[i].category.slug + "/" + newest[i].slug;
                }
                %>  
-            <div class="col-12 col-md-6 col-lg-3">
+            <div class="col-12 col-md-6 col-lg-4">
                <div class="content-one">
                   <div class="content-one-img new-image" url="<%= url%>">
-                     <img src="<%= newest[i].file%>">
+                     <img src="<%= newest[i].file%>" style="object-fit: cover;">
                      <a href="#">
                         <h5><%= newest[i].category.name%></h5>
                         <h3 style="overflow-wrap: anywhere; margin-right: 10px;
