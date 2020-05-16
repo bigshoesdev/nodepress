@@ -177,13 +177,14 @@
       <div class="row featured_inner">
          <% for(var i = 0; i < 3; i ++){%>
          <div class="col-md-12 col-lg-4">
+            <%= editorsPicker[i].postedBy%>
             <%
              var url = "#";
-             if(editorsPicker[i].postedBy.roleId == "admin"){
+             <!-- if(editorsPicker[i].postedBy.roleId == "admin"){
                url = "/d/" + editorsPicker[i].category.slug + "/" + editorsPicker[i].slug;
              }else {
                url = "/p/" + editorsPicker[i].category.slug + "/" + editorsPicker[i].slug;
-             }
+             } -->
             %>
             <div class="img-fluid dein-image" url="<%= url%>" style="background-image: url('<%= editorsPicker[i].file %>');">
             </div>
