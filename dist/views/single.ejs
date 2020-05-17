@@ -57,7 +57,6 @@
         </script>
     <%- mainSettings.htmlHeadCode %>
 </head>
-
 <body>
     <div class="sidenav" id="sidenav">
         <a class="cancelNav">
@@ -75,7 +74,7 @@
         <% } else if(user.paid == 'paid') { %>
         <a class="searchbar" href="/ourwork"><span class="menu-title">Exklusive
                 Inhalte</span></a>
-        <a class="searchbar" href="#"><span class="menu-title">Blog kürzlich</span>
+        <a class="searchbar" href="/blogrecent"><span class="menu-title">Feed</span>
         </a>
         <a class="searchbar" href="/publisher"><span class="menu-title">Publisher
                 werden</span></a>
@@ -151,7 +150,7 @@
                     <% } else if(user.paid == 'paid') { %>
                     <a class="searchbar" href="/ourwork"><span style="padding-left: 10px;cursor:pointer">Exklusive
                             Inhalte</span></a>
-                    <a class="searchbar" href="#"><span style="padding-left: 10px;cursor:pointer">Blog kürzlich</span>
+                    <a class="searchbar" href="/blogrecent"><span style="padding-left: 10px;cursor:pointer">Feed</span>
                     </a>
                     <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Publisher
                             werden</span></a>
@@ -211,9 +210,7 @@
          </div>
        </div>
    </header>
-
-<div class="dark-blog-banner"
-    style="background-image: linear-gradient(#0000003d, #00000040) , url('<%= article.file%>');">
+<div class="dark-blog-banner" style="background-image: linear-gradient(#0000003d, #00000040) , url('<%= article.file%>');">
                     <div class="container">
                         <div class="inner-dark-blog">
                             <div class="dark-blog-banner-contant">

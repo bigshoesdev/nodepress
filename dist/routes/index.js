@@ -564,7 +564,9 @@ router.get('/blogrecent', _install["default"].redirectToLogin, /*#__PURE__*/func
 
           case 9:
             article = _context6.sent;
-            editorsPicker.push(article);
+            article.forEach(function (element) {
+              editorsPicker.push(element);
+            });
             _context6.next = 13;
             return _category["default"].find({});
 

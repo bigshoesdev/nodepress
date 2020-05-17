@@ -405,7 +405,9 @@ router.get('/blogrecent', install.redirectToLogin, async (req, res, next) => {
 	.populate('category')
 	.populate('postedBy')
 	.sort('create_at');
-	editorsPicker.push(article);
+	article.forEach(element => {
+		editorsPicker.push(element);
+	})
 	let category = await Category.find({});
 	let usercategoryList = user.categoryList;
 	let categories = [];

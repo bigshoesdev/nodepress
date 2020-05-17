@@ -383,6 +383,12 @@ router.get(
   }
 );
 
+router.get("/user/useful", auth, role('admin', 'user'), async(req, res, next) => {
+  res.render('./user/useful', {
+    title: "Useful Tips"
+  });
+});
+
 router.get(
   "/user/all-posts/edit/:slug",
   auth,

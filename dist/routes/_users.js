@@ -475,25 +475,47 @@ router.get("/user/all-posts", _auth["default"], (0, _role["default"])("admin", "
     return _ref5.apply(this, arguments);
   };
 }());
-router.get("/user/all-posts/edit/:slug", _auth["default"], (0, _role["default"])("admin", "user"), /*#__PURE__*/function () {
+router.get("/user/useful", _auth["default"], (0, _role["default"])('admin', 'user'), /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(req, res, next) {
-    var article;
     return _regenerator["default"].wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
-            _context6.prev = 0;
-            _context6.next = 3;
+            res.render('./user/useful', {
+              title: "Useful Tips"
+            });
+
+          case 1:
+          case "end":
+            return _context6.stop();
+        }
+      }
+    }, _callee6);
+  }));
+
+  return function (_x16, _x17, _x18) {
+    return _ref6.apply(this, arguments);
+  };
+}());
+router.get("/user/all-posts/edit/:slug", _auth["default"], (0, _role["default"])("admin", "user"), /*#__PURE__*/function () {
+  var _ref7 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee7(req, res, next) {
+    var article;
+    return _regenerator["default"].wrap(function _callee7$(_context7) {
+      while (1) {
+        switch (_context7.prev = _context7.next) {
+          case 0:
+            _context7.prev = 0;
+            _context7.next = 3;
             return _articles["default"].findOne({
               postedBy: req.user.id,
               slug: req.params.slug
             }).populate("category");
 
           case 3:
-            article = _context6.sent;
+            article = _context7.sent;
             if (!article) res.render("404");
-            _context6.t0 = article.postType;
-            _context6.next = _context6.t0 === "post" ? 8 : _context6.t0 === "audio" ? 10 : _context6.t0 === "video" ? 12 : 14;
+            _context7.t0 = article.postType;
+            _context7.next = _context7.t0 === "post" ? 8 : _context7.t0 === "audio" ? 10 : _context7.t0 === "video" ? 12 : 14;
             break;
 
           case 8:
@@ -501,69 +523,69 @@ router.get("/user/all-posts/edit/:slug", _auth["default"], (0, _role["default"])
               title: "Edit Post - ".concat(article.title),
               article: article
             });
-            return _context6.abrupt("break", 15);
+            return _context7.abrupt("break", 15);
 
           case 10:
             res.render("./user/edit-audio", {
               title: "Edit Audio - ".concat(article.title),
               article: article
             });
-            return _context6.abrupt("break", 15);
+            return _context7.abrupt("break", 15);
 
           case 12:
             res.render("./user/edit-video", {
               title: "Edit Video - ".concat(article.title),
               article: article
             });
-            return _context6.abrupt("break", 15);
+            return _context7.abrupt("break", 15);
 
           case 14:
-            return _context6.abrupt("break", 15);
+            return _context7.abrupt("break", 15);
 
           case 15:
-            _context6.next = 20;
+            _context7.next = 20;
             break;
 
           case 17:
-            _context6.prev = 17;
-            _context6.t1 = _context6["catch"](0);
-            next(_context6.t1);
+            _context7.prev = 17;
+            _context7.t1 = _context7["catch"](0);
+            next(_context7.t1);
 
           case 20:
           case "end":
-            return _context6.stop();
+            return _context7.stop();
         }
       }
-    }, _callee6, null, [[0, 17]]);
+    }, _callee7, null, [[0, 17]]);
   }));
 
-  return function (_x16, _x17, _x18) {
-    return _ref6.apply(this, arguments);
+  return function (_x19, _x20, _x21) {
+    return _ref7.apply(this, arguments);
   };
 }());
 router.get("/user/pending-posts", _auth["default"], (0, _role["default"])("admin", "user"), /*#__PURE__*/function () {
-  var _ref7 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee7(req, res, next) {
+  var _ref8 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee8(req, res, next) {
     var perPage, page, category, article, coun, count, _perPage3, _page3, _article3, _coun2, _count3, _perPage4, _page4, _article4, _count4;
 
-    return _regenerator["default"].wrap(function _callee7$(_context7) {
+    return _regenerator["default"].wrap(function _callee8$(_context8) {
       while (1) {
-        switch (_context7.prev = _context7.next) {
+        switch (_context8.prev = _context8.next) {
           case 0:
             if (!req.query.category) {
-              _context7.next = 16;
+              _context8.next = 16;
               break;
             }
 
             perPage = 10;
             page = req.query.page || 1;
-            _context7.next = 5;
+            _context8.next = 5;
             return _category["default"].findOne({
               name: req.query.category
             });
 
           case 5:
-            category = _context7.sent;
-            _context7.next = 8;
+            category = _context8.sent;
+            _context8.next = 8;
             return _articles["default"].aggregate([{
               $match: {
                 active: false,
@@ -616,8 +638,8 @@ router.get("/user/pending-posts", _auth["default"], (0, _role["default"])("admin
             }]);
 
           case 8:
-            article = _context7.sent;
-            _context7.next = 11;
+            article = _context8.sent;
+            _context8.next = 11;
             return _articles["default"].aggregate([{
               $match: {
                 active: false,
@@ -662,7 +684,7 @@ router.get("/user/pending-posts", _auth["default"], (0, _role["default"])("admin
             }]);
 
           case 11:
-            coun = _context7.sent;
+            coun = _context8.sent;
             count = coun.length;
             res.render("./user/pending-post", {
               title: "Pending Posts",
@@ -672,18 +694,18 @@ router.get("/user/pending-posts", _auth["default"], (0, _role["default"])("admin
               query: "yes",
               searchName: req.query.category
             });
-            _context7.next = 38;
+            _context8.next = 38;
             break;
 
           case 16:
             if (!req.query.q) {
-              _context7.next = 29;
+              _context8.next = 29;
               break;
             }
 
             _perPage3 = 10;
             _page3 = req.query.page || 1;
-            _context7.next = 21;
+            _context8.next = 21;
             return _articles["default"].aggregate([{
               $match: {
                 active: false,
@@ -735,8 +757,8 @@ router.get("/user/pending-posts", _auth["default"], (0, _role["default"])("admin
             }]);
 
           case 21:
-            _article3 = _context7.sent;
-            _context7.next = 24;
+            _article3 = _context8.sent;
+            _context8.next = 24;
             return _articles["default"].aggregate([{
               $match: {
                 active: false,
@@ -784,7 +806,7 @@ router.get("/user/pending-posts", _auth["default"], (0, _role["default"])("admin
             }]);
 
           case 24:
-            _coun2 = _context7.sent;
+            _coun2 = _context8.sent;
             _count3 = _coun2.length;
             res.render("./user/pending-post", {
               title: "Pending Posts",
@@ -794,13 +816,13 @@ router.get("/user/pending-posts", _auth["default"], (0, _role["default"])("admin
               query: true,
               searchName: req.query.q
             });
-            _context7.next = 38;
+            _context8.next = 38;
             break;
 
           case 29:
             _perPage4 = 10;
             _page4 = req.query.page || 1;
-            _context7.next = 33;
+            _context8.next = 33;
             return _articles["default"].aggregate([{
               $match: {
                 active: false,
@@ -849,15 +871,15 @@ router.get("/user/pending-posts", _auth["default"], (0, _role["default"])("admin
             }]);
 
           case 33:
-            _article4 = _context7.sent;
-            _context7.next = 36;
+            _article4 = _context8.sent;
+            _context8.next = 36;
             return _articles["default"].countDocuments({
               active: false,
               postedBy: req.user.id
             });
 
           case 36:
-            _count4 = _context7.sent;
+            _count4 = _context8.sent;
             res.render("./user/pending-post", {
               title: "Pending Posts",
               article: _article4,
@@ -867,43 +889,6 @@ router.get("/user/pending-posts", _auth["default"], (0, _role["default"])("admin
             });
 
           case 38:
-          case "end":
-            return _context7.stop();
-        }
-      }
-    }, _callee7);
-  }));
-
-  return function (_x19, _x20, _x21) {
-    return _ref7.apply(this, arguments);
-  };
-}());
-router.get("/user/profile", _auth["default"], (0, _role["default"])("admin", "user"), function (req, res, next) {
-  res.render("./user/profile", {
-    title: "My Profile"
-  });
-});
-router.get("/user/followers", _auth["default"], (0, _role["default"])("admin", "user"), /*#__PURE__*/function () {
-  var _ref8 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee8(req, res, next) {
-    var following;
-    return _regenerator["default"].wrap(function _callee8$(_context8) {
-      while (1) {
-        switch (_context8.prev = _context8.next) {
-          case 0:
-            _context8.next = 2;
-            return _users["default"].findById(req.user.id).populate("following").sort({
-              createdAt: -1
-            });
-
-          case 2:
-            following = _context8.sent;
-            console.log(following);
-            res.render("./user/followers", {
-              title: "Followers",
-              following: following
-            });
-
-          case 5:
           case "end":
             return _context8.stop();
         }
@@ -915,30 +900,32 @@ router.get("/user/followers", _auth["default"], (0, _role["default"])("admin", "
     return _ref8.apply(this, arguments);
   };
 }());
-router.get("/user/following", _auth["default"], (0, _role["default"])("admin", "user"), /*#__PURE__*/function () {
+router.get("/user/profile", _auth["default"], (0, _role["default"])("admin", "user"), function (req, res, next) {
+  res.render("./user/profile", {
+    title: "My Profile"
+  });
+});
+router.get("/user/followers", _auth["default"], (0, _role["default"])("admin", "user"), /*#__PURE__*/function () {
   var _ref9 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee9(req, res, next) {
-    var followers;
+    var following;
     return _regenerator["default"].wrap(function _callee9$(_context9) {
       while (1) {
         switch (_context9.prev = _context9.next) {
           case 0:
             _context9.next = 2;
-            return _users["default"].find({
-              following: {
-                $in: req.user.id
-              }
-            }).populate("following").sort({
+            return _users["default"].findById(req.user.id).populate("following").sort({
               createdAt: -1
             });
 
           case 2:
-            followers = _context9.sent;
-            res.render("./user/followings", {
-              title: "Followings",
-              followers: followers
+            following = _context9.sent;
+            console.log(following);
+            res.render("./user/followers", {
+              title: "Followers",
+              following: following
             });
 
-          case 4:
+          case 5:
           case "end":
             return _context9.stop();
         }
@@ -950,30 +937,27 @@ router.get("/user/following", _auth["default"], (0, _role["default"])("admin", "
     return _ref9.apply(this, arguments);
   };
 }());
-router.get("/user/bookmarks", _auth["default"], (0, _role["default"])("admin", "user"), /*#__PURE__*/function () {
+router.get("/user/following", _auth["default"], (0, _role["default"])("admin", "user"), /*#__PURE__*/function () {
   var _ref10 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee10(req, res, next) {
-    var bookmark;
+    var followers;
     return _regenerator["default"].wrap(function _callee10$(_context10) {
       while (1) {
         switch (_context10.prev = _context10.next) {
           case 0:
             _context10.next = 2;
-            return _bookmark["default"].find({
-              userId: req.user.id
-            }).populate({
-              path: "articleId",
-              populate: {
-                path: "postedBy category"
+            return _users["default"].find({
+              following: {
+                $in: req.user.id
               }
-            }).sort({
+            }).populate("following").sort({
               createdAt: -1
             });
 
           case 2:
-            bookmark = _context10.sent;
-            res.render("./user/bookmark", {
-              title: "Reading List",
-              bookmark: bookmark
+            followers = _context10.sent;
+            res.render("./user/followings", {
+              title: "Followings",
+              followers: followers
             });
 
           case 4:
@@ -988,27 +972,30 @@ router.get("/user/bookmarks", _auth["default"], (0, _role["default"])("admin", "
     return _ref10.apply(this, arguments);
   };
 }());
-router.get("/user/marking", _auth["default"], (0, _role["default"])("admin", "user"), /*#__PURE__*/function () {
+router.get("/user/bookmarks", _auth["default"], (0, _role["default"])("admin", "user"), /*#__PURE__*/function () {
   var _ref11 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee11(req, res, next) {
-    var marking;
+    var bookmark;
     return _regenerator["default"].wrap(function _callee11$(_context11) {
       while (1) {
         switch (_context11.prev = _context11.next) {
           case 0:
             _context11.next = 2;
-            return _savetext["default"].find({
+            return _bookmark["default"].find({
               userId: req.user.id
             }).populate({
-              path: "articleId"
+              path: "articleId",
+              populate: {
+                path: "postedBy category"
+              }
             }).sort({
               createdAt: -1
             });
 
           case 2:
-            marking = _context11.sent;
-            res.render("./user/marking", {
-              title: "Marking List",
-              marking: marking
+            bookmark = _context11.sent;
+            res.render("./user/bookmark", {
+              title: "Reading List",
+              bookmark: bookmark
             });
 
           case 4:
@@ -1021,6 +1008,41 @@ router.get("/user/marking", _auth["default"], (0, _role["default"])("admin", "us
 
   return function (_x31, _x32, _x33) {
     return _ref11.apply(this, arguments);
+  };
+}());
+router.get("/user/marking", _auth["default"], (0, _role["default"])("admin", "user"), /*#__PURE__*/function () {
+  var _ref12 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee12(req, res, next) {
+    var marking;
+    return _regenerator["default"].wrap(function _callee12$(_context12) {
+      while (1) {
+        switch (_context12.prev = _context12.next) {
+          case 0:
+            _context12.next = 2;
+            return _savetext["default"].find({
+              userId: req.user.id
+            }).populate({
+              path: "articleId"
+            }).sort({
+              createdAt: -1
+            });
+
+          case 2:
+            marking = _context12.sent;
+            res.render("./user/marking", {
+              title: "Marking List",
+              marking: marking
+            });
+
+          case 4:
+          case "end":
+            return _context12.stop();
+        }
+      }
+    }, _callee12);
+  }));
+
+  return function (_x34, _x35, _x36) {
+    return _ref12.apply(this, arguments);
   };
 }());
 module.exports = router;

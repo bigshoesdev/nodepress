@@ -178,7 +178,8 @@
          <%  var editorsPickerLength = editorsPicker.length;
          if(editorsPicker.length > 3) {
             editorsPickerLength = 3;
-         }%>
+         }
+         %>
          <% for(var i = 0; i < editorsPickerLength; i ++){%>
          <div class="col-md-12 col-lg-4">
             <%
@@ -370,35 +371,6 @@
       </div>
    </section>
 </div>
-
-<div class="posts_parallax_slider2">
-	<div class="container">
-		<div class="row align-items-center">
-			<div class="col-12 col-lg-12">
-				<div id="owl-carousel3" class="owl-carousel owl-theme">
-               <!-- -->
-               <% for(var i = 0; i < favorites.length; i ++) {%>
-                  <% 
-                     var url="#";
-                     if(favorites[i].postedBy.roleId == "admmin"){
-                        url = "/d/" + favorites[i].category.slug + "/" + favorites[i].slug;
-                     }else {
-                        url = "/p/" + favorites[i].category.slug + "/" + favorites[i].slug;
-                     }
-                  %>
-					<div class="item item_bg2" url="<%= url%>" style="background-image: url('<%= favorites[i].file%>');">
-						<div class="slider_item">
-						   <h5><%= favorites[i].category.name%><span></span></h5>
-						   <h1><%= favorites[i].title%></h1>
-                  </div>
-               </div>
-               <% } %>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
 <!-- Posts Parallax Slider2 Style end -->
 <section class="footer-main recent_blog_footer" id="footer">
    <div class="container">
