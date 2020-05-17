@@ -305,7 +305,7 @@
                <img src="<%= authorarticle[i].postedBy.profilePicture%>" />
                <%= authorarticle[i].postedBy.username%></a>
             <h1><%= authorarticle[i].title%></h1>
-            <a class="slider_button" href="<%= url%>" target="_blank">Read more<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+            <a class="slider_button" href="<%= url%>" target="_blank">Mehr erfahren<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
          </div>
       </div>
       <% } %>
@@ -358,12 +358,12 @@
                   url = "/p/" + random[i].category.slug + "/" + random[i].slug;
                }
                %>
-            <div class="col-md-12 col-lg-4">
+            <div class="col-md-12 col-lg-4 mt-5">
                <div class="content-two-text">
                   <p><%= random[i].category.name%></p>
                   <h2><%= random[i].title%></h2>
                   <p><%= random[i].summary%></p>
-                  <a class="read-more" href="<%= url%>" target="_blank">Read more<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                  <a class="read-more" href="<%= url%>" target="_blank">Mehr erfahren<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                </div>
             </div>
             <% }%>
