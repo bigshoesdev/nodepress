@@ -225,14 +225,16 @@
                                 <%
                                 var urluser = "";
                                 var qualify = false;
-                                if(user.paid == "free"){
-                                  if(post[i * 3 + j].qualify == "accept"){
-                                    qualify = true;
-                                  } else {
+                                if(user){
+                                  if(user.paid == "free"){
+                                    if(post[i * 3 + j].qualify == "accept"){
+                                      qualify = true;
+                                    } else {
+                                      urluser = "/p/" + post[i*3 + j].category.slug + "/" + post[i*3 + j].slug;
+                                    }
+                                  }else{
                                     urluser = "/p/" + post[i*3 + j].category.slug + "/" + post[i*3 + j].slug;
                                   }
-                                }else{
-                                  urluser = "/p/" + post[i*3 + j].category.slug + "/" + post[i*3 + j].slug;
                                 }
                                 %>
                               <a href="<%= urluser%>" class="articlelink" qualify="<%= qualify%>" style="color:black;font-family: EB Garamond;">
