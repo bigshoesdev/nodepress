@@ -424,7 +424,7 @@ router.get('/blogrecent', install.redirectToLogin, async (req, res, next) => {
 		.populate('postedBy')
 		.sort({ views: -1 })
 		.limit(5);
-
+		
 	let followers = await User.find({
 		following: { $in: req.user.id }
 	}).populate("following").sort({ createdAt: -1 });
@@ -509,15 +509,6 @@ router.get('/ourwork', async (req, res, next) => {
 router.get('/', install.redirectToLogin, async (req, res, next) => {
 	try {
 		var categories = await Category.find({});
-		var users = await User.find({});
-		let payload = {
-			paid: "paid",
-			signupProcess: "/blogrecent",
-		};
-		users.forEach(async item => {
-			await User.updateOne({ _id: item._id },
-				payload);
-		});
 		res.render('index', {
 			categories: categories,
 		});
