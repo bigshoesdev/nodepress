@@ -293,3 +293,56 @@ h6 a {
    font-size: 12px;
    color: gray;
 }
+
+.popup {
+   position: fixed;
+   width: 60%;
+   height: 84%;
+   top: 10%;
+   left: 20%;
+   z-index: 999999;
+   text-align: center;
+   overflow-x: hidden;
+   overflow-y: auto;
+}
+.popup-back {
+   position: fixed;
+   top: 0;
+   left: 0;
+   z-index: 99999;
+   width: 100vw;
+   height: 100vh;
+   background-color: white;
+   opacity: 0.85;
+}
+.popupContainer {
+   color: white;
+   position: absolute;
+   top: 30%;
+   left: 25%;
+   width: 50%;
+   margin: auto;
+}
+.popupTitle {
+   font-size: 30px;
+   font-weight: 900;
+}
+.popupContent {
+   font-size: 20px;
+}
+.popupButton {
+   border: 2px solid #98e0f2;
+   padding: 14px 40px;
+   font-size: 14px;
+   font-weight: 700;
+   border-radius: 4px;
+   color: white;
+}
+.popupButton:hover {
+   background-color: black;
+   color: white;
+}
+#savecontentPopup {
+   background-image: url("/images/popup/savecontent.jpeg");
+   background-size: cover;
+}

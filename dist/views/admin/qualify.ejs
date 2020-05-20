@@ -114,6 +114,15 @@
         background: #000;
         color: #fff;
     }
+
+    .modal {
+        z-index: 9999;
+        top: 30%;
+    }
+
+    .modal-header {
+        display: block !important;
+    }
 </style>
 <%- include ./partials/sidebar %>
 <!-- Content Body Start -->
@@ -212,11 +221,10 @@
                             <% for(var key in article) { %>
                             <tr>
                                 <td class="">
-                                    <input type="checkbox" name="ids" 
-                                    value="<%= article[key]._id %>" />
+                                    <input type="checkbox" name="ids" value="<%= article[key]._id %>" />
                                 </td>
                                 <td>
-                                   <%= article[key].postedBy.firstName%> <%= article[key].postedBy.lastName%>
+                                    <%= article[key].postedBy.firstName%> <%= article[key].postedBy.lastName%>
                                 </td>
                                 <td class="format" style="width: 160px;" data-toggle="tooltip" data-placement="bottom"
                                     title="Edit Post">
@@ -226,24 +234,24 @@
                                 </td>
                                 <td>
                                     <% if(article[key].qualify == "waiting"){ %>
-                                       <span class="badge badge-info">Waiting</span>
-                                 <% } %>
-                                 <% if(article[key].qualify == "message"){ %>
-                                       <span class="badge badge-warning">Message Sent</span>
-                                 <% } %>
-                                 <% if(article[key].qualify == "notqualify"){ %>
-                                       <span class="badge badge-danger">Not Qualified</span>
-                                 <% } %>
-                                 <% if(article[key].qualify == "qualify"){ %>
-                                       <span class="badge badge-success">Online & Qualifed</span>
-                                 <% } %>
-                                 <% if(article[key].qualify == "declined"){ %>
-                                       <span class="badge badge-danger">Declined</span>
-                                 <% } %>
+                                    <span class="badge badge-info">Waiting</span>
+                                    <% } %>
+                                    <% if(article[key].qualify == "message"){ %>
+                                    <span class="badge badge-warning">Message Sent</span>
+                                    <% } %>
+                                    <% if(article[key].qualify == "notqualify"){ %>
+                                    <span class="badge badge-danger">Not Qualified</span>
+                                    <% } %>
+                                    <% if(article[key].qualify == "qualify"){ %>
+                                    <span class="badge badge-success">Online & Qualifed</span>
+                                    <% } %>
+                                    <% if(article[key].qualify == "declined"){ %>
+                                    <span class="badge badge-danger">Declined</span>
+                                    <% } %>
                                 </td>
                                 <td><%= article[key].category.name %></td>
                                 <td class="text-center">
-                                   <%= article[key].views%>
+                                    <%= article[key].views%>
                                     <!-- <% if(article[key].showOnlyToRegisteredUsers == true) {%>
                                     <span class="badge badge-success">Qualified</span>
                                     <%} else {%>
@@ -259,20 +267,24 @@
                                     <% }%>
                                 </td> -->
                                 <!-- <td class="text-center"> -->
-                                    <!-- <span class="count-comment"> -->
-                                        <!-- <i class="zmdi zmdi-comments"></i> -->
-                                        <!-- <%= article[key].comments.length %> -->
-                                    <!-- </span> -->
+                                <!-- <span class="count-comment"> -->
+                                <!-- <i class="zmdi zmdi-comments"></i> -->
+                                <!-- <%= article[key].comments.length %> -->
+                                <!-- </span> -->
                                 <!-- </td> -->
                                 <!-- <td><%= article[key].createdAt.toLocaleDateString() %></td> -->
                                 <td>
-                                    <button class="btn btn-warning btn-sm">Send Message</button>
+                                    <button articleId="<%= article[key]._id%>" type="button"
+                                        class="btn btn-warning btn-sm sendMessage" data-toggle="modal"
+                                        data-target="#sendMessage">Send Message</button>
                                 </td>
                                 <td>
-                                    <button class="btn btn-success btn-sm">Send Message</button>
+                                    <button articleId="<%= article[key]._id%>" type="button" data-toggle="modal"
+                                        data-target="#accept" class="btn btn-success accept btn-sm">Accept</button>
                                 </td>
                                 <td>
-                                    <button class="btn btn-danger btn-sm">Send Message</button>
+                                    <button articleId="<%= article[key]._id%>" type="button" data-toggle="modal"
+                                        data-target="#decline" class="btn btn-danger btn-sm decline">Decline</button>
                                 </td>
                             </tr>
                             <% } %>
@@ -280,6 +292,69 @@
                     </table>
                 </div>
             </form>
+        </div>
+        <div id="sendMessage" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Send Message</h4>
+                    </div>
+                    <form action="/dashboard/article/message" method="POST">
+                        <div class="modal-body">
+                            <p>Content</p>
+                            <textarea required name="message" class="form-control"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" class="articleId" name="articleId" />
+                            <button class="btn btn-info">Send</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="accept" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Accept</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>The article has accepted.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <form action="/dashboard/article/accept" method="POST">
+                            <input type="hidden" class="articleId" name="articleId" />
+                            <button class="btn btn-info">Accept</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div id="decline" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Decline</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>The article has declined.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <form action="/dashboard/article/decline" method="POST">
+                            <input type="hidden" class="articleId" name="articleId" />
+                            <button class="btn btn-info">Decline</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
         </div>
         <!--Manage Product List End-->
         <div class="container mt-4">
@@ -408,7 +483,6 @@
 <!-- Footer Section Start -->
 <div class="footer-section">
     <div class="container-fluid">
-
         <div class="footer-copyright text-center">
             <p class="text-body-light">
                 <script>document.write(new Date().getFullYear())</script> &copy; <a
@@ -488,6 +562,18 @@
         // Add slideUp animation to Bootstrap dropdown when collapsing.
         $('.dropdown').on('hide.bs.dropdown', function () {
             $(this).find('.dropdown-menu').first().stop(true, true).slideUp();
+        });
+        $('.sendMessage').click(function () {
+            var articleId = $(this).attr('articleId');
+            $('.articleId').val(articleId);
+        });
+        $('.accept').click(function () {
+            var articleId = $(this).attr('articleId');
+            $('.articleId').val(articleId);
+        });
+        $('.decline').click(function () {
+            var articleId = $(this).attr('articleId');
+            $('.articleId').val(articleId);
         });
     });
 </script>

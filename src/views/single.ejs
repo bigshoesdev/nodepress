@@ -57,6 +57,7 @@
         </script>
     <%- mainSettings.htmlHeadCode %>
 </head>
+
 <body>
     <div class="sidenav" id="sidenav">
         <a class="cancelNav">
@@ -235,12 +236,14 @@
                                     <span style="color: white; border-left: 3px solid white;">
                                         <% if(bookmark != true) {%>
                                         <i class="fa fa-star" style="margin-right: 10px;"></i>
-                                        <a style="color: white;" class="savearticle" href="/bookmark/create?articleId=<%= article._id %>"">Artikel speichern</a>
+                                        <a style="color: white;" class="savearticle"
+                                            url="/bookmark/create?articleId=<%= article._id %>">Artikel speichern</a>
                                         <% } else {%>
-                                            <i class=" fa fa-star" style="margin-right: 10px; color: #98E0F2;"></i>
-                                            <a style=" color: white;" class="deletearticle"
-                                                href="/bookmark/delete?bookmarkId=<%= bookmarkId %>">Artikel nicht mehr speichern</a>
-                                            <%}%>
+                                        <i class=" fa fa-star" style="margin-right: 10px; color: #98E0F2;"></i>
+                                        <a style=" color: white;" class="deletearticle"
+                                            href="/bookmark/delete?bookmarkId=<%= bookmarkId %>">Artikel nicht mehr
+                                            speichern</a>
+                                        <%}%>
                                     </span>
                                 </div>
                                 <div class="row">
@@ -249,7 +252,7 @@
                                 <div class="dark-blog-banner-heading text-center" style="width: 80%;margin: auto;">
                                     <p style="color: white; font-size:  20px; overflow-wrap: break-word; font-family: EB Garamond">
                                         <%= article.summary%></p>
-                                    <input type="hidden" id="firstlettercolor" value="<%= article.category.color%>">
+                                        <input type="hidden" id="firstlettercolor" value="<%= article.category.color%>">
                                 </div>
                             </div>
                         </div>
@@ -447,55 +450,58 @@
 
                             </div>
                             <div class="footer-copyright">
-                                <p><% if(copyright != undefined) { %><p>
-                                        <%= copyright.charAt(0).toUpperCase() + copyright.substring(1) %></a>
-                                    </p>
-                                    <%}%></p>
-                                                         </div>
-                                                         <div class="row">
-                                                            <div class="col-md-10">
-                                                               <div class="row">
-                                                                  <% for(var i = 0; i < footercategory.length; i ++){%>
-                                    <div class="col-md-3 text-left">
-                                        <a style="color: black;" href="/kategorie/<%= footercategory[i].slug%>"
-                                            class="footercategory"><%= footercategory[i].name %></a>
+                                <p>
+                                    <% if(copyright != undefined) { %>
+                                <p>
+                                    <%= copyright.charAt(0).toUpperCase() + copyright.substring(1) %></a>
+                                </p>
+                                <%}%>
+                                </p>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="row">
+                                    <% for(var i = 0; i < footercategory.length; i ++){%>
+                                <div class="col-md-3 text-left">
+                                    <a style="color: black;" href="/kategorie/<%= footercategory[i].slug%>"
+                                        class="footercategory"><%= footercategory[i].name %></a>
+                                </div>
+                                <%}%>
                                     </div>
-                                    <%}%>
-                                                               </div>
-                                                            </div>
-                                                            <div class="col-md-2">
-                                                               <div class="row">
-                                                                  <div class="col-md-12 text-left">
-                                                                     <h4><a style="color:black" href="/d/official/impressum" class="footercategory">Impressum</a></h4>
-                                                                  </div>
-                                                               </div>
-                                                               <div class="row">
-                                                                  <div class="col-md-12 text-left">
-                                                                     <h4><a style="color:black" class="footercategory">AGB</a></h4>
-                                                                  </div>
-                                                               </div>
-                                                               <div class="row">
-                                                                  <div class="col-md-12 text-left">
-                                                                     <h4><a style="color:black" href="/d/official/datenschutz" class="footercategory">Datenschutz</a></h4>
-                                                                  </div>
-                                                               </div>
-                                                            </div>
-                                                         </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="row">
+                                        <div class="col-md-12 text-left">
+                                            <h4><a style="color:black" href="/d/official/impressum" class="footercategory">Impressum</a></h4>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 text-left">
+                                            <h4><a style="color:black" class="footercategory">AGB</a></h4>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 text-left">
+                                            <h4><a style="color:black" href="/d/official/datenschutz" class="footercategory">Datenschutz</a></h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
                                                         <div class="dropup">
                                                             <button class="dropbtn"><i class="fa fa-share-alt"
                                                                     aria-hidden="true"></i></button>
                                                             <div class="dropup-content">
                                                                 <a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media=<%= article.file%>&url=https://dype.me/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>&description=<%= article.title%>"><i
-                                        class="fa fa-pinterest" aria-hidden="true"></i></a>
-                                    <a target="_blank"
-                                        href="https://www.linkedin.com/shareArticle?mini=false&url=https://dype.me/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>&title=<%= article.metatitle%>&summary=<%= article.metadescription%>&source=https://dype.me/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>"><i
-                                            class="fa fa-linkedin" aria-hidden="true"></i></a>
-                                    <a target="_blank"
-                                        href="https://twitter.com/intent/tweet?status=<%= article.title%>+<%= siteLink%>/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>"><i
-                                            class="fa fa-twitter" aria-hidden="true"></i></a>
-                                    <a target="_blank"
-                                        href="https://www.facebook.com/sharer/sharer.php?u=<%= siteLink%>/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>&title=<%= article.title%>"><i
-                                            class="fa fa-facebook" aria-hidden="true"></i></a>
+                                    class="fa fa-pinterest" aria-hidden="true"></i></a>
+                                <a target="_blank"
+                                    href="https://www.linkedin.com/shareArticle?mini=false&url=https://dype.me/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>&title=<%= article.metatitle%>&summary=<%= article.metadescription%>&source=https://dype.me/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>"><i
+                                        class="fa fa-linkedin" aria-hidden="true"></i></a>
+                                <a target="_blank"
+                                    href="https://twitter.com/intent/tweet?status=<%= article.title%>+<%= siteLink%>/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>"><i
+                                        class="fa fa-twitter" aria-hidden="true"></i></a>
+                                <a target="_blank"
+                                    href="https://www.facebook.com/sharer/sharer.php?u=<%= siteLink%>/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>&title=<%= article.title%>"><i
+                                        class="fa fa-facebook" aria-hidden="true"></i></a>
                             </div>
                         </div>
                         <div class="dropup-mobile">
@@ -544,7 +550,15 @@
                       </div>
                     </div>
                     <hr>
+                </div>
+                <div class="popup" id="savecontentPopup">
+                    <div class="popupContainer">
+                      <p class="popupTitle">Leider können nur Premium-Mitglieder Beiträge für später speichern.</p>
+                      <p class="popupContent">Du möchtest Beiträge speichern, viele weitere exklusive Vorteile genießen und unsere Autoren unterstützen? Dann werde jetzt Premium-Member!</p><br><br>
+                      <a class="popupButton" href="/membership">Jetzt Premium-Mitglied werden</a>
+                    </div>
                   </div>
+                  <div class="popup-back"></div>
                 <%- mainSettings.googleAnalyticsCode %>
                 <script src=" /js/aos.js" type="text/javascript"></script>
                             <script src="/js/jquery-2.1.3.min.js" type="text/javascript"></script>
@@ -608,9 +622,9 @@
                                 // })
                                 $(function () {
                                     $('.inner-dark-blog-content-one a').attr('rel', 'nofollow');
-                                    $('.inner-dark-blog-content-one a').map( function() {
+                                    $('.inner-dark-blog-content-one a').map(function () {
                                         var url = $(this).attr('href');
-                                        if(url.includes('https://dype.me') || url.includes('https://www.dype.me')){
+                                        if (url.includes('https://dype.me') || url.includes('https://www.dype.me')) {
                                             $(this).attr('rel', 'dofollow');
                                         }
                                     });
@@ -622,13 +636,24 @@
                                 $('.clear-notification').click(function () {
                                     $('.notification').hide();
                                 });
-                                $('.savearticle').click(function(){
-                                    alert("article saved");
-                                });
-                                $('.deletearticle').click(function(){
+                                $('.deletearticle').click(function () {
                                     alert("save article deleted");
                                 });
-
+                                $(".popup").hide();
+                                $(".popup-back").hide();
+                                $('.savearticle').click(function () {
+                                    var userPaid = "<%= user.paid%>";
+                                    if (userPaid == "free") {
+                                        $('.popup').show();
+                                        $('.popup-back').show();
+                                    } else {
+                                        location.replace($(this).attr('url'));
+                                    }
+                                });
+                                $('.popup-back').click(function () {
+                                    $(".popup").hide();
+                                    $(".popup-back").hide();
+                                });
                             </script>
 </body>
 

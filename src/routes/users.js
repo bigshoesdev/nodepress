@@ -137,10 +137,9 @@ router.post('/category/show-more', install.redirectToLogin, async (req, res, nex
   }
 });
 router.get('/downgrade', install.redirectToLogin, async (req, res, next) => {
-  await User.updateOne({_id: req.query.user}, {paid: "free"});
+  await User.updateOne({_id: req.query.user}, {paid: "free", signupProcess: "/afterlogin"});
   res.redirect('back');
 });
-
 router.get('/onboarding', install.redirectToLogin, async (req, res, next) => {
   let redirect = req.query.redirect ? true : false;
   try {

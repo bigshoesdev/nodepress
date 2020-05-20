@@ -18,3 +18,57 @@
    background-color: white;
    padding: 30px;
 }
+
+
+.popup {
+   position: fixed;
+   width: 60%;
+   height: 84%;
+   top: 10%;
+   left: 20%;
+   z-index: 999999;
+   overflow-x: hidden;
+   overflow-y: auto;
+}
+.popup-back {
+   position: fixed;
+   top: 0;
+   left: 0;
+   z-index: 99999;
+   width: 100vw;
+   height: 100vh;
+   background-color: white;
+   opacity: 0.85;
+}
+.popupContainer {
+   color: white;
+   position: absolute;
+   top: 15%;
+   left: 5%;
+   width: 50%;
+   margin: auto;
+   text-align: center;
+}
+.popupTitle {
+   font-size: 35px;
+   font-weight: 900;
+}
+.popupContent {
+   font-size: 28px;
+}
+.popupButton {
+   border: 2px solid #98e0f2;
+   padding: 14px 40px;
+   font-size: 14px;
+   font-weight: 700;
+   border-radius: 4px;
+   color: white;
+}
+.popupButton:hover {
+   background-color: black;
+   color: white;
+}
+#blogerPopup {
+   background-image: url("/images/popup/bloger.jpeg");
+   background-size: cover;
+}

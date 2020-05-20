@@ -537,7 +537,7 @@ router.get('/paycontent', _install["default"].redirectToLogin, /*#__PURE__*/func
 }());
 router.get('/blogrecent', _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(req, res, next) {
-    var userId, user, editorsPicker, article, category, usercategoryList, categories, trendings, followers, authorarticle, i, art, j, newest, random, favorites, total_article;
+    var userId, user, editorsPicker, feed, article, category, usercategoryList, categories, trendings, trends, followers, authorarticle, i, art, j, newest, news, random, randoms, favorites, total_article;
     return _regenerator["default"].wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
@@ -557,20 +557,26 @@ router.get('/blogrecent', _install["default"].redirectToLogin, /*#__PURE__*/func
 
           case 6:
             editorsPicker = _context6.sent;
-            _context6.next = 9;
+            feed = [];
+            _context6.next = 10;
             return _articles["default"].find({
               addToBreaking: true
             }).populate('category').populate('postedBy').sort('create_at');
 
-          case 9:
+          case 10:
             article = _context6.sent;
             article.forEach(function (element) {
               editorsPicker.push(element);
             });
-            _context6.next = 13;
+            editorsPicker.forEach(function (element) {
+              if (element.category.slug != "official") {
+                feed.push(element);
+              }
+            });
+            _context6.next = 15;
             return _category["default"].find({});
 
-          case 13:
+          case 15:
             category = _context6.sent;
             usercategoryList = user.categoryList;
             categories = [];
@@ -581,14 +587,22 @@ router.get('/blogrecent', _install["default"].redirectToLogin, /*#__PURE__*/func
                 }
               });
             });
-            _context6.next = 19;
+            _context6.next = 21;
             return _articles["default"].find({}).populate('category').populate('postedBy').sort({
               views: -1
+            }).sort({
+              createdAt: -1
             }).limit(5);
 
-          case 19:
+          case 21:
             trendings = _context6.sent;
-            _context6.next = 22;
+            trends = [];
+            trendings.forEach(function (element) {
+              if (element.category.slug != "official") {
+                trends.push(element);
+              }
+            });
+            _context6.next = 26;
             return _users["default"].find({
               following: {
                 $in: req.user.id
@@ -597,53 +611,69 @@ router.get('/blogrecent', _install["default"].redirectToLogin, /*#__PURE__*/func
               createdAt: -1
             });
 
-          case 22:
+          case 26:
             followers = _context6.sent;
             authorarticle = [];
             _context6.t0 = _regenerator["default"].keys(followers);
 
-          case 25:
+          case 29:
             if ((_context6.t1 = _context6.t0()).done) {
-              _context6.next = 33;
+              _context6.next = 37;
               break;
             }
 
             i = _context6.t1.value;
-            _context6.next = 29;
+            _context6.next = 33;
             return _articles["default"].find({
               postedBy: followers[i]._id
             }).populate('category').populate('postedBy').sort({
               createdAt: -1
             });
 
-          case 29:
+          case 33:
             art = _context6.sent;
 
             for (j in art) {
               authorarticle.push(art[j]);
             }
 
-            _context6.next = 25;
+            _context6.next = 29;
             break;
 
-          case 33:
-            _context6.next = 35;
+          case 37:
+            _context6.next = 39;
             return _articles["default"].find({}).sort({
               createdAt: -1
-            }).populate('category').populate('postedBy').limit(3);
+            }).populate('category').populate('postedBy');
 
-          case 35:
+          case 39:
             newest = _context6.sent;
-            _context6.next = 38;
-            return _articles["default"].find({}).populate('category').populate('postedBy').limit(6);
+            news = [];
+            newest.forEach(function (element) {
+              if (element.category.slug != "official") {
+                if (news.length != 3) {
+                  news.push(element);
+                }
+              }
+            });
+            _context6.next = 44;
+            return _articles["default"].find({}).populate('category').populate('postedBy');
 
-          case 38:
+          case 44:
             random = _context6.sent;
+            randoms = [];
+            random.forEach(function (element) {
+              if (element.category.slug != "official") {
+                if (randoms.length != 3) {
+                  randoms.push(element);
+                }
+              }
+            });
             favorites = [];
-            _context6.next = 42;
+            _context6.next = 50;
             return _articles["default"].find({}).populate('category').populate('postedBy').sort('create_at').limit(10);
 
-          case 42:
+          case 50:
             total_article = _context6.sent;
             categories.forEach(function (element) {
               total_article.forEach(function (item) {
@@ -654,16 +684,16 @@ router.get('/blogrecent', _install["default"].redirectToLogin, /*#__PURE__*/func
             });
             res.render('blogrecent', {
               title: 'Blog recent',
-              editorsPicker: editorsPicker,
+              editorsPicker: feed,
               categories: categories,
-              trendings: trendings,
+              trendings: trends,
               authorarticle: authorarticle,
-              newest: newest,
-              random: random,
+              newest: news,
+              random: randoms,
               favorites: favorites
             });
 
-          case 45:
+          case 53:
           case "end":
             return _context6.stop();
         }

@@ -287,7 +287,8 @@ router.get('/downgrade', _install["default"].redirectToLogin, /*#__PURE__*/funct
             return _users["default"].updateOne({
               _id: req.query.user
             }, {
-              paid: "free"
+              paid: "free",
+              signupProcess: "/afterlogin"
             });
 
           case 2:

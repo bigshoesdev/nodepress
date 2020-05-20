@@ -200,16 +200,17 @@
                             <img src="<%= post[i*3 + j].file %>">
                           </div>
                           <div class="recommnet-cate">
-                            <a href="javascript:void(0);" style="font-family: Montserrat;"><span><%= post[i*3 + j].category.name%></span></a>
+                            <a href="javascript:void(0);"
+                              style="font-family: Montserrat;"><span><%= post[i*3 + j].category.name%></span></a>
                           </div>
                           <div class="recommnet-heading2">
                             <p style="overflow-wrap: break-word;font-size: 18px;">
                               <% if(post[i*3 + j].postedBy.roleId == "admin"){%>
-                                <%
-                                var urladmin = "";
+                              <%
+                                var urladmin = "#";
                                 var qualify = false;
                                 if(user.paid == "free"){
-                                  if(post[i * 3 + j].qualify == "accept"){
+                                  if(post[i * 3 + j].qualify == "qualify"){
                                     qualify = true;
                                   } else {
                                     urladmin = "/d/" + post[i*3 + j].category.slug + "/" + post[i*3 + j].slug;
@@ -218,15 +219,16 @@
                                   urladmin = "/d/" + post[i*3 + j].category.slug + "/" + post[i*3 + j].slug;
                                 }
                                 %>
-                              <a href="<%= urladmin%>" class="articlelink" qualify="<%= qualify%>" style="color:black;font-family: EB Garamond;"><%= post[i*3 + j].title.charAt(0).toUpperCase() + post[i*3 + j].title.substring(1) %>
+                              <a url="<%= urladmin%>" type="button" class="articlelink" qualify="<%= qualify%>"
+                                style="color:black;font-family: EB Garamond;"><%= post[i*3 + j].title.charAt(0).toUpperCase() + post[i*3 + j].title.substring(1) %>
                               </a>
                               <%} else {%>
-                                <%
-                                var urluser = "";
+                              <%
+                                var urluser = "#";
                                 var qualify = false;
                                 if(user){
                                   if(user.paid == "free"){
-                                    if(post[i * 3 + j].qualify == "accept"){
+                                    if(post[i * 3 + j].qualify == "qualify"){
                                       qualify = true;
                                     } else {
                                       urluser = "/p/" + post[i*3 + j].category.slug + "/" + post[i*3 + j].slug;
@@ -236,7 +238,8 @@
                                   }
                                 }
                                 %>
-                              <a href="<%= urluser%>" class="articlelink" qualify="<%= qualify%>" style="color:black;font-family: EB Garamond;">
+                              <a url="<%= urluser%>" type="button" class="articlelink" qualify="<%= qualify%>"
+                                style="color:black;font-family: EB Garamond;">
                                 <%= post[i*3 + j].title.charAt(0).toUpperCase() + post[i*3 + j].title.substring(1) %>
                               </a>
                               <%}%>
@@ -380,32 +383,31 @@
         </div>
       </div>
       <div class="publish5-btn">
-        <a href="#"><span> Weitere Artikel über <%= category.name%></span><span><i style="font-weight: 900;" class="fa fa-angle-right"
-              aria-hidden="true"></i></span></a>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<section class="footer-main" id="footer">
-  <div class="container">
-     <div class="innner-footer-main">
-        <div class="footer-social-icons">
-           <div class="col-md-6 col-sm-6 text-right social-media">
-              <a href="<%= twitter %>"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                      <a style="padding: 11px 20px;" href="<%= facebook %>"><i class="fa fa-facebook"
-                          aria-hidden="true"></i></a>
-                      <a href="<%= linkedin %>"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-                    </div>
-                    <div class="col-md-6 col-sm-6 text-left social-media">
-                      <a href="<%= youtube %>"><i class="fa fa-youtube" aria-hidden="true"></i></a>
-                      <a href="<%= instagram %>"><i class="fa fa-instagram" aria-hidden="true"></i></a>
-                      <a href="<%= pinterest %>"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+        <a href="#"><span> Weitere Artikel über <%= category.name%></span><span><i style="font-weight: 900;"
+                          class="fa fa-angle-right" aria-hidden="true"></i></span></a>
                     </div>
                   </div>
-                  <div class="footer-copyright">
-                    <p><% if(copyright != undefined) { %><p>
+                </div>
+              </div>
+              <section class="footer-main" id="footer">
+                <div class="container">
+                  <div class="innner-footer-main">
+                    <div class="footer-social-icons">
+                      <div class="col-md-6 col-sm-6 text-right social-media">
+                        <a href="<%= twitter %>"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                        <a style="padding: 11px 20px;" href="<%= facebook %>"><i class="fa fa-facebook"
+                            aria-hidden="true"></i></a>
+                        <a href="<%= linkedin %>"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                      </div>
+                      <div class="col-md-6 col-sm-6 text-left social-media">
+                        <a href="<%= youtube %>"><i class="fa fa-youtube" aria-hidden="true"></i></a>
+                        <a href="<%= instagram %>"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                        <a href="<%= pinterest %>"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+                      </div>
+                    </div>
+                    <div class="footer-copyright">
+                      <p><% if(copyright != undefined) { %>
+                      <p>
                         <%= copyright.charAt(0).toUpperCase() + copyright.substring(1) %></a></p><%}%></p>
         </div>
         <hr>
@@ -459,6 +461,25 @@
   </div>
 </section>
 
+
+<div class="popup" id="qualifyPopup">
+  <div class="popupContainer">
+    <p class="popupTitle">Leider sind unsere exklusiven Inhalte nur Premium-Mitgliedern zugänglich.</p>
+    <p class="popupContent">Du möchtest qualifizierte Beiträge lesen, viele weitere exklusive Vorteile
+      genießen und unsere Autoren unterstützen? Dann werde jetzt Premium-Member!</p><br><br>
+    <a class="popupButton" href="/membership">Jetzt Premium-Mitglied werden</a>
+  </div>
+</div>
+<div class="popup-back"></div>
+
+<div class="popup" id="adPopup">
+  <div class="adpopupContainer">
+    <p class="adpopupTitle">Ad-Blocker</p>
+    <p class="adpopupContent">Du verwendest einen Ad-Blocker. Leider kannst du so keine qualifizierten Beiträge einsehen. Wir benötigen die Daten deiner Lesezeit, um unsere Autoren fair zu entlohnen.
+      Schalte ihn aus, um die unbegrenzte Vielfalt Dype‘s zu genießen!
+    </p><br><br>
+  </div>
+</div>
 <%- mainSettings.googleAnalyticsCode %>
                       <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
                       <script src="/js/jquery-2.1.3.min.js" type="text/javascript"></script>
@@ -468,7 +489,11 @@
                       <script src="/js/script1.js" type="text/javascript"></script>
                       <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
                       <script src="/js/footer.js" type="text/javascript"></script>
+                      <script src="/js/ads.js" type="text/javascript"></script>
                       <script>
+                        $('#adPopup').hide();
+                        $('#qualifyPopup').hide();
+                        $(".popup-back").hide();
                         $('.category-search-bg1').click(function () {
                           var href = $(this).attr('url');
                           window.open(href);
@@ -483,11 +508,25 @@
                         $('.clear-notification').click(function () {
                           $('.notification').hide();
                         });
-                        $('.articlelink').click(function(){
+                        $('.articlelink').click(function () {
                           var qualify = $(this).attr('qualify');
-                          if(qualify == "true"){
-                            alert('This is the qualify page');
+                          if (window.showAds) {
+                            $('#adPopup').show();
+                            $('.popup-back').show();
+                          } else {
+                            if (qualify == "true") {
+                              $('#qualifyPopup').show();
+                              $('.popup-back').show();
+                            } else {
+                              if ($(this).attr('url') != "#") {
+                                window.open($(this).attr('url'));
+                              }
+                            }
                           }
+                        });
+                        $('.popup-back').click(function () {
+                          $(".popup").hide();
+                          $(".popup-back").hide();
                         });
                       </script>
 </body>

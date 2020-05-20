@@ -391,7 +391,6 @@ router.get('/paycontent', install.redirectToLogin, async (req, res, next) => {
 		title: "Pay Content"
 	});
 });
-
 router.get('/blogrecent', install.redirectToLogin, async (req, res, next) => {
 	let userId = req.user._id;
 	let user = await User.findOne({ _id: userId });
@@ -401,13 +400,19 @@ router.get('/blogrecent', install.redirectToLogin, async (req, res, next) => {
 		.populate('postedBy')
 		.sort('create_at')
 		.limit(3);
-	let article = await Article.find({addToBreaking: true})
-	.populate('category')
-	.populate('postedBy')
-	.sort('create_at');
+	let feed = [];
+	let article = await Article.find({ addToBreaking: true })
+		.populate('category')
+		.populate('postedBy')
+		.sort('create_at');
 	article.forEach(element => {
 		editorsPicker.push(element);
 	})
+	editorsPicker.forEach(element => {
+		if (element.category.slug != "official") {
+			feed.push(element);
+		}
+	});
 	let category = await Category.find({});
 	let usercategoryList = user.categoryList;
 	let categories = [];
@@ -418,60 +423,78 @@ router.get('/blogrecent', install.redirectToLogin, async (req, res, next) => {
 			}
 		});
 	});
-
 	let trendings = await Article.find({})
 		.populate('category')
 		.populate('postedBy')
 		.sort({ views: -1 })
+		.sort({ createdAt: -1 })
 		.limit(5);
-		
+	let trends = [];
+	trendings.forEach(element => {
+		if (element.category.slug != "official") {
+			trends.push(element);
+		}
+	});
 	let followers = await User.find({
 		following: { $in: req.user.id }
 	}).populate("following").sort({ createdAt: -1 });
-	
+
 	let authorarticle = [];
-	
+
 	for (var i in followers) {
 		let art = await Article.find({
 			postedBy: followers[i]._id
 		}).populate('category')
-		.populate('postedBy')
-		.sort({ createdAt: -1 });
+			.populate('postedBy')
+			.sort({ createdAt: -1 });
 		for (var j in art) {
 			authorarticle.push(art[j]);
 		}
 	}
 
 	let newest = await Article.find({})
-	.sort({createdAt: -1})
-	.populate('category')
-	.populate('postedBy')
-	.limit(3);
-
+		.sort({ createdAt: -1 })
+		.populate('category')
+		.populate('postedBy')
+	let news = [];
+	newest.forEach(element => {
+		if (element.category.slug != "official") {
+			if (news.length != 3) {
+				news.push(element);
+			}
+		}
+	})
 	let random = await Article.find({})
-	.populate('category')
-	.populate('postedBy')
-	.limit(6);
-	
+		.populate('category')
+		.populate('postedBy');
+	let randoms = [];
+	random.forEach(element => {
+		if (element.category.slug != "official") {
+			if (randoms.length != 3) {
+				randoms.push(element);
+			}
+		}
+	});
+
 	let favorites = [];
 	let total_article = await Article.find({})
-	.populate('category')
-	.populate('postedBy').sort('create_at').limit(10);
+		.populate('category')
+		.populate('postedBy').sort('create_at').limit(10);
 	categories.forEach(element => {
 		total_article.forEach(item => {
-			if(item.category.slug == element.slug){
+			if (item.category.slug == element.slug) {
 				favorites.push(item);
 			}
 		});
 	});
 	res.render('blogrecent', {
 		title: 'Blog recent',
-		editorsPicker: editorsPicker,
+		editorsPicker: feed,
 		categories: categories,
-		trendings: trendings,
+		trendings: trends,
 		authorarticle: authorarticle,
-		newest: newest,
-		random: random,
+		newest: news,
+		random: randoms,
 		favorites: favorites
 	});
 });
@@ -491,11 +514,11 @@ router.get('/ourwork', async (req, res, next) => {
 	});
 	let favorites = [];
 	let total_article = await Article.find({})
-	.populate('category')
-	.populate('postedBy').sort('create_at').limit(10);
+		.populate('category')
+		.populate('postedBy').sort('create_at').limit(10);
 	categories.forEach(element => {
 		total_article.forEach(item => {
-			if(item.category.slug == element.slug){
+			if (item.category.slug == element.slug) {
 				favorites.push(item);
 			}
 		});

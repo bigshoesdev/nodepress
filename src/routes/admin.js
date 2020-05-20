@@ -23,10 +23,27 @@ router.use(async (req, res, next) => {
   next();
 });
 
+router.post("/dashboard/article/decline", install.redirectToLogin,  auth, role('admin'), async(req, res, next) => {
+  var articleId = req.body.articleId;
+  await Article.updateOne({_id: articleId}, {qualify: "declined"});
+  res.redirect('back');
+});
+router.post("/dashboard/article/accept", install.redirectToLogin,  auth, role('admin'), async(req, res, next) => {
+  var articleId = req.body.articleId;
+  await Article.updateOne({_id: articleId}, {qualify: "qualify"});
+  res.redirect('back');
+});
+router.post("/dashboard/article/message", install.redirectToLogin,  auth, role('admin'), async(req, res, next) => {
+  var articleId = req.body.articleId;
+  await Article.updateOne({_id: articleId}, {qualify: "message"});
+  res.redirect('back');
+});
+
+
+
 router.get("/dashboard", install.redirectToLogin, auth, role('admin'), (req, res, next) => {
   res.redirect("/dashboard/index");
 });
-
 router.get("/dashboard/index", install.redirectToLogin, auth, role("admin"), async (req, res, next) => {
   let totalUsers = await User.countDocuments({ roleId: 'user' });
   let pendingPost = await Article.countDocuments({ active: false });
