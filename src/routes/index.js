@@ -539,7 +539,15 @@ router.get('/', install.redirectToLogin, async (req, res, next) => {
 		next(error);
 	}
 });
-// Get search page
+router.post('/api/home', async(req, res, next) => {
+	var token = req.body.token;
+	
+
+	let payload = {
+
+	}
+	return res.json({"error" : token});
+});
 router.get('/search', install.redirectToLogin, async (req, res, next) => {
 	try {
 		if (req.query.q) {

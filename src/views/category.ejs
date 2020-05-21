@@ -207,7 +207,7 @@
                             <p style="overflow-wrap: break-word;font-size: 18px;">
                               <% if(post[i*3 + j].postedBy.roleId == "admin"){%>
                               <%
-                                var urladmin = "#";
+                                var urladmin = "/p/" + post[i*3 + j].category.slug + "/" + post[i*3 + j].slug;
                                 var qualify = false;
                                 if(user.paid == "free"){
                                   if(post[i * 3 + j].qualify == "qualify"){
@@ -216,7 +216,7 @@
                                     urladmin = "/d/" + post[i*3 + j].category.slug + "/" + post[i*3 + j].slug;
                                   }
                                 }else{
-                                  urladmin = "/d/" + post[i*3 + j].category.slug + "/" + post[i*3 + j].slug;
+                                  urladmin = "/p/" + post[i*3 + j].category.slug + "/" + post[i*3 + j].slug;
                                 }
                                 %>
                               <a url="<%= urladmin%>" type="button" class="articlelink" qualify="<%= qualify%>"
@@ -224,7 +224,7 @@
                               </a>
                               <%} else {%>
                               <%
-                                var urluser = "#";
+                                var urluser = "/p/" + post[i*3 + j].category.slug + "/" + post[i*3 + j].slug;
                                 var qualify = false;
                                 if(user){
                                   if(user.paid == "free"){

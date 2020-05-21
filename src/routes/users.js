@@ -22,6 +22,7 @@ import role from "../helpers/role";
 import Newsletter from "../models/newsletter";
 import dotenv from "dotenv";
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
 dotenv.config({ path: "./.env" });
 // Prevent logged in users from viewing the sign up and login page
 function checkIfLoggedIn(req, res, next) {
@@ -137,7 +138,7 @@ router.post('/category/show-more', install.redirectToLogin, async (req, res, nex
   }
 });
 router.get('/downgrade', install.redirectToLogin, async (req, res, next) => {
-  await User.updateOne({_id: req.query.user}, {paid: "free", signupProcess: "/afterlogin"});
+  await User.updateOne({ _id: req.query.user }, { paid: "free", signupProcess: "/afterlogin" });
   res.redirect('back');
 });
 router.get('/onboarding', install.redirectToLogin, async (req, res, next) => {
@@ -247,6 +248,102 @@ router.get(
     res.render("sign-up");
   }
 );
+router.post("/api/sign-up", async (req, res, next) => {
+  let message = "";
+  let set = await Settings.findOne();
+  // SOLVED SETTINGS BUG, USED SET[0] INSTEAD OF SET
+  console.log(req.body);
+  if (set.registrationSystem == true) {
+    let username = req.body.username.trim().toLowerCase();
+    let array = username.split('');
+    array.forEach((element, index) => {
+      if (element == "ß") {
+        array[index] = "ss";
+      }
+      if (element == "ö") { array[index] = "oe"; }
+      if (element == "ä") { array[index] = "ae"; }
+      if (element == "ü") { array[index] = "ue"; }
+    });
+    let usernameslug = array.join("");
+    let payload = {
+      email: req.body.email.trim(),
+      password: req.body.password.trim(),
+      token: crypto.randomBytes(16).toString("hex"),
+      username: req.body.username.trim().toLowerCase(),
+      usernameslug: usernameslug,
+      profilePicture:
+        "https://gravatar.com/avatar/" +
+        crypto
+          .createHash("md5")
+          .update(req.body.email)
+          .digest("hex")
+          .toString() +
+        "?s=200" +
+        "&d=retro",
+      active:
+        typeof set.emailVerification == "undefined"
+          ? true
+          : set.emailVerification == true
+            ? false
+            : true,
+      roleId: "user",
+      firstName: "Not Specified",
+      lastName: "Not Specified",
+      siteLink: res.locals.siteLink,
+      logo: res.locals.siteLogo,
+      instagram: res.locals.instagram,
+      facebook: res.locals.facebook,
+      twitter: res.locals.twitter,
+      signupProcess: "/enterinformation"
+    };
+    if (req.body.password !== req.body.cPassword) {
+      message = { "Error": "Password Doesn't match" }
+      return res.json(message);
+    } else {
+      let check = await User.findOne({ email: req.body.email });
+      if (check) {
+        message = { "Error": "Email has been used" }
+        return res.json(message);
+      } else {
+        let user = await User.create(payload);
+        // SOLVED SETTINGS BUG, USED SET[0] INSTEAD OF SET
+        set.emailVerification == true
+          ? await _mail(
+            "Registration Successfull",
+            req.body.email,
+            "reg-email",
+            payload,
+            req.headers.host,
+            (err, info) => {
+              if (err) console.log(err);
+            }
+          )
+          : null;
+        if (set.emailVerification == true) {
+          message = { "Error": "Registration Successfull, pls check your email for futher instrcutions" }
+          return req.json(message);
+        } else {
+          if (set.autoLogin == true) {
+            req.logIn(user, function (err) {
+              if (err) return next(err);
+              if (user.roleId === "user") {
+                //return res.redirect(`/user/dashboard`);
+              } else if (user.roleId === "admin") {
+                //return res.redirect(`/dashboard/index`);
+              }
+            });
+          } else {
+            message = { "Success": "Registration Successfull" }
+            return req.json(message);
+          }
+        }
+      }
+    }
+  } else {
+    message = { "ERROR": "not registersystem" };
+    return res.json(message);
+  }
+});
 
 // Create a new user
 router.post(
@@ -265,12 +362,12 @@ router.post(
           let username = req.body.username.trim().toLowerCase();
           let array = username.split('');
           array.forEach((element, index) => {
-            if(element == "ß"){
+            if (element == "ß") {
               array[index] = "ss";
             }
-            if(element == "ö"){array[index] = "oe";}
-            if(element == "ä"){array[index] = "ae";}
-            if(element == "ü"){array[index] = "ue";}
+            if (element == "ö") { array[index] = "oe"; }
+            if (element == "ä") { array[index] = "ae"; }
+            if (element == "ü") { array[index] = "ue"; }
           });
           let usernameslug = array.join("");
           let payload = {
@@ -474,7 +571,7 @@ router.get('/afterlogin', install.redirectToLogin, async (req, res, next) => {
     let editorsPicker = await Article.find({
       addToBreaking: true
     }).populate('category').populate('postedBy');
-    
+
     if (editorsPicker.length == 0) {
       let a = [];
       for (var i = 0; i < req.user.categoryList.length; i++) {
@@ -522,7 +619,7 @@ router.get('/afterlogin', install.redirectToLogin, async (req, res, next) => {
     let random = await Article.find({}).populate('category').populate('postedBy');
     let e = [];
     editorsPicker.forEach(element => {
-      if(element.category.slug != 'official'){
+      if (element.category.slug != 'official') {
         e.push(element);
       }
     });
@@ -540,7 +637,7 @@ router.get('/afterlogin', install.redirectToLogin, async (req, res, next) => {
     let e = [];
     let editorsPicker = [];
     random.forEach(element => {
-      if(element.category.slug != 'official'){
+      if (element.category.slug != 'official') {
         e.push(element);
       }
     });
@@ -561,11 +658,42 @@ router.get('/kategorie', install.redirectToLogin, (req, res, next) => {
   })
 });
 
+router.post("/api/login", (req, res, next) => {
+  var message = "";
+  console.log(req.body);
+  passport.authenticate("local", function (err, user, info) {
+    if (err) return next(err);
+    if (!user) {
+      message = { "Error": "Incorect Email or password" };
+      return res.json(message);
+    }
+    if (typeof user.active == "boolean" && user.active === false) {
+      message = { "Error": "Your account is not active, check your email to activate your account" };
+      return res.json(message);
+    }
+    if (user.banned === true) {
+      message = { "Error": "Your Account has been suspended, You can visit the contact page for help." };
+      return res.json(message);
+    }
+    req.logIn(user, function (err) {
+      if (err) return next(err);
+      if (user.roleId === "user") {
+        // return res.redirect(`/user/dashboard`);
+        message = { "Success": user };
+        return res.json(message);
+      } else if (user.roleId === "admin") {
+        return res.redirect(`/dashboard/index`);
+      }
+    });
+  })(req, res, next);
+});
+
 router.post(
   "/login",
   install.redirectToLogin,
   checkIfLoggedIn,
   (req, res, next) => {
+    console.log(req.body);
     if (!req.body['g-recaptcha-response']) {
       req.flash("success_msg", "Captcha is required!");
       return res.redirect("back");
@@ -604,8 +732,8 @@ router.post(
   }
 );
 
-router.get('/user/qualfy', install.redirectToLogin, async(req, res,next) => {
-  let article = await Article.update({_id: req.query.articleId}, {qualify: "waiting"});
+router.get('/user/qualfy', install.redirectToLogin, async (req, res, next) => {
+  let article = await Article.update({ _id: req.query.articleId }, { qualify: "waiting" });
   req.flash("success_msg", "Es dauert bis zu 3 Tage, bis dein Artikel qualifiziert wirde. Unser Team meldet sich bei dir!");
   return res.redirect("back");
 });
