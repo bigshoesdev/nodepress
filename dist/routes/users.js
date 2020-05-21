@@ -525,8 +525,6 @@ router.post("/api/sign-up", /*#__PURE__*/function () {
 
           case 3:
             set = _context9.sent;
-            // SOLVED SETTINGS BUG, USED SET[0] INSTEAD OF SET
-            console.log(req.body);
 
             if (!(set.registrationSystem == true)) {
               _context9.next = 46;
@@ -573,7 +571,7 @@ router.post("/api/sign-up", /*#__PURE__*/function () {
             };
 
             if (!(req.body.password !== req.body.cPassword)) {
-              _context9.next = 16;
+              _context9.next = 15;
               break;
             }
 
@@ -582,17 +580,17 @@ router.post("/api/sign-up", /*#__PURE__*/function () {
             };
             return _context9.abrupt("return", res.json(message));
 
-          case 16:
-            _context9.next = 18;
+          case 15:
+            _context9.next = 17;
             return _users["default"].findOne({
               email: req.body.email
             });
 
-          case 18:
+          case 17:
             check = _context9.sent;
 
             if (!check) {
-              _context9.next = 24;
+              _context9.next = 23;
               break;
             }
 
@@ -601,31 +599,33 @@ router.post("/api/sign-up", /*#__PURE__*/function () {
             };
             return _context9.abrupt("return", res.json(message));
 
-          case 24:
-            _context9.next = 26;
+          case 23:
+            _context9.next = 25;
             return _users["default"].create(payload);
 
-          case 26:
+          case 25:
             user = _context9.sent;
 
             if (!(set.emailVerification == true)) {
-              _context9.next = 32;
+              _context9.next = 31;
               break;
             }
 
-            _context9.next = 30;
+            _context9.next = 29;
             return (0, _mail2["default"])("Registration Successfull", req.body.email, "reg-email", payload, req.headers.host, function (err, info) {
               if (err) console.log(err);
             });
 
-          case 30:
-            _context9.next = 33;
+          case 29:
+            _context9.next = 32;
             break;
 
-          case 32:
+          case 31:
             null;
 
-          case 33:
+          case 32:
+            console.log(set.emailVerification);
+
             if (!(set.emailVerification == true)) {
               _context9.next = 38;
               break;
@@ -634,7 +634,7 @@ router.post("/api/sign-up", /*#__PURE__*/function () {
             message = {
               "Error": "Registration Successfull, pls check your email for futher instrcutions"
             };
-            return _context9.abrupt("return", req.json(message));
+            return _context9.abrupt("return", res.json(message));
 
           case 38:
             if (!(set.autoLogin == true)) {
@@ -656,7 +656,7 @@ router.post("/api/sign-up", /*#__PURE__*/function () {
             message = {
               "Success": "Registration Successfull"
             };
-            return _context9.abrupt("return", req.json(message));
+            return _context9.abrupt("return", res.json(message));
 
           case 44:
             _context9.next = 48;

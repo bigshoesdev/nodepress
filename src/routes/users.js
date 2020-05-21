@@ -252,7 +252,6 @@ router.post("/api/sign-up", async (req, res, next) => {
   let message = "";
   let set = await Settings.findOne();
   // SOLVED SETTINGS BUG, USED SET[0] INSTEAD OF SET
-  console.log(req.body);
   if (set.registrationSystem == true) {
     let username = req.body.username.trim().toLowerCase();
     let array = username.split('');
@@ -319,9 +318,10 @@ router.post("/api/sign-up", async (req, res, next) => {
             }
           )
           : null;
+        console.log(set.emailVerification);
         if (set.emailVerification == true) {
           message = { "Error": "Registration Successfull, pls check your email for futher instrcutions" }
-          return req.json(message);
+          return res.json(message);
         } else {
           if (set.autoLogin == true) {
             req.logIn(user, function (err) {
@@ -334,7 +334,7 @@ router.post("/api/sign-up", async (req, res, next) => {
             });
           } else {
             message = { "Success": "Registration Successfull" }
-            return req.json(message);
+            return res.json(message);
           }
         }
       }
