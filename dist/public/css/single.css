@@ -343,6 +343,7 @@ h6 a {
    color: white;
 }
 #savecontentPopup {
+   display: none;
    background-image: url("/images/popup/savecontent.jpeg");
    background-size: cover;
 }
