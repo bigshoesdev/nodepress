@@ -11,15 +11,26 @@ router.post('/category/create', auth, async (req, res, next) => {
 	try {
 		let exist = await Category.find({ name: req.body.name });
 		if (exist == '') {
+			let real = !req.body.slug
+			? req.body.name
+				.split(' ')
+				.join('-')
+			: req.body.slug
+				.split(' ')
+				.join('-');
+			let array = real.split('');
+			array.forEach((element, index) => {
+				if (element == "ß") {
+					array[index] = "ss";
+				}
+				if (element == "ö") { array[index] = "oe"; }
+				if (element == "ä") { array[index] = "ae"; }
+				if (element == "ü") { array[index] = "ue"; }
+			});
+			let categoryslug = array.join("");
 			let payload = {
 				name: req.body.name,
-				slug: !req.body.slug
-					? req.body.name
-							.split(' ')
-							.join('-')
-					: req.body.slug
-							.split(' ')
-							.join('-'),
+				slug: categoryslug,
 				description: req.body.description,
 				background: req.body.background,
 				color: req.body.color,
@@ -47,11 +58,11 @@ router.post('/category/edit', auth, (req, res, next) => {
 	try {
 		req.body.slug = !req.body.slug
 			? req.body.name
-					.split(' ')
-					.join('-')
+				.split(' ')
+				.join('-')
 			: req.body.slug
-					.split(' ')
-					.join('-');
+				.split(' ')
+				.join('-');
 		Category.updateOne({ _id: req.body.categoryId.trim() }, req.body)
 			.then(updated => {
 				req.flash('success_msg', 'Category has been updated');
@@ -108,11 +119,11 @@ router.post('/subcategory/create', auth, async (req, res, next) => {
 				name: req.body.name,
 				slug: !req.body.slug
 					? req.body.name
-							.split(' ')
-							.join('-')
+						.split(' ')
+						.join('-')
 					: req.body.slug
-							.split(' ')
-							.join('-'),
+						.split(' ')
+						.join('-'),
 				description: req.body.description,
 				parent: req.body.parent,
 			};
@@ -138,11 +149,11 @@ router.post('/subcategory/edit', auth, (req, res, next) => {
 	try {
 		req.body.slug = !req.body.slug
 			? req.body.name
-					.split(' ')
-					.join('-')
+				.split(' ')
+				.join('-')
 			: req.body.slug
-					.split(' ')
-					.join('-');
+				.split(' ')
+				.join('-');
 		Category.updateOne({ _id: req.body.subcategoryId.trim() }, req.body)
 			.then(updated => {
 				req.flash('success_msg', 'Sub Category has been updated');

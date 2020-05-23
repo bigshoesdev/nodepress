@@ -23,7 +23,7 @@ var router = _express["default"].Router(); // Create a new category
 
 router.post('/category/create', _auth["default"], /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res, next) {
-    var exist, payload, category;
+    var exist, real, array, categoryslug, payload, category;
     return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -38,13 +38,33 @@ router.post('/category/create', _auth["default"], /*#__PURE__*/function () {
             exist = _context.sent;
 
             if (!(exist == '')) {
-              _context.next = 10;
+              _context.next = 14;
               break;
             }
 
+            real = !req.body.slug ? req.body.name.split(' ').join('-') : req.body.slug.split(' ').join('-');
+            array = real.split('');
+            array.forEach(function (element, index) {
+              if (element == "ß") {
+                array[index] = "ss";
+              }
+
+              if (element == "ö") {
+                array[index] = "oe";
+              }
+
+              if (element == "ä") {
+                array[index] = "ae";
+              }
+
+              if (element == "ü") {
+                array[index] = "ue";
+              }
+            });
+            categoryslug = array.join("");
             payload = {
               name: req.body.name,
-              slug: !req.body.slug ? req.body.name.split(' ').join('-') : req.body.slug.split(' ').join('-'),
+              slug: categoryslug,
               description: req.body.description,
               background: req.body.background,
               color: req.body.color,
@@ -57,28 +77,28 @@ router.post('/category/create', _auth["default"], /*#__PURE__*/function () {
             })["catch"](function (e) {
               return next(e);
             });
-            _context.next = 12;
-            break;
-
-          case 10:
-            req.flash('success_msg', "There's a category with that name already");
-            return _context.abrupt("return", res.redirect('back'));
-
-          case 12:
-            _context.next = 17;
+            _context.next = 16;
             break;
 
           case 14:
-            _context.prev = 14;
+            req.flash('success_msg', "There's a category with that name already");
+            return _context.abrupt("return", res.redirect('back'));
+
+          case 16:
+            _context.next = 21;
+            break;
+
+          case 18:
+            _context.prev = 18;
             _context.t0 = _context["catch"](0);
             next(_context.t0);
 
-          case 17:
+          case 21:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 14]]);
+    }, _callee, null, [[0, 18]]);
   }));
 
   return function (_x, _x2, _x3) {

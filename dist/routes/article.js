@@ -33,7 +33,7 @@ var router = _express["default"].Router(); // Create a new article
 
 router.post("/article/create", _install["default"].redirectToLogin, _auth["default"], /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res, next) {
-    var search, slug, content, textLength, set, newDate, months, errors, summary, re, expression, payload1, errors2, payload, errors3, payload2;
+    var search, slug, content, textLength, set, newDate, months, errors, summary, re, expression, real, array, articleslug, payload1, errors2, payload, errors3, payload2;
     return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -70,7 +70,7 @@ router.post("/article/create", _install["default"].redirectToLogin, _auth["defau
             months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
             _context.prev = 14;
             _context.t0 = req.body.postType;
-            _context.next = _context.t0 === "post" ? 18 : _context.t0 === "audio" ? 43 : _context.t0 === "video" ? 56 : 69;
+            _context.next = _context.t0 === "post" ? 18 : _context.t0 === "audio" ? 47 : _context.t0 === "video" ? 60 : 73;
             break;
 
           case 18:
@@ -127,6 +127,26 @@ router.post("/article/create", _install["default"].redirectToLogin, _auth["defau
             return _context.abrupt("return", res.redirect("back"));
 
           case 39:
+            real = req.body.slug ? req.body.slug.trim().toLowerCase().split("?").join("").split(" ").join("-").replace(new RegExp("/", "g"), "-") : search !== "" ? req.body.title.trim().toLowerCase().split("?").join("").split(" ").join("-").replace(new RegExp("/", "g"), "-") + "-" + search.length : req.body.title.trim().toLowerCase().split("?").join("").split(" ").join("-").replace(new RegExp("/", "g"), "-");
+            array = real.split('');
+            array.forEach(function (element, index) {
+              if (element == "ß") {
+                array[index] = "ss";
+              }
+
+              if (element == "ö") {
+                array[index] = "oe";
+              }
+
+              if (element == "ä") {
+                array[index] = "ae";
+              }
+
+              if (element == "ü") {
+                array[index] = "ue";
+              }
+            });
+            articleslug = array.join("");
             payload1 = {
               week: "".concat(newDate.getWeek()),
               month: "".concat(months[newDate.getMonth()]),
@@ -140,7 +160,7 @@ router.post("/article/create", _install["default"].redirectToLogin, _auth["defau
               "short": _htmlToText["default"].fromString(req.body.body, {
                 wordwrap: false
               }),
-              slug: req.body.slug ? req.body.slug.trim().toLowerCase().split("?").join("").split(" ").join("-").replace(new RegExp("/", "g"), "-") : search !== "" ? req.body.title.trim().toLowerCase().split("?").join("").split(" ").join("-").replace(new RegExp("/", "g"), "-") + "-" + search.length : req.body.title.trim().toLowerCase().split("?").join("").split(" ").join("-").replace(new RegExp("/", "g"), "-"),
+              slug: articleslug,
               tags: !req.body.tags ? undefined : req.body.tags.split(","),
               category: req.body.category,
               subCategory: req.body.subCategory,
@@ -166,31 +186,31 @@ router.post("/article/create", _install["default"].redirectToLogin, _auth["defau
               return next(e);
             });
 
-            return _context.abrupt("break", 70);
+            return _context.abrupt("break", 74);
 
-          case 43:
+          case 47:
             req.assert("title", "Title Field cannot be left blank").notEmpty();
             req.assert("category", "Please select a category").notEmpty();
             errors2 = req.validationErrors();
 
             if (!errors2) {
-              _context.next = 49;
+              _context.next = 53;
               break;
             }
 
             req.flash("success_msg", "".concat(errors2[0].msg));
             return _context.abrupt("return", res.redirect("back"));
 
-          case 49:
+          case 53:
             if (!slug) {
-              _context.next = 52;
+              _context.next = 56;
               break;
             }
 
             req.flash("success_msg", "That slug has been used, pls used another slug or just leave the field empty");
             return _context.abrupt("return", res.redirect("back"));
 
-          case 52:
+          case 56:
             payload = {
               week: "".concat(newDate.getWeek()),
               month: "".concat(months[newDate.getMonth()]),
@@ -232,31 +252,31 @@ router.post("/article/create", _install["default"].redirectToLogin, _auth["defau
               return next(e);
             });
 
-            return _context.abrupt("break", 70);
+            return _context.abrupt("break", 74);
 
-          case 56:
+          case 60:
             req.assert("title", "Title Field cannot be left blank").notEmpty();
             req.assert("category", "Please select a category").notEmpty();
             errors3 = req.validationErrors();
 
             if (!errors3) {
-              _context.next = 62;
+              _context.next = 66;
               break;
             }
 
             req.flash("success_msg", "".concat(errors3[0].msg));
             return _context.abrupt("return", res.redirect("back"));
 
-          case 62:
+          case 66:
             if (!slug) {
-              _context.next = 65;
+              _context.next = 69;
               break;
             }
 
             req.flash("success_msg", "That slug has been used, pls used another slug or just leave the field empty");
             return _context.abrupt("return", res.redirect("back"));
 
-          case 65:
+          case 69:
             payload2 = {
               week: "".concat(newDate.getWeek()),
               month: "".concat(months[newDate.getMonth()]),
@@ -298,26 +318,26 @@ router.post("/article/create", _install["default"].redirectToLogin, _auth["defau
               return next(e);
             });
 
-            return _context.abrupt("break", 70);
+            return _context.abrupt("break", 74);
 
-          case 69:
-            return _context.abrupt("break", 70);
+          case 73:
+            return _context.abrupt("break", 74);
 
-          case 70:
-            _context.next = 75;
+          case 74:
+            _context.next = 79;
             break;
 
-          case 72:
-            _context.prev = 72;
+          case 76:
+            _context.prev = 76;
             _context.t1 = _context["catch"](14);
             next(_context.t1);
 
-          case 75:
+          case 79:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[14, 72]]);
+    }, _callee, null, [[14, 76]]);
   }));
 
   return function (_x, _x2, _x3) {

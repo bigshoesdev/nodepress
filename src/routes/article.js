@@ -51,12 +51,12 @@ router.post(
 
           let summary = req.body.summary.trim();
           var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-          if(re.test(summary)){
+          if (re.test(summary)) {
             req.flash("success_msg", `Summary can't include the email address`);
             return res.redirect(`back`);
           }
           var expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
-          if(expression.test(summary)){
+          if (expression.test(summary)) {
             req.flash("success_msg", `Summary can't include the Link`);
             return res.redirect(`back`);
           }
@@ -78,7 +78,49 @@ router.post(
             );
             return res.redirect("back");
           }
-          
+
+          let real = req.body.slug
+            ? req.body.slug
+              .trim()
+              .toLowerCase()
+              .split("?")
+              .join("")
+              .split(" ")
+              .join("-")
+              .replace(new RegExp("/", "g"), "-")
+            : search !== ""
+              ? req.body.title
+                .trim()
+                .toLowerCase()
+                .split("?")
+                .join("")
+                .split(" ")
+                .join("-")
+                .replace(new RegExp("/", "g"), "-") +
+              "-" +
+              search.length
+              : req.body.title
+                .trim()
+                .toLowerCase()
+                .split("?")
+                .join("")
+                .split(" ")
+                .join("-")
+                .replace(new RegExp("/", "g"), "-");
+
+
+          let array = real.split('');
+          array.forEach((element, index) => {
+            if (element == "ß") {
+              array[index] = "ss";
+            }
+            if (element == "ö") { array[index] = "oe"; }
+            if (element == "ä") { array[index] = "ae"; }
+            if (element == "ü") { array[index] = "ue"; }
+          });
+          let articleslug = array.join("");
+
+
           let payload1 = {
             week: `${newDate.getWeek()}`,
             month: `${months[newDate.getMonth()]}`,
@@ -92,34 +134,7 @@ router.post(
             short: htmlToText.fromString(req.body.body, {
               wordwrap: false
             }),
-            slug: req.body.slug
-              ? req.body.slug
-                .trim()
-                .toLowerCase()
-                .split("?")
-                .join("")
-                .split(" ")
-                .join("-")
-                .replace(new RegExp("/", "g"), "-")
-              : search !== ""
-                ? req.body.title
-                  .trim()
-                  .toLowerCase()
-                  .split("?")
-                  .join("")
-                  .split(" ")
-                  .join("-")
-                  .replace(new RegExp("/", "g"), "-") +
-                "-" +
-                search.length
-                : req.body.title
-                  .trim()
-                  .toLowerCase()
-                  .split("?")
-                  .join("")
-                  .split(" ")
-                  .join("-")
-                  .replace(new RegExp("/", "g"), "-"),
+            slug: articleslug,
             tags: !req.body.tags ? undefined : req.body.tags.split(","),
             category: req.body.category,
             subCategory: req.body.subCategory,
@@ -152,12 +167,12 @@ router.post(
               : true
           };
           payload1.active = !req.body.status
+            ? true
+            : req.body.status == "activate"
               ? true
-              : req.body.status == "activate"
-                ? true
-                : false;
+              : false;
           // if (req.user.roleId == "admin") {
-            
+
           // } else {
           //   payload1.active = set.approveAddedUserPost == false ? false : true;
           // }
@@ -753,7 +768,7 @@ router.get("/p/:category/:slug", install.redirectToLogin, async (req, res, next)
           { $inc: { views: 1 } }
         )
           .then(views => {
-            
+
             res.render("single", {
               articleCount: articleCount,
               title: article[0].title,
@@ -1163,7 +1178,7 @@ router.post("/article/upvote", auth, async (req, res, next) => {
 router.post('/article/upvote-ajax', async (req, res, next) => {
   let articleId = req.body.articleId;
   let userId = req.body.userId;
-  
+
   await Article.updateOne(
     { _id: req.body.articleId },
     { $inc: { "upvote.count": 1 } }

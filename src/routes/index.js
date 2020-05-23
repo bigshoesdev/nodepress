@@ -532,6 +532,26 @@ router.get('/ourwork', async (req, res, next) => {
 router.get('/', install.redirectToLogin, async (req, res, next) => {
 	try {
 		var categories = await Category.find({});
+
+		let articles = await Article.find({});
+		articles.forEach(async element => {
+
+			let real = element.slug;
+			let array = real.split('');
+			array.forEach((element, index) => {
+				if (element == "ß") {
+					array[index] = "ss";
+				}
+				if (element == "ö") { array[index] = "oe"; }
+				if (element == "ä") { array[index] = "ae"; }
+				if (element == "ü") { array[index] = "ue"; }
+			});
+			let articleslug = array.join("");
+			console.log(articleslug);
+			await Article.updateOne({_id: element.id}, {slug: articleslug});
+		});
+
+
 		res.render('index', {
 			categories: categories,
 		});
@@ -539,14 +559,14 @@ router.get('/', install.redirectToLogin, async (req, res, next) => {
 		next(error);
 	}
 });
-router.post('/api/home', async(req, res, next) => {
+router.post('/api/home', async (req, res, next) => {
 	var token = req.body.token;
-	
+
 
 	let payload = {
 
 	}
-	return res.json({"error" : token});
+	return res.json({ "error": token });
 });
 router.get('/search', install.redirectToLogin, async (req, res, next) => {
 	try {
