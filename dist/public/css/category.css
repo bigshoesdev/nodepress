@@ -34,6 +34,7 @@
    text-align: center;
    overflow-x: hidden;
    overflow-y: auto;
+   display: none;
 }
 .popup-back {
    position: fixed;
@@ -44,6 +45,7 @@
    height: 100vh;
    background-color: white;
    opacity: 0.85;
+   display: none;
 }
 .popupContainer {
    color: white;

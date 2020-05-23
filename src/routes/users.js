@@ -570,7 +570,7 @@ router.get('/afterlogin', install.redirectToLogin, async (req, res, next) => {
   if (req.user) {
     let editorsPicker = await Article.find({
       addToBreaking: true
-    }).populate('category').populate('postedBy');
+    }).populate('category').populate('postedBy').limit(10);
 
     if (editorsPicker.length == 0) {
       let a = [];
@@ -605,9 +605,11 @@ router.get('/afterlogin', install.redirectToLogin, async (req, res, next) => {
     for (var i in followers) {
       let art = await Article.find({
         postedBy: followers[i]._id
-      }).populate('category').sort({ createdAt: -1 });
+      }).populate('category').populate('postedBy').sort({ createdAt: -1 });
       for (var j in art) {
-        authorarticle.push(art[j]);
+        if (art[j].category.slug != "official") {
+          authorarticle.push(art[j]);
+        }
       }
     }
     // let authorarticle = await Article.find({ postedBy: req.user.id }).populate('category');
@@ -615,8 +617,20 @@ router.get('/afterlogin', install.redirectToLogin, async (req, res, next) => {
       active: true,
     }).populate('category')
       .sort({ views: -1 })
-      .limit(10);
-    let random = await Article.find({}).populate('category').populate('postedBy');
+      .limit(5);
+    let p = [];
+    popular.forEach(element => {
+      if(element.category.slug != "official") {
+        p.push(element);
+      }
+    });
+    let random = await Article.find({}).populate('category').populate('postedBy').limit(5);
+    let r = [];
+    random.forEach(element => {
+      if(element.category.slug != "official") {
+        r.push(element);
+      }
+    });
     let e = [];
     editorsPicker.forEach(element => {
       if (element.category.slug != 'official') {
@@ -624,16 +638,33 @@ router.get('/afterlogin', install.redirectToLogin, async (req, res, next) => {
       }
     });
     editorsPicker = e;
+    let currentUser = await User.findOne({ _id: req.user._id });
+    let favoriteCat = currentUser.categoryList;
+    let category = await Category.find({});
+    let categories = []
+    favoriteCat.forEach(element => {
+      category.forEach(items => {
+        if (element == items.slug) {
+          categories.push(items);
+        }
+      });
+    });
     res.render('afterloginuser', {
       title: "After Login",
       editorsPicker: editorsPicker,
       authorarticle: authorarticle,
-      popular: popular,
-      random: random
+      popular: p,
+      random: r,
+      categories: categories
     });
   } else {
-    let random = await Article.find({}).populate('category').populate('postedBy');
-    let popular = await Article.find({}).populate('category').populate('postedBy').sort({ views: -1 }).limit(10);
+    let random = await Article.find({}).populate('category').populate('postedBy').limit(5);
+    let r = [];
+    random.forEach(element => {
+      if(element.category.slug != "official") {
+        r.push(element);
+      }
+    });
     let e = [];
     let editorsPicker = [];
     random.forEach(element => {
@@ -642,20 +673,16 @@ router.get('/afterlogin', install.redirectToLogin, async (req, res, next) => {
       }
     });
     editorsPicker = e;
+    let categories = await Category.find({}).limit(6);
     res.render('afterloginuser', {
       title: "After Login",
       editorsPicker: editorsPicker,
-      authorarticle: random,
-      popular: random,
-      random: random
-    });
+      authorarticle: r,
+      popular: r,
+      random: r,
+      categories: categories
+    }); 
   }
-});
-
-router.get('/kategorie', install.redirectToLogin, (req, res, next) => {
-  res.render('category', {
-    title: 'Kategorie'
-  })
 });
 
 router.post("/api/login", (req, res, next) => {
@@ -688,6 +715,17 @@ router.post("/api/login", (req, res, next) => {
   })(req, res, next);
 });
 
+router.get("/close", (req, res, next) => {
+  res.render('closeaccount', {
+    title: "Close Account",
+  });
+});
+router.post("/close", async (req, res, next) => {
+  let user = await User.updateOne({ _id: req.user._id }, { banned: true });
+  req.logout();
+  res.redirect('/login');
+});
+
 router.post(
   "/login",
   install.redirectToLogin,
@@ -714,8 +752,9 @@ router.post(
         if (user.banned === true) {
           req.flash(
             "success_msg",
-            "Your Account has been suspended, You can visit the contact page for help."
+            "Your Account has been closed."
           );
+          return res.redirect("back");
         }
         req.logIn(user, function (err) {
           if (err) return next(err);
@@ -731,8 +770,7 @@ router.post(
     }
   }
 );
-
-router.get('/user/qualfy', install.redirectToLogin, async (req, res, next) => {
+router.get('/user/qualify', install.redirectToLogin, async (req, res, next) => {
   let article = await Article.update({ _id: req.query.articleId }, { qualify: "waiting" });
   req.flash("success_msg", "Es dauert bis zu 3 Tage, bis dein Artikel qualifiziert wirde. Unser Team meldet sich bei dir!");
   return res.redirect("back");
@@ -746,7 +784,6 @@ router.get(
     res.render("lostpassword", { title: res.locals.siteTitle });
   }
 );
-
 router.get(
   "/google/signin",
   install.redirectToLogin,
@@ -856,7 +893,8 @@ router.post(
         if (req.body.email != '') { status = status + 10; }
         if (req.body.birthday != '') { status = status + 10; }
         if (req.body.phone != '') { status = status + 10; }
-        if (req.body['social.linkedin'] != "" || req.body['social.instagram'] != "" || req.body['social.twitter'] != "" || req.body['social.facebook'] != "") { status = status + 50; }
+        if (req.body.about != '') { status = status + 10; }
+        if (req.body['social.linkedin'] != "" || req.body['social.instagram'] != "" || req.body['social.twitter'] != "" || req.body['social.facebook'] != "") { status = status + 40; }
         req.body.postenable = "false";
         if (status == 100) {
           req.body.postenable = "true";

@@ -211,7 +211,7 @@
                   src="<%= categories[i].background%>"></span>
                <span class="fea_travel_con">
                   <p class="underline"><%= categories[i].name%></p>
-                  <h6><%= categories[i].description%></h6>
+                  <!-- <h6><%= categories[i].description%></h6> -->
                </span>
             </a>
          </div>
@@ -352,7 +352,7 @@
             <% for(var i = 0; i < random.length; i ++) {%>
                <% 
                var url="#";
-               if(random[i].postedBy.roleId == "admmin"){
+               if(random[i].postedBy.roleId == "admin"){
                   url = "/d/" + random[i].category.slug + "/" + random[i].slug;
                }else {
                   url = "/p/" + random[i].category.slug + "/" + random[i].slug;

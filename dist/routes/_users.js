@@ -499,7 +499,7 @@ router.get("/user/useful", _auth["default"], (0, _role["default"])('admin', 'use
 }());
 router.get("/user/all-posts/edit/:slug", _auth["default"], (0, _role["default"])("admin", "user"), /*#__PURE__*/function () {
   var _ref7 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee7(req, res, next) {
-    var article;
+    var article, articles;
     return _regenerator["default"].wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
@@ -514,49 +514,43 @@ router.get("/user/all-posts/edit/:slug", _auth["default"], (0, _role["default"])
           case 3:
             article = _context7.sent;
             if (!article) res.render("404");
+            _context7.next = 7;
+            return _articles["default"].find({
+              postedBy: req.user._id
+            });
+
+          case 7:
+            articles = _context7.sent;
             _context7.t0 = article.postType;
-            _context7.next = _context7.t0 === "post" ? 8 : _context7.t0 === "audio" ? 10 : _context7.t0 === "video" ? 12 : 14;
+            _context7.next = _context7.t0 === "post" ? 11 : 13;
             break;
 
-          case 8:
+          case 11:
             res.render("./user/edit-post", {
               title: "Edit Post - ".concat(article.title),
-              article: article
+              article: article,
+              articleCount: articles.length
             });
-            return _context7.abrupt("break", 15);
+            return _context7.abrupt("break", 14);
 
-          case 10:
-            res.render("./user/edit-audio", {
-              title: "Edit Audio - ".concat(article.title),
-              article: article
-            });
-            return _context7.abrupt("break", 15);
-
-          case 12:
-            res.render("./user/edit-video", {
-              title: "Edit Video - ".concat(article.title),
-              article: article
-            });
-            return _context7.abrupt("break", 15);
+          case 13:
+            return _context7.abrupt("break", 14);
 
           case 14:
-            return _context7.abrupt("break", 15);
-
-          case 15:
-            _context7.next = 20;
+            _context7.next = 19;
             break;
 
-          case 17:
-            _context7.prev = 17;
+          case 16:
+            _context7.prev = 16;
             _context7.t1 = _context7["catch"](0);
             next(_context7.t1);
 
-          case 20:
+          case 19:
           case "end":
             return _context7.stop();
         }
       }
-    }, _callee7, null, [[0, 17]]);
+    }, _callee7, null, [[0, 16]]);
   }));
 
   return function (_x19, _x20, _x21) {

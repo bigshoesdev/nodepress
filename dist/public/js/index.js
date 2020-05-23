@@ -216,7 +216,6 @@ $('.section-1-left-first-img').click(function () {
   var url = $(this).attr('url');
   window.open(url);
 });
-$('.notification').hide();
 function openNotification() {
   $('.notification').toggle();
 }

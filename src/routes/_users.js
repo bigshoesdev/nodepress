@@ -400,25 +400,28 @@ router.get(
         slug: req.params.slug
       }).populate("category");
       if (!article) res.render("404");
+      let articles = await Article.find({postedBy : req.user._id});
+      
       switch (article.postType) {
         case "post":
           res.render("./user/edit-post", {
             title: `Edit Post - ${article.title}`,
-            article: article
+            article: article,
+            articleCount: articles.length
           });
           break;
-        case "audio":
-          res.render("./user/edit-audio", {
-            title: `Edit Audio - ${article.title}`,
-            article: article
-          });
-          break;
-        case "video":
-          res.render("./user/edit-video", {
-            title: `Edit Video - ${article.title}`,
-            article: article
-          });
-          break;
+        // case "audio":
+        //   res.render("./user/edit-audio", {
+        //     title: `Edit Audio - ${article.title}`,
+        //     article: article
+        //   });
+        //   break;
+        // case "video":
+        //   res.render("./user/edit-video", {
+        //     title: `Edit Video - ${article.title}`,
+        //     article: article
+        //   });
+        //   break;
         default:
           break;
       }

@@ -22,3 +22,6 @@ padding: 30px;
       z-index: 999999999;
    }
 }
+.container {
+   max-width: 1300px !important;
+}

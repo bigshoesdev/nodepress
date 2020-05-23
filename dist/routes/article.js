@@ -1299,7 +1299,7 @@ router.get("/kategorie/:slug", _install["default"].redirectToLogin, /*#__PURE__*
         switch (_context8.prev = _context8.next) {
           case 0:
             _context8.prev = 0;
-            perPage = 9;
+            perPage = 6;
             page = req.query.page || 1;
             _context8.next = 5;
             return _category["default"].findOne({

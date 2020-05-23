@@ -1018,7 +1018,7 @@ router.get(
   install.redirectToLogin,
   async (req, res, next) => {
     try {
-      let perPage = 9;
+      let perPage = 6;
       let page = req.query.page || 1;
       let cat = await Category.findOne({ slug: req.params.slug });
       if (!cat) res.render("404");

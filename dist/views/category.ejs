@@ -159,9 +159,11 @@
           <a class="searchbar" href="#"><span style="font-size:20px; padding-left: 10px;cursor:pointer"
               onclick="openNav()"><i class="fa fa-search" aria-hidden="true"></i></span></a>
           <a href="/sign-up" class="searchbar"><span style="font-size:20px; padding-left: 10px;cursor:pointer"><i
-                class="fa fa-user"></i></span></a>
+                class="fa fa-user"></i></span><span
+              style="position: absolute; bottom: -10px; left: -3px;font-size: 10px;">Registrieren</span></a>
           <a href="/login" class="searchbar"><span style="font-size:20px; padding-left: 10px;cursor:pointer"><i
-                class="fa fa-sign-in"></i></span></a>
+                class="fa fa-sign-in"></i></span><span
+              style="position: absolute; bottom: -10px;left: 4px; font-size: 10px;">Einloggen</span></a>
           <%}%>
             </div>
          </section>
@@ -209,6 +211,7 @@
                               <%
                                 var urladmin = "/p/" + post[i*3 + j].category.slug + "/" + post[i*3 + j].slug;
                                 var qualify = false;
+                                if(user){
                                 if(user.paid == "free"){
                                   if(post[i * 3 + j].qualify == "qualify"){
                                     qualify = true;
@@ -217,6 +220,7 @@
                                   }
                                 }else{
                                   urladmin = "/p/" + post[i*3 + j].category.slug + "/" + post[i*3 + j].slug;
+                                }
                                 }
                                 %>
                               <a url="<%= urladmin%>" type="button" class="articlelink" qualify="<%= qualify%>"
@@ -383,8 +387,15 @@
         </div>
       </div>
       <div class="publish5-btn">
-        <a href="#"><span> Weitere Artikel über <%= category.name%></span><span><i style="font-weight: 900;"
-                          class="fa fa-angle-right" aria-hidden="true"></i></span></a>
+        <% 
+          var next = current + 1;
+          if(next > pages) {
+            next = pages;
+          }
+        %>
+                      <a href="/kategorie/<%= category.slug%>?page=<%= next%>"><span> Weitere Artikel über
+                          <%= category.name%></span>
+                        <span><i style="font-weight: 900;" class="fa fa-angle-right" aria-hidden="true"></i></span></a>
                     </div>
                   </div>
                 </div>
@@ -444,7 +455,7 @@
      </div>
      <a href="#" id="scroll" style="display: none;"><span></span></a>
   </div>
-  <div class="notification">
+  <div class="notification" style="display: none;">
     <div class="row">
       <div class="col-md-9 col-sm-9 col-xs-9">Noticaition </div>
       <div class="col-md-3 col-sm-3 col-xs-3"><h3 style="color: black;"><i class="fa fa-trash-o clear-notification"></i></h3></div>
@@ -471,7 +482,6 @@
   </div>
 </div>
 <div class="popup-back"></div>
-
 <div class="popup" id="adPopup">
   <div class="adpopupContainer">
     <p class="adpopupTitle">Ad-Blocker</p>
@@ -491,9 +501,6 @@
                       <script src="/js/footer.js" type="text/javascript"></script>
                       <script src="/js/ads.js" type="text/javascript"></script>
                       <script>
-                        $('#adPopup').hide();
-                        $('#qualifyPopup').hide();
-                        $(".popup-back").hide();
                         $('.category-search-bg1').click(function () {
                           var href = $(this).attr('url');
                           window.open(href);
@@ -510,13 +517,13 @@
                         });
                         $('.articlelink').click(function () {
                           var qualify = $(this).attr('qualify');
-                          if (window.showAds) {
-                            $('#adPopup').show();
-                            $('.popup-back').show();
+                          if (!window.showAds) {
+                            $('#adPopup').css('display', 'block');
+                            $('.popup-back').css('display', 'block');
                           } else {
                             if (qualify == "true") {
-                              $('#qualifyPopup').show();
-                              $('.popup-back').show();
+                              $('#qualifyPopup').css('display', 'block');
+                              $('.popup-back').css('display', 'block');
                             } else {
                               if ($(this).attr('url') != "#") {
                                 window.open($(this).attr('url'));
@@ -525,8 +532,8 @@
                           }
                         });
                         $('.popup-back').click(function () {
-                          $(".popup").hide();
-                          $(".popup-back").hide();
+                          $(".popup").css('display', 'none');
+                          $(".popup-back").css('display', 'none');
                         });
                       </script>
 </body>
