@@ -767,7 +767,7 @@ router.get('/ourwork', /*#__PURE__*/function () {
 
 router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref8 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee9(req, res, next) {
-    var categories, articles;
+    var categories;
     return _regenerator["default"].wrap(function _callee9$(_context9) {
       while (1) {
         switch (_context9.prev = _context9.next) {
@@ -778,14 +778,9 @@ router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
 
           case 3:
             categories = _context9.sent;
-            _context9.next = 6;
-            return _articles["default"].find({});
-
-          case 6:
-            articles = _context9.sent;
-            articles.forEach( /*#__PURE__*/function () {
+            categories.forEach( /*#__PURE__*/function () {
               var _ref9 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee8(element) {
-                var real, array, articleslug;
+                var real, array, categoryslug;
                 return _regenerator["default"].wrap(function _callee8$(_context8) {
                   while (1) {
                     switch (_context8.prev = _context8.next) {
@@ -809,16 +804,15 @@ router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
                             array[index] = "ue";
                           }
                         });
-                        articleslug = array.join("");
-                        console.log(articleslug);
-                        _context8.next = 7;
-                        return _articles["default"].updateOne({
+                        categoryslug = array.join("");
+                        _context8.next = 6;
+                        return _category["default"].updateOne({
                           _id: element.id
                         }, {
-                          slug: articleslug
+                          slug: categoryslug
                         });
 
-                      case 7:
+                      case 6:
                       case "end":
                         return _context8.stop();
                     }
@@ -833,20 +827,20 @@ router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
             res.render('index', {
               categories: categories
             });
-            _context9.next = 14;
+            _context9.next = 11;
             break;
 
-          case 11:
-            _context9.prev = 11;
+          case 8:
+            _context9.prev = 8;
             _context9.t0 = _context9["catch"](0);
             next(_context9.t0);
 
-          case 14:
+          case 11:
           case "end":
             return _context9.stop();
         }
       }
-    }, _callee9, null, [[0, 11]]);
+    }, _callee9, null, [[0, 8]]);
   }));
 
   return function (_x22, _x23, _x24) {

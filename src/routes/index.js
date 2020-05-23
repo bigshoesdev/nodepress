@@ -533,9 +533,7 @@ router.get('/', install.redirectToLogin, async (req, res, next) => {
 	try {
 		var categories = await Category.find({});
 
-		let articles = await Article.find({});
-		articles.forEach(async element => {
-
+		categories.forEach(async element => {
 			let real = element.slug;
 			let array = real.split('');
 			array.forEach((element, index) => {
@@ -546,11 +544,9 @@ router.get('/', install.redirectToLogin, async (req, res, next) => {
 				if (element == "ä") { array[index] = "ae"; }
 				if (element == "ü") { array[index] = "ue"; }
 			});
-			let articleslug = array.join("");
-			console.log(articleslug);
-			await Article.updateOne({_id: element.id}, {slug: articleslug});
+			let categoryslug = array.join("");
+			await Category.updateOne({_id: element.id}, {slug: categoryslug});
 		});
-
 
 		res.render('index', {
 			categories: categories,
