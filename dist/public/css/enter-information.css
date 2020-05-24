@@ -19,11 +19,11 @@
 .next-btn button {
    width: 20%;
    padding: 10px;
-   background: #3452ff;
+   background:black;
    border: none;
    border-radius: 4px;
    font-weight: 600;
-   color: white;
+   color: #98E0F2;
    transition: 0.5s;
 }
 

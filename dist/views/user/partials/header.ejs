@@ -130,12 +130,20 @@
                                 <ul class="header-notification-area">
                                     <li class="adomx-dropdown col-auto">
                                         <!-- Dropdown -->
+
+                                        <a href="/user/posts/add-new"><button
+                                                class="btn btn-primary btn-sm">Neuer Beitrag</button></a>
+
+
+                                    </li>
+                                    <li class="adomx-dropdown col-auto">
+                                        <!-- Dropdown -->
                                         <% if(user.paid == "paid"){%>
                                         <a href="/blogrecent" target="_blank"><button
-                                                class="btn btn-primary btn-sm">Start Reading</button></a>
+                                                class="btn btn-primary btn-sm">Jetzt lesen</button></a>
                                         <% } else {%>
                                         <a href="/afterlogin" target="_blank"><button
-                                                class="btn btn-primary btn-sm">Start Reading</button></a>
+                                                class="btn btn-primary btn-sm">Jetzt lesen</button></a>
                                         <% }%>
 
 
@@ -147,7 +155,7 @@
                                         <!-- Dropdown -->
 
                                         <a href="/author/<%= user.usernameslug%>" target="_blank"><button
-                                                class="btn btn-primary btn-sm">View Site</button></a>
+                                                class="btn btn-primary btn-sm">Profil anzeigen</button></a>
 
 
                                     </li>

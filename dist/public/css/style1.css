@@ -64,12 +64,14 @@ h1, h2, h3, h4, h5, h6{
     font-family: 'Roboto', sans-serif;
 }
 p, a, li{
-    font-family: 'Oxygen', sans-serif;
+    font-family: EB Garamond;
 }
 a {
     transition: all 0.3s ease-out;
     position: relative;
     padding: .5em;
+    font-family: Montserrat;
+    font-size: 14px;
 }
 
 a:focus, 

@@ -58,14 +58,14 @@
       <hr>
       <a href="/dashboard/index" class="searchbar"><i class="fa fa-cog profileicon"></i>Dashboard</a>
       </a>
-      <a href="/author/<%= user.username%>" class="searchbar"><i class="fa fa-user-circle profileicon"></i>Profile</a>
+      <a href="/author/<%= user.username%>" class="searchbar"><i class="fa fa-user-circle profileicon"></i>Mein Profil</a>
       <a href="/log-out" class="searchbar"><i class="fa fa-sign-out profileicon"></i>Sign Out</a>
       <% } else {%>
       <span class="username_span"><%= user.username%></span>
       <hr>
-      <a href="/user/dashboard" class="searchbar"><i class="fa fa-cog profileicon"></i>Control Panel</a>
+      <a href="/user/dashboard" class="searchbar"><i class="fa fa-cog profileicon"></i>Dashboard</a>
 
-      <a href="/author/<%= user.username%>" class="searchbar"><i class="fa fa-user-circle profileicon"></i>Profile</a>
+      <a href="/author/<%= user.username%>" class="searchbar"><i class="fa fa-user-circle profileicon"></i>Mein Profil</a>
       <a href="/log-out" class="searchbar"><i class="fa fa-sign-out profileicon"></i>Sign Out</a>
       <% } %>
       <% } else {%>
@@ -134,21 +134,21 @@
                      <li><a href="/dashboard/index" class="searchbar"><i class="fa fa-cog profileicon"></i>Dashboard</a>
                      </li>
                      <li><a href="/author/<%= user.username%>" class="searchbar"><i
-                              class="fa fa-user-circle profileicon"></i>Profile</a></li>
+                              class="fa fa-user-circle profileicon"></i>Mein Profil</a></li>
                      <li><a href="/log-out" class="searchbar"><i class="fa fa-sign-out profileicon"></i>Sign Out</a>
                      </li>
                   </ul>
                   <% } else {%>
                   <li><span class="username_span"><%= user.username%></span></li>
-                  <li><a href="/user/dashboard" class="searchbar"><i class="fa fa-cog profileicon"></i>Control Panel</a>
+                  <li><a href="/user/dashboard" class="searchbar"><i class="fa fa-cog profileicon"></i>Dashbard</a>
                   </li>
                   <li><a href="/author/<%= user.username%>" class="searchbar"><i
-                           class="fa fa-user-circle profileicon"></i>Profile</a></li>
+                           class="fa fa-user-circle profileicon"></i>Mein Profil</a></li>
                   <li><a href="/log-out" class="searchbar"><i class="fa fa-sign-out profileicon"></i>Sign Out</a></li>
                   <% } %>
                   </ul>
                </div>
-               <a class="searchbar" href="#"><span style="font-size:20px; padding-left: 10px;cursor:pointer"
+               <a class="searchbar" href="javascript:void();"><span style="font-size:20px; padding-left: 10px;cursor:pointer"
                      onclick="openNotification()"><i class="fa fa-bell-o" aria-hidden="true"></i></span></a>
                <% } else {%>
                <a class="searchbar" href="/publisher"><span class="menu-title">Publisher
@@ -425,12 +425,10 @@
       <a href="#" id="scroll" style="display: none;"><span></span></a>
    </div>
 </section>
-         <div class="notification">
+         <div class="notification" style="display: none;">
             <div class="row">
                <div class="col-md-9 col-sm-9 col-xs-9">Noticaition </div>
-               <div class="col-md-3 col-sm-3 col-xs-3">
-                  <h3 style="color: black;"><i class="fa fa-trash-o clear-notification"></i></h3>
-               </div>
+               <div class="col-md-3 col-sm-3 col-xs-3"><h3 class="clear-notification" style="color: black;">&times;</i></h3></div>
             </div>
             <div class="row">
                <div class="col-md-4 col-sm-4 col-xs-4">
@@ -454,7 +452,6 @@
          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
          <script>
             AOS.init();
-            $('.notification').hide();
             function openNotification() {
                $('.notification').toggle();
             }

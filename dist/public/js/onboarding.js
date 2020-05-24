@@ -56,7 +56,7 @@ $(function () {
                selectCount++;
                selectCategory.push(categorySlug);
                $(this).attr('categorySelected', 'true');
-               $(this).css('box-shadow', 'inset 0 0 0 2000px #3452ffb3');
+               $(this).css('box-shadow', 'inset 0 0 0 2000px #98E0F2b3');
             } else {
                $(this).css('box-shadow', '');
             }

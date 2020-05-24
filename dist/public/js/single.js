@@ -56,7 +56,8 @@ $('#darkmode').click(function () {
       $('.recommended-for-you').css('background', 'black');
       $('.recommended-txt').css('color', 'white');
       $('#footer').css('background', '#0a0a0a');
-      $('#header').css('background', 'rgb(29, 29, 27)');
+      $('#header').css('background', 'black');
+      $('#firstChar').css('color', 'white');
       $('.searchbar').css('color', 'white');
       $('.dropdown a').css('color', 'white');
       $('.dropdown a:focus, .dropdown a:hover').css('color', 'white');
@@ -73,6 +74,7 @@ $('#darkmode').click(function () {
       $('.recommended-txt').css('color', 'black');
       $('#footer').css('background', '#f4f4f4');
       $('#header').css('background', 'white');
+      $('#firstChar').css('color', 'black');
       $('.searchbar').css('color', 'rgb(29, 29, 27)');
       $('.dropdown a').css('color', 'black');
       $('.dropdown a:focus, .dropdown a:hover').css('color', 'black');
@@ -85,7 +87,7 @@ var firstchild = $('.inner-dark-blog-content-one').children(":first");
 var clildstring = firstchild[0].innerText;
 var firstlettercolor = $('#firstlettercolor').val();
 $("#processbar").css('background-color', firstlettercolor);
-var newstring = "<span style='color:" + firstlettercolor + "; font-size:80px;'>" + clildstring.charAt(0) + "</span>" + clildstring.substr(1, clildstring.length);;
+var newstring = "<span id='firstChar' style='color:" + firstlettercolor + "; font-size:80px;'>" + clildstring.charAt(0) + "</span>" + clildstring.substr(1, clildstring.length);;
 firstchild[0].innerHTML = newstring;
 function upvote() {
    // $('#upvoteForm').submit();
