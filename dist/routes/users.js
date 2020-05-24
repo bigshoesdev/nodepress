@@ -1853,7 +1853,7 @@ router.get("/log-out", function (req, res, next) {
         lastLoggedIn: Date.now()
       }).then(function (updated) {
         req.logout();
-        req.flash("success_msg", "You are now logged out");
+        req.flash("success_msg", "Du bist num abgemeldet");
         res.redirect("/login");
       });
     }

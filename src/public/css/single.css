@@ -219,6 +219,9 @@ h6 a {
 .show {
    display: inline !important;
 }
+.container {
+   width: 1350px;
+}
 
 .header {
    display: flex;

@@ -810,6 +810,7 @@
   line-height: 30px; 
   font-size: 16px;
   font-weight: 600;
+  font-family: EB Garamond;
 }
 .recommnet-heading2 {
   height: 250px;
@@ -959,8 +960,8 @@
 /* floaticon css start */
 
 .dropbtn {
-  background-color: #98E0F2;
-  color: white;
+  background-color: black;
+  color: #98E0F2;
   padding: 14px 19px;
   font-size: 18px;
   border: none;
@@ -992,16 +993,16 @@
 }
 
 .dropup-content a {
-  color: white;
+  color: #98E0F2;
   padding: 7px 11px;
   text-decoration: none;
   display: block;
-  background: #98E0F2;
+  background: black;
   margin: 20px 16px;
   border-radius: 50%;
 }
 .dropup-content a:hover {
-  background-color: #98E0F2;
+  background-color: black;
 }
 
 .dropup:hover .dropup-content {
@@ -1010,7 +1011,7 @@
 }
 
 .dropup:hover .dropbtn {
-  background-color: #98E0F2;
+  background-color: black;
 }
 
 /* floaticon css end */
@@ -1166,7 +1167,7 @@
   height: 360px;
 }
 .content-one-text p {
-  font-family: nunito;
+  font-family: EB Garamond;
   font-size: 16px;
   font-weight: 600;
   color: #827d7d;
@@ -1378,14 +1379,14 @@
     background: #3452ff;
 }*/
 .follow-btn {
-  background: #98E0F2;
+  background: black;
   padding: 10px;
   text-align: center;
   border-radius: 4px;
   margin-top: 5px;
 }
 .follow-btn a {
-  color: #fff;
+  color: #98E0F2;
 }
 
 .slider-content-text-brief {
@@ -1523,6 +1524,9 @@
   background-position: center;
   position: relative;
   margin-bottom: 20px;
+}
+.container {
+  width: 1300px;
 }
 .category-search-bg1-contant {
   padding: 20px 20px;
@@ -2391,17 +2395,17 @@
 .login-btn button {
   width: 100%;
   padding: 10px;
-  background: #98E0F2;
+  background: black;
   border: none;
   border-radius: 4px;
   font-weight: 600;
-  color: #fff;
+  color: #98E0F2;
   font-size: 16px;
   font-family: nunito;
   transition: 0.5s;
 }
 .login-btn button:hover {
-  background: #98E0F2;
+  background: black;
   transition: 0.5s;
   box-shadow: 0px 8px 10px -3px #c1bfbf;
 }
@@ -2411,7 +2415,7 @@
 .lost-your-password a {
   font-size: 18px;
   font-weight: 600;
-  color: #98E0F2;
+  color: black;
   transition: 0.5s;
 }
 .lost-your-password a:hover {
@@ -2434,13 +2438,13 @@
   margin-top: 40px;
 }
 .reset-btn button {
-  background: #3452ff;
+  background: black;
   border: none;
   padding: 10px 30px;
   font-weight: 700;
   font-family: nunito;
   border-radius: 4px;
-  color: #fff;
+  color: #98E0f2;
 }
 .lost-password-heading {
   margin: 30px 0px;

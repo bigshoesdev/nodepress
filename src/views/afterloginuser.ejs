@@ -36,9 +36,9 @@
     </a>
     <% if(user) { %>
     <% if (user.paid == "free") { %>
-    <a class="searchbar" href="/afterlogin"><span style="padding-left: 10px;cursor:pointer">Artikel
+    <a class="searchbar" href="/afterlogin"><span style="padding-left: 10px;cursor:pointer">Inhalte
         entdecken</span></a>
-    <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Publisher
+    <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Blogger
         werden</span></a>
     <a class="searchbar" href="/ourwork"><span style="padding-left: 10px;cursor:pointer">Exklusive
         Inhalte</span></a>
@@ -48,7 +48,7 @@
         Inhalte</span></a>
     <a class="searchbar" href="#"><span style="padding-left: 10px;cursor:pointer">Feed</span>
     </a>
-    <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Publisher
+    <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Blogger
         werden</span></a>
     <% } %>
     <% if(user.roleId == 'admin') { %>
@@ -56,20 +56,20 @@
     <hr>
     <a href="/dashboard/index" class="searchbar"><i class="fa fa-cog profileicon"></i>Dashboard</a>
     </a>
-    <a href="/author/<%= user.usernameslug%>" class="searchbar"><i class="fa fa-user-circle profileicon"></i>Profile</a>
+    <a href="/author/<%= user.usernameslug%>" class="searchbar"><i class="fa fa-user-circle profileicon"></i>Mein Profil</a>
     <a href="/log-out" class="searchbar"><i class="fa fa-sign-out profileicon"></i>Sign Out</a>
     <% } else {%>
     <span class="username_span"><%= user.username%></span>
     <hr>
-    <a href="/user/dashboard" class="searchbar"><i class="fa fa-cog profileicon"></i>Control Panel</a>
+    <a href="/user/dashboard" class="searchbar"><i class="fa fa-cog profileicon"></i>Dashboard</a>
 
-    <a href="/author/<%= user.usernameslug%>" class="searchbar"><i class="fa fa-user-circle profileicon"></i>Profile</a>
+    <a href="/author/<%= user.usernameslug%>" class="searchbar"><i class="fa fa-user-circle profileicon"></i>Mein Profil</a>
     <a href="/log-out" class="searchbar"><i class="fa fa-sign-out profileicon"></i>Sign Out</a>
     <% } %>
     <% } else {%>
-    <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Publisher
+    <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Blogger
         werden</span></a>
-    <a class="searchbar" href="/afterlogin"><span style="padding-left: 10px;cursor:pointer">Artikel
+    <a class="searchbar" href="/afterlogin"><span style="padding-left: 10px;cursor:pointer">Inhalte
         entdecken</span></a>
     <% } %>
   </div>
@@ -106,9 +106,9 @@
         <div class="col-xs-11 col-md-10 menu-large" style="text-align: right;">
           <% if(user) { %>
           <% if (user.paid == "free") { %>
-          <a class="searchbar" href="/afterlogin"><span style="padding-left: 10px;cursor:pointer">Artikel
+          <a class="searchbar" href="/afterlogin"><span style="padding-left: 10px;cursor:pointer">Inhalte
               entdecken</span></a>
-          <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Publisher
+          <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Blogger
               werden</span></a>
           <a class="searchbar" href="/ourwork"><span style="padding-left: 10px;cursor:pointer">Exklusive
               Inhalte</span></a>
@@ -117,7 +117,7 @@
               Inhalte</span></a>
           <a class="searchbar" href="/blogrecent"><span style="padding-left: 10px;cursor:pointer">Feed</span>
           </a>
-          <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Publisher
+          <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Blogger
               werden</span></a>
           <% } %>
           <a class="searchbar" href="#"><span style="font-size:20px; padding-left: 10px;cursor:pointer"
@@ -131,16 +131,16 @@
               <li><a href="/dashboard/index" class="searchbar"><i class="fa fa-cog profileicon"></i>Dashboard</a>
               </li>
               <li><a href="/author/<%= user.usernameslug%>" class="searchbar"><i
-                    class="fa fa-user-circle profileicon"></i>Profile</a></li>
+                    class="fa fa-user-circle profileicon"></i>Mein Profil</a></li>
               <li><a href="/log-out" class="searchbar"><i class="fa fa-sign-out profileicon"></i>Sign Out</a>
               </li>
             </ul>
             <% } else {%>
             <li><span><%= user.username%></span></li>
-            <li><a href="/user/dashboard" class="searchbar"><i class="fa fa-cog profileicon"></i>Control Panel</a>
+            <li><a href="/user/dashboard" class="searchbar"><i class="fa fa-cog profileicon"></i>Dashboard</a>
             </li>
             <li><a href="/author/<%= user.usernameslug%>" class="searchbar"><i
-                  class="fa fa-user-circle profileicon"></i>Profile</a></li>
+                  class="fa fa-user-circle profileicon"></i>Mein Profil</a></li>
             <li><a href="/log-out" class="searchbar"><i class="fa fa-sign-out profileicon"></i>Sign Out</a></li>
             <% } %>
             </ul>
@@ -148,9 +148,9 @@
           <a class="searchbar" href="#"><span style="font-size:20px; padding-left: 10px;cursor:pointer"
               onclick="openNotification()"><i class="fa fa-bell-o" aria-hidden="true"></i></span></a>
           <% } else {%>
-          <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Publisher
+          <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Blogger
               werden</span></a>
-          <a class="searchbar" href="/afterlogin"><span style="padding-left: 10px;cursor:pointer">Artikel
+          <a class="searchbar" href="/afterlogin"><span style="padding-left: 10px;cursor:pointer">Inhalte
               entdecken</span></a>
           <a class="searchbar" href="#"><span style="font-size:20px; padding-left: 10px;cursor:pointer"
               onclick="openNav()"><i class="fa fa-search" aria-hidden="true"></i></span></a>
@@ -197,12 +197,12 @@
         <div class="after-login-page-content">
           <div class="container-fluid">
             <div class="inner-after-login-page-content">
-              <h4>Lieblingsautoren</h4>
+              <h4 style="font-family: Montserrat;">Lieblingsautoren</h4>
               <hr>
               <div class="row">
                 <% if(authorarticle.length == 0){%>
                 <div class="col-12 text-center">
-                  <h3 style="color: black;">Folge Autoren, um Artikelvorschläge zu erhalten</h3>
+                  <h3 style="color: black; font-family: Montserrat;">Folge Autoren, um Artikelvorschläge zu erhalten</h3>
                 </div>
                 <%}%>
                 <div id="owl-carousel0" class="owl-carousel owl-theme">
@@ -234,7 +234,7 @@
                 <%}%>
               </div>
             </div>
-            <h4>Beliebt</h4><hr>
+            <h4 style="font-family: Montserrat;">Beliebt</h4><hr>
             <div class="row">
               <div id="owl-carousel" class="owl-carousel owl-theme">
                 <% for(var i = 0; i < popular.length; i ++){%>
@@ -284,7 +284,7 @@
               <% } %>
            </div>
             <br>
-            <h4>Empfehlungen</h4>
+            <h4 style="font-family: Montserrat;">Empfehlungen</h4>
             <hr>
             <div class="row">
               <div id="owl-carousel1" class="owl-carousel owl-theme">
@@ -400,7 +400,7 @@
   <div class="notification" style="display:none">
     <div class="row">
       <div class="col-md-9 col-sm-9 col-xs-9">Noticaition </div>
-      <div class="col-md-3 col-sm-3 col-xs-3"><h3 style="color: black;"><i class="fa fa-trash-o clear-notification"></i></h3></div>
+      <div class="col-md-3 col-sm-3 col-xs-3"><h3 class="clear-notification" style="color: black;">&times;</i></h3></div>
     </div>
     <div class="row">
       <div class="col-md-4 col-sm-4 col-xs-4">

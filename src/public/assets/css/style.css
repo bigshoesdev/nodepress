@@ -9087,8 +9087,9 @@ body.header-top-green .header-notification-area > li > a .user .name {
   padding: 12px 0 12px 25px;
 }
 .btn.btn-primary {
-  background-color: #98E0F2;
-  border-color: #98E0F2;
+  background-color: black;
+  border-color: black;
+  color: #98E0F2;
 }
 .btn.btn-info {
   background-color: #98E0F2;

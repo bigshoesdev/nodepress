@@ -201,8 +201,6 @@
                                         </th>
                                 <th>Title</th>
                                 <th>Category</th>
-                                <th>Post Type</th>
-                                <th>Author</th>
                                 <th>Date</th>
                                 <th>Status</th>
                                 <th>Qualify Status</th>
@@ -221,10 +219,6 @@
                                     </a>
                                 </td>
                                 <td><%= article[key].category.name %></td>
-                                <td>
-                                    <span class="badge badge-info"><%= article[key].postType %></span>
-                                </td>
-                                <td><%= article[key].postedBy.email %></td>
                                 
                                 <td><%= article[key].createdAt.toLocaleDateString() %></td>
                                 <td>

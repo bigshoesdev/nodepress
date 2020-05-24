@@ -1115,7 +1115,7 @@ router.get("/log-out", (req, res, next) => {
       User.updateOne({ _id: req.user.id }, { lastLoggedIn: Date.now() }).then(
         updated => {
           req.logout();
-          req.flash("success_msg", "You are now logged out");
+          req.flash("success_msg", "Du bist num abgemeldet");
           res.redirect("/login");
         }
       );
