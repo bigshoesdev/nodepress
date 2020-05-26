@@ -6,7 +6,7 @@
    <meta charset="utf-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1">
-   <meta name="description" content="Dype"/>
+   <meta name="description" content="Dype" />
    <!-- css -->
    <link rel="stylesheet" href="/css/bootstrap.min.css" async>
    <link rel="stylesheet" href="/css/ionicons.min.css" async>
@@ -23,10 +23,11 @@
    <link
       href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&display=swap"
       rel="stylesheet" />
-   <link href="/css/aos.css" rel="stylesheet" async/>
-   <link href="/css/header.css" rel="stylesheet" async/>
+   <link href="/css/aos.css" rel="stylesheet" async />
+   <link href="/css/header.css" rel="stylesheet" async />
    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap" rel="stylesheet">
 </head>
+
 <body>
    <div class="sidenav" id="sidenav">
       <a class="cancelNav">
@@ -35,7 +36,7 @@
       <% if(user) { %>
       <% if (user.paid == "free") { %>
       <a class="searchbar" href="/afterlogin"><span class="menu-title">Inhalte entdecken</span></a>
-      <a class="searchbar" href="/publisher"><span class="menu-title" >Blogger werden</span></a>
+      <a class="searchbar" href="/publisher"><span class="menu-title">Blogger werden</span></a>
       <a class="searchbar" href="/ourwork"><span class="menu-title">Exklusive
             Inhalte</span></a>
       <hr>
@@ -52,14 +53,16 @@
       <hr>
       <a href="/dashboard/index" class="searchbar"><i class="fa fa-cog profileicon"></i>Dashboard</a>
       </a>
-      <a href="/author/<%= user.usernameslug%>" class="searchbar"><i class="fa fa-user-circle profileicon"></i>Mein Profil</a>
+      <a href="/author/<%= user.usernameslug%>" class="searchbar"><i class="fa fa-user-circle profileicon"></i>Mein
+         Profil</a>
       <a href="/log-out" class="searchbar"><i class="fa fa-sign-out profileicon"></i>Sign Out</a>
       <% } else {%>
       <span class="username_span"><%= user.username%></span>
       <hr>
       <a href="/user/dashboard" class="searchbar"><i class="fa fa-cog profileicon"></i>Dashboard</a>
 
-      <a href="/author/<%= user.usernameslug%>" class="searchbar"><i class="fa fa-user-circle profileicon"></i>Mein Profil</a>
+      <a href="/author/<%= user.usernameslug%>" class="searchbar"><i class="fa fa-user-circle profileicon"></i>Mein
+         Profil</a>
       <a href="/log-out" class="searchbar"><i class="fa fa-sign-out profileicon"></i>Sign Out</a>
       <% } %>
       <% } else {%>
@@ -67,6 +70,8 @@
             werden</span></a>
       <a class="searchbar" href="/afterlogin"><span class="menu-title">Artikel
             entdecken</span></a>
+      <a class="searchbar" href="/login"><i class="fa fa-sign-in"></i><span class="menu-title">Einloggen</span></a>
+      <a class="searchbar" href="/sign-up"><i class="fa fa-user"></i><span class="menu-title">Registrieren</span></a>
       <% } %>
    </div>
    
@@ -145,16 +150,18 @@
                   </ul>
                </div>
                <a class="searchbar"><span style="font-size:20px; padding-left: 10px;cursor:pointer"
-                  onclick="openNotification()"><i class="fa fa-bell-o" aria-hidden="true"></i></span></a>
+                     onclick="openNotification()"><i class="fa fa-bell-o" aria-hidden="true"></i></span></a>
                <% } else {%>
                <a class="searchbar" href="/publisher"><span class="menu-title">Blogger werden</span></a>
                <a class="searchbar" href="/afterlogin"><span class="menu-title">Inhalte entdecken</span></a>
                <a class="searchbar" href="#"><span style="font-size:20px; padding-left: 10px;cursor:pointer"
                      onclick="openNav()"><i class="fa fa-search" aria-hidden="true"></i></span></a>
                <a href="/sign-up" class="searchbar"><span style="font-size:20px; padding-left: 10px;cursor:pointer"><i
-                        class="fa fa-user"></i></span><span style="position: absolute; bottom: -10px; left: -3px;font-size: 10px;">Registrieren</span></a>
+                        class="fa fa-user"></i></span><span
+                     style="position: absolute; bottom: -10px; left: -3px;font-size: 10px;">Registrieren</span></a>
                <a href="/login" class="searchbar"><span style="font-size:20px; padding-left: 10px;cursor:pointer"><i
-                        class="fa fa-sign-in"></i></span><span style="position: absolute; bottom: -10px;left: 4px; font-size: 10px;">Einloggen</span></a>
+                        class="fa fa-sign-in"></i></span><span
+                     style="position: absolute; bottom: -10px;left: 4px; font-size: 10px;">Einloggen</span></a>
                <%}%>
             </div>
          </section>

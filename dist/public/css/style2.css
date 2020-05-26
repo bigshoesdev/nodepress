@@ -1525,12 +1525,6 @@
   position: relative;
   margin-bottom: 20px;
 }
-@media screen and (min-width: 1000px) {
-  .container {
-    width: 1350px;
-  }
-}
-
 .category-search-bg1-contant {
   padding: 20px 20px;
   position: absolute;

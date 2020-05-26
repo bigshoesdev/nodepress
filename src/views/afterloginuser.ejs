@@ -56,14 +56,16 @@
     <hr>
     <a href="/dashboard/index" class="searchbar"><i class="fa fa-cog profileicon"></i>Dashboard</a>
     </a>
-    <a href="/author/<%= user.usernameslug%>" class="searchbar"><i class="fa fa-user-circle profileicon"></i>Mein Profil</a>
+    <a href="/author/<%= user.usernameslug%>" class="searchbar"><i class="fa fa-user-circle profileicon"></i>Mein
+      Profil</a>
     <a href="/log-out" class="searchbar"><i class="fa fa-sign-out profileicon"></i>Sign Out</a>
     <% } else {%>
     <span class="username_span"><%= user.username%></span>
     <hr>
     <a href="/user/dashboard" class="searchbar"><i class="fa fa-cog profileicon"></i>Dashboard</a>
 
-    <a href="/author/<%= user.usernameslug%>" class="searchbar"><i class="fa fa-user-circle profileicon"></i>Mein Profil</a>
+    <a href="/author/<%= user.usernameslug%>" class="searchbar"><i class="fa fa-user-circle profileicon"></i>Mein
+      Profil</a>
     <a href="/log-out" class="searchbar"><i class="fa fa-sign-out profileicon"></i>Sign Out</a>
     <% } %>
     <% } else {%>
@@ -71,6 +73,8 @@
         werden</span></a>
     <a class="searchbar" href="/afterlogin"><span style="padding-left: 10px;cursor:pointer">Inhalte
         entdecken</span></a>
+    <a class="searchbar" href="/login"><i class="fa fa-sign-in"></i>&nbsp;<span class="menu-title">Einloggen</span></a>
+    <a class="searchbar" href="/sign-up"><i class="fa fa-user"></i>&nbsp;<span class="menu-title">Registrieren</span></a>
     <% } %>
   </div>
   <header class="sticky" id="header">
@@ -202,7 +206,8 @@
               <div class="row">
                 <% if(authorarticle.length == 0){%>
                 <div class="col-12 text-center">
-                  <h3 style="color: black; font-family: Montserrat;">Folge Autoren, um Artikelvorschläge zu erhalten</h3>
+                  <h3 style="color: black; font-family: Montserrat;">Folge Autoren, um Artikelvorschläge zu erhalten
+                  </h3>
                 </div>
                 <%}%>
                 <div id="owl-carousel0" class="owl-carousel owl-theme">
@@ -271,18 +276,17 @@
               %>
               <% for(var i = 0; i < length; i ++) {%>
               <div class="col-sm-12 col-md-6 col-lg-4 category-item">
-                 <a href="/kategorie/<%= categories[i].slug%>" target="_blank">
-                    <span class="category-img">
-                       <img class="img-fluid" 
-                       src="<%= categories[i].background%>"></span>
-                    <span class="category-name">
-                       <p class="underline"><%= categories[i].name%></p>
-                       <!-- <h6><%= categories[i].description%></h6> -->
-                    </span>
-                 </a>
+                <a href="/kategorie/<%= categories[i].slug%>" target="_blank">
+                  <span class="category-img">
+                    <img class="img-fluid" src="<%= categories[i].background%>"></span>
+                  <span class="category-name">
+                    <p class="underline"><%= categories[i].name%></p>
+                    <!-- <h6><%= categories[i].description%></h6> -->
+                  </span>
+                </a>
               </div>
               <% } %>
-           </div>
+            </div>
             <br>
             <h4 style="font-family: Montserrat;">Empfehlungen</h4>
             <hr>
@@ -314,7 +318,7 @@
                  <div class="inner-after-login-page-content">
                     <div class="row">
                        <% for(var i = 0; i < random.length; i ++) {%>
-                          <% 
+                <% 
                           var url="#";
                           if(random[i].postedBy.roleId == "admin"){
                              url = "/d/" + random[i].category.slug + "/" + random[i].slug;
@@ -322,33 +326,34 @@
                              url = "/p/" + random[i].category.slug + "/" + random[i].slug;
                           }
                           %>
-                       <div class="col-md-12 col-lg-4">
-                          <div class="content-two-text last">
-                             <p><%= random[i].category.name%></p>
-                             <h2><%= random[i].title%></h2>
-                             <p><%= random[i].summary%></p>
-                             <a class="read-more" href="<%= url%>" target="_blank">Mehr erfahren<i class="fa fa-arrow-right" aria-hidden="true"></i></a>
-                          </div>
-                       </div>
-                       <% }%>
-                    </div>
-                 </div>
-              </section>
-           </div>
-
-
-
-        </div>
+                <div class="col-md-12 col-lg-4">
+                  <div class="content-two-text last">
+                    <p><%= random[i].category.name%></p>
+                    <h2><%= random[i].title%></h2>
+                    <p><%= random[i].summary%></p>
+                    <a class="read-more" href="<%= url%>" target="_blank">Mehr erfahren<i class="fa fa-arrow-right"
+                        aria-hidden="true"></i></a>
+                  </div>
+                </div>
+                <% }%>
+              </div>
+            </div>
+      </section>
       </div>
-    </div>
-  </div>
 
-<section class="footer-main" id="footer">
-  <div class="container">
-     <div class="innner-footer-main">
-        <div class="footer-social-icons">
-           <div class="col-md-12 col-sm-12 social-media">
-              <a href="<%= twitter %>"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+
+
+      </div>
+      </div>
+      </div>
+      </div>
+
+      <section class="footer-main" id="footer">
+        <div class="container">
+          <div class="innner-footer-main">
+            <div class="footer-social-icons">
+              <div class="col-md-12 col-sm-12 social-media">
+                <a href="<%= twitter %>"><i class="fa fa-twitter" aria-hidden="true"></i></a>
                 <a style="padding: 11px 20px;" href="<%= facebook %>"><i class="fa fa-facebook"
                     aria-hidden="true"></i></a>
                 <a href="<%= linkedin %>"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
