@@ -82,16 +82,16 @@
         <hr>
         <a href="/dashboard/index" class="searchbar"><i class="fa fa-cog profileicon"></i>Dashboard</a>
         </a>
-        <a href="/author/<%= user.usernameslug%>" class="searchbar"><i
-                class="fa fa-user-circle profileicon"></i>Mein Profil</a>
+        <a href="/author/<%= user.usernameslug%>" class="searchbar"><i class="fa fa-user-circle profileicon"></i>Mein
+            Profil</a>
         <a href="/log-out" class="searchbar"><i class="fa fa-sign-out profileicon"></i>Sign Out</a>
         <% } else {%>
         <span class="username_span"><%= user.username%></span>
         <hr>
         <a href="/user/dashboard" class="searchbar"><i class="fa fa-cog profileicon"></i>Dashboard</a>
 
-        <a href="/author/<%= user.usernameslug%>" class="searchbar"><i
-                class="fa fa-user-circle profileicon"></i>Mein Profil</a>
+        <a href="/author/<%= user.usernameslug%>" class="searchbar"><i class="fa fa-user-circle profileicon"></i>Mein
+            Profil</a>
         <a href="/log-out" class="searchbar"><i class="fa fa-sign-out profileicon"></i>Sign Out</a>
         <% } %>
         <% } else {%>
@@ -99,6 +99,8 @@
                 werden</span></a>
         <a class="searchbar" href="/afterlogin"><span class="menu-title">Artikel
                 entdecken</span></a>
+        <a class="searchbar" href="/login"><i class="fa fa-sign-in"></i><span class="menu-title">Einloggen</span></a>
+        <a class="searchbar" href="/sign-up"><i class="fa fa-user"></i><span class="menu-title">Registrieren</span></a>
         <% } %>
     </div>
     <header class="sticky" id="header">
@@ -139,8 +141,10 @@
                 <div class="col-xs-11 col-md-10 menu-large" style="text-align: right;">
                     <% if(user) { %>
                     <% if (user.paid == "free") { %>
-                    <a class="searchbar" href="/afterlogin"><span style="padding-left: 10px;cursor:pointer">Inhalte entdecken</span></a>
-                    <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Blogger werden</span></a>
+                    <a class="searchbar" href="/afterlogin"><span style="padding-left: 10px;cursor:pointer">Inhalte
+                            entdecken</span></a>
+                    <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Blogger
+                            werden</span></a>
                     <a class="searchbar" href="/ourwork"><span style="padding-left: 10px;cursor:pointer">Exklusive
                             Inhalte</span></a>
                     <% } else if(user.paid == 'paid') { %>
@@ -170,7 +174,8 @@
                         </ul>
                         <% } else {%>
                         <li><span class="username_span"><%= user.username%></span></li>
-                        <li><a href="/user/dashboard" class="searchbar"><i class="fa fa-cog profileicon"></i>Dashboard</a>
+                        <li><a href="/user/dashboard" class="searchbar"><i
+                                    class="fa fa-cog profileicon"></i>Dashboard</a>
                         </li>
                         <li><a href="/author/<%= user.usernameslug%>" class="searchbar"><i
                                     class="fa fa-user-circle profileicon"></i>Mein Profil</a></li>
@@ -183,16 +188,20 @@
                             style="font-size:20px; padding-left: 10px;cursor:pointer" onclick="openNotification()"><i
                                 class="fa fa-bell-o" aria-hidden="true"></i></span></a>
                     <% } else {%>
-                    <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Blogger werden</span></a>
-                    <a class="searchbar" href="/afterlogin"><span style="padding-left: 10px;cursor:pointer">Inhalte entdecken</span></a>
+                    <a class="searchbar" href="/publisher"><span style="padding-left: 10px;cursor:pointer">Blogger
+                            werden</span></a>
+                    <a class="searchbar" href="/afterlogin"><span style="padding-left: 10px;cursor:pointer">Inhalte
+                            entdecken</span></a>
                     <a class="searchbar" href="#"><span style="font-size:20px; padding-left: 10px;cursor:pointer"
                             onclick="openNav()"><i class="fa fa-search" aria-hidden="true"></i></span></a>
                     <a href="/sign-up" class="searchbar"><span
                             style="font-size:20px; padding-left: 10px;cursor:pointer"><i
-                                class="fa fa-user"></i></span></a>
+                                class="fa fa-user"></i></span><span
+                            style="position: absolute; bottom: -10px; left: -3px;font-size: 10px;">Registrieren</span></a>
                     <a href="/login" class="searchbar"><span
                             style="font-size:20px; padding-left: 10px;cursor:pointer"><i
-                                class="fa fa-sign-in"></i></span></a>
+                                class="fa fa-sign-in"></i></span><span
+                            style="position: absolute; bottom: -10px;left: 4px; font-size: 10px;">Einloggen</span></a>
                     <%}%>
             </div>
          </section>
@@ -276,7 +285,8 @@
                                 </div>
                                 <div class="col-md-9">
                                     <div class="dark-blog-makedby-details">
-                                        <a href="/author/<%= article.postedBy.usernameslug%>" style="padding: 0;color: black;">
+                                        <a href="/author/<%= article.postedBy.usernameslug%>"
+                                            style="padding: 0;color: black;">
                                             <h2 class="authorname"><%= article.postedBy.firstName%>
                                                 <%= article.postedBy.lastName%></h2>
                                         </a>

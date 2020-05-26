@@ -270,6 +270,34 @@ ul {
    .inner-section-2 {
       display: none;
    }
+   .popup {
+      width: 80%;
+      left: 10%;
+      position: fixed;
+      height: 60%;
+      top: 25%;
+      z-index: 999999;
+      text-align: center;
+      overflow-x: hidden;
+      overflow-y: auto;
+      display: none;
+   }
+   .popupContainer {
+      color: white;
+      position: absolute;
+      top: 10%;
+      left: 5%;
+      width: 80%;
+      margin: auto;
+   }
+   .popupButton {
+      border: 2px solid #98e0f2;
+      padding: 10px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 4px;
+      color: white;
+   }
 }
 @media screen and (min-width: 1000px) {
    .text {
@@ -282,20 +310,36 @@ ul {
    .section-1 {
       max-height: 800px;
    }
+   .popup {
+      position: fixed;
+      width: 60%;
+      height: 84%;
+      top: 10%;
+      left: 20%;
+      z-index: 999999;
+      text-align: center;
+      overflow-x: hidden;
+      overflow-y: auto;
+      display: none;
+   }
+   .popupContainer {
+      color: white;
+      position: absolute;
+      top: 40%;
+      right: 5%;
+      width: 50%;
+      margin: auto;
+   }
+   .popupButton {
+      border: 2px solid #98e0f2;
+      padding: 14px 40px;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: 4px;
+      color: white;
+   }
 }
 
-.popup {
-   position: fixed;
-   width: 60%;
-   height: 84%;
-   top: 10%;
-   left: 20%;
-   z-index: 999999;
-   text-align: center;
-   overflow-x: hidden;
-   overflow-y: auto;
-   display: none;
-}
 .popup-back {
    position: fixed;
    top: 0;
@@ -307,14 +351,7 @@ ul {
    opacity: 0.85;
    display: none;
 }
-.popupContainer {
-   color: white;
-   position: absolute;
-   top: 40%;
-   right: 5%;
-   width: 50%;
-   margin: auto;
-}
+
 .popupTitle {
    font-size: 30px;
    font-weight: 900;
@@ -322,14 +359,7 @@ ul {
 .popupContent {
    font-size: 20px;
 }
-.popupButton {
-   border: 2px solid #98e0f2;
-   padding: 14px 40px;
-   font-size: 14px;
-   font-weight: 700;
-   border-radius: 4px;
-   color: white;
-}
+
 .popupButton:hover {
    background-color: black;
    color: white;

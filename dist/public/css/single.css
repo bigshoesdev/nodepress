@@ -219,9 +219,6 @@ h6 a {
 .show {
    display: inline !important;
 }
-.container {
-   width: 1350px;
-}
 
 .header {
    display: flex;
@@ -245,7 +242,7 @@ h6 a {
 .sidenav a {
    padding: 6px 8px 6px 16px;
    text-decoration: none;
-   font-size: 16px;
+   font-size: 14px;
    color: #818181;
    display: block;
    margin-bottom: 5px;

@@ -803,18 +803,34 @@ router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
 }());
 router.post('/api/home', /*#__PURE__*/function () {
   var _ref9 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee9(req, res, next) {
-    var token, payload;
+    var token, user, usercatList, recentlyArticles, payload;
     return _regenerator["default"].wrap(function _callee9$(_context9) {
       while (1) {
         switch (_context9.prev = _context9.next) {
           case 0:
-            token = req.body.token;
-            payload = {};
-            return _context9.abrupt("return", res.json({
-              "error": token
-            }));
+            token = req.body.token; // user token
+
+            _context9.next = 3;
+            return _users["default"].findOne({
+              token: token
+            });
 
           case 3:
+            user = _context9.sent;
+            usercatList = user.categoryList;
+            _context9.next = 7;
+            return _articles["default"].find({}).populate('category').populate('postedBy').sort('created_at').limit(3);
+
+          case 7:
+            recentlyArticles = _context9.sent;
+            payload = {
+              recently: recentlyArticles
+            };
+            return _context9.abrupt("return", res.json({
+              "data": payload
+            }));
+
+          case 10:
           case "end":
             return _context9.stop();
         }

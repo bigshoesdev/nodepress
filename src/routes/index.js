@@ -540,12 +540,14 @@ router.get('/', install.redirectToLogin, async (req, res, next) => {
 	}
 });
 router.post('/api/home', async (req, res, next) => {
-	var token = req.body.token;
-
+	let token = req.body.token; // user token
+	let user = await User.findOne({token: token});
+	let usercatList = user.categoryList;
+	let recentlyArticles = await Article.find({}).populate('category').populate('postedBy').sort('created_at').limit(3);
 	let payload = {
-
+		recently: recentlyArticles
 	}
-	return res.json({ "error": token });
+	return res.json({ "data": payload });
 });
 router.get('/search', install.redirectToLogin, async (req, res, next) => {
 	try {
