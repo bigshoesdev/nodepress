@@ -613,9 +613,7 @@
 /* dark-blog css */
 
 .dark-blog-banner {
-  background-image: linear-gradient(#0000003d, #00000040), url(/images/dark-blog.jpg);
   height: 600px;
-  background-attachment: fixed;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -1474,7 +1472,6 @@
 /* category css  */
 
 .category-banner {
-  background-image: linear-gradient(#00000061, #00000069), url(/images/cateimg-1.jpg);
   height: 550px;
   background-size: cover;
   display: flex;
