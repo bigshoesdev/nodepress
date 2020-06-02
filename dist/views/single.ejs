@@ -25,6 +25,7 @@
     <meta name="twitter:image" content="<%= siteLink%><%= article.file %>" />
     <meta name="twitter:domain" content="<%= siteLink%>" />
     <!-- css -->
+    <link rel="shortcut icon" href="<%= favicon %>" type="image/x-icon">
     <link rel="stylesheet" href="/css/bootstrap.min.css" async>
     <link rel="stylesheet" href="/css/ionicons.min.css" async>
     <link rel="stylesheet" href="/css/owl.carousel.css" async>
@@ -330,14 +331,14 @@
                                             <h5>Letzten Artikel ansehen</h5>
                                             <% if(previous.postedBy){%>
                                             <% if(previous.postedBy.roleId == "admin") {%>
-                                            <a href="/d/<%= previous.category.slug.toLowerCase();%>/<%= previous.slug %>"
-                                                target="_blank">
+                                            <a
+                                                href="/d/<%= previous.category.slug.toLowerCase();%>/<%= previous.slug %>">
                                                 <h2>
                                                     <%= previous.title%></h2>
                                             </a>
                                             <% } else {%>
-                                            <a href="/p/<%= previous.category.slug.toLowerCase();%>/<%= previous.slug %>"
-                                                target="_blank">
+                                            <a
+                                                href="/p/<%= previous.category.slug.toLowerCase();%>/<%= previous.slug %>">
                                                 <h2>
                                                     <%= previous.title%></h2>
                                             </a>
@@ -354,14 +355,12 @@
                                             <h5>Nächsten Artikel ansehen</h5>
                                             <% if(previous.postedBy){%>
                                             <% if(next.postedBy.roleId == "admin") {%>
-                                            <a href="/d/<%= next.category.slug.toLowerCase();%>/<%= next.slug %>"
-                                                target="_blank">
+                                            <a href="/d/<%= next.category.slug.toLowerCase();%>/<%= next.slug %>">
                                                 <h2>
                                                     <%= next.title%></h2>
                                             </a>
                                             <% } else {%>
-                                            <a href="/p/<%= next.category.slug.toLowerCase();%>/<%= next.slug %>"
-                                                target="_blank">
+                                            <a href="/p/<%= next.category.slug.toLowerCase();%>/<%= next.slug %>">
                                                 <h2>
                                                     <%= next.title%></h2>
                                             </a>
@@ -379,7 +378,7 @@
                     <div class="container">
                         <div class="inner-recommended-for-you">
                             <div class="recommnet-heading-main">
-                                <h2 class="recommended-txt">Empfehlungen</h2>
+                                <h2 class="recommended-txt">Neue Beiträge</h2>
                             </div>
                             <div class="row">
                                 <% for(var i = 0; i < related.length; i ++){%>
@@ -389,14 +388,13 @@
                                             <img src="<%= related[i].file%>">
                                         </div>
                                         <div class="recommnet-cate">
-                                            <a target="_blank"
+                                            <a
                                                 href="/kategorie/<%= related[i].category.slug%>"><span><%= related[i].category.name%></span></a>
                                         </div>
                                         <div class="recommnet-heading">
                                             <% if(related[i].postedBy.roleId == "admin"){%>
                                             <h2>
-                                                <a target="_blank"
-                                                    href="/d/<%=related[i].category.slug%>/<%=related[i].slug%>"
+                                                <a href="/d/<%=related[i].category.slug%>/<%=related[i].slug%>"
                                                     style="color: black;">
                                                     <p style="overflow-wrap: break-word;">
                                                         <%= related[i].title%></p>
@@ -404,8 +402,7 @@
                                             </h2>
                                             <%} else {%>
                                             <h2>
-                                                <a target="_blank"
-                                                    href="/p/<%=related[i].category.slug%>/<%=related[i].slug%>"
+                                                <a href="/p/<%=related[i].category.slug%>/<%=related[i].slug%>"
                                                     style="color: black;">
                                                     <p style="overflow-wrap: break-word;">
                                                         <%= related[i].title%></p>
@@ -495,15 +492,15 @@
                                             <button class="dropbtn"><i class="fa fa-share-alt"
                                                     aria-hidden="true"></i></button>
                                             <div class="dropup-content">
-                                                <a target="_blank" href="https://pinterest.com/pin/create/bookmarklet/?media=<%= article.file%>&url=https://dype.me/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>&description=<%= article.title%>"><i
+                                                <a  href="https://pinterest.com/pin/create/bookmarklet/?media=<%= article.file%>&url=https://dype.me/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>&description=<%= article.title%>"><i
                                     class="fa fa-pinterest" aria-hidden="true"></i></a>
-                                <a target="_blank"
+                                <a
                                     href="https://www.linkedin.com/shareArticle?mini=false&url=https://dype.me/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>&title=<%= article.metatitle%>&summary=<%= article.metadescription%>&source=https://dype.me/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>"><i
                                         class="fa fa-linkedin" aria-hidden="true"></i></a>
-                                <a target="_blank"
+                                <a
                                     href="https://twitter.com/intent/tweet?status=<%= article.title%>+<%= siteLink%>/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>"><i
                                         class="fa fa-twitter" aria-hidden="true"></i></a>
-                                <a target="_blank"
+                                <a
                                     href="https://www.facebook.com/sharer/sharer.php?u=<%= siteLink%>/p/<%= article.category.slug.toLowerCase()%>/<%= article.slug%>&title=<%= article.title%>"><i
                                         class="fa fa-facebook" aria-hidden="true"></i></a>
                             </div>
@@ -597,6 +594,9 @@
                                         })
                                     }
                                 }
+                                var userType = "<%if(user){%><%= user.paid%><%}%>";
+                                var userId = "<%if(user){%><%= user.id%><%}%>";
+                                var articleId = "<%= article._id%>";
                                 const tip4 = new TextTip({
                                     scope: '.inner-dark-blog-content-one',
                                     iconFormat: 'font',
@@ -604,7 +604,15 @@
                                         { title: 'Copy', icon: 'fa fa-pencil', callback: console.log }
                                     ],
                                     on: {
-                                        hide: () => saveText()
+                                        hide: () => {
+                                            if (userType == "paid") {
+                                                saveText()
+                                            }
+                                            if (userType == "free") {
+                                                $('.popup').show();
+                                                $('.popup-back').show();
+                                            }
+                                        }
                                     }
                                 });
                                 function getSelectionText() {
@@ -667,7 +675,23 @@
                                     $(".popup").hide();
                                     $(".popup-back").hide();
                                 });
+
+
+                                var spentTime = 0;
+                                requestAnimationFrame(function updateTimeSpent() {
+                                    var timeNow = performance.now();
+                                    spentTime = round(timeNow / 1000);
+                                    requestAnimationFrame(updateTimeSpent);
+                                });
+                                $('a').click(function () {
+                                    if (userType == "paid") {
+                                        alert(spentTime);
+                                    }
+                                    //send the spenttime to the server
+                                    spentTime = 0;
+                                })
                             </script>
+                            <!-- //calculation part -->
 </body>
 
 </html>

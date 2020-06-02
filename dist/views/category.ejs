@@ -10,6 +10,7 @@
   <meta name="name" content="<%= title%>" />
   <meta name="description" content="<%= category.description%>" />
   <!-- css -->
+  <link rel="shortcut icon" href="<%= favicon %>" type="image/x-icon">
   <link rel="stylesheet" href="/css/bootstrap.min.css" async>
   <link rel="stylesheet" href="/css/ionicons.min.css" async>
   <link rel="stylesheet" href="/css/owl.carousel.css" async>
@@ -57,14 +58,15 @@
     <hr>
     <a href="/dashboard/index" class="searchbar"><i class="fa fa-cog profileicon"></i>Dashboard</a>
     </a>
-    <a href="/author/<%= user.usernameslug%>" class="searchbar"><i class="fa fa-user-circle profileicon"></i>Mein Profil</a>
+    <a href="/author/<%= user.usernameslug%>" class="searchbar"><i class="fa fa-user-circle profileicon"></i>Mein
+      Profil</a>
     <a href="/log-out" class="searchbar"><i class="fa fa-sign-out profileicon"></i>Sign Out</a>
     <% } else {%>
     <span class="username_span"><%= user.username%></span>
     <hr>
     <a href="/user/dashboard" class="searchbar"><i class="fa fa-cog profileicon"></i>Dashboard</a>
-
-    <a href="/author/<%= user.usernameslug%>" class="searchbar"><i class="fa fa-user-circle profileicon"></i>Mein Profil</a>
+    <a href="/author/<%= user.usernameslug%>" class="searchbar"><i class="fa fa-user-circle profileicon"></i>Mein
+      Profil</a>
     <a href="/log-out" class="searchbar"><i class="fa fa-sign-out profileicon"></i>Sign Out</a>
     <% } %>
     <% } else {%>
@@ -72,6 +74,8 @@
         werden</span></a>
     <a class="searchbar" href="/afterlogin"><span class="menu-title">Inhalte
         entdecken</span></a>
+    <a class="searchbar" href="/login"><i class="fa fa-sign-in"></i><span class="menu-title">Einloggen</span></a>
+    <a class="searchbar" href="/sign-up"><i class="fa fa-user"></i><span class="menu-title">Registrieren</span></a>
     <% } %>
   </div>
   <header class="sticky" id="header">
@@ -180,7 +184,7 @@
           <div class="container">
             <div class="inner-container">
               <div class="category-banner-content">
-                <p style="color: white; font-size: 55px;font-family: nunito;font-weight: 700;"><%= cat%></p>
+                <p style="color: white; font-size: 55px;font-weight: 700;overflow-wrap: anywhere;"><%= cat%></p>
                 <h3 style="color: white;"><%= category.description%></h3>
               </div>
             </div>
