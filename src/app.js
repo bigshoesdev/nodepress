@@ -26,7 +26,6 @@ server.listen(port, () => console.log(`App started on port: ${port}`));
 server.on("connection", function(socket) {
   socket.setTimeout(600 * 60 * 1000); // now works perfectly...
 });
-
 //Load views directory and view engine
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");

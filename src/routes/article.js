@@ -172,7 +172,6 @@ router.post(
               ? true
               : false;
           // if (req.user.roleId == "admin") {
-
           // } else {
           //   payload1.active = set.approveAddedUserPost == false ? false : true;
           // }
@@ -667,6 +666,8 @@ router.get("/p/:category/:slug", install.redirectToLogin, async (req, res, next)
     ]);
     if (article == "") res.render("404");
     else {
+      let nextarticle = [];
+      let previousarticle = [];
       let bookmark = typeof req.user !== "undefined" ? await Bookmark.findOne({ userId: req.user.id, articleId: article[0]._id }) : false;
       let book = bookmark ? true : false;
       let art = await Article.findOne({ slug: req.params.slug, active: true });
@@ -675,14 +676,21 @@ router.get("/p/:category/:slug", install.redirectToLogin, async (req, res, next)
         _id: { $gt: article[0]._id },
         category: article[0].category._id,
         postedBy: article[0].postedBy._id
-      }).populate(
-        "category"
-      ).populate("postedBy").sort({ _id: 1 })
-        .limit(1);
+      }).populate("category").populate("postedBy").sort({ createdAt: 1 });
+      next.forEach(item => {
+        if (item.category.slug != "official") {
+          nextarticle.push(item);
+        }
+      });
       if (next.length == 0) {
         next = await Article.find({
           active: true,
-        }).populate("category").populate("postedBy").sort({ _id: 1 }).limit(1);
+        }).populate("category").populate("postedBy").sort({ createdAt: 1 });
+        next.forEach(item => {
+          if (item.category.slug != "official") {
+            nextarticle.push(item);
+          }
+        });
       }
       let previous = await Article.find({
         active: true,
@@ -692,12 +700,21 @@ router.get("/p/:category/:slug", install.redirectToLogin, async (req, res, next)
       }).populate(
         "category"
       ).populate('postedBy')
-        .sort({ _id: 1 })
-        .limit(1);
+        .sort({ createdAt: 1 });
+      previous.forEach(item => {
+        if (item.category.slug != "official") {
+          previousarticle.push(item);
+        }
+      });
       if (previous.length == 0) {
         previous = await Article.find({
           active: true,
-        }).populate("category").populate("postedBy").sort({ _id: 1 }).limit(1);
+        }).populate("category").populate("postedBy").sort({ createdAt: 1 });
+        previous.forEach(item => {
+          if (item.category.slug != "official") {
+            previousarticle.push(item);
+          }
+        });
       }
       let featured = await Article.find({
         active: true,
@@ -743,8 +760,8 @@ router.get("/p/:category/:slug", install.redirectToLogin, async (req, res, next)
           title: article[0].title,
           article: article[0],
           settings: settings,
-          previous: previous[0],
-          next: next[0],
+          previous: previousarticle[0],
+          next: nextarticle[0],
           featured: featured,
           popular: popular,
           recommended: recommended,
@@ -774,8 +791,8 @@ router.get("/p/:category/:slug", install.redirectToLogin, async (req, res, next)
               title: article[0].title,
               article: article[0],
               settings: settings,
-              previous: previous[0],
-              next: next[0],
+              previous: previousarticle[0],
+              next: nextarticle[0],
               featured: featured,
               popular: popular,
               recommended: recommended,

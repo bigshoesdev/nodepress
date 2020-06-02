@@ -27,9 +27,8 @@ router.use(async function (req, res, next) {
 	res.locals.mainMenu = await Menu.find().sort({ position: 1 });
 	res.locals.footercategory = await Category.find({}).sort({ name: 1 });
 	res.locals.time = ev => {
-		const wordsPerMinute = 250; // Average case.
+		const wordsPerMinute = 260; // Average case.
 		let result;
-
 		let textLength = ev.split(/\s/g).length; // Split by words
 		if (textLength > 0) {
 			let value = Math.ceil(textLength / wordsPerMinute);

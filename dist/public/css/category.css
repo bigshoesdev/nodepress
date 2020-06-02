@@ -106,6 +106,9 @@
       border-radius: 4px;
       color: white;
    }
+   .publish5-btn a {
+      font-size: 10px;
+   }
 }
 @media screen and (min-width: 1000px) {
 

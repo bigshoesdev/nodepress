@@ -74,7 +74,7 @@ router.use( /*#__PURE__*/function () {
             res.locals.footercategory = _context.sent;
 
             res.locals.time = function (ev) {
-              var wordsPerMinute = 250; // Average case.
+              var wordsPerMinute = 260; // Average case.
 
               var result;
               var textLength = ev.split(/\s/g).length; // Split by words

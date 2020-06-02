@@ -1,3 +1,5 @@
+
+var performance = window.performance, round = Math.round;
 var articleimages = $('img');
 var articleurl = window.location.href;
 // var articleimages = $('#inner-dark-blog-content-one').find($('img')[0])[0];
@@ -104,7 +106,7 @@ function upvote() {
    });
 }
 
-$(document).on('mousedown', '.mobile-upvote', function(){
+$(document).on('mousedown', '.mobile-upvote', function () {
    console.log("this is mobile click function!");
    upvote();
 });
@@ -178,3 +180,4 @@ function displaySearchbtn() {
 function openSidebar() {
    document.getElementById("sidenav").style.display = "block";
 }
+
