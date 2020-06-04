@@ -211,48 +211,32 @@
                           </div>
                           <div class="recommnet-heading2">
                             <p style="overflow-wrap: break-word;font-size: 18px;">
-                              <% if(post[i*3 + j].postedBy.roleId == "admin"){%>
                               <%
-                                var urladmin = "/p/" + post[i*3 + j].category.slug + "/" + post[i*3 + j].slug;
-                                var qualify = false;
-                                if(user){
-                                if(user.paid == "free"){
-                                  if(post[i * 3 + j].qualify == "qualify"){
-                                    qualify = true;
-                                  } else {
-                                    urladmin = "/d/" + post[i*3 + j].category.slug + "/" + post[i*3 + j].slug;
-                                  }
+                                var showPopup = true;
+                                var url = "";
+                                if(post[i*3 + j].postedBy.roleId == "admin"){
+                                  url = "/d/" + post[i*3 + j].category.slug + "/" + post[i*3 + j].slug;
                                 }else{
-                                  urladmin = "/p/" + post[i*3 + j].category.slug + "/" + post[i*3 + j].slug;
+                                  url = "/p/" + post[i*3 + j].category.slug + "/" + post[i*3 + j].slug;
                                 }
+                                if(post[i*3 + j].qualify != "qualify"){
+                                  showPopup = false;
                                 }
-                                %>
-                              <a url="<%= urladmin%>" type="button" class="articlelink" qualify="<%= qualify%>"
-                                style="color:black;font-family: EB Garamond;"><%= post[i*3 + j].title.charAt(0).toUpperCase() + post[i*3 + j].title.substring(1) %>
-                              </a>
-                              <%} else {%>
-                              <%
-                                var urluser = "/p/" + post[i*3 + j].category.slug + "/" + post[i*3 + j].slug;
-                                var qualify = false;
                                 if(user){
-                                  if(user.paid == "free"){
-                                    if(post[i * 3 + j].qualify == "qualify"){
-                                      qualify = true;
-                                    } else {
-                                      urluser = "/p/" + post[i*3 + j].category.slug + "/" + post[i*3 + j].slug;
+                                  if(user.paid == "paid"){
+                                    if(post[i*3 + j].qualify == "qualify"){
+                                      showPopup = false;
                                     }
-                                  }else{
-                                    urluser = "/p/" + post[i*3 + j].category.slug + "/" + post[i*3 + j].slug;
                                   }
                                 }
-                                %>
-                              <a url="<%= urluser%>" type="button" class="articlelink" qualify="<%= qualify%>"
+                              %>
+                              <a url="<%= url%>" type="button" class="articlelink" qualify="<%= showPopup%>"
                                 style="color:black;font-family: EB Garamond;">
                                 <%= post[i*3 + j].title.charAt(0).toUpperCase() + post[i*3 + j].title.substring(1) %>
                               </a>
-                              <%}%>
-                    </p>
-                    <p style="overflow-wrap: break-word; font-family: EB Garamond;"><% if(post[i*3 + j].summary != undefined) { %>
+                            </p>
+                            <p style="overflow-wrap: break-word; font-family: EB Garamond;">
+                              <% if(post[i*3 + j].summary != undefined) { %>
                               <%= post[i*3 + j].summary %> <% } %></p>
                           </div>
                           <div class="recommnet-madeby">
@@ -280,18 +264,25 @@
                       </div>
                       <% if(popular.length > 0){%>
                       <% 
-                var url = "";
-                if(popular[0].postedBy){
-                  if(popular[0].postedBy.roleId == "admin"){
-                    url = "/d/" + popular[0].category.slug + "/" + popular[0].slug;
-                  }else if(popular[0].postedBy.roleId == "user"){
-                    url = "/p/" + popular[0].category.slug + "/" + popular[0].slug;
-                  }
-                }else {
-                  url = "#";
-                }
-                %>
-                      <div class="category-search-bg1" url="<%= url%>"
+                        var showPopup = true;
+                        var url = "";
+                        if(popular[0].postedBy.roleId == "admin"){
+                          url = "/d/" + popular[0].category.slug + "/" + popular[0].slug;
+                        }else{
+                          url = "/p/" + popular[0].category.slug + "/" + popular[0].slug;
+                        }
+                        if(popular[0].qualify != "qualify"){
+                          showPopup = false;
+                        }
+                        if(user){
+                          if(user.paid == "paid"){
+                            if(popular[0].qualify == "qualify"){
+                              showPopup = false;
+                            }
+                          }
+                        }
+                       %>
+                      <div class="category-search-bg1" url="<%= url%>" qualify="<%= showPopup%>"
                         style="background: linear-gradient(#d6d3fa00, #f9c7ff49), url('<%= popular[0].file %>'); background-size: cover;">
                         <div class="category-search-bg1-contant">
                           <div class="one-round1">
@@ -303,20 +294,27 @@
                         </div>
                       </div>
                       <%}%>
-              <% if(popular.length > 1){%>
+                      <% if(popular.length > 1){%>
                       <% 
-                var url = "";
-                if(popular[1].postedBy){
-                  if(popular[1].postedBy.roleId == "admin"){
-                    url = "/d/" + popular[1].category.slug + "/" + popular[0].slug;
-                  }else if(popular[0].postedBy.roleId == "user"){
-                    url = "/p/" + popular[1].category.slug + "/" + popular[0].slug;
-                  }
-                }else {
-                  url = "#";
-                }
-                %>
-                      <div class="category-search-bg1" url="<%= url%>"
+                      var showPopup = true;
+                      var url = "";
+                      if(popular[1].postedBy.roleId == "admin"){
+                        url = "/d/" + popular[1].category.slug + "/" + popular[1].slug;
+                      }else{
+                        url = "/p/" + popular[1].category.slug + "/" + popular[1].slug;
+                      }
+                      if(popular[1].qualify != "qualify"){
+                        showPopup = false;
+                      }
+                      if(user){
+                        if(user.paid == "paid"){
+                          if(popular[1].qualify == "qualify"){
+                            showPopup = false;
+                          }
+                        }
+                      }
+                       %>
+                      <div class="category-search-bg1" url="<%= url%>" qualify="<%= showPopup%>"
                         style="background: linear-gradient(#d6d3fa00, #f9c7ff49), url('<%= popular[1].file %>'); background-size: cover;">
                         <div class="category-search-bg1-contant">
                           <div class="one-round1">
@@ -328,20 +326,27 @@
                         </div>
                       </div>
                       <%}%>
-              <% if(popular.length > 2){%>
+                      <% if(popular.length > 2){%>
                       <% 
-                var url = "";
-                if(popular[2].postedBy){
-                  if(popular[2].postedBy.roleId == "admin"){
-                    url = "/d/" + popular[2].category.slug + "/" + popular[0].slug;
-                  }else if(popular[0].postedBy.roleId == "user"){
-                    url = "/p/" + popular[2].category.slug + "/" + popular[0].slug;
-                  }
-                }else {
-                  url = "#";
-                }
-                %>
-                      <div class="category-search-bg1" url="<%= url%>"
+                      var showPopup = true;
+                      var url = "";
+                      if(popular[2].postedBy.roleId == "admin"){
+                        url = "/d/" + popular[2].category.slug + "/" + popular[2].slug;
+                      }else{
+                        url = "/p/" + popular[2].category.slug + "/" + popular[2].slug;
+                      }
+                      if(popular[2].qualify != "qualify"){
+                        showPopup = false;
+                      }
+                      if(user){
+                        if(user.paid == "paid"){
+                          if(popular[2].qualify == "qualify"){
+                            showPopup = false;
+                          }
+                        }
+                      }
+                      %>
+                      <div class="category-search-bg1" url="<%= url%>" qualify="<%= showPopup%>"
                         style="background: linear-gradient(#d6d3fa00, #f9c7ff49), url('<%= popular[2].file %>'); background-size: cover;">
                         <div class="category-search-bg1-contant">
                           <div class="one-round1">
@@ -358,19 +363,26 @@
               <div class="category-search-heading">
                 <h4>Neueste Artikel</h4>
               </div>
-              <% for(var i = 0; i < recent.length; i ++){%>
+                      <% for(var i = 0; i < recent.length; i ++){%>
                       <% 
-                var url = "";
-                if(recent[i].postedBy){
-                  if(recent[i].postedBy.roleId == "admin"){
-                    url = "/d/" + recent[i].category.slug + "/" + recent[i].slug;
-                  }else if(recent[i].postedBy.roleId == "user"){
-                    url = "/p/" + recent[i].category.slug + "/" + recent[i].slug;
-                  }
-                }else {
-                  url = "#";
-                }
-                %>
+                      var showPopup = true;
+                      var url = "";
+                      if(recent[i].postedBy.roleId == "admin"){
+                        url = "/d/" + recent[i].category.slug + "/" + recent[i].slug;
+                      }else{
+                        url = "/p/" + recent[i].category.slug + "/" + recent[i].slug;
+                      }
+                      if(recent[i].qualify != "qualify"){
+                        showPopup = false;
+                      }
+                      if(user){
+                        if(user.paid == "paid"){
+                          if(recent[i].qualify == "qualify"){
+                            showPopup = false;
+                          }
+                        }
+                      }
+                      %>
                       <div class="category-search-content">
                         <div class="row">
                           <div class="col-md-4">
@@ -380,7 +392,7 @@
                           </div>
                           <div class="col-md-8">
                             <div class="category-search-content-text" style="overflow-wrap: break-word;">
-                              <h3 class="last-article" url="<%= url%>"><%= recent[i].title %></h3>
+                              <h3 class="last-article" url="<%= url%>" qualify="<%= showPopup%>"><%= recent[i].title %></h3>
                             </div>
                           </div>
                         </div>
@@ -506,11 +518,36 @@
                       <script src="/js/ads.js" type="text/javascript"></script>
                       <script>
                         $('.category-search-bg1').click(function () {
-                          var href = $(this).attr('url');
-                          window.open(href);
+                          var qualify = $(this).attr('qualify');
+                          if (!window.showAds) {
+                            $('#adPopup').css('display', 'block');
+                            $('.popup-back').css('display', 'block');
+                          } else {
+                            if (qualify == "true") {
+                              $('#qualifyPopup').css('display', 'block');
+                              $('.popup-back').css('display', 'block');
+                            } else {
+                              // if ($(this).attr('url') != "#") {
+                              window.open($(this).attr('url'));
+                              // }
+                            }
+                          }
                         });
                         $('.last-article').click(function () {
-                          window.open($(this).attr('url'));
+                          var qualify = $(this).attr('qualify');
+                          if (!window.showAds) {
+                            $('#adPopup').css('display', 'block');
+                            $('.popup-back').css('display', 'block');
+                          } else {
+                            if (qualify == "true") {
+                              $('#qualifyPopup').css('display', 'block');
+                              $('.popup-back').css('display', 'block');
+                            } else {
+                              // if ($(this).attr('url') != "#") {
+                              window.open($(this).attr('url'));
+                              // }
+                            }
+                          }
                         });
                         $('.notification').hide();
                         function openNotification() {
@@ -529,9 +566,9 @@
                               $('#qualifyPopup').css('display', 'block');
                               $('.popup-back').css('display', 'block');
                             } else {
-                              if ($(this).attr('url') != "#") {
-                                window.open($(this).attr('url'));
-                              }
+                              // if ($(this).attr('url') != "#") {
+                              window.open($(this).attr('url'));
+                              // }
                             }
                           }
                         });

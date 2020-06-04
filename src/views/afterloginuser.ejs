@@ -213,7 +213,7 @@
                 <%}%>
                 <div id="owl-carousel0" class="owl-carousel owl-theme">
                   <% for(var i = 0; i < authorarticle.length; i ++){%>
-                <%
+                    <%
                      var url = "/p/" + authorarticle[i].category.slug + "/" + authorarticle[i].slug;
                      if(authorarticle[i].postedBy.roleId == "admin"){
                        url = "/d/" + authorarticle[i].category.slug + "/" + authorarticle[i].slug;
@@ -230,8 +230,7 @@
                         </div>
                         <div class="content-two-text">
                           <h2 style="overflow-wrap: anywhere;"><%= authorarticle[i].title%></h2>
-                          <p style="overflow-wrap: anywhere;"><%= authorarticle[i].summary%>
-                          </p>
+                          <p style="overflow-wrap: anywhere; color: rgb(231, 231, 231);"><%= authorarticle[i].summary%></p>
                         </div>
                       </div>
                     </div>
@@ -332,7 +331,7 @@
                     <p><%= random[i].category.name%></p>
                     <h2><%= random[i].title%></h2>
                     <p><%= random[i].summary%></p>
-                    <a class="read-more" href="<%= url%>" target="_blank">Mehr erfahren<i class="fa fa-arrow-right"
+                    <a class="read-more" url="<%= url%>" target="_blank">Mehr erfahren<i class="fa fa-arrow-right"
                         aria-hidden="true"></i></a>
                   </div>
                 </div>
@@ -341,9 +340,6 @@
             </div>
       </section>
       </div>
-
-
-
       </div>
       </div>
       </div>
@@ -418,6 +414,7 @@
     </div>
     <hr>
   </div>
+
 </section>
 
 <%- mainSettings.googleAnalyticsCode %>
@@ -431,7 +428,6 @@
               <script src="/js/footer.js" type="text/javascript"></script>
               <script src="/js/afterloginuser.js" type="text/javascript"></script>
               <script>
-                $('.notification').hide();
                 function openNotification() {
                   $('.notification').toggle();
                 }
@@ -447,6 +443,9 @@
                 $('.content-four').click(function () {
                   window.open($(this).attr('url'));
                 });
+                $('.read-more').click(function(){
+                  window.open($(this).attr('url'));
+                })
               </script>
 </body>
 

@@ -1052,7 +1052,7 @@ router.get(
     try {
       let perPage = 6;
       let page = req.query.page || 1;
-      let cat = await Category.findOne({ slug: req.params.slug });
+      let cat = await Category.findOne({ slug: req.params.slug});
       if (!cat) res.render("404");
       else {
         let post = await Article.find({ active: true, category: cat._id })
@@ -1066,7 +1066,8 @@ router.get(
           active: true,
           category: cat._id
         });
-        let recent = await Article.find({
+        let recent = [];        
+        let recentdata = await Article.find({
           active: true,
           category: { $ne: cat._id }
         })
@@ -1074,6 +1075,11 @@ router.get(
           .populate("category")
           .populate("postedBy")
           .limit(5);
+        recentdata.forEach(item => {
+          if(item.category.slug != "official"){
+            recent.push(item);
+          }
+        })
         let featured = await Article.find({ active: true, addToFeatured: true })
           .populate("category")
           .sort({ createdAt: -1 })

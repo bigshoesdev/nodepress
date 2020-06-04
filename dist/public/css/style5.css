@@ -307,13 +307,15 @@ margin: 7px 0px;
     background-size:cover;
 }
 #owl-carousel6 .item .slider_item img {
-    width: 40px;
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
     border-radius: 100px;
     float: left;
     margin-right: 15px;
 }
 #owl-carousel6 .item .slider_item a {
-    font-size: 16px;
+    font-size: 15px;
     position: relative;
     padding-left: 10px;
     padding-right: 10px;

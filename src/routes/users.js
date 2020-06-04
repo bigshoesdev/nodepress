@@ -139,7 +139,8 @@ router.post('/category/show-more', install.redirectToLogin, async (req, res, nex
 });
 router.get('/downgrade', install.redirectToLogin, async (req, res, next) => {
   await User.updateOne({ _id: req.query.user }, { paid: "free", signupProcess: "/afterlogin" });
-  res.redirect('back');
+  // res.redirect('back');
+  res.redirect('/onboarding');
 });
 router.get('/onboarding', install.redirectToLogin, async (req, res, next) => {
   let redirect = req.query.redirect ? true : false;
@@ -570,7 +571,7 @@ router.get('/afterlogin', install.redirectToLogin, async (req, res, next) => {
   if (req.user) {
     let editorsPicker = await Article.find({
       addToBreaking: true
-    }).populate('category').populate('postedBy').limit(10);
+    }).populate('category').populate('postedBy').limit(3);
 
     if (editorsPicker.length == 0) {
       let a = [];
@@ -608,7 +609,11 @@ router.get('/afterlogin', install.redirectToLogin, async (req, res, next) => {
       }).populate('category').populate('postedBy').sort({ createdAt: -1 });
       for (var j in art) {
         if (art[j].category.slug != "official") {
-          authorarticle.push(art[j]);
+          if (authorarticle.length > 5) {
+            break;
+          } else {
+            authorarticle.push(art[j]);
+          }
         }
       }
     }
@@ -620,14 +625,14 @@ router.get('/afterlogin', install.redirectToLogin, async (req, res, next) => {
       .limit(5);
     let p = [];
     popular.forEach(element => {
-      if(element.category.slug != "official") {
+      if (element.category.slug != "official") {
         p.push(element);
       }
     });
     let random = await Article.find({}).populate('category').populate('postedBy').limit(5);
     let r = [];
     random.forEach(element => {
-      if(element.category.slug != "official") {
+      if (element.category.slug != "official") {
         r.push(element);
       }
     });
@@ -661,7 +666,7 @@ router.get('/afterlogin', install.redirectToLogin, async (req, res, next) => {
     let random = await Article.find({}).populate('category').populate('postedBy').limit(5);
     let r = [];
     random.forEach(element => {
-      if(element.category.slug != "official") {
+      if (element.category.slug != "official") {
         r.push(element);
       }
     });
@@ -681,7 +686,7 @@ router.get('/afterlogin', install.redirectToLogin, async (req, res, next) => {
       popular: r,
       random: r,
       categories: categories
-    }); 
+    });
   }
 });
 

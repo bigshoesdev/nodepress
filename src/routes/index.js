@@ -427,7 +427,7 @@ router.get('/blogrecent', install.redirectToLogin, async (req, res, next) => {
 		.populate('postedBy')
 		.sort({ views: -1 })
 		.sort({ createdAt: -1 })
-		.limit(5);
+		.limit(6);
 	let trends = [];
 	trendings.forEach(element => {
 		if (element.category.slug != "official") {
@@ -445,9 +445,14 @@ router.get('/blogrecent', install.redirectToLogin, async (req, res, next) => {
 			postedBy: followers[i]._id
 		}).populate('category')
 			.populate('postedBy')
+			.sort({ views: -1 })
 			.sort({ createdAt: -1 });
 		for (var j in art) {
-			authorarticle.push(art[j]);
+			if (authorarticle.length > 5) {
+				break;
+			} else {
+				authorarticle.push(art[j]);
+			}
 		}
 	}
 
@@ -530,7 +535,7 @@ router.get('/ourwork', async (req, res, next) => {
 // Get index page
 router.get('/', install.redirectToLogin, async (req, res, next) => {
 	try {
-		var categories = await Category.find({});
+		var categories = await Category.find({}).limit(10);
 		res.render('index', {
 			categories: categories,
 		});
@@ -540,7 +545,7 @@ router.get('/', install.redirectToLogin, async (req, res, next) => {
 });
 router.post('/api/home', async (req, res, next) => {
 	let token = req.body.token; // user token
-	let user = await User.findOne({token: token});
+	let user = await User.findOne({ token: token });
 	let usercatList = user.categoryList;
 	let recentlyArticles = await Article.find({}).populate('category').populate('postedBy').sort('created_at').limit(3);
 	let payload = {

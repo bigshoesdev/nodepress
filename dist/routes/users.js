@@ -292,7 +292,8 @@ router.get('/downgrade', _install["default"].redirectToLogin, /*#__PURE__*/funct
             });
 
           case 2:
-            res.redirect('back');
+            // res.redirect('back');
+            res.redirect('/onboarding');
 
           case 3:
           case "end":
@@ -1013,14 +1014,14 @@ router.get('/afterlogin', _install["default"].redirectToLogin, /*#__PURE__*/func
         switch (_context13.prev = _context13.next) {
           case 0:
             if (!req.user) {
-              _context13.next = 66;
+              _context13.next = 76;
               break;
             }
 
             _context13.next = 3;
             return _articles["default"].find({
               addToBreaking: true
-            }).populate('category').populate('postedBy').limit(10);
+            }).populate('category').populate('postedBy').limit(3);
 
           case 3:
             editorsPicker = _context13.sent;
@@ -1113,7 +1114,7 @@ router.get('/afterlogin', _install["default"].redirectToLogin, /*#__PURE__*/func
 
           case 33:
             if ((_context13.t3 = _context13.t2()).done) {
-              _context13.next = 41;
+              _context13.next = 51;
               break;
             }
 
@@ -1127,25 +1128,48 @@ router.get('/afterlogin', _install["default"].redirectToLogin, /*#__PURE__*/func
 
           case 37:
             art = _context13.sent;
+            _context13.t4 = _regenerator["default"].keys(art);
 
-            for (j in art) {
-              if (art[j].category.slug != "official") {
-                authorarticle.push(art[j]);
-              }
+          case 39:
+            if ((_context13.t5 = _context13.t4()).done) {
+              _context13.next = 49;
+              break;
             }
 
+            j = _context13.t5.value;
+
+            if (!(art[j].category.slug != "official")) {
+              _context13.next = 47;
+              break;
+            }
+
+            if (!(authorarticle.length > 5)) {
+              _context13.next = 46;
+              break;
+            }
+
+            return _context13.abrupt("break", 49);
+
+          case 46:
+            authorarticle.push(art[j]);
+
+          case 47:
+            _context13.next = 39;
+            break;
+
+          case 49:
             _context13.next = 33;
             break;
 
-          case 41:
-            _context13.next = 43;
+          case 51:
+            _context13.next = 53;
             return _articles["default"].find({
               active: true
             }).populate('category').sort({
               views: -1
             }).limit(5);
 
-          case 43:
+          case 53:
             popular = _context13.sent;
             p = [];
             popular.forEach(function (element) {
@@ -1153,10 +1177,10 @@ router.get('/afterlogin', _install["default"].redirectToLogin, /*#__PURE__*/func
                 p.push(element);
               }
             });
-            _context13.next = 48;
+            _context13.next = 58;
             return _articles["default"].find({}).populate('category').populate('postedBy').limit(5);
 
-          case 48:
+          case 58:
             random = _context13.sent;
             r = [];
             random.forEach(function (element) {
@@ -1171,18 +1195,18 @@ router.get('/afterlogin', _install["default"].redirectToLogin, /*#__PURE__*/func
               }
             });
             editorsPicker = e;
-            _context13.next = 56;
+            _context13.next = 66;
             return _users["default"].findOne({
               _id: req.user._id
             });
 
-          case 56:
+          case 66:
             currentUser = _context13.sent;
             favoriteCat = currentUser.categoryList;
-            _context13.next = 60;
+            _context13.next = 70;
             return _category2["default"].find({});
 
-          case 60:
+          case 70:
             category = _context13.sent;
             categories = [];
             favoriteCat.forEach(function (element) {
@@ -1200,14 +1224,14 @@ router.get('/afterlogin', _install["default"].redirectToLogin, /*#__PURE__*/func
               random: r,
               categories: categories
             });
-            _context13.next = 79;
+            _context13.next = 89;
             break;
 
-          case 66:
-            _context13.next = 68;
+          case 76:
+            _context13.next = 78;
             return _articles["default"].find({}).populate('category').populate('postedBy').limit(5);
 
-          case 68:
+          case 78:
             _random = _context13.sent;
             _r = [];
 
@@ -1227,10 +1251,10 @@ router.get('/afterlogin', _install["default"].redirectToLogin, /*#__PURE__*/func
             });
 
             _editorsPicker = _e;
-            _context13.next = 77;
+            _context13.next = 87;
             return _category2["default"].find({}).limit(6);
 
-          case 77:
+          case 87:
             _categories = _context13.sent;
             res.render('afterloginuser', {
               title: "After Login",
@@ -1241,7 +1265,7 @@ router.get('/afterlogin', _install["default"].redirectToLogin, /*#__PURE__*/func
               categories: _categories
             });
 
-          case 79:
+          case 89:
           case "end":
             return _context13.stop();
         }

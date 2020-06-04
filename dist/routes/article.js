@@ -1338,7 +1338,7 @@ router.get("/all-post", _install["default"].redirectToLogin, /*#__PURE__*/functi
 
 router.get("/kategorie/:slug", _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref8 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee8(req, res, next) {
-    var perPage, page, cat, post, count, recent, featured, popular;
+    var perPage, page, cat, post, count, recent, recentdata, featured, popular;
     return _regenerator["default"].wrap(function _callee8$(_context8) {
       while (1) {
         switch (_context8.prev = _context8.next) {
@@ -1360,7 +1360,7 @@ router.get("/kategorie/:slug", _install["default"].redirectToLogin, /*#__PURE__*
             }
 
             res.render("404");
-            _context8.next = 26;
+            _context8.next = 28;
             break;
 
           case 10:
@@ -1382,7 +1382,8 @@ router.get("/kategorie/:slug", _install["default"].redirectToLogin, /*#__PURE__*
 
           case 15:
             count = _context8.sent;
-            _context8.next = 18;
+            recent = [];
+            _context8.next = 19;
             return _articles["default"].find({
               active: true,
               category: {
@@ -1392,9 +1393,14 @@ router.get("/kategorie/:slug", _install["default"].redirectToLogin, /*#__PURE__*
               createdAt: -1
             }).populate("category").populate("postedBy").limit(5);
 
-          case 18:
-            recent = _context8.sent;
-            _context8.next = 21;
+          case 19:
+            recentdata = _context8.sent;
+            recentdata.forEach(function (item) {
+              if (item.category.slug != "official") {
+                recent.push(item);
+              }
+            });
+            _context8.next = 23;
             return _articles["default"].find({
               active: true,
               addToFeatured: true
@@ -1402,9 +1408,9 @@ router.get("/kategorie/:slug", _install["default"].redirectToLogin, /*#__PURE__*
               createdAt: -1
             }).limit(5);
 
-          case 21:
+          case 23:
             featured = _context8.sent;
-            _context8.next = 24;
+            _context8.next = 26;
             return _articles["default"].find({
               active: true,
               category: cat._id
@@ -1412,7 +1418,7 @@ router.get("/kategorie/:slug", _install["default"].redirectToLogin, /*#__PURE__*
               views: -1
             }).limit(3);
 
-          case 24:
+          case 26:
             popular = _context8.sent;
             res.render("category", {
               title: cat.name,
@@ -1427,21 +1433,21 @@ router.get("/kategorie/:slug", _install["default"].redirectToLogin, /*#__PURE__*
               popular: popular
             });
 
-          case 26:
-            _context8.next = 31;
+          case 28:
+            _context8.next = 33;
             break;
 
-          case 28:
-            _context8.prev = 28;
+          case 30:
+            _context8.prev = 30;
             _context8.t0 = _context8["catch"](0);
             next(_context8.t0);
 
-          case 31:
+          case 33:
           case "end":
             return _context8.stop();
         }
       }
-    }, _callee8, null, [[0, 28]]);
+    }, _callee8, null, [[0, 30]]);
   }));
 
   return function (_x20, _x21, _x22) {
