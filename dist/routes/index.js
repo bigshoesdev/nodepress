@@ -81,7 +81,7 @@ router.use( /*#__PURE__*/function () {
 
               if (textLength > 0) {
                 var value = Math.ceil(textLength / wordsPerMinute);
-                result = "".concat(value, " min read");
+                result = value;
               }
 
               return result;

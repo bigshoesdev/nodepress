@@ -73,7 +73,7 @@
     <%- include ../partials/msg %>
 
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-6">
             <form action="/user/edit" method="POST">
                 <input type="hidden" name="userId" value="<%= userInfo._id %>">
                 <div class="card bg-white shadow-sm">
@@ -113,32 +113,33 @@
                             <div class="col-12 mt-4">
                                 <div class="form-group">
                                     <label for=""><b>About user</b></label>
-                                    <textarea name="about" id="about" cols="30" rows="10" class="form-control"></textarea>
+                                    <textarea name="about" id="about" cols="30" rows="10"
+                                        class="form-control"></textarea>
                                 </div>
                             </div>
                             <div class="col-12 mt-4">
                                 <b>Social Accounts</b>
                             </div>
                             <div class="col-md-6 col-12 mb-20 mt-4">
-                                    <label for=""><b>Facebook</b></label>
-                                    <input type="text" name="social.facebook" class="form-control"
-                                        value="<%= userInfo.social.facebook %>">
-                                </div>
-                                <div class="col-md-6 col-12 mb-20 mt-4">
-                                    <label for=""><b>Twitter</b></label>
-                                    <input type="text" name="social.twitter" class="form-control"
-                                        value="<%= userInfo.social.twitter %>">
-                                </div>
-                                <div class="col-md-6 col-12 mb-20">
-                                    <label for=""><b>Instagram</b></label>
-                                    <input type="text" name="social.instagram" class="form-control"
-                                        value="<%= userInfo.social.instagram %>">
-                                </div>
-                                <div class="col-md-6 col-12 mb-20">
-                                    <label for=""><b>Pinterest</b></label>
-                                    <input type="text" name="social.pinterest" class="form-control"
-                                        value="<%= userInfo.social.pinterest %>">
-                                </div>
+                                <label for=""><b>Facebook</b></label>
+                                <input type="text" name="social.facebook" class="form-control"
+                                    value="<%= userInfo.social.facebook %>">
+                            </div>
+                            <div class="col-md-6 col-12 mb-20 mt-4">
+                                <label for=""><b>Twitter</b></label>
+                                <input type="text" name="social.twitter" class="form-control"
+                                    value="<%= userInfo.social.twitter %>">
+                            </div>
+                            <div class="col-md-6 col-12 mb-20">
+                                <label for=""><b>Instagram</b></label>
+                                <input type="text" name="social.instagram" class="form-control"
+                                    value="<%= userInfo.social.instagram %>">
+                            </div>
+                            <div class="col-md-6 col-12 mb-20">
+                                <label for=""><b>Pinterest</b></label>
+                                <input type="text" name="social.pinterest" class="form-control"
+                                    value="<%= userInfo.social.pinterest %>">
+                            </div>
                         </div>
 
                         <div class="form-group mt-4">
@@ -166,8 +167,8 @@
                             <div class="col-md-6 mt-4">
                                 <div class="form-group">
                                     <label for=""><b>Re - Password*</b></label>
-                                    <input type="password" name="repassword" id="title" placeholder="Enter password Again"
-                                        class="form-control" required>
+                                    <input type="password" name="repassword" id="title"
+                                        placeholder="Enter password Again" class="form-control" required>
                                 </div>
                             </div>
                         </div>
@@ -178,6 +179,39 @@
                     </div>
                 </div>
             </form>
+        </div>
+        <div class="col-md-6">
+            <div class="card bg-white shadow-sm">
+                <div class="card-header">
+                    <b>Calculation Info</b>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="table-responsive bg-white shadow-sm">
+                            <table class="table table-vertical-middle">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Article Name</th>
+                                        <th>SpentTime</th>
+                                        <th>Author</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for(var i = 0; i < countinglist.length; i ++){%>
+                                    <tr>
+                                        <td><%= i + 1%></td>
+                                        <td><%= countinglist[i].articleId.title%></td>
+                                        <td><%= countinglist[i].spentTime%> min</td>
+                                        <td><%= countinglist[i].authorName%></td>
+                                    </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div><!-- Content Body End -->

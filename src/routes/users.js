@@ -16,6 +16,7 @@ import auth from "../helpers/auth";
 import AWS from "aws-sdk";
 import { v2 as cloudinary } from "cloudinary";
 import Article from "../models/articles";
+import Counting from "../models/counting";
 const router = express.Router();
 import install from "../helpers/install";
 import role from "../helpers/role";
@@ -1318,6 +1319,48 @@ router.get("/public-key", (req, res) => {
   res.send({
     publicKey: process.env.STRIPE_PUBLISHABLE_KEY
   });
+});
+
+
+router.post("/saveTime", async (req, res) => {
+  let userId = req.body.userId;
+  let articleId = req.body.articleId;
+  let spentTime = parseInt(req.body.time);
+  let readingTime = req.body.readingTime;
+  var message = "success";
+  let article = await Article.findOne({_id: articleId}).populate('postedBy');
+  if((spentTime % 60) > 30){
+    spentTime = parseInt(spentTime / 60) + 1;
+  }else if((spentTime % 60) < 30){
+    spentTime = parseInt(spentTime / 60);
+    if(spentTime > (readingTime / 60)){
+      spentTime = 300;
+    }
+  }
+  let payload = {
+    userId: userId,
+    articleId: articleId,
+    spentTime: spentTime,
+    authorName: article.postedBy.username
+  }
+  let check = await Counting.findOne({ articleId: articleId });
+  if (check) {
+    let oldspentTime = check.spentTime;
+    let newspentTime = 0;
+    if(oldspentTime < readingTime){
+      let id = check.id;
+      newspentTime = parseInt(oldspentTime) + parseInt(spentTime);
+      if(newspentTime > readingTime){
+        newspentTime = readingTime;
+      }
+      await Counting.updateOne({_id: id}, {spentTime: newspentTime});
+    }
+  } else {
+    Counting.create(payload).then(created => {
+      return res.json(message);
+    })
+      .catch(e => next(e));
+  }
 });
 
 module.exports = router;

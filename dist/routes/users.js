@@ -40,6 +40,8 @@ var _cloudinary = require("cloudinary");
 
 var _articles = _interopRequireDefault(require("../models/articles"));
 
+var _counting = _interopRequireDefault(require("../models/counting"));
+
 var _install = _interopRequireDefault(require("../helpers/install"));
 
 var _role = _interopRequireDefault(require("../helpers/role"));
@@ -2304,4 +2306,98 @@ router.get("/public-key", function (req, res) {
     publicKey: process.env.STRIPE_PUBLISHABLE_KEY
   });
 });
+router.post("/saveTime", /*#__PURE__*/function () {
+  var _ref30 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee30(req, res) {
+    var userId, articleId, spentTime, readingTime, message, article, payload, check, oldspentTime, newspentTime, id;
+    return _regenerator["default"].wrap(function _callee30$(_context30) {
+      while (1) {
+        switch (_context30.prev = _context30.next) {
+          case 0:
+            userId = req.body.userId;
+            articleId = req.body.articleId;
+            spentTime = parseInt(req.body.time);
+            readingTime = req.body.readingTime;
+            message = "success";
+            _context30.next = 7;
+            return _articles["default"].findOne({
+              _id: articleId
+            }).populate('postedBy');
+
+          case 7:
+            article = _context30.sent;
+
+            if (spentTime % 60 > 30) {
+              spentTime = parseInt(spentTime / 60) + 1;
+            } else if (spentTime % 60 < 30) {
+              spentTime = parseInt(spentTime / 60);
+
+              if (spentTime > readingTime / 60) {
+                spentTime = 300;
+              }
+            }
+
+            payload = {
+              userId: userId,
+              articleId: articleId,
+              spentTime: spentTime,
+              authorName: article.postedBy.username
+            };
+            _context30.next = 12;
+            return _counting["default"].findOne({
+              articleId: articleId
+            });
+
+          case 12:
+            check = _context30.sent;
+
+            if (!check) {
+              _context30.next = 24;
+              break;
+            }
+
+            oldspentTime = check.spentTime;
+            newspentTime = 0;
+
+            if (!(oldspentTime < readingTime)) {
+              _context30.next = 22;
+              break;
+            }
+
+            id = check.id;
+            newspentTime = parseInt(oldspentTime) + parseInt(spentTime);
+
+            if (newspentTime > readingTime) {
+              newspentTime = readingTime;
+            }
+
+            _context30.next = 22;
+            return _counting["default"].updateOne({
+              _id: id
+            }, {
+              spentTime: newspentTime
+            });
+
+          case 22:
+            _context30.next = 25;
+            break;
+
+          case 24:
+            _counting["default"].create(payload).then(function (created) {
+              return res.json(message);
+            })["catch"](function (e) {
+              return next(e);
+            });
+
+          case 25:
+          case "end":
+            return _context30.stop();
+        }
+      }
+    }, _callee30);
+  }));
+
+  return function (_x82, _x83) {
+    return _ref30.apply(this, arguments);
+  };
+}());
 module.exports = router;

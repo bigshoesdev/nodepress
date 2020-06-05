@@ -392,7 +392,8 @@
                           </div>
                           <div class="col-md-8">
                             <div class="category-search-content-text" style="overflow-wrap: break-word;">
-                              <h3 class="last-article" url="<%= url%>" qualify="<%= showPopup%>"><%= recent[i].title %></h3>
+                              <h3 class="last-article" url="<%= url%>" qualify="<%= showPopup%>"><%= recent[i].title %>
+                              </h3>
                             </div>
                           </div>
                         </div>
@@ -488,13 +489,15 @@
   </div>
 </section>
 
-
 <div class="popup" id="qualifyPopup">
   <div class="popupContainer">
     <p class="popupTitle">Leider sind unsere exklusiven Inhalte nur Premium-Mitgliedern zugänglich.</p>
     <p class="popupContent">Du möchtest qualifizierte Beiträge lesen, viele weitere exklusive Vorteile
       genießen und unsere Autoren unterstützen? Dann werde jetzt Premium-Member!</p><br><br>
     <a class="popupButton" href="/membership">Jetzt Premium-Mitglied werden</a>
+  </div>
+  <div class="closepopup">
+    <h1 class="text-white">&times;</h1>
   </div>
 </div>
 <div class="popup-back"></div>
@@ -505,6 +508,9 @@
       Schalte ihn aus, um die unbegrenzte Vielfalt Dype‘s zu genießen!
     </p><br><br>
   </div>
+  <div class="closepopup">
+    <h1 class="text-white">&times;</h1>
+</div>
 </div>
 <%- mainSettings.googleAnalyticsCode %>
                       <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -573,6 +579,11 @@
                           }
                         });
                         $('.popup-back').click(function () {
+                          $(".popup").css('display', 'none');
+                          $(".popup-back").css('display', 'none');
+                        });
+
+                        $('.closepopup').click(function () {
                           $(".popup").css('display', 'none');
                           $(".popup-back").css('display', 'none');
                         });

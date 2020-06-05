@@ -15,6 +15,7 @@ import Settings from "../models/settings";
 import Media from "../models/media";
 import _mail from "../helpers/_mail";
 import Menu from '../models/menu';
+import Counting from '../models/counting';
 import install from '../helpers/install';
 const router = express.Router();
 
@@ -1483,9 +1484,11 @@ router.get(
       let userInfo = await User.findOne({ username: req.params.username });
       if (!userInfo) res.render("404");
       else {
+        let countinglist = await Counting.find({userId: userInfo._id}).populate('articleId');
         res.render("./admin/edit-users", {
           title: `Edit User - ${userInfo.username}`,
-          userInfo: userInfo
+          userInfo: userInfo,
+          countinglist,
         });
       }
     } catch (error) {

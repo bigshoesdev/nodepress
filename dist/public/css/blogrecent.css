@@ -25,3 +25,14 @@ padding: 30px;
 .container {
    max-width: 1300px !important;
 }
+
+.closepopup{
+   position: absolute;
+   color: white;
+   top: 0%;
+   right: 5%;
+}
+
+.closepopup:hover {
+   color: #98E0F2;
+}

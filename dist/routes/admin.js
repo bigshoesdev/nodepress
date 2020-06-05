@@ -40,6 +40,8 @@ var _mail2 = _interopRequireDefault(require("../helpers/_mail"));
 
 var _menu = _interopRequireDefault(require("../models/menu"));
 
+var _counting = _interopRequireDefault(require("../models/counting"));
+
 var _install = _interopRequireDefault(require("../helpers/install"));
 
 var router = _express["default"].Router();
@@ -2575,7 +2577,7 @@ router.get("/dashboard/administrators", _auth["default"], _install["default"].re
 }());
 router.get("/dashboard/users/edit/:username", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref32 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee32(req, res, next) {
-    var userInfo;
+    var userInfo, countinglist;
     return _regenerator["default"].wrap(function _callee32$(_context32) {
       while (1) {
         switch (_context32.prev = _context32.next) {
@@ -2588,26 +2590,45 @@ router.get("/dashboard/users/edit/:username", _auth["default"], _install["defaul
 
           case 3:
             userInfo = _context32.sent;
-            if (!userInfo) res.render("404");else {
-              res.render("./admin/edit-users", {
-                title: "Edit User - ".concat(userInfo.username),
-                userInfo: userInfo
-              });
+
+            if (userInfo) {
+              _context32.next = 8;
+              break;
             }
-            _context32.next = 10;
+
+            res.render("404");
+            _context32.next = 12;
             break;
 
-          case 7:
-            _context32.prev = 7;
+          case 8:
+            _context32.next = 10;
+            return _counting["default"].find({
+              userId: userInfo._id
+            }).populate('articleId');
+
+          case 10:
+            countinglist = _context32.sent;
+            res.render("./admin/edit-users", {
+              title: "Edit User - ".concat(userInfo.username),
+              userInfo: userInfo,
+              countinglist: countinglist
+            });
+
+          case 12:
+            _context32.next = 17;
+            break;
+
+          case 14:
+            _context32.prev = 14;
             _context32.t0 = _context32["catch"](0);
             next(_context32.t0);
 
-          case 10:
+          case 17:
           case "end":
             return _context32.stop();
         }
       }
-    }, _callee32, null, [[0, 7]]);
+    }, _callee32, null, [[0, 14]]);
   }));
 
   return function (_x94, _x95, _x96) {

@@ -75,7 +75,8 @@
     <a class="searchbar" href="/afterlogin"><span style="padding-left: 10px;cursor:pointer">Inhalte
         entdecken</span></a>
     <a class="searchbar" href="/login"><i class="fa fa-sign-in"></i>&nbsp;<span class="menu-title">Einloggen</span></a>
-    <a class="searchbar" href="/sign-up"><i class="fa fa-user"></i>&nbsp;<span class="menu-title">Registrieren</span></a>
+    <a class="searchbar" href="/sign-up"><i class="fa fa-user"></i>&nbsp;<span
+        class="menu-title">Registrieren</span></a>
     <% } %>
   </div>
   <header class="sticky" id="header">
@@ -213,16 +214,29 @@
                 <%}%>
                 <div id="owl-carousel0" class="owl-carousel owl-theme">
                   <% for(var i = 0; i < authorarticle.length; i ++){%>
-                    <%
-                     var url = "/p/" + authorarticle[i].category.slug + "/" + authorarticle[i].slug;
-                     if(authorarticle[i].postedBy.roleId == "admin"){
-                       url = "/d/" + authorarticle[i].category.slug + "/" + authorarticle[i].slug;
-                     }
-                    %>
+                <%
+                     var showPopup = true;
+                      var url = "";
+                      if(authorarticle[i].postedBy.roleId == "admin"){
+                        url = "/d/" + authorarticle[i].category.slug + "/" + authorarticle[i].slug;
+                      }else{
+                        url = "/p/" + authorarticle[i].category.slug + "/" + authorarticle[i].slug;
+                      }
+                      if(authorarticle[i].qualify != "qualify"){
+                        showPopup = false;
+                      }
+                      if(user){
+                        if(user.paid == "paid"){
+                          if(authorarticle[i].qualify == "qualify"){
+                            showPopup = false;
+                          }
+                        }
+                      }
+                  %>
                 <div class="item">
                   <div class="slider_item">
                     <div class="content-two-zoom">
-                      <div class="content-two" url="<%= url%>"
+                      <div class="content-two" url="<%= url%>" qualify="<%= showPopup%>"
                         style="margin: 30px;background-image: linear-gradient(#00000073, #0000007d), url('<%= authorarticle[i].file%>');">
                         <div class="content-two-btn">
                           <a href="/kategorie/<%= authorarticle[i].category.slug%>"
@@ -230,7 +244,8 @@
                         </div>
                         <div class="content-two-text">
                           <h2 style="overflow-wrap: anywhere;"><%= authorarticle[i].title%></h2>
-                          <p style="overflow-wrap: anywhere; color: rgb(231, 231, 231);"><%= authorarticle[i].summary%></p>
+                          <p style="overflow-wrap: anywhere; color: rgb(231, 231, 231);"><%= authorarticle[i].summary%>
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -244,14 +259,28 @@
               <div id="owl-carousel" class="owl-carousel owl-theme">
                 <% for(var i = 0; i < popular.length; i ++){%>
                 <%
-                  var url = "/p/" + popular[i].category.slug + "/" + popular[i].slug;
+                  var showPopup = true;
+                  var url = "";
                   if(popular[i].postedBy.roleId == "admin"){
                     url = "/d/" + popular[i].category.slug + "/" + popular[i].slug;
+                  }else{
+                    url = "/p/" + popular[i].category.slug + "/" + popular[i].slug;
+                  }
+                  if(popular[i].qualify != "qualify"){
+                    showPopup = false;
+                  }
+                  if(user){
+                    if(user.paid == "paid"){
+                      if(popular[i].qualify == "qualify"){
+                        showPopup = false;
+                      }
+                    }
                   }
                   %>
                 <div class="item">
                   <div class="slider_item">
-                    <div class="content-one" url="<%= url%>" style="height: 500px; margin: 30px;">
+                    <div class="content-one" qualify="<%= showPopup%>" url="<%= url%>"
+                      style="height: 500px; margin: 30px;">
                       <div class="content-one-img"
                         style="background-image:linear-gradient(#00000061, #00000069), url('<%= popular[i].file%>');">
                         <a href="/kategorie/<%= popular[i].category.slug%>"
@@ -294,14 +323,27 @@
               <div id="owl-carousel1" class="owl-carousel owl-theme">
                 <% for(var i = 0; i < random.length; i ++){%>
                 <%
-                  var url = "/p/" + random[i].category.slug + "/" + random[i].slug;
+                  var showPopup = true;
+                  var url = "";
                   if(random[i].postedBy.roleId == "admin"){
                     url = "/d/" + random[i].category.slug + "/" + random[i].slug;
+                  }else{
+                    url = "/p/" + random[i].category.slug + "/" + random[i].slug;
+                  }
+                  if(random[i].qualify != "qualify"){
+                    showPopup = false;
+                  }
+                  if(user){
+                    if(user.paid == "paid"){
+                      if(random[i].qualify == "qualify"){
+                        showPopup = false;
+                      }
+                    }
                   }
                   %>
                 <div class="item">
                   <div class="slider_item">
-                    <div class="content-four" url="<%= url%>"
+                    <div class="content-four" url="<%= url%>" qualify="<%= showPopup%>"
                       style="background-image:linear-gradient(#00000061, #00000069), url('<%= random[i].file%>'); background-size: cover;">
                       <div class="content-four-text">
                         <h2 style="display: flex; overflow-wrap: anywhere;"><%= random[i].title%></h2>
@@ -317,22 +359,33 @@
               <section class="container">
                  <div class="inner-after-login-page-content">
                     <div class="row">
-                       <% for(var i = 0; i < random.length; i ++) {%>
+                      <% for(var i = 0; i < random.length; i ++) {%>
                 <% 
-                          var url="#";
-                          if(random[i].postedBy.roleId == "admin"){
-                             url = "/d/" + random[i].category.slug + "/" + random[i].slug;
-                          }else {
-                             url = "/p/" + random[i].category.slug + "/" + random[i].slug;
+                      var showPopup = true;
+                      var url = "";
+                      if(random[i].postedBy.roleId == "admin"){
+                        url = "/d/" + random[i].category.slug + "/" + random[i].slug;
+                      }else{
+                        url = "/p/" + random[i].category.slug + "/" + random[i].slug;
+                      }
+                      if(random[i].qualify != "qualify"){
+                        showPopup = false;
+                      }
+                      if(user){
+                        if(user.paid == "paid"){
+                          if(random[i].qualify == "qualify"){
+                            showPopup = false;
                           }
-                          %>
+                        }
+                      }
+                      %>
                 <div class="col-md-12 col-lg-4">
                   <div class="content-two-text last">
                     <p><%= random[i].category.name%></p>
                     <h2><%= random[i].title%></h2>
                     <p><%= random[i].summary%></p>
-                    <a class="read-more" url="<%= url%>" target="_blank">Mehr erfahren<i class="fa fa-arrow-right"
-                        aria-hidden="true"></i></a>
+                    <a class="read-more" url="<%= url%>" qualify="<%= showPopup%>" target="_blank">Mehr erfahren<i
+                        class="fa fa-arrow-right" aria-hidden="true"></i></a>
                   </div>
                 </div>
                 <% }%>
@@ -415,6 +468,29 @@
     <hr>
   </div>
 
+  <div class="popup" id="qualifyPopup">
+    <div class="popupContainer">
+      <p class="popupTitle">Leider sind unsere exklusiven Inhalte nur Premium-Mitgliedern zugänglich.</p>
+      <p class="popupContent">Du möchtest qualifizierte Beiträge lesen, viele weitere exklusive Vorteile
+        genießen und unsere Autoren unterstützen? Dann werde jetzt Premium-Member!</p><br><br>
+      <a class="popupButton" href="/membership">Jetzt Premium-Mitglied werden</a>
+    </div>
+    <div class="closepopup">
+      <h1 class="text-white">&times;</h1>
+  </div>
+  </div>
+  <div class="popup-back"></div>
+  <div class="popup" id="adPopup">
+    <div class="adpopupContainer">
+      <p class="adpopupTitle">Ad-Blocker</p>
+      <p class="adpopupContent">Du verwendest einen Ad-Blocker. Leider kannst du so keine qualifizierten Beiträge einsehen. Wir benötigen die Daten deiner Lesezeit, um unsere Autoren fair zu entlohnen.
+        Schalte ihn aus, um die unbegrenzte Vielfalt Dype‘s zu genießen!
+      </p><br><br>
+    </div>
+    <div class="closepopup">
+      <h1 class="text-white">&times;</h1>
+  </div>
+  </div>
 </section>
 
 <%- mainSettings.googleAnalyticsCode %>
@@ -435,17 +511,78 @@
                   $('.notification').hide();
                 });
                 $('.content-two').click(function () {
-                  window.open($(this).attr('url'));
+                  var qualify = $(this).attr('qualify');
+                  if (window.showAds) {
+                    $('#adPopup').css('display', 'block');
+                    $('.popup-back').css('display', 'block');
+                  } else {
+                    if (qualify == "true") {
+                      $('#qualifyPopup').css('display', 'block');
+                      $('.popup-back').css('display', 'block');
+                    } else {
+                      // if ($(this).attr('url') != "#") {
+                      window.open($(this).attr('url'));
+                      // }
+                    }
+                  }
                 });
                 $('.content-one').click(function () {
-                  window.open($(this).attr('url'));
+                  var qualify = $(this).attr('qualify');
+                  if (window.showAds) {
+                    $('#adPopup').css('display', 'block');
+                    $('.popup-back').css('display', 'block');
+                  } else {
+                    if (qualify == "true") {
+                      $('#qualifyPopup').css('display', 'block');
+                      $('.popup-back').css('display', 'block');
+                    } else {
+                      // if ($(this).attr('url') != "#") {
+                      window.open($(this).attr('url'));
+                      // }
+                    }
+                  }
                 });
                 $('.content-four').click(function () {
-                  window.open($(this).attr('url'));
+                  var qualify = $(this).attr('qualify');
+                  if (window.showAds) {
+                    $('#adPopup').css('display', 'block');
+                    $('.popup-back').css('display', 'block');
+                  } else {
+                    if (qualify == "true") {
+                      $('#qualifyPopup').css('display', 'block');
+                      $('.popup-back').css('display', 'block');
+                    } else {
+                      // if ($(this).attr('url') != "#") {
+                      window.open($(this).attr('url'));
+                      // }
+                    }
+                  }
                 });
-                $('.read-more').click(function(){
-                  window.open($(this).attr('url'));
+                $('.read-more').click(function () {
+                  var qualify = $(this).attr('qualify');
+                  if (window.showAds) {
+                    $('#adPopup').css('display', 'block');
+                    $('.popup-back').css('display', 'block');
+                  } else {
+                    if (qualify == "true") {
+                      $('#qualifyPopup').css('display', 'block');
+                      $('.popup-back').css('display', 'block');
+                    } else {
+                      // if ($(this).attr('url') != "#") {
+                      window.open($(this).attr('url'));
+                      // }
+                    }
+                  }
                 })
+                $('.popup-back').click(function () {
+                  $(".popup").css('display', 'none');
+                  $(".popup-back").css('display', 'none');
+                });
+
+                $('.closepopup').click(function () {
+                  $(".popup").css('display', 'none');
+                  $(".popup-back").css('display', 'none');
+                });
               </script>
 </body>
 

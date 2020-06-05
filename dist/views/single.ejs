@@ -220,7 +220,7 @@
                             <div class="dark-blog-banner-contant">
                                 <div class="food-music-btn row">
                                     <span>
-                                        <a href="/kategorie/<%= article.category.slug %>"
+                                        <a class="prev-next" url="/kategorie/<%= article.category.slug %>"
                                             style="color: white;"><%= article.category.name%></a></span>
                                 </div>
                                 <div class="dark-blog-banner-heading text-center row"
@@ -235,8 +235,8 @@
                                         <i class="fa fa-eye" style="margin-right: 10px;"></i>
                                         <%= article.viewers.length%>
                                     </span>
-                                    <span
-                                        style="color: white; border-left: 3px solid white;"><%= time(article.short)%></span>
+                                    <span style="color: white; border-left: 3px solid white;"><%= time(article.short)%>
+                                        min read</span>
                                     <span style="color: white; border-left: 3px solid white;">
                                         <% if(bookmark != true) {%>
                                         <i class="fa fa-star" style="margin-right: 10px;"></i>
@@ -274,7 +274,7 @@
                             <div class="row">
                                 <div class="col-md-1">
                                     <div class="dark-blog-makedby-img">
-                                        <a href="/author/<%= article.postedBy.usernameslug%>">
+                                        <a class="prev-next" url="/author/<%= article.postedBy.usernameslug%>">
                                             <% if(article.postedBy.paid == "paid"){%>
                                             <img src="<%= article.postedBy.profilePicture%>"
                                                 style="border: 3px solid #2fc8c8;" />
@@ -286,7 +286,7 @@
                                 </div>
                                 <div class="col-md-9">
                                     <div class="dark-blog-makedby-details">
-                                        <a href="/author/<%= article.postedBy.usernameslug%>"
+                                        <a class="prev-next" url="/author/<%= article.postedBy.usernameslug%>"
                                             style="padding: 0;color: black;">
                                             <h2 class="authorname"><%= article.postedBy.firstName%>
                                                 <%= article.postedBy.lastName%></h2>
@@ -303,17 +303,20 @@
             } }%>
                                     <div class="follow-btn">
                                         <% if(article.postedBy.following.length < 1) {%>
-                                        <a href="/follow-user?followerId=<%= article.postedBy._id %>">Follow</a>
+                                        <a class="prev-next"
+                                            url="/follow-user?followerId=<%= article.postedBy._id %>">Follow</a>
                                         <%} else if(!existuser) {%>
-                                        <a href="/follow-user?followerId=<%= article.postedBy._id %>">Follow</a>
+                                        <a class="prev-next"
+                                            url="/follow-user?followerId=<%= article.postedBy._id %>">Follow</a>
                                         <% } else {%>
-                                        <a href="/unfollow-user?authorId=<%= article.postedBy._id %>">Unfollow</a>
+                                        <a class="prev-next"
+                                            url="/unfollow-user?authorId=<%= article.postedBy._id %>">Unfollow</a>
                                         <%};%>
                                     </div>
                                     <%}%>
     <%}%>
-                                    <div class="follow-btn"><a
-                                            href="/author/<%= article.postedBy.usernameslug %>">Profil</a></div>
+                                    <div class="follow-btn"><a class="prev-next"
+                                            url="/author/<%= article.postedBy.usernameslug %>">Profil</a></div>
                                 </div>
                             </div>
                         </div>
@@ -331,14 +334,14 @@
                                             <h5>Letzten Artikel ansehen</h5>
                                             <% if(previous.postedBy){%>
                                             <% if(previous.postedBy.roleId == "admin") {%>
-                                            <a
-                                                href="/d/<%= previous.category.slug.toLowerCase();%>/<%= previous.slug %>">
+                                            <a class="prev-next"
+                                                url="/d/<%= previous.category.slug.toLowerCase();%>/<%= previous.slug %>">
                                                 <h2>
                                                     <%= previous.title%></h2>
                                             </a>
                                             <% } else {%>
-                                            <a
-                                                href="/p/<%= previous.category.slug.toLowerCase();%>/<%= previous.slug %>">
+                                            <a class="prev-next"
+                                                url="/p/<%= previous.category.slug.toLowerCase();%>/<%= previous.slug %>">
                                                 <h2>
                                                     <%= previous.title%></h2>
                                             </a>
@@ -355,12 +358,14 @@
                                             <h5>Nächsten Artikel ansehen</h5>
                                             <% if(previous.postedBy){%>
                                             <% if(next.postedBy.roleId == "admin") {%>
-                                            <a href="/d/<%= next.category.slug.toLowerCase();%>/<%= next.slug %>">
+                                            <a class="prev-next"
+                                                url="/d/<%= next.category.slug.toLowerCase();%>/<%= next.slug %>">
                                                 <h2>
                                                     <%= next.title%></h2>
                                             </a>
                                             <% } else {%>
-                                            <a href="/p/<%= next.category.slug.toLowerCase();%>/<%= next.slug %>">
+                                            <a class="prev-next"
+                                                url="/p/<%= next.category.slug.toLowerCase();%>/<%= next.slug %>">
                                                 <h2>
                                                     <%= next.title%></h2>
                                             </a>
@@ -388,13 +393,14 @@
                                             <img src="<%= related[i].file%>">
                                         </div>
                                         <div class="recommnet-cate">
-                                            <a
-                                                href="/kategorie/<%= related[i].category.slug%>"><span><%= related[i].category.name%></span></a>
+                                            <a class="prev-next"
+                                                url="/kategorie/<%= related[i].category.slug%>"><span><%= related[i].category.name%></span></a>
                                         </div>
                                         <div class="recommnet-heading">
                                             <% if(related[i].postedBy.roleId == "admin"){%>
                                             <h2>
-                                                <a href="/d/<%=related[i].category.slug%>/<%=related[i].slug%>"
+                                                <a class="prev-next"
+                                                    url="/d/<%=related[i].category.slug%>/<%=related[i].slug%>"
                                                     style="color: black;">
                                                     <p style="overflow-wrap: break-word;">
                                                         <%= related[i].title%></p>
@@ -402,7 +408,8 @@
                                             </h2>
                                             <%} else {%>
                                             <h2>
-                                                <a href="/p/<%=related[i].category.slug%>/<%=related[i].slug%>"
+                                                <a class="prev-next"
+                                                    url="/p/<%=related[i].category.slug%>/<%=related[i].slug%>"
                                                     style="color: black;">
                                                     <p style="overflow-wrap: break-word;">
                                                         <%= related[i].title%></p>
@@ -464,7 +471,8 @@
                     <div class="row">
                     <% for(var i = 0; i < footercategory.length; i ++){%>
                                 <div class="col-md-3 text-left">
-                                    <a style="color: black;" href="/kategorie/<%= footercategory[i].slug%>"
+                                    <a style="color: black;" class="prev-next"
+                                        url="/kategorie/<%= footercategory[i].slug%>"
                                         class="footercategory"><%= footercategory[i].name %></a>
                                 </div>
                                 <%}%>
@@ -558,6 +566,30 @@
         <p class="popupContent">Du möchtest Beiträge speichern, viele weitere exklusive Vorteile genießen und unsere Autoren unterstützen? Dann werde jetzt Premium-Member!</p><br><br>
         <a class="popupButton" href="/membership">Jetzt Premium-Mitglied werden</a>
     </div>
+    <div class="closepopup">
+        <h1 class="text-white">&times;</h1>
+    </div>
+</div>
+
+<div class="popup" id="saveMark">
+    <div class="popupContainer">
+        <p class="popupTitle">Leider können nur PremiumMitglieder Sätze markieren, umsie später noch einmal zu lesen.</p>
+        <p class="popupContent">Du möchtest Sätze markieren, viele weitere exklusive Vorteile genießen und unsere Autoren unterstützen? Dann werde jetzt Premium-Member!</p><br><br>
+        <a class="popupButton" href="/membership">Jetzt Premium-Mitglied werden</a>
+    </div>
+    <div class="closepopup">
+        <h1 class="text-white">&times;</h1>
+    </div>
+</div>
+
+<div class="popup" id="upvotePopup">
+    <div class="popupContainer">
+        <p class="popupTitle">Upvote</p>
+        <p class="popupContent">Verteile Upvotes, um den Autoren und Autorinnen zu zeigen, dass dir ihre Beiträge gefallen. So werden sie weitere Beiträge zu dem Thema verfassen und du erfährst noch mehr!</p><br><br>
+    </div>
+    <div class="closepopup">
+        <h1 class="text-white">&times;</h1>
+    </div>
 </div>
 <div class="popup-back"></div>
                 <%- mainSettings.googleAnalyticsCode %>
@@ -608,8 +640,8 @@
                                             if (userType == "paid") {
                                                 saveText()
                                             }
-                                            if (userType == "free") {
-                                                $('.popup').show();
+                                            if (userType != "paid") {
+                                                $('#saveMark').show();
                                                 $('.popup-back').show();
                                             }
                                         }
@@ -627,10 +659,12 @@
                                 $('div').mouseup(function (e) {
                                     var selected = getSelectionText();
                                     selectedText = selected;
-                                    //alert(selected);
+                                    // alert(selected);
                                 })
                                 // $('div').mousedown(function (e) {
                                 //     var selected = getSelectionText();
+                                //     selectedText = selected;
+                                //     alert(selected);
                                 // })
                                 $(function () {
                                     $('.inner-dark-blog-content-one a').attr('rel', 'nofollow');
@@ -645,37 +679,33 @@
                                     $('.notification').toggle();
                                 }
                                 $('.clear-notification').click(function () {
-                                    $('.notification').hide();
+                                    $('.notification').css('display', 'none');
                                 });
                                 $('.deletearticle').click(function () {
-                                    alert("save article deleted");
+                                    // alert("save article deleted");
                                 });
-                                $(".popup").hide();
-                                $(".popup-back").hide();
                                 $('.savearticle').click(function () {
                                     var usertype = "<%if(user){%><%= user.paid%><%}%>";
-                                    console.log(usertype);
                                     if ("<%= article.qualify%>" == "qualify") {
                                         if (usertype == "free") {
-                                            $('.popup').show();
-                                            $('.popup-back').show();
+                                            $('#savecontentPopup').css('display', 'block');
+                                            $('.popup-back').css('display', 'block');
                                         } else if (!usertype) {
                                             location.replace($(this).attr('url'));
                                         }
                                     } else {
                                         if (usertype == "free") {
-                                            $('.popup').show();
-                                            $('.popup-back').show();
+                                            $('#savecontentPopup').css('display', 'block');
+                                            $('.popup-back').css('display', 'block');
                                         } else {
                                             location.replace($(this).attr('url'));
                                         }
                                     }
                                 });
                                 $('.popup-back').click(function () {
-                                    $(".popup").hide();
-                                    $(".popup-back").hide();
+                                    $(".popup").css('display', 'none');
+                                    $(".popup-back").css('display', 'none');
                                 });
-
 
                                 var spentTime = 0;
                                 requestAnimationFrame(function updateTimeSpent() {
@@ -683,13 +713,37 @@
                                     spentTime = round(timeNow / 1000);
                                     requestAnimationFrame(updateTimeSpent);
                                 });
-                                $('a').click(function () {
+                                var readingTime = "<%= time(article.short)%>" * 60;
+                                function sendTime() {
                                     if (userType == "paid") {
-                                        alert(spentTime);
+                                        if (spentTime > readingTime * 60) {
+                                            spentTime > readingTime;
+                                        }
+                                        $.ajax({
+                                            url: '/saveTime',
+                                            dataType: 'json',
+                                            type: 'post',
+                                            data: { userId: userId, articleId: articleId, time: spentTime, readingTime: readingTime },
+                                            success: function (data) {
+                                                return data;
+                                            }
+                                        })
                                     }
                                     //send the spenttime to the server
                                     spentTime = 0;
-                                })
+                                };
+                                $('.closepopup').click(function () {
+                                    $(".popup").css('display', 'none');
+                                    $(".popup-back").css('display', 'none');
+                                });
+                                setTimeout(function () {
+                                    $('#upvotePopup').css('display', 'block');
+                                    $('.popup-back').css('display', 'block');
+                                }, 70000);
+                                $('.prev-next').click(function () {
+                                    sendTime();
+                                    window.open($(this).attr('url'));
+                                });
                             </script>
                             <!-- //calculation part -->
 </body>

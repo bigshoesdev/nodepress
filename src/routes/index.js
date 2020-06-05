@@ -32,7 +32,7 @@ router.use(async function (req, res, next) {
 		let textLength = ev.split(/\s/g).length; // Split by words
 		if (textLength > 0) {
 			let value = Math.ceil(textLength / wordsPerMinute);
-			result = `${value} min read`;
+			result = value;
 		}
 		return result;
 	};
