@@ -913,13 +913,12 @@ router.get("/user/followers", _auth["default"], (0, _role["default"])("admin", "
 
           case 2:
             following = _context9.sent;
-            console.log(following);
             res.render("./user/followers", {
               title: "Followers",
               following: following
             });
 
-          case 5:
+          case 4:
           case "end":
             return _context9.stop();
         }

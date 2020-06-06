@@ -12,6 +12,7 @@ import url from 'url';
 import Ads from '../models/ads';
 import install from '../helpers/install';
 import Menu from '../models/menu';
+import Bookmark from "../models/bookmark";
 var fs = require('fs');
 
 const router = express.Router();
@@ -543,13 +544,131 @@ router.get('/', install.redirectToLogin, async (req, res, next) => {
 		next(error);
 	}
 });
+
+router.post('/api/article/read', async (req, res, next) => {
+	let token = req.body.token;
+	let articleslug = req.body.articleslug;
+	let user = await User.findOne({ token: token });
+	let article = await Article.findOne({ slug: articleslug });
+	console.log(token);
+	console.log(articleslug);
+	let payload = {};
+	if (user.paid == "paid") {
+		const check = await Bookmark.findOne({
+			articleId: article.id,
+			userId: user.id
+		});
+		if (check) {
+			payload = {
+				error: "This article Already saved!"
+			}
+		} else {
+			await Bookmark.create({
+				articleId: article.id,
+				userId: user.id
+			});
+			payload = {
+				error: "Article saved. You can read this article later!"
+			};
+		}
+	} else {
+		payload = {
+			error: "You can't save the article because you are not premium member!"
+		};
+	}
+	return res.json({ "data": payload });
+})
+
+router.post('/api/content', async (req, res, next) => {
+	let categoryslug = req.body.categoryslug;
+	let contentslug = req.body.contentslug;
+	let article = await Article.findOne({ slug: contentslug }).populate('postedBy').populate('category');
+	let payload = {
+		article: article
+	}
+	return res.json({ "data": payload });
+});
+
+router.post('/api/search', async (req, res, next) => {
+	let searchKey = req.body.key;
+	let data = await Article.find({
+		active: true,
+		$or: [
+			{ title: { $regex: searchKey, $options: '$i' } },
+			{ tags: { $regex: searchKey, $options: '$i' } },
+		],
+	})
+		.populate('postedBy')
+		.populate('category');
+	let payload = {
+		articleList: data
+	}
+	return res.json({ "data": payload });
+});
+
+router.post('/api/contentlist', async (req, res, next) => {
+	let categoryslug = req.body.categoryslug;
+	let category = await Category.findOne({ slug: categoryslug });
+	let articles = await Article.find({ category: category.id }).populate('postedBy').populate('category');
+	let payload = {
+		articleList: articles
+	}
+	return res.json({ "data": payload });
+});
+
+router.post('/api/upfollowlist', async (req, res, next) => {
+	let token = req.body.token; // user token
+	let user = await User.findOne({ token: token });
+	const followers = await User.find({
+		following: { $in: user.id }
+	}).populate("following").sort({ createdAt: -1 });
+	let payload = {
+		list: followers
+	}
+	return res.json({ "data": payload });
+});
+router.post('/api/savecategory', async (req, res, next) => {
+	let token = req.body.token; // user token
+	let user = await User.findOne({ token: token });
+	let categoryList = req.body.categoryList;
+	let newList = categoryList.split(",");
+	await User.updateOne({ _id: user._id }, { $set: { categoryList: newList } }).then(element => {
+		let payload = {
+			successful: element
+		}
+		return res.json({ "data": payload });
+	});
+})
+router.post('/api/categories', async (req, res, next) => {
+	let token = req.body.token; // user token
+	let user = await User.findOne({ token: token });
+	let categories = await Category.find({});
+	let payload = {
+		categories: categories
+	}
+	return res.json({ "data": payload });
+})
 router.post('/api/home', async (req, res, next) => {
 	let token = req.body.token; // user token
 	let user = await User.findOne({ token: token });
 	let usercatList = user.categoryList;
 	let recentlyArticles = await Article.find({}).populate('category').populate('postedBy').sort('created_at').limit(3);
+	let authorArcieles = await Article.find({}).populate('category').populate('postedBy').sort('created_at').limit(3);
+	let trendingArticles = await Article.find({}).populate('category').populate('postedBy').sort('created_at').sort('views').limit(3);
+	let categories = await Category.find({});
+	let favoriteCategories = [];
+	usercatList.forEach(element => {
+		categories.forEach(item => {
+			if (item.slug == element) {
+				favoriteCategories.push(item);
+			}
+		});
+	});
 	let payload = {
-		recently: recentlyArticles
+		recently: recentlyArticles,
+		authorArcieles: authorArcieles,
+		trendings: trendingArticles,
+		favoriteCategories: favoriteCategories
 	}
 	return res.json({ "data": payload });
 });
