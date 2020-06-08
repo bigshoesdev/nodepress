@@ -533,7 +533,7 @@ router.get(
             );
             return res.redirect("back");
           } else {
-            user.token = undefined;
+            // user.token = undefined;
             user.active = true;
             user.verified = true;
             user
