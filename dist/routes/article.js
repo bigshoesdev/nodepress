@@ -1,790 +1,854 @@
-import express from "express";
-import User from "../models/users";
-import Article from "../models/articles";
-import Category from "../models/category";
-import Comment from "../models/comment";
-import Settings from "../models/settings";
-import auth from "../helpers/auth";
-import htmlToText from "html-to-text";
-import install from "../helpers/install";
-import Flag from "../models/flag";
-import Bookmark from "../models/bookmark";
-const router = express.Router();
+"use strict";
 
-// Create a new article
-router.post(
-  "/article/create",
-  install.redirectToLogin,
-  auth,
-  async (req, res, next) => {
-    let search = await Article.find({ title: req.body.title });
-    let slug = await Article.findOne({ slug: req.body.slug });
-    let content = req.body.body;
-    let textLength = content.split(/\s/g).length;
-    let set = await Settings.findOne();
-    Date.prototype.getWeek = function () {
-      let dt = new Date(this.getFullYear(), 0, 1);
-      return Math.ceil(((this - dt) / 86400000 + dt.getDay() + 1) / 7);
-    };
-    let newDate = new Date();
-    //List months cos js months starts from zero to 11
-    let months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec"
-    ];
-    try {
-      switch (req.body.postType) {
-        case "post":
-          req.assert("title", "Title Field cannot be left blank").notEmpty();
-          req.assert("category", "Please select a category").notEmpty();
-          const errors = req.validationErrors();
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-          let summary = req.body.summary.trim();
-          var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-          if (re.test(summary)) {
-            req.flash("success_msg", `Summary can't include the email address`);
-            return res.redirect(`back`);
-          }
-          var expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
-          if (expression.test(summary)) {
-            req.flash("success_msg", `Summary can't include the Link`);
-            return res.redirect(`back`);
-          }
-          if (errors) {
-            req.flash("success_msg", `${errors[0].msg}`);
-            return res.redirect(`back`);
-          }
-          if (slug) {
-            req.flash(
-              "success_msg",
-              "That slug has been used, pls used another slug or just leave the field empty"
-            );
-            return res.redirect("back");
-          }
-          if (textLength < 200) {
-            req.flash(
-              "success_msg",
-              "Das sieht doch garnicht mal so schlecht aus! Dennoch solltest du mindestens 200 Wörter schreiben, um deinen Lesern einen Mehrwert zu bieten"
-            );
-            return res.redirect("back");
-          }
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
-          let real = req.body.slug
-            ? req.body.slug
-              .trim()
-              .toLowerCase()
-              .split("?")
-              .join("")
-              .split(" ")
-              .join("-")
-              .replace(new RegExp("/", "g"), "-")
-            : search !== ""
-              ? req.body.title
-                .trim()
-                .toLowerCase()
-                .split("?")
-                .join("")
-                .split(" ")
-                .join("-")
-                .replace(new RegExp("/", "g"), "-") +
-              "-" +
-              search.length
-              : req.body.title
-                .trim()
-                .toLowerCase()
-                .split("?")
-                .join("")
-                .split(" ")
-                .join("-")
-                .replace(new RegExp("/", "g"), "-");
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
+var _express = _interopRequireDefault(require("express"));
+
+var _users = _interopRequireDefault(require("../models/users"));
+
+var _articles = _interopRequireDefault(require("../models/articles"));
+
+var _category = _interopRequireDefault(require("../models/category"));
+
+var _comment = _interopRequireDefault(require("../models/comment"));
+
+var _settings = _interopRequireDefault(require("../models/settings"));
+
+var _auth = _interopRequireDefault(require("../helpers/auth"));
+
+var _htmlToText = _interopRequireDefault(require("html-to-text"));
+
+var _install = _interopRequireDefault(require("../helpers/install"));
+
+var _flag = _interopRequireDefault(require("../models/flag"));
+
+var _bookmark = _interopRequireDefault(require("../models/bookmark"));
+
+var router = _express["default"].Router(); // Create a new article
 
 
-          let array = real.split('');
-          array.forEach((element, index) => {
-            if (element == "ß") {
-              array[index] = "ss";
+router.post("/article/create", _install["default"].redirectToLogin, _auth["default"], /*#__PURE__*/function () {
+  var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res, next) {
+    var search, slug, content, textLength, set, newDate, months, errors, summary, re, expression, real, array, articleslug, payload1, errors2, payload, errors3, payload2;
+    return _regenerator["default"].wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return _articles["default"].find({
+              title: req.body.title
+            });
+
+          case 2:
+            search = _context.sent;
+            _context.next = 5;
+            return _articles["default"].findOne({
+              slug: req.body.slug
+            });
+
+          case 5:
+            slug = _context.sent;
+            content = req.body.body;
+            textLength = content.split(/\s/g).length;
+            _context.next = 10;
+            return _settings["default"].findOne();
+
+          case 10:
+            set = _context.sent;
+
+            Date.prototype.getWeek = function () {
+              var dt = new Date(this.getFullYear(), 0, 1);
+              return Math.ceil(((this - dt) / 86400000 + dt.getDay() + 1) / 7);
+            };
+
+            newDate = new Date(); //List months cos js months starts from zero to 11
+
+            months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            _context.prev = 14;
+            _context.t0 = req.body.postType;
+            _context.next = _context.t0 === "post" ? 18 : _context.t0 === "audio" ? 47 : _context.t0 === "video" ? 60 : 73;
+            break;
+
+          case 18:
+            req.assert("title", "Title Field cannot be left blank").notEmpty();
+            req.assert("category", "Please select a category").notEmpty();
+            errors = req.validationErrors();
+            summary = req.body.summary.trim();
+            re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+            if (!re.test(summary)) {
+              _context.next = 26;
+              break;
             }
-            if (element == "ö") { array[index] = "oe"; }
-            if (element == "ä") { array[index] = "ae"; }
-            if (element == "ü") { array[index] = "ue"; }
-          });
-          let articleslug = array.join("");
 
+            req.flash("success_msg", "Summary can't include the email address");
+            return _context.abrupt("return", res.redirect("back"));
 
-          let payload1 = {
-            week: `${newDate.getWeek()}`,
-            month: `${months[newDate.getMonth()]}`,
-            year: `${newDate.getFullYear()}`,
-            title: req.body.title.trim(),
-            metatitle: req.body.metatitle,
-            metadescription: req.body.metadescription,
-            body: req.body.body.trim(),
-            summary: req.body.summary.trim(),
-            keywords: req.body.keywords.trim(),
-            short: htmlToText.fromString(req.body.body, {
-              wordwrap: false
-            }),
-            slug: articleslug,
-            tags: !req.body.tags ? undefined : req.body.tags.split(","),
-            category: req.body.category,
-            subCategory: req.body.subCategory,
-            file: req.body.file,
-            postedBy: req.user.id,
-            postType: req.body.postType,
-            showPostOnSlider: !req.body.showPostOnSlider
-              ? false
-              : req.body.showPostOnSlider
-                ? true
-                : false,
-            addToNoIndex: !req.body.addToNoIndex
-              ? false
-              : req.body.addToNoIndex
-                ? true
-                : false,
-            addToFeatured: !req.body.addToFeatured
-              ? false
-              : req.body.addToFeatured
-                ? true
-                : false,
-            addToBreaking: !req.body.addToBreaking
-              ? true
-              : req.body.addToBreaking
-                ? true
-                : false,
-            addToRecommended: !req.body.addToRecommended ? false : true,
-            showOnlyToRegisteredUsers: !req.body.showOnlyToRegisteredUsers
-              ? false
-              : true
-          };
-          payload1.active = !req.body.status
-            ? true
-            : req.body.status == "activate"
-              ? true
-              : false;
-          // if (req.user.roleId == "admin") {
-          // } else {
-          //   payload1.active = set.approveAddedUserPost == false ? false : true;
-          // }
-          Article.create(payload1)
-            .then(created => {
-              req.flash(
-                "success_msg",
-                "New article has been posted successfully"
-              );
-              return res.redirect("back");
-            })
-            .catch(e => next(e));
-          break;
-        case "audio":
-          req.assert("title", "Title Field cannot be left blank").notEmpty();
-          req.assert("category", "Please select a category").notEmpty();
-          const errors2 = req.validationErrors();
-          if (errors2) {
-            req.flash("success_msg", `${errors2[0].msg}`);
-            return res.redirect(`back`);
-          }
-          if (slug) {
-            req.flash(
-              "success_msg",
-              "That slug has been used, pls used another slug or just leave the field empty"
-            );
-            return res.redirect("back");
-          }
-          let payload = {
-            week: `${newDate.getWeek()}`,
-            month: `${months[newDate.getMonth()]}`,
-            year: `${newDate.getFullYear()}`,
-            title: req.body.title.trim(),
-            body: req.body.body.trim(),
-            summary: req.body.summary.trim(),
-            keywords: req.body.keywords.trim(),
-            short: htmlToText.fromString(req.body.body, {
-              wordwrap: false
-            }),
-            slug: req.body.slug
-              ? req.body.slug
-                .trim()
-                .toLowerCase()
-                .split("?")
-                .join("")
-                .split(" ")
-                .join("-")
-                .replace(new RegExp("/", "g"), "-")
-              : search !== ""
-                ? req.body.title
-                  .trim()
-                  .toLowerCase()
-                  .split("?")
-                  .join("")
-                  .split(" ")
-                  .join("-")
-                  .replace(new RegExp("/", "g"), "-") +
-                "-" +
-                search.length
-                : req.body.title
-                  .trim()
-                  .toLowerCase()
-                  .split("?")
-                  .join("")
-                  .split(" ")
-                  .join("-")
-                  .replace(new RegExp("/", "g"), "-"),
-            tags: !req.body.tags ? undefined : req.body.tags.split(","),
-            category: req.body.category,
-            subCategory: req.body.subCategory,
-            file: req.body.file,
-            postedBy: req.user.id,
-            postType: req.body.postType,
-            active: !req.body.status
-              ? true
-              : req.body.status == "activate"
-                ? true
-                : false,
-            showPostOnSlider: !req.body.showPostOnSlider
-              ? true
-              : req.body.showPostOnSlider
-                ? true
-                : false,
-            addToFeatured: !req.body.addToFeatured
-              ? false
-              : req.body.addToFeatured
-                ? true
-                : false,
-            addToBreaking: !req.body.addToBreaking
-              ? true
-              : req.body.addToBreaking
-                ? true
-                : false,
-            addToRecommended: !req.body.addToRecommended ? false : true,
-            showOnlyToRegisteredUsers: !req.body.showOnlyToRegisteredUsers
-              ? false
-              : true,
-            audioFile: req.body.audioFile,
-            download: req.body.download ? true : false
-          };
-          if (req.user.roleId == "admin") {
-            payload.active = !req.body.status
-              ? true
-              : req.body.status == "activate"
-                ? true
-                : false;
-          } else {
-            payload.active = set.approveAddedUserPost == false ? false : true;
-          }
-          Article.create(payload)
-            .then(created => {
-              req.flash(
-                "success_msg",
-                "New Audio has been posted successfully"
-              );
-              return res.redirect("back");
-            })
-            .catch(e => next(e));
-          break;
-        case "video":
-          req.assert("title", "Title Field cannot be left blank").notEmpty();
-          req.assert("category", "Please select a category").notEmpty();
-          const errors3 = req.validationErrors();
-          if (errors3) {
-            req.flash("success_msg", `${errors3[0].msg}`);
-            return res.redirect(`back`);
-          }
-          if (slug) {
-            req.flash(
-              "success_msg",
-              "That slug has been used, pls used another slug or just leave the field empty"
-            );
-            return res.redirect("back");
-          }
-          let payload2 = {
-            week: `${newDate.getWeek()}`,
-            month: `${months[newDate.getMonth()]}`,
-            year: `${newDate.getFullYear()}`,
-            title: req.body.title.trim(),
-            body: req.body.body.trim(),
-            summary: req.body.summary.trim(),
-            keywords: req.body.keywords.trim(),
-            short: htmlToText.fromString(req.body.body, {
-              wordwrap: false
-            }),
-            slug: req.body.slug
-              ? req.body.slug
-                .trim()
-                .toLowerCase()
-                .split("?")
-                .join("")
-                .split(" ")
-                .join("-")
-                .replace(new RegExp("/", "g"), "-")
-              : search !== ""
-                ? req.body.title
-                  .trim()
-                  .toLowerCase()
-                  .split("?")
-                  .join("")
-                  .split(" ")
-                  .join("-")
-                  .replace(new RegExp("/", "g"), "-") +
-                "-" +
-                search.length
-                : req.body.title
-                  .trim()
-                  .toLowerCase()
-                  .split("?")
-                  .join("")
-                  .split(" ")
-                  .join("-")
-                  .replace(new RegExp("/", "g"), "-"),
-            tags: !req.body.tags ? undefined : req.body.tags.split(","),
-            category: req.body.category,
-            subCategory: req.body.subCategory,
-            file: req.body.file,
-            postedBy: req.user.id,
-            postType: req.body.postType,
-            active: !req.body.status
-              ? true
-              : req.body.status == "activate"
-                ? true
-                : false,
-            showPostOnSlider: !req.body.showPostOnSlider
-              ? true
-              : req.body.showPostOnSlider
-                ? true
-                : false,
-            addToFeatured: !req.body.addToFeatured
-              ? false
-              : req.body.addToFeatured
-                ? true
-                : false,
-            addToBreaking: !req.body.addToBreaking
-              ? true
-              : req.body.addToBreaking
-                ? true
-                : false,
-            addToRecommended: !req.body.addToRecommended ? false : true,
-            showOnlyToRegisteredUsers: !req.body.showOnlyToRegisteredUsers
-              ? false
-              : true,
-            videoFile: req.body.videoFile,
-            videoType: req.body.videoType
-          };
-          if (req.user.roleId == "admin") {
-            payload2.active = !req.body.status
-              ? true
-              : req.body.status == "activate"
-                ? true
-                : false;
-          } else {
-            payload2.active = set.approveAddedUserPost == false ? false : true;
-          }
-          Article.create(payload2)
-            .then(created => {
-              req.flash(
-                "success_msg",
-                "New Video has been posted successfully"
-              );
-              return res.redirect("back");
-            })
-            .catch(e => next(e));
-          break;
-        default:
-          break;
-      }
-    } catch (error) {
-      next(error);
-    }
-  }
-);
+          case 26:
+            expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
 
-// Edit an Article
-router.post(
-  "/article/edit",
-  install.redirectToLogin,
-  auth,
-  (req, res, next) => {
-    try {
-      let content = req.body.body;
-      let textLength = content.split(/\s/g).length;
-      if (textLength < 200) {
-        req.flash(
-          "success_msg",
-          "Das sieht doch garnicht mal so schlecht aus! Dennoch solltest du mindestens 200 Wörter schreiben, um deinen Lesern einen Mehrwert zu bieten"
-        );
-        return res.redirect("back");
-      }
-      req.body.tags ? (req.body.tags = req.body.tags.split(",")) : undefined;
-      req.body.showPostOnSlider = req.body.showPostOnSlider ? true : false;
-      req.body.addToNoIndex = req.body.addToNoIndex ? true : false;
-      req.body.addToFeatured = req.body.addToFeatured ? true : false;
-      req.body.addToBreaking = req.body.addToBreaking ? true : false;
-      req.body.addToRecommended = !req.body.addToRecommended ? false : true;
-      req.body.short = htmlToText.fromString(req.body.body, {
-        wordwrap: false
-      });
-      req.body.showOnlyToRegisteredUsers = !req.body.showOnlyToRegisteredUsers
-        ? false
-        : true;
-      req.body.postType == "audio"
-        ? (req.body.download = req.body.download ? true : false)
-        : undefined;
-      req.body.postType == "audio"
-        ? (req.body.audioFile = req.body.audioFile)
-        : undefined;
-      req.body.slug = req.body.slug
-        .trim()
-        .toLowerCase()
-        .split("?")
-        .join("")
-        .split(" ")
-        .join("-")
-        .replace(new RegExp("/", "g"), "-");
-      if (req.user.roleId == "admin") {
-        req.body.active = !req.body.status
-          ? true
-          : req.body.status == "activate"
-            ? true
-            : false;
-      } else {
-        // req.body.active = set.approveUpdatedUserPost == false ? false : true;
-        req.body.active = true;
-      }
-      switch (req.body.postType) {
-        case "post":
-          Article.updateOne({ _id: req.body.articleId.trim() }, req.body)
-            .then(updated => {
-              req.flash("success_msg", "Article has been updated successfully");
-              if (req.user.roleId == "admin") {
-                return res.redirect(`/dashboard/all-posts/edit/${req.body.slug}`);
-              } else {
-                return res.redirect(`/user/all-posts/edit/${req.body.slug}`);
+            if (!expression.test(summary)) {
+              _context.next = 30;
+              break;
+            }
+
+            req.flash("success_msg", "Summary can't include the Link");
+            return _context.abrupt("return", res.redirect("back"));
+
+          case 30:
+            if (!errors) {
+              _context.next = 33;
+              break;
+            }
+
+            req.flash("success_msg", "".concat(errors[0].msg));
+            return _context.abrupt("return", res.redirect("back"));
+
+          case 33:
+            if (!slug) {
+              _context.next = 36;
+              break;
+            }
+
+            req.flash("success_msg", "That slug has been used, pls used another slug or just leave the field empty");
+            return _context.abrupt("return", res.redirect("back"));
+
+          case 36:
+            if (!(textLength < 200)) {
+              _context.next = 39;
+              break;
+            }
+
+            req.flash("success_msg", "Das sieht doch garnicht mal so schlecht aus! Dennoch solltest du mindestens 200 Wörter schreiben, um deinen Lesern einen Mehrwert zu bieten");
+            return _context.abrupt("return", res.redirect("back"));
+
+          case 39:
+            real = req.body.slug ? req.body.slug.trim().toLowerCase().split("?").join("").split(" ").join("-").replace(new RegExp("/", "g"), "-") : search !== "" ? req.body.title.trim().toLowerCase().split("?").join("").split(" ").join("-").replace(new RegExp("/", "g"), "-") + "-" + search.length : req.body.title.trim().toLowerCase().split("?").join("").split(" ").join("-").replace(new RegExp("/", "g"), "-");
+            array = real.split('');
+            array.forEach(function (element, index) {
+              if (element == "ß") {
+                array[index] = "ss";
               }
-            })
-            .catch(e => next(e));
-          break;
-        case "audio":
-          Article.updateOne({ _id: req.body.articleId.trim() }, req.body)
-            .then(updated => {
-              req.flash("success_msg", "Audio has been updated successfully");
-              return res.redirect(`/dashboard/all-posts/edit/${req.body.slug}`);
-            })
-            .catch(e => next(e));
-          break;
-        case "video":
-          Article.updateOne({ _id: req.body.articleId.trim() }, req.body)
-            .then(updated => {
-              req.flash("success_msg", "Video has been updated successfully");
-              return res.redirect(`/dashboard/all-posts/edit/${req.body.slug}`);
-            })
-            .catch(e => next(e));
-        default:
-          false;
+
+              if (element == "ö") {
+                array[index] = "oe";
+              }
+
+              if (element == "ä") {
+                array[index] = "ae";
+              }
+
+              if (element == "ü") {
+                array[index] = "ue";
+              }
+            });
+            articleslug = array.join("");
+            payload1 = {
+              week: "".concat(newDate.getWeek()),
+              month: "".concat(months[newDate.getMonth()]),
+              year: "".concat(newDate.getFullYear()),
+              title: req.body.title.trim(),
+              metatitle: req.body.metatitle,
+              metadescription: req.body.metadescription,
+              body: req.body.body.trim(),
+              summary: req.body.summary.trim(),
+              keywords: req.body.keywords.trim(),
+              "short": _htmlToText["default"].fromString(req.body.body, {
+                wordwrap: false
+              }),
+              slug: articleslug,
+              tags: !req.body.tags ? undefined : req.body.tags.split(","),
+              category: req.body.category,
+              subCategory: req.body.subCategory,
+              file: req.body.file,
+              postedBy: req.user.id,
+              postType: req.body.postType,
+              showPostOnSlider: !req.body.showPostOnSlider ? false : req.body.showPostOnSlider ? true : false,
+              addToNoIndex: !req.body.addToNoIndex ? false : req.body.addToNoIndex ? true : false,
+              addToFeatured: !req.body.addToFeatured ? false : req.body.addToFeatured ? true : false,
+              addToBreaking: !req.body.addToBreaking ? true : req.body.addToBreaking ? true : false,
+              addToRecommended: !req.body.addToRecommended ? false : true,
+              showOnlyToRegisteredUsers: !req.body.showOnlyToRegisteredUsers ? false : true
+            };
+            payload1.active = !req.body.status ? true : req.body.status == "activate" ? true : false; // if (req.user.roleId == "admin") {
+            // } else {
+            //   payload1.active = set.approveAddedUserPost == false ? false : true;
+            // }
+
+            _articles["default"].create(payload1).then(function (created) {
+              req.flash("success_msg", "New article has been posted successfully");
+              return res.redirect("back");
+            })["catch"](function (e) {
+              return next(e);
+            });
+
+            return _context.abrupt("break", 74);
+
+          case 47:
+            req.assert("title", "Title Field cannot be left blank").notEmpty();
+            req.assert("category", "Please select a category").notEmpty();
+            errors2 = req.validationErrors();
+
+            if (!errors2) {
+              _context.next = 53;
+              break;
+            }
+
+            req.flash("success_msg", "".concat(errors2[0].msg));
+            return _context.abrupt("return", res.redirect("back"));
+
+          case 53:
+            if (!slug) {
+              _context.next = 56;
+              break;
+            }
+
+            req.flash("success_msg", "That slug has been used, pls used another slug or just leave the field empty");
+            return _context.abrupt("return", res.redirect("back"));
+
+          case 56:
+            payload = {
+              week: "".concat(newDate.getWeek()),
+              month: "".concat(months[newDate.getMonth()]),
+              year: "".concat(newDate.getFullYear()),
+              title: req.body.title.trim(),
+              body: req.body.body.trim(),
+              summary: req.body.summary.trim(),
+              keywords: req.body.keywords.trim(),
+              "short": _htmlToText["default"].fromString(req.body.body, {
+                wordwrap: false
+              }),
+              slug: req.body.slug ? req.body.slug.trim().toLowerCase().split("?").join("").split(" ").join("-").replace(new RegExp("/", "g"), "-") : search !== "" ? req.body.title.trim().toLowerCase().split("?").join("").split(" ").join("-").replace(new RegExp("/", "g"), "-") + "-" + search.length : req.body.title.trim().toLowerCase().split("?").join("").split(" ").join("-").replace(new RegExp("/", "g"), "-"),
+              tags: !req.body.tags ? undefined : req.body.tags.split(","),
+              category: req.body.category,
+              subCategory: req.body.subCategory,
+              file: req.body.file,
+              postedBy: req.user.id,
+              postType: req.body.postType,
+              active: !req.body.status ? true : req.body.status == "activate" ? true : false,
+              showPostOnSlider: !req.body.showPostOnSlider ? true : req.body.showPostOnSlider ? true : false,
+              addToFeatured: !req.body.addToFeatured ? false : req.body.addToFeatured ? true : false,
+              addToBreaking: !req.body.addToBreaking ? true : req.body.addToBreaking ? true : false,
+              addToRecommended: !req.body.addToRecommended ? false : true,
+              showOnlyToRegisteredUsers: !req.body.showOnlyToRegisteredUsers ? false : true,
+              audioFile: req.body.audioFile,
+              download: req.body.download ? true : false
+            };
+
+            if (req.user.roleId == "admin") {
+              payload.active = !req.body.status ? true : req.body.status == "activate" ? true : false;
+            } else {
+              payload.active = set.approveAddedUserPost == false ? false : true;
+            }
+
+            _articles["default"].create(payload).then(function (created) {
+              req.flash("success_msg", "New Audio has been posted successfully");
+              return res.redirect("back");
+            })["catch"](function (e) {
+              return next(e);
+            });
+
+            return _context.abrupt("break", 74);
+
+          case 60:
+            req.assert("title", "Title Field cannot be left blank").notEmpty();
+            req.assert("category", "Please select a category").notEmpty();
+            errors3 = req.validationErrors();
+
+            if (!errors3) {
+              _context.next = 66;
+              break;
+            }
+
+            req.flash("success_msg", "".concat(errors3[0].msg));
+            return _context.abrupt("return", res.redirect("back"));
+
+          case 66:
+            if (!slug) {
+              _context.next = 69;
+              break;
+            }
+
+            req.flash("success_msg", "That slug has been used, pls used another slug or just leave the field empty");
+            return _context.abrupt("return", res.redirect("back"));
+
+          case 69:
+            payload2 = {
+              week: "".concat(newDate.getWeek()),
+              month: "".concat(months[newDate.getMonth()]),
+              year: "".concat(newDate.getFullYear()),
+              title: req.body.title.trim(),
+              body: req.body.body.trim(),
+              summary: req.body.summary.trim(),
+              keywords: req.body.keywords.trim(),
+              "short": _htmlToText["default"].fromString(req.body.body, {
+                wordwrap: false
+              }),
+              slug: req.body.slug ? req.body.slug.trim().toLowerCase().split("?").join("").split(" ").join("-").replace(new RegExp("/", "g"), "-") : search !== "" ? req.body.title.trim().toLowerCase().split("?").join("").split(" ").join("-").replace(new RegExp("/", "g"), "-") + "-" + search.length : req.body.title.trim().toLowerCase().split("?").join("").split(" ").join("-").replace(new RegExp("/", "g"), "-"),
+              tags: !req.body.tags ? undefined : req.body.tags.split(","),
+              category: req.body.category,
+              subCategory: req.body.subCategory,
+              file: req.body.file,
+              postedBy: req.user.id,
+              postType: req.body.postType,
+              active: !req.body.status ? true : req.body.status == "activate" ? true : false,
+              showPostOnSlider: !req.body.showPostOnSlider ? true : req.body.showPostOnSlider ? true : false,
+              addToFeatured: !req.body.addToFeatured ? false : req.body.addToFeatured ? true : false,
+              addToBreaking: !req.body.addToBreaking ? true : req.body.addToBreaking ? true : false,
+              addToRecommended: !req.body.addToRecommended ? false : true,
+              showOnlyToRegisteredUsers: !req.body.showOnlyToRegisteredUsers ? false : true,
+              videoFile: req.body.videoFile,
+              videoType: req.body.videoType
+            };
+
+            if (req.user.roleId == "admin") {
+              payload2.active = !req.body.status ? true : req.body.status == "activate" ? true : false;
+            } else {
+              payload2.active = set.approveAddedUserPost == false ? false : true;
+            }
+
+            _articles["default"].create(payload2).then(function (created) {
+              req.flash("success_msg", "New Video has been posted successfully");
+              return res.redirect("back");
+            })["catch"](function (e) {
+              return next(e);
+            });
+
+            return _context.abrupt("break", 74);
+
+          case 73:
+            return _context.abrupt("break", 74);
+
+          case 74:
+            _context.next = 79;
+            break;
+
+          case 76:
+            _context.prev = 76;
+            _context.t1 = _context["catch"](14);
+            next(_context.t1);
+
+          case 79:
+          case "end":
+            return _context.stop();
+        }
       }
-    } catch (error) {
-      next(error);
-    }
-  }
-);
+    }, _callee, null, [[14, 76]]);
+  }));
 
-// Delete an Article
-router.post(
-  "/article/delete",
-  install.redirectToLogin,
-  auth,
-  async (req, res, next) => {
-    try {
-      let article = await Article.findById(req.body.articleId);
-      Comment.deleteMany({ slug: article.slug })
-        .then(deleted => {
-          Article.deleteOne({ _id: req.body.articleId.trim() })
-            .then(deleted => {
-              req.flash("success_msg", "Article has been Deleted");
-            })
-            .catch(e => next(e));
-        })
-        .catch(e => next(e));
-      Comment.deleteMany({});
-    } catch (error) {
-      next(error);
-    }
-  }
-);
+  return function (_x, _x2, _x3) {
+    return _ref.apply(this, arguments);
+  };
+}()); // Edit an Article
 
-// Delete Many Articles
-router.post(
-  "/article/deletemany",
-  install.redirectToLogin,
-  auth,
-  async (req, res, next) => {
-    try {
-      await Comment.deleteMany({ articleId: req.body.ids });
-      await Article.deleteMany({ _id: req.body.ids });
-      if (!req.body.ids) {
-        req.flash("success_msg", "Nothing Has Been Deleted");
-        return res.redirect('back');
-      } else {
-        req.flash("success_msg", "Posts Has Been Deleted");
-        return res.redirect('back');
-      }
-    } catch (error) {
-      next(error);
-    }
-  }
-);
-
-// Activate Many Articles
-router.post(
-  "/article/activateMany",
-  install.redirectToLogin,
-  auth,
-  (req, res, next) => {
-    try {
-      Article.updateMany({ _id: req.body.ids }, { $set: { active: true } })
-        .then(deleted => {
-          if (!req.body.ids) {
-            req.flash("success_msg", "Nothing Has Been Updated");
-            return res.redirect("/dashboard/all-posts");
-          } else {
-            req.flash("success_msg", "Articles Has Been Published");
-            return res.redirect("/dashboard/all-posts");
-          }
-        })
-        .catch(e => next(e));
-    } catch (error) {
-      next(error);
-    }
-  }
-);
-
-// Deactivate Many Articles
-router.post(
-  "/article/deactivateMany",
-  install.redirectToLogin,
-  auth,
-  (req, res, next) => {
-    try {
-      Article.updateMany({ _id: req.body.ids }, { $set: { active: false } })
-        .then(deleted => {
-          if (!req.body.ids) {
-            req.flash("success_msg", "Nothing Has Been Updated");
-            return res.redirect("/dashboard/all-posts");
-          } else {
-            req.flash("success_msg", "Articles Has Been Saved to Draft");
-            return res.redirect("/dashboard/all-posts");
-          }
-        })
-        .catch(e => next(e));
-    } catch (error) {
-      next(error);
-    }
-  }
-);
-router.get("/p/:category/:slug", install.redirectToLogin, async (req, res, next) => {
+router.post("/article/edit", _install["default"].redirectToLogin, _auth["default"], function (req, res, next) {
   try {
-    let settings = await Settings.findOne();
-    let user = req.params.user;
-    let slug = req.params.slug;
-    let category = req.params.category;
-    let article = await Article.aggregate([
-      {
-        $match: {
-          active: true,
-          slug: req.params.slug
-        }
-      },
-      {
-        $lookup: {
-          from: "categories",
-          localField: "category",
-          foreignField: "_id",
-          as: "category"
-        }
-      },
-      {
-        $unwind: {
-          path: "$category",
-          preserveNullAndEmptyArrays: true
-        }
-      },
-      {
-        $lookup: {
-          from: "categories",
-          localField: "subCategory",
-          foreignField: "_id",
-          as: "subCategory"
-        }
-      },
-      {
-        $unwind: {
-          path: "$subCategory",
-          preserveNullAndEmptyArrays: true
-        }
-      },
-      {
-        $lookup: {
-          from: "users",
-          localField: "postedBy",
-          foreignField: "_id",
-          as: "postedBy"
-        }
-      },
-      {
-        $unwind: {
-          path: "$postedBy",
-          preserveNullAndEmptyArrays: true
-        }
-      },
-      {
-        $lookup: {
-          from: "comments",
-          let: { indicator_id: "$_id" },
-          as: "comments",
-          pipeline: [
-            {
-              $match: {
-                $expr: { $eq: ["$articleId", "$$indicator_id"] },
-                active: true
-              }
-            },
-            {
-              $sort: {
-                createdAt: -1
-              }
-            }
-          ]
-        }
-      }
-    ]);
-    if (article == "") res.render("404");
-    else {
-      let nextarticle = [];
-      let previousarticle = [];
-      let bookmark = typeof req.user !== "undefined" ? await Bookmark.findOne({ userId: req.user.id, articleId: article[0]._id }) : false;
-      let book = bookmark ? true : false;
-      let art = await Article.findOne({ slug: req.params.slug, active: true });
-      let next = await Article.find({
-        active: true,
-        _id: { $gt: article[0]._id },
-        category: article[0].category._id,
-        postedBy: article[0].postedBy._id
-      }).populate("category").populate("postedBy").sort({ createdAt: 1 });
-      next.forEach(item => {
-        if (item.category.slug != "official") {
-          nextarticle.push(item);
-        }
-      });
-      if (next.length == 0) {
-        next = await Article.find({
-          active: true,
-        }).populate("category").populate("postedBy").sort({ createdAt: 1 });
-        next.forEach(item => {
-          if (item.category.slug != "official") {
-            nextarticle.push(item);
+    var content = req.body.body;
+    var textLength = content.split(/\s/g).length;
+
+    if (textLength < 200) {
+      req.flash("success_msg", "Das sieht doch garnicht mal so schlecht aus! Dennoch solltest du mindestens 200 Wörter schreiben, um deinen Lesern einen Mehrwert zu bieten");
+      return res.redirect("back");
+    }
+
+    req.body.tags ? req.body.tags = req.body.tags.split(",") : undefined;
+    req.body.showPostOnSlider = req.body.showPostOnSlider ? true : false;
+    req.body.addToNoIndex = req.body.addToNoIndex ? true : false;
+    req.body.addToFeatured = req.body.addToFeatured ? true : false;
+    req.body.addToBreaking = req.body.addToBreaking ? true : false;
+    req.body.addToRecommended = !req.body.addToRecommended ? false : true;
+    req.body["short"] = _htmlToText["default"].fromString(req.body.body, {
+      wordwrap: false
+    });
+    req.body.showOnlyToRegisteredUsers = !req.body.showOnlyToRegisteredUsers ? false : true;
+    req.body.postType == "audio" ? req.body.download = req.body.download ? true : false : undefined;
+    req.body.postType == "audio" ? req.body.audioFile = req.body.audioFile : undefined;
+    req.body.slug = req.body.slug.trim().toLowerCase().split("?").join("").split(" ").join("-").replace(new RegExp("/", "g"), "-");
+
+    if (req.user.roleId == "admin") {
+      req.body.active = !req.body.status ? true : req.body.status == "activate" ? true : false;
+    } else {
+      // req.body.active = set.approveUpdatedUserPost == false ? false : true;
+      req.body.active = true;
+    }
+
+    switch (req.body.postType) {
+      case "post":
+        _articles["default"].updateOne({
+          _id: req.body.articleId.trim()
+        }, req.body).then(function (updated) {
+          req.flash("success_msg", "Article has been updated successfully");
+
+          if (req.user.roleId == "admin") {
+            return res.redirect("/dashboard/all-posts/edit/".concat(req.body.slug));
+          } else {
+            return res.redirect("/user/all-posts/edit/".concat(req.body.slug));
           }
-        });
-      }
-      let previous = await Article.find({
-        active: true,
-        _id: { $lt: article[0]._id },
-        category: article[0].category._id,
-        postedBy: article[0].postedBy._id
-      }).populate(
-        "category"
-      ).populate('postedBy')
-        .sort({ createdAt: 1 });
-      previous.forEach(item => {
-        if (item.category.slug != "official") {
-          previousarticle.push(item);
-        }
-      });
-      if (previous.length == 0) {
-        previous = await Article.find({
-          active: true,
-        }).populate("category").populate("postedBy").sort({ createdAt: 1 });
-        previous.forEach(item => {
-          if (item.category.slug != "official") {
-            previousarticle.push(item);
-          }
-        });
-      }
-      let featured = await Article.find({
-        active: true,
-        slug: { $ne: article[0].slug },
-        addToFeatured: true
-      })
-        .populate("category")
-        .sort({ createdAt: -1 })
-        .limit(5);
-      let popular = await Article.find({
-        active: true,
-        slug: { $ne: article[0].slug }
-      })
-        .sort({ views: -1 })
-        .limit(3);
-      let recommended = await Article.find({
-        active: true,
-        slug: { $ne: article[0].slug },
-        addToRecommended: true
-      })
-        .populate("category")
-        .sort({ createdAt: -1 })
-        .limit(12);
-      let related = await Article.find({
-        active: true,
-        slug: { $ne: article[0].slug },
-      })
-        .populate("postedBy")
-        .populate("category")
-        .sort({ createdAt: -1 })
-        .limit(3);
-      let d = new Date();
-      let customDate = `${d.getDate()}/${d.getMonth()}/${d.getFullYear()}`;
-      let ips =
-        req.headers["x-forwarded-for"] ||
-        req.connection.remoteAddress ||
-        req.socket.remoteAddress ||
-        (req.connection.socket ? req.connection.socket.remoteAddress : null);
-      let articleCount = await Article.countDocuments();
-      if (art.viewers.indexOf(ips) !== -1) {
-        res.render("single", {
-          articleCount: articleCount,
-          title: article[0].title,
-          article: article[0],
-          settings: settings,
-          previous: previousarticle[0],
-          next: nextarticle[0],
-          featured: featured,
-          popular: popular,
-          recommended: recommended,
-          related: related,
-          bookmark: book,
-          bookmarkId: bookmark == null ? null : bookmark._id
+        })["catch"](function (e) {
+          return next(e);
         });
 
+        break;
+
+      case "audio":
+        _articles["default"].updateOne({
+          _id: req.body.articleId.trim()
+        }, req.body).then(function (updated) {
+          req.flash("success_msg", "Audio has been updated successfully");
+          return res.redirect("/dashboard/all-posts/edit/".concat(req.body.slug));
+        })["catch"](function (e) {
+          return next(e);
+        });
+
+        break;
+
+      case "video":
+        _articles["default"].updateOne({
+          _id: req.body.articleId.trim()
+        }, req.body).then(function (updated) {
+          req.flash("success_msg", "Video has been updated successfully");
+          return res.redirect("/dashboard/all-posts/edit/".concat(req.body.slug));
+        })["catch"](function (e) {
+          return next(e);
+        });
+
+      default:
+        false;
+    }
+  } catch (error) {
+    next(error);
+  }
+}); // Delete an Article
+
+router.post("/article/delete", _install["default"].redirectToLogin, _auth["default"], /*#__PURE__*/function () {
+  var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, res, next) {
+    var article;
+    return _regenerator["default"].wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.prev = 0;
+            _context2.next = 3;
+            return _articles["default"].findById(req.body.articleId);
+
+          case 3:
+            article = _context2.sent;
+
+            _comment["default"].deleteMany({
+              slug: article.slug
+            }).then(function (deleted) {
+              _articles["default"].deleteOne({
+                _id: req.body.articleId.trim()
+              }).then(function (deleted) {
+                req.flash("success_msg", "Article has been Deleted");
+              })["catch"](function (e) {
+                return next(e);
+              });
+            })["catch"](function (e) {
+              return next(e);
+            });
+
+            _comment["default"].deleteMany({});
+
+            _context2.next = 11;
+            break;
+
+          case 8:
+            _context2.prev = 8;
+            _context2.t0 = _context2["catch"](0);
+            next(_context2.t0);
+
+          case 11:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, null, [[0, 8]]);
+  }));
+
+  return function (_x4, _x5, _x6) {
+    return _ref2.apply(this, arguments);
+  };
+}()); // Delete Many Articles
+
+router.post("/article/deletemany", _install["default"].redirectToLogin, _auth["default"], /*#__PURE__*/function () {
+  var _ref3 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(req, res, next) {
+    return _regenerator["default"].wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.prev = 0;
+            _context3.next = 3;
+            return _comment["default"].deleteMany({
+              articleId: req.body.ids
+            });
+
+          case 3:
+            _context3.next = 5;
+            return _articles["default"].deleteMany({
+              _id: req.body.ids
+            });
+
+          case 5:
+            if (req.body.ids) {
+              _context3.next = 10;
+              break;
+            }
+
+            req.flash("success_msg", "Nothing Has Been Deleted");
+            return _context3.abrupt("return", res.redirect('back'));
+
+          case 10:
+            req.flash("success_msg", "Posts Has Been Deleted");
+            return _context3.abrupt("return", res.redirect('back'));
+
+          case 12:
+            _context3.next = 17;
+            break;
+
+          case 14:
+            _context3.prev = 14;
+            _context3.t0 = _context3["catch"](0);
+            next(_context3.t0);
+
+          case 17:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, null, [[0, 14]]);
+  }));
+
+  return function (_x7, _x8, _x9) {
+    return _ref3.apply(this, arguments);
+  };
+}()); // Activate Many Articles
+
+router.post("/article/activateMany", _install["default"].redirectToLogin, _auth["default"], function (req, res, next) {
+  try {
+    _articles["default"].updateMany({
+      _id: req.body.ids
+    }, {
+      $set: {
+        active: true
+      }
+    }).then(function (deleted) {
+      if (!req.body.ids) {
+        req.flash("success_msg", "Nothing Has Been Updated");
+        return res.redirect("/dashboard/all-posts");
       } else {
-        let ip =
-          req.headers["x-forwarded-for"] ||
-          req.connection.remoteAddress ||
-          req.socket.remoteAddress ||
-          (req.connection.socket ? req.connection.socket.remoteAddress : null);
-        await Article.updateOne(
-          { slug: req.params.slug.trim() },
-          { $push: { viewers: ip } }
-        );
-        Article.updateOne(
-          { slug: req.params.slug.trim() },
-          { $inc: { views: 1 } }
-        )
-          .then(views => {
+        req.flash("success_msg", "Articles Has Been Published");
+        return res.redirect("/dashboard/all-posts");
+      }
+    })["catch"](function (e) {
+      return next(e);
+    });
+  } catch (error) {
+    next(error);
+  }
+}); // Deactivate Many Articles
+
+router.post("/article/deactivateMany", _install["default"].redirectToLogin, _auth["default"], function (req, res, next) {
+  try {
+    _articles["default"].updateMany({
+      _id: req.body.ids
+    }, {
+      $set: {
+        active: false
+      }
+    }).then(function (deleted) {
+      if (!req.body.ids) {
+        req.flash("success_msg", "Nothing Has Been Updated");
+        return res.redirect("/dashboard/all-posts");
+      } else {
+        req.flash("success_msg", "Articles Has Been Saved to Draft");
+        return res.redirect("/dashboard/all-posts");
+      }
+    })["catch"](function (e) {
+      return next(e);
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+router.get("/p/:category/:slug", _install["default"].redirectToLogin, /*#__PURE__*/function () {
+  var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res, next) {
+    var settings, user, slug, category, article, nextarticle, previousarticle, bookmark, book, art, _next, previous, featured, popular, recommended, related, d, customDate, ips, articleCount, ip;
+
+    return _regenerator["default"].wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            _context4.prev = 0;
+            _context4.next = 3;
+            return _settings["default"].findOne();
+
+          case 3:
+            settings = _context4.sent;
+            user = req.params.user;
+            slug = req.params.slug;
+            category = req.params.category;
+            _context4.next = 9;
+            return _articles["default"].aggregate([{
+              $match: {
+                active: true,
+                slug: req.params.slug
+              }
+            }, {
+              $lookup: {
+                from: "categories",
+                localField: "category",
+                foreignField: "_id",
+                as: "category"
+              }
+            }, {
+              $unwind: {
+                path: "$category",
+                preserveNullAndEmptyArrays: true
+              }
+            }, {
+              $lookup: {
+                from: "categories",
+                localField: "subCategory",
+                foreignField: "_id",
+                as: "subCategory"
+              }
+            }, {
+              $unwind: {
+                path: "$subCategory",
+                preserveNullAndEmptyArrays: true
+              }
+            }, {
+              $lookup: {
+                from: "users",
+                localField: "postedBy",
+                foreignField: "_id",
+                as: "postedBy"
+              }
+            }, {
+              $unwind: {
+                path: "$postedBy",
+                preserveNullAndEmptyArrays: true
+              }
+            }, {
+              $lookup: {
+                from: "comments",
+                "let": {
+                  indicator_id: "$_id"
+                },
+                as: "comments",
+                pipeline: [{
+                  $match: {
+                    $expr: {
+                      $eq: ["$articleId", "$$indicator_id"]
+                    },
+                    active: true
+                  }
+                }, {
+                  $sort: {
+                    createdAt: -1
+                  }
+                }]
+              }
+            }]);
+
+          case 9:
+            article = _context4.sent;
+
+            if (!(article == "")) {
+              _context4.next = 14;
+              break;
+            }
+
+            res.render("404");
+            _context4.next = 72;
+            break;
+
+          case 14:
+            nextarticle = [];
+            previousarticle = [];
+
+            if (!(typeof req.user !== "undefined")) {
+              _context4.next = 22;
+              break;
+            }
+
+            _context4.next = 19;
+            return _bookmark["default"].findOne({
+              userId: req.user.id,
+              articleId: article[0]._id
+            });
+
+          case 19:
+            _context4.t0 = _context4.sent;
+            _context4.next = 23;
+            break;
+
+          case 22:
+            _context4.t0 = false;
+
+          case 23:
+            bookmark = _context4.t0;
+            book = bookmark ? true : false;
+            _context4.next = 27;
+            return _articles["default"].findOne({
+              slug: req.params.slug,
+              active: true
+            });
+
+          case 27:
+            art = _context4.sent;
+            _context4.next = 30;
+            return _articles["default"].find({
+              active: true,
+              _id: {
+                $gt: article[0]._id
+              },
+              category: article[0].category._id,
+              postedBy: article[0].postedBy._id
+            }).populate("category").populate("postedBy").sort({
+              createdAt: 1
+            });
+
+          case 30:
+            _next = _context4.sent;
+
+            _next.forEach(function (item) {
+              if (item.category.slug != "official") {
+                nextarticle.push(item);
+              }
+            });
+
+            if (!(_next.length == 0)) {
+              _context4.next = 37;
+              break;
+            }
+
+            _context4.next = 35;
+            return _articles["default"].find({
+              active: true
+            }).populate("category").populate("postedBy").sort({
+              createdAt: 1
+            });
+
+          case 35:
+            _next = _context4.sent;
+
+            _next.forEach(function (item) {
+              if (item.category.slug != "official") {
+                nextarticle.push(item);
+              }
+            });
+
+          case 37:
+            _context4.next = 39;
+            return _articles["default"].find({
+              active: true,
+              _id: {
+                $lt: article[0]._id
+              },
+              category: article[0].category._id,
+              postedBy: article[0].postedBy._id
+            }).populate("category").populate('postedBy').sort({
+              createdAt: 1
+            });
+
+          case 39:
+            previous = _context4.sent;
+            previous.forEach(function (item) {
+              if (item.category.slug != "official") {
+                previousarticle.push(item);
+              }
+            });
+
+            if (!(previous.length == 0)) {
+              _context4.next = 46;
+              break;
+            }
+
+            _context4.next = 44;
+            return _articles["default"].find({
+              active: true
+            }).populate("category").populate("postedBy").sort({
+              createdAt: 1
+            });
+
+          case 44:
+            previous = _context4.sent;
+            previous.forEach(function (item) {
+              if (item.category.slug != "official") {
+                previousarticle.push(item);
+              }
+            });
+
+          case 46:
+            _context4.next = 48;
+            return _articles["default"].find({
+              active: true,
+              slug: {
+                $ne: article[0].slug
+              },
+              addToFeatured: true
+            }).populate("category").sort({
+              createdAt: -1
+            }).limit(5);
+
+          case 48:
+            featured = _context4.sent;
+            _context4.next = 51;
+            return _articles["default"].find({
+              active: true,
+              slug: {
+                $ne: article[0].slug
+              }
+            }).sort({
+              views: -1
+            }).limit(3);
+
+          case 51:
+            popular = _context4.sent;
+            _context4.next = 54;
+            return _articles["default"].find({
+              active: true,
+              slug: {
+                $ne: article[0].slug
+              },
+              addToRecommended: true
+            }).populate("category").sort({
+              createdAt: -1
+            }).limit(12);
+
+          case 54:
+            recommended = _context4.sent;
+            _context4.next = 57;
+            return _articles["default"].find({
+              active: true,
+              slug: {
+                $ne: article[0].slug
+              }
+            }).populate("postedBy").populate("category").sort({
+              createdAt: -1
+            }).limit(3);
+
+          case 57:
+            related = _context4.sent;
+            d = new Date();
+            customDate = "".concat(d.getDate(), "/").concat(d.getMonth(), "/").concat(d.getFullYear());
+            ips = req.headers["x-forwarded-for"] || req.connection.remoteAddress || req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null);
+            _context4.next = 63;
+            return _articles["default"].countDocuments();
+
+          case 63:
+            articleCount = _context4.sent;
+
+            if (!(art.viewers.indexOf(ips) !== -1)) {
+              _context4.next = 68;
+              break;
+            }
 
             res.render("single", {
               articleCount: articleCount,
@@ -800,199 +864,324 @@ router.get("/p/:category/:slug", install.redirectToLogin, async (req, res, next)
               bookmark: book,
               bookmarkId: bookmark == null ? null : bookmark._id
             });
-          })
-          .catch(err => next(err));
+            _context4.next = 72;
+            break;
+
+          case 68:
+            ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress || req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null);
+            _context4.next = 71;
+            return _articles["default"].updateOne({
+              slug: req.params.slug.trim()
+            }, {
+              $push: {
+                viewers: ip
+              }
+            });
+
+          case 71:
+            _articles["default"].updateOne({
+              slug: req.params.slug.trim()
+            }, {
+              $inc: {
+                views: 1
+              }
+            }).then(function (views) {
+              res.render("single", {
+                articleCount: articleCount,
+                title: article[0].title,
+                article: article[0],
+                settings: settings,
+                previous: previousarticle[0],
+                next: nextarticle[0],
+                featured: featured,
+                popular: popular,
+                recommended: recommended,
+                related: related,
+                bookmark: book,
+                bookmarkId: bookmark == null ? null : bookmark._id
+              });
+            })["catch"](function (err) {
+              return _next(err);
+            });
+
+          case 72:
+            _context4.next = 77;
+            break;
+
+          case 74:
+            _context4.prev = 74;
+            _context4.t1 = _context4["catch"](0);
+            next(_context4.t1);
+
+          case 77:
+          case "end":
+            return _context4.stop();
+        }
       }
-    }
-  } catch (error) {
-    next(error);
-  }
-});
-// Get single article page
-router.get("/d/:category/:slug", install.redirectToLogin, async (req, res, next) => {
-  try {
-    let settings = await Settings.findOne();
-    let article = await Article.aggregate([
-      {
-        $match: {
-          active: true,
-          slug: req.params.slug
-        }
-      },
-      {
-        $lookup: {
-          from: "categories",
-          localField: "category",
-          foreignField: "_id",
-          as: "category"
-        }
-      },
-      {
-        $unwind: {
-          path: "$category",
-          preserveNullAndEmptyArrays: true
-        }
-      },
-      {
-        $lookup: {
-          from: "categories",
-          localField: "subCategory",
-          foreignField: "_id",
-          as: "subCategory"
-        }
-      },
-      {
-        $unwind: {
-          path: "$subCategory",
-          preserveNullAndEmptyArrays: true
-        }
-      },
-      {
-        $lookup: {
-          from: "users",
-          localField: "postedBy",
-          foreignField: "_id",
-          as: "postedBy"
-        }
-      },
-      {
-        $unwind: {
-          path: "$postedBy",
-          preserveNullAndEmptyArrays: true
-        }
-      },
-      {
-        $lookup: {
-          from: "comments",
-          let: { indicator_id: "$_id" },
-          as: "comments",
-          pipeline: [
-            {
+    }, _callee4, null, [[0, 74]]);
+  }));
+
+  return function (_x10, _x11, _x12) {
+    return _ref4.apply(this, arguments);
+  };
+}()); // Get single article page
+
+router.get("/d/:category/:slug", _install["default"].redirectToLogin, /*#__PURE__*/function () {
+  var _ref5 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(req, res, next) {
+    var settings, article, bookmark, book, art, _next2, index, previous, _index, featured, popular, recommended, related, d, customDate, ips, articleCount, ip;
+
+    return _regenerator["default"].wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            _context5.prev = 0;
+            _context5.next = 3;
+            return _settings["default"].findOne();
+
+          case 3:
+            settings = _context5.sent;
+            _context5.next = 6;
+            return _articles["default"].aggregate([{
               $match: {
-                $expr: { $eq: ["$articleId", "$$indicator_id"] },
-                active: true
+                active: true,
+                slug: req.params.slug
               }
-            },
-            {
-              $sort: {
-                createdAt: -1
+            }, {
+              $lookup: {
+                from: "categories",
+                localField: "category",
+                foreignField: "_id",
+                as: "category"
               }
+            }, {
+              $unwind: {
+                path: "$category",
+                preserveNullAndEmptyArrays: true
+              }
+            }, {
+              $lookup: {
+                from: "categories",
+                localField: "subCategory",
+                foreignField: "_id",
+                as: "subCategory"
+              }
+            }, {
+              $unwind: {
+                path: "$subCategory",
+                preserveNullAndEmptyArrays: true
+              }
+            }, {
+              $lookup: {
+                from: "users",
+                localField: "postedBy",
+                foreignField: "_id",
+                as: "postedBy"
+              }
+            }, {
+              $unwind: {
+                path: "$postedBy",
+                preserveNullAndEmptyArrays: true
+              }
+            }, {
+              $lookup: {
+                from: "comments",
+                "let": {
+                  indicator_id: "$_id"
+                },
+                as: "comments",
+                pipeline: [{
+                  $match: {
+                    $expr: {
+                      $eq: ["$articleId", "$$indicator_id"]
+                    },
+                    active: true
+                  }
+                }, {
+                  $sort: {
+                    createdAt: -1
+                  }
+                }]
+              }
+            }]);
+
+          case 6:
+            article = _context5.sent;
+
+            if (!(article == "")) {
+              _context5.next = 11;
+              break;
             }
-          ]
-        }
-      }
-    ]);
-    if (article == "") res.render("404");
-    else {
-      let bookmark = typeof req.user !== "undefined" ? await Bookmark.findOne({ userId: req.user.id, articleId: article[0]._id }) : false;
-      let book = bookmark ? true : false;
-      let art = await Article.findOne({ slug: req.params.slug, active: true });
-      let next = await Article.find({
-        active: true,
-        _id: { $gt: article[0]._id },
-        category: article[0].category._id,
-        postedBy: article[0].postedBy._id
-      }).populate(
-        "category"
-      ).populate("postedBy").sort({ _id: 1 })
-        .limit(1);
-      if (next.length == 0) {
-        let index = Math.floor(Math.random() * 100 % 28);
-        next = await Article.find({
-          active: true,
-        }).populate("category").populate("postedBy").sort({ _id: 1 }).limit(1).skip(index);
-      }
-      let previous = await Article.find({
-        active: true,
-        _id: { $lt: article[0]._id },
-        category: article[0].category._id,
-        postedBy: article[0].postedBy._id
-      }).populate(
-        "category"
-      ).populate('postedBy')
-        .sort({ _id: 1 })
-        .limit(1);
-      if (previous.length == 0) {
-        let index = Math.floor(Math.random() * 100 % 28);
-        previous = await Article.find({
-          active: true,
-        }).populate("category").populate("postedBy").sort({ _id: 1 }).limit(1).skip(index);
-      }
-      let featured = await Article.find({
-        active: true,
-        slug: { $ne: article[0].slug },
-        addToFeatured: true
-      })
-        .populate("category")
-        .sort({ createdAt: -1 })
-        .limit(5);
-      let popular = await Article.find({
-        active: true,
-        slug: { $ne: article[0].slug }
-      })
-        .sort({ views: -1 })
-        .limit(3);
-      let recommended = await Article.find({
-        active: true,
-        slug: { $ne: article[0].slug },
-        addToRecommended: true
-      })
-        .populate("category")
-        .sort({ createdAt: -1 })
-        .limit(12);
-      let related = await Article.find({
-        active: true,
-        slug: { $ne: article[0].slug }
-      })
-        .populate("postedBy")
-        .populate("category")
-        .sort({ createdAt: -1 })
-        .limit(3);
-      let d = new Date();
-      let customDate = `${d.getDate()}/${d.getMonth()}/${d.getFullYear()}`;
-      let ips =
-        req.headers["x-forwarded-for"] ||
-        req.connection.remoteAddress ||
-        req.socket.remoteAddress ||
-        (req.connection.socket ? req.connection.socket.remoteAddress : null);
-      let articleCount = await Article.countDocuments();
-      if (art.viewers.indexOf(ips) !== -1) {
-        res.render("single", {
-          articleCount: articleCount,
-          title: article[0].title,
-          article: article[0],
-          settings: settings,
-          previous: previous[0],
-          next: next[0],
-          featured: featured,
-          popular: popular,
-          recommended: recommended,
-          related: related,
-          bookmark: book,
-          bookmarkId: bookmark == null ? null : bookmark._id
-        });
-      } else {
-        let ip =
-          req.headers["x-forwarded-for"] ||
-          req.connection.remoteAddress ||
-          req.socket.remoteAddress ||
-          (req.connection.socket ? req.connection.socket.remoteAddress : null);
-        await Article.updateOne(
-          { slug: req.params.slug.trim() },
-          { $push: { viewers: ip } }
-        );
-        Article.updateOne(
-          { slug: req.params.slug.trim() },
-          { $inc: { views: 1 } }
-        )
-          .then(views => {
+
+            res.render("404");
+            _context5.next = 65;
+            break;
+
+          case 11:
+            if (!(typeof req.user !== "undefined")) {
+              _context5.next = 17;
+              break;
+            }
+
+            _context5.next = 14;
+            return _bookmark["default"].findOne({
+              userId: req.user.id,
+              articleId: article[0]._id
+            });
+
+          case 14:
+            _context5.t0 = _context5.sent;
+            _context5.next = 18;
+            break;
+
+          case 17:
+            _context5.t0 = false;
+
+          case 18:
+            bookmark = _context5.t0;
+            book = bookmark ? true : false;
+            _context5.next = 22;
+            return _articles["default"].findOne({
+              slug: req.params.slug,
+              active: true
+            });
+
+          case 22:
+            art = _context5.sent;
+            _context5.next = 25;
+            return _articles["default"].find({
+              active: true,
+              _id: {
+                $gt: article[0]._id
+              },
+              category: article[0].category._id,
+              postedBy: article[0].postedBy._id
+            }).populate("category").populate("postedBy").sort({
+              _id: 1
+            }).limit(1);
+
+          case 25:
+            _next2 = _context5.sent;
+
+            if (!(_next2.length == 0)) {
+              _context5.next = 31;
+              break;
+            }
+
+            index = Math.floor(Math.random() * 100 % 28);
+            _context5.next = 30;
+            return _articles["default"].find({
+              active: true
+            }).populate("category").populate("postedBy").sort({
+              _id: 1
+            }).limit(1).skip(index);
+
+          case 30:
+            _next2 = _context5.sent;
+
+          case 31:
+            _context5.next = 33;
+            return _articles["default"].find({
+              active: true,
+              _id: {
+                $lt: article[0]._id
+              },
+              category: article[0].category._id,
+              postedBy: article[0].postedBy._id
+            }).populate("category").populate('postedBy').sort({
+              _id: 1
+            }).limit(1);
+
+          case 33:
+            previous = _context5.sent;
+
+            if (!(previous.length == 0)) {
+              _context5.next = 39;
+              break;
+            }
+
+            _index = Math.floor(Math.random() * 100 % 28);
+            _context5.next = 38;
+            return _articles["default"].find({
+              active: true
+            }).populate("category").populate("postedBy").sort({
+              _id: 1
+            }).limit(1).skip(_index);
+
+          case 38:
+            previous = _context5.sent;
+
+          case 39:
+            _context5.next = 41;
+            return _articles["default"].find({
+              active: true,
+              slug: {
+                $ne: article[0].slug
+              },
+              addToFeatured: true
+            }).populate("category").sort({
+              createdAt: -1
+            }).limit(5);
+
+          case 41:
+            featured = _context5.sent;
+            _context5.next = 44;
+            return _articles["default"].find({
+              active: true,
+              slug: {
+                $ne: article[0].slug
+              }
+            }).sort({
+              views: -1
+            }).limit(3);
+
+          case 44:
+            popular = _context5.sent;
+            _context5.next = 47;
+            return _articles["default"].find({
+              active: true,
+              slug: {
+                $ne: article[0].slug
+              },
+              addToRecommended: true
+            }).populate("category").sort({
+              createdAt: -1
+            }).limit(12);
+
+          case 47:
+            recommended = _context5.sent;
+            _context5.next = 50;
+            return _articles["default"].find({
+              active: true,
+              slug: {
+                $ne: article[0].slug
+              }
+            }).populate("postedBy").populate("category").sort({
+              createdAt: -1
+            }).limit(3);
+
+          case 50:
+            related = _context5.sent;
+            d = new Date();
+            customDate = "".concat(d.getDate(), "/").concat(d.getMonth(), "/").concat(d.getFullYear());
+            ips = req.headers["x-forwarded-for"] || req.connection.remoteAddress || req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null);
+            _context5.next = 56;
+            return _articles["default"].countDocuments();
+
+          case 56:
+            articleCount = _context5.sent;
+
+            if (!(art.viewers.indexOf(ips) !== -1)) {
+              _context5.next = 61;
+              break;
+            }
+
             res.render("single", {
               articleCount: articleCount,
               title: article[0].title,
               article: article[0],
               settings: settings,
               previous: previous[0],
-              next: next[0],
+              next: _next2[0],
               featured: featured,
               popular: popular,
               recommended: recommended,
@@ -1000,241 +1189,534 @@ router.get("/d/:category/:slug", install.redirectToLogin, async (req, res, next)
               bookmark: book,
               bookmarkId: bookmark == null ? null : bookmark._id
             });
-          })
-          .catch(err => next(err));
-      }
-    }
-  } catch (error) {
-    next(error);
-  }
-});
+            _context5.next = 65;
+            break;
 
-// Get article based on a category
-router.get("/all-post", install.redirectToLogin, async (req, res, next) => {
-  let perPage = 7;
-  let page = req.query.page || 1;
-  try {
-    await Category.findOne({ name: req.query.category })
-      .then(async category => {
-        if (!category) res.status(404).render("404");
-        else {
-          await Article.find({ category: category._id })
-            .populate("postedBy")
-            .sort({ createdAt: -1 })
-            .skip(perPage * page - perPage)
-            .limit(perPage)
-            .exec((err, post) => {
-              Article.countDocuments({ category: category._id }).exec(
-                (err, count) => {
-                  if (err) return next(err);
-                  res.render("category", {
-                    post: post,
-                    current: page,
-                    pages: Math.ceil(count / perPage),
-                    cat: req.query.category
-                  });
-                }
-              );
+          case 61:
+            ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress || req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null);
+            _context5.next = 64;
+            return _articles["default"].updateOne({
+              slug: req.params.slug.trim()
+            }, {
+              $push: {
+                viewers: ip
+              }
             });
-        }
-      })
-      .catch(e => next(e));
-  } catch (error) {
-    next(error);
-  }
-});
 
-// Get all the posts in a category
-router.get(
-  "/kategorie/:slug",
-  install.redirectToLogin,
-  async (req, res, next) => {
-    try {
-      let perPage = 6;
-      let page = req.query.page || 1;
-      let cat = await Category.findOne({ slug: req.params.slug});
-      if (!cat) res.render("404");
-      else {
-        let post = await Article.find({ active: true, category: cat._id })
-          .populate("category")
-          .populate("postedBy")
-          .populate("subCategory")
-          .skip(perPage * page - perPage)
-          .limit(perPage)
-          .sort({ createdAt: -1 });
-        let count = await Article.countDocuments({
-          active: true,
-          category: cat._id
-        });
-        let recent = [];        
-        let recentdata = await Article.find({
-          active: true,
-          category: { $ne: cat._id }
-        })
-          .sort({ createdAt: -1 })
-          .populate("category")
-          .populate("postedBy")
-          .limit(5);
-        recentdata.forEach(item => {
-          if(item.category.slug != "official"){
-            recent.push(item);
-          }
-        })
-        let featured = await Article.find({ active: true, addToFeatured: true })
-          .populate("category")
-          .sort({ createdAt: -1 })
-          .limit(5);
-        let popular = await Article.find({ active: true, category: cat._id })
-          .populate("category")
-          .populate("postedBy")
-          .sort({ views: -1 })
-          .limit(3);
-        res.render("category", {
-          title: cat.name,
-          cat: cat.name,
-          background: cat.background,
-          category: cat,
-          post: post,
-          current: page,
-          pages: Math.ceil(count / perPage),
-          recent: recent,
-          featured: featured,
-          popular: popular
-        });
+          case 64:
+            _articles["default"].updateOne({
+              slug: req.params.slug.trim()
+            }, {
+              $inc: {
+                views: 1
+              }
+            }).then(function (views) {
+              res.render("single", {
+                articleCount: articleCount,
+                title: article[0].title,
+                article: article[0],
+                settings: settings,
+                previous: previous[0],
+                next: _next2[0],
+                featured: featured,
+                popular: popular,
+                recommended: recommended,
+                related: related,
+                bookmark: book,
+                bookmarkId: bookmark == null ? null : bookmark._id
+              });
+            })["catch"](function (err) {
+              return _next2(err);
+            });
+
+          case 65:
+            _context5.next = 70;
+            break;
+
+          case 67:
+            _context5.prev = 67;
+            _context5.t1 = _context5["catch"](0);
+            next(_context5.t1);
+
+          case 70:
+          case "end":
+            return _context5.stop();
+        }
       }
-    } catch (error) {
-      next(error);
-    }
-  }
-);
+    }, _callee5, null, [[0, 67]]);
+  }));
 
-// Add to slider
-router.post("/article/add-to-slider", (req, res, next) => {
-  try {
-    Article.updateMany(
-      { _id: req.body.ids },
-      { $set: { showPostOnSlider: true } }
-    )
-      .then(deleted => {
-        if (!req.body.ids) {
-          req.flash("success_msg", "Nothing Was Updated");
-          return res.redirect("/dashboard/all-posts");
-        } else {
-          req.flash("success_msg", "Articles Has Been Updated Successfully");
-          return res.redirect("/dashboard/all-posts");
+  return function (_x13, _x14, _x15) {
+    return _ref5.apply(this, arguments);
+  };
+}()); // Get article based on a category
+
+router.get("/all-post", _install["default"].redirectToLogin, /*#__PURE__*/function () {
+  var _ref6 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee7(req, res, next) {
+    var perPage, page;
+    return _regenerator["default"].wrap(function _callee7$(_context7) {
+      while (1) {
+        switch (_context7.prev = _context7.next) {
+          case 0:
+            perPage = 7;
+            page = req.query.page || 1;
+            _context7.prev = 2;
+            _context7.next = 5;
+            return _category["default"].findOne({
+              name: req.query.category
+            }).then( /*#__PURE__*/function () {
+              var _ref7 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(category) {
+                return _regenerator["default"].wrap(function _callee6$(_context6) {
+                  while (1) {
+                    switch (_context6.prev = _context6.next) {
+                      case 0:
+                        if (category) {
+                          _context6.next = 4;
+                          break;
+                        }
+
+                        res.status(404).render("404");
+                        _context6.next = 6;
+                        break;
+
+                      case 4:
+                        _context6.next = 6;
+                        return _articles["default"].find({
+                          category: category._id
+                        }).populate("postedBy").sort({
+                          createdAt: -1
+                        }).skip(perPage * page - perPage).limit(perPage).exec(function (err, post) {
+                          _articles["default"].countDocuments({
+                            category: category._id
+                          }).exec(function (err, count) {
+                            if (err) return next(err);
+                            res.render("category", {
+                              post: post,
+                              current: page,
+                              pages: Math.ceil(count / perPage),
+                              cat: req.query.category
+                            });
+                          });
+                        });
+
+                      case 6:
+                      case "end":
+                        return _context6.stop();
+                    }
+                  }
+                }, _callee6);
+              }));
+
+              return function (_x19) {
+                return _ref7.apply(this, arguments);
+              };
+            }())["catch"](function (e) {
+              return next(e);
+            });
+
+          case 5:
+            _context7.next = 10;
+            break;
+
+          case 7:
+            _context7.prev = 7;
+            _context7.t0 = _context7["catch"](2);
+            next(_context7.t0);
+
+          case 10:
+          case "end":
+            return _context7.stop();
         }
-      })
-      .catch(e => next(e));
+      }
+    }, _callee7, null, [[2, 7]]);
+  }));
+
+  return function (_x16, _x17, _x18) {
+    return _ref6.apply(this, arguments);
+  };
+}()); // Get all the posts in a category
+
+router.get("/kategorie/:slug", _install["default"].redirectToLogin, /*#__PURE__*/function () {
+  var _ref8 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee8(req, res, next) {
+    var perPage, page, cat, post, count, recent, recentdata, featured, popular;
+    return _regenerator["default"].wrap(function _callee8$(_context8) {
+      while (1) {
+        switch (_context8.prev = _context8.next) {
+          case 0:
+            _context8.prev = 0;
+            perPage = 6;
+            page = req.query.page || 1;
+            _context8.next = 5;
+            return _category["default"].findOne({
+              slug: req.params.slug
+            });
+
+          case 5:
+            cat = _context8.sent;
+
+            if (cat) {
+              _context8.next = 10;
+              break;
+            }
+
+            res.render("404");
+            _context8.next = 28;
+            break;
+
+          case 10:
+            _context8.next = 12;
+            return _articles["default"].find({
+              active: true,
+              category: cat._id
+            }).populate("category").populate("postedBy").populate("subCategory").skip(perPage * page - perPage).limit(perPage).sort({
+              createdAt: -1
+            });
+
+          case 12:
+            post = _context8.sent;
+            _context8.next = 15;
+            return _articles["default"].countDocuments({
+              active: true,
+              category: cat._id
+            });
+
+          case 15:
+            count = _context8.sent;
+            recent = [];
+            _context8.next = 19;
+            return _articles["default"].find({
+              active: true,
+              category: {
+                $ne: cat._id
+              }
+            }).sort({
+              createdAt: -1
+            }).populate("category").populate("postedBy").limit(5);
+
+          case 19:
+            recentdata = _context8.sent;
+            recentdata.forEach(function (item) {
+              if (item.category.slug != "official") {
+                recent.push(item);
+              }
+            });
+            _context8.next = 23;
+            return _articles["default"].find({
+              active: true,
+              addToFeatured: true
+            }).populate("category").sort({
+              createdAt: -1
+            }).limit(5);
+
+          case 23:
+            featured = _context8.sent;
+            _context8.next = 26;
+            return _articles["default"].find({
+              active: true,
+              category: cat._id
+            }).populate("category").populate("postedBy").sort({
+              views: -1
+            }).limit(3);
+
+          case 26:
+            popular = _context8.sent;
+            res.render("category", {
+              title: cat.name,
+              cat: cat.name,
+              background: cat.background,
+              category: cat,
+              post: post,
+              current: page,
+              pages: Math.ceil(count / perPage),
+              recent: recent,
+              featured: featured,
+              popular: popular
+            });
+
+          case 28:
+            _context8.next = 33;
+            break;
+
+          case 30:
+            _context8.prev = 30;
+            _context8.t0 = _context8["catch"](0);
+            next(_context8.t0);
+
+          case 33:
+          case "end":
+            return _context8.stop();
+        }
+      }
+    }, _callee8, null, [[0, 30]]);
+  }));
+
+  return function (_x20, _x21, _x22) {
+    return _ref8.apply(this, arguments);
+  };
+}()); // Add to slider
+
+router.post("/article/add-to-slider", function (req, res, next) {
+  try {
+    _articles["default"].updateMany({
+      _id: req.body.ids
+    }, {
+      $set: {
+        showPostOnSlider: true
+      }
+    }).then(function (deleted) {
+      if (!req.body.ids) {
+        req.flash("success_msg", "Nothing Was Updated");
+        return res.redirect("/dashboard/all-posts");
+      } else {
+        req.flash("success_msg", "Articles Has Been Updated Successfully");
+        return res.redirect("/dashboard/all-posts");
+      }
+    })["catch"](function (e) {
+      return next(e);
+    });
   } catch (error) {
     next(error);
   }
-});
-// Add to recommended
-router.post("/article/add-to-recommended", (req, res, next) => {
+}); // Add to recommended
+
+router.post("/article/add-to-recommended", function (req, res, next) {
   try {
-    Article.updateMany(
-      { _id: req.body.ids },
-      { $set: { addToRecommended: true } }
-    )
-      .then(deleted => {
-        if (!req.body.ids) {
-          req.flash("success_msg", "Nothing Was Updated");
-          return res.redirect("/dashboard/all-posts");
-        } else {
-          req.flash("success_msg", "Articles Has Been Updated Successfully");
-          return res.redirect("/dashboard/all-posts");
-        }
-      })
-      .catch(e => next(e));
+    _articles["default"].updateMany({
+      _id: req.body.ids
+    }, {
+      $set: {
+        addToRecommended: true
+      }
+    }).then(function (deleted) {
+      if (!req.body.ids) {
+        req.flash("success_msg", "Nothing Was Updated");
+        return res.redirect("/dashboard/all-posts");
+      } else {
+        req.flash("success_msg", "Articles Has Been Updated Successfully");
+        return res.redirect("/dashboard/all-posts");
+      }
+    })["catch"](function (e) {
+      return next(e);
+    });
   } catch (error) {
     next(error);
   }
-});
+}); // Add to featured
 
-// Add to featured
-router.post("/article/add-to-featured", (req, res, next) => {
+router.post("/article/add-to-featured", function (req, res, next) {
   try {
-    Article.updateMany({ _id: req.body.ids }, { $set: { addToFeatured: true } })
-      .then(deleted => {
-        if (!req.body.ids) {
-          req.flash("success_msg", "Nothing Was Updated");
-          return res.redirect("/dashboard/all-posts");
-        } else {
-          req.flash("success_msg", "Articles Has Been Updated Successfully");
-          return res.redirect("/dashboard/all-posts");
-        }
-      })
-      .catch(e => next(e));
+    _articles["default"].updateMany({
+      _id: req.body.ids
+    }, {
+      $set: {
+        addToFeatured: true
+      }
+    }).then(function (deleted) {
+      if (!req.body.ids) {
+        req.flash("success_msg", "Nothing Was Updated");
+        return res.redirect("/dashboard/all-posts");
+      } else {
+        req.flash("success_msg", "Articles Has Been Updated Successfully");
+        return res.redirect("/dashboard/all-posts");
+      }
+    })["catch"](function (e) {
+      return next(e);
+    });
   } catch (error) {
     next(error);
   }
-});
+}); // Add to breaking
 
-// Add to breaking
-router.post("/article/add-to-breaking", (req, res, next) => {
+router.post("/article/add-to-breaking", function (req, res, next) {
   try {
-    Article.updateMany({ _id: req.body.ids }, { $set: { addToBreaking: true } })
-      .then(deleted => {
-        if (!req.body.ids) {
-          req.flash("success_msg", "Nothing Was Updated");
-          return res.redirect("/dashboard/all-posts");
-        } else {
-          req.flash("success_msg", "Articles Has Been Updated Successfully");
-          return res.redirect("/dashboard/all-posts");
-        }
-      })
-      .catch(e => next(e));
+    _articles["default"].updateMany({
+      _id: req.body.ids
+    }, {
+      $set: {
+        addToBreaking: true
+      }
+    }).then(function (deleted) {
+      if (!req.body.ids) {
+        req.flash("success_msg", "Nothing Was Updated");
+        return res.redirect("/dashboard/all-posts");
+      } else {
+        req.flash("success_msg", "Articles Has Been Updated Successfully");
+        return res.redirect("/dashboard/all-posts");
+      }
+    })["catch"](function (e) {
+      return next(e);
+    });
   } catch (error) {
     next(error);
   }
-});
+}); // Upvote a post
 
-// Upvote a post
-router.post("/article/upvote", auth, async (req, res, next) => {
-  await Article.updateOne(
-    { _id: req.body.articleId },
-    { $push: { "update.users": req.user.id }, $inc: { "upvote.count": 1 } }
-  );
-  // res.status(200).send("Post Has been Upvoted");
-  return res.redirect(`back`);
-});
-router.post('/article/upvote-ajax', async (req, res, next) => {
-  let articleId = req.body.articleId;
-  let userId = req.body.userId;
+router.post("/article/upvote", _auth["default"], /*#__PURE__*/function () {
+  var _ref9 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee9(req, res, next) {
+    return _regenerator["default"].wrap(function _callee9$(_context9) {
+      while (1) {
+        switch (_context9.prev = _context9.next) {
+          case 0:
+            _context9.next = 2;
+            return _articles["default"].updateOne({
+              _id: req.body.articleId
+            }, {
+              $push: {
+                "update.users": req.user.id
+              },
+              $inc: {
+                "upvote.count": 1
+              }
+            });
 
-  await Article.updateOne(
-    { _id: req.body.articleId },
-    { $inc: { "upvote.count": 1 } }
-  );
-  let article = await Article.findOne({ _id: articleId });
-  let upvotecount = article.upvote.count;
-  res.json(upvotecount);
-});
-// Downvote a post
-router.post("/article/downvote", auth, async (req, res, next) => {
-  await Article.updateOne(
-    { _id: req.body.articleId },
-    { $push: { "update.users": req.user.id }, $inc: { "upvote.count": -1 } }
-  );
-  res.status(200).send("Post Has been Downvoted");
-});
+          case 2:
+            return _context9.abrupt("return", res.redirect("back"));
 
-// Flag an article
-router.post("/article/flag", async (req, res, next) => {
-  await Flag.create({
-    articleId: req.body.articleId,
-    reason: req.body.reason.trim(),
-    userId: req.user.id != undefined ? req.user.id : undefined
-  });
-  res
-    .status(200)
-    .send("Post has been flagged, Admin will look into it anytime soon.");
-});
+          case 3:
+          case "end":
+            return _context9.stop();
+        }
+      }
+    }, _callee9);
+  }));
 
-// Clap under an article
-router.post("/article/clap", async (req, res, next) => {
-  await Article.updateOne({ _id: req.body.articleId }, { $inc: { claps: 1 } });
-  res.status(200).send("Clapped under post");
-});
+  return function (_x23, _x24, _x25) {
+    return _ref9.apply(this, arguments);
+  };
+}());
+router.post('/article/upvote-ajax', /*#__PURE__*/function () {
+  var _ref10 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee10(req, res, next) {
+    var articleId, userId, article, upvotecount;
+    return _regenerator["default"].wrap(function _callee10$(_context10) {
+      while (1) {
+        switch (_context10.prev = _context10.next) {
+          case 0:
+            articleId = req.body.articleId;
+            userId = req.body.userId;
+            _context10.next = 4;
+            return _articles["default"].updateOne({
+              _id: req.body.articleId
+            }, {
+              $inc: {
+                "upvote.count": 1
+              }
+            });
 
+          case 4:
+            _context10.next = 6;
+            return _articles["default"].findOne({
+              _id: articleId
+            });
+
+          case 6:
+            article = _context10.sent;
+            upvotecount = article.upvote.count;
+            res.json(upvotecount);
+
+          case 9:
+          case "end":
+            return _context10.stop();
+        }
+      }
+    }, _callee10);
+  }));
+
+  return function (_x26, _x27, _x28) {
+    return _ref10.apply(this, arguments);
+  };
+}()); // Downvote a post
+
+router.post("/article/downvote", _auth["default"], /*#__PURE__*/function () {
+  var _ref11 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee11(req, res, next) {
+    return _regenerator["default"].wrap(function _callee11$(_context11) {
+      while (1) {
+        switch (_context11.prev = _context11.next) {
+          case 0:
+            _context11.next = 2;
+            return _articles["default"].updateOne({
+              _id: req.body.articleId
+            }, {
+              $push: {
+                "update.users": req.user.id
+              },
+              $inc: {
+                "upvote.count": -1
+              }
+            });
+
+          case 2:
+            res.status(200).send("Post Has been Downvoted");
+
+          case 3:
+          case "end":
+            return _context11.stop();
+        }
+      }
+    }, _callee11);
+  }));
+
+  return function (_x29, _x30, _x31) {
+    return _ref11.apply(this, arguments);
+  };
+}()); // Flag an article
+
+router.post("/article/flag", /*#__PURE__*/function () {
+  var _ref12 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee12(req, res, next) {
+    return _regenerator["default"].wrap(function _callee12$(_context12) {
+      while (1) {
+        switch (_context12.prev = _context12.next) {
+          case 0:
+            _context12.next = 2;
+            return _flag["default"].create({
+              articleId: req.body.articleId,
+              reason: req.body.reason.trim(),
+              userId: req.user.id != undefined ? req.user.id : undefined
+            });
+
+          case 2:
+            res.status(200).send("Post has been flagged, Admin will look into it anytime soon.");
+
+          case 3:
+          case "end":
+            return _context12.stop();
+        }
+      }
+    }, _callee12);
+  }));
+
+  return function (_x32, _x33, _x34) {
+    return _ref12.apply(this, arguments);
+  };
+}()); // Clap under an article
+
+router.post("/article/clap", /*#__PURE__*/function () {
+  var _ref13 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee13(req, res, next) {
+    return _regenerator["default"].wrap(function _callee13$(_context13) {
+      while (1) {
+        switch (_context13.prev = _context13.next) {
+          case 0:
+            _context13.next = 2;
+            return _articles["default"].updateOne({
+              _id: req.body.articleId
+            }, {
+              $inc: {
+                claps: 1
+              }
+            });
+
+          case 2:
+            res.status(200).send("Clapped under post");
+
+          case 3:
+          case "end":
+            return _context13.stop();
+        }
+      }
+    }, _callee13);
+  }));
+
+  return function (_x35, _x36, _x37) {
+    return _ref13.apply(this, arguments);
+  };
+}());
 module.exports = router;
