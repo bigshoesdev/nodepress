@@ -409,3 +409,7 @@ h6 a {
 .closepopup:hover {
    color: #98E0F2;
 }
+#qualifyPopup {
+   background-image: url("/images/popup/qualifyPopup_background.jpeg");
+   background-size: cover;
+}

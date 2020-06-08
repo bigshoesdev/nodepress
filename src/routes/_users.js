@@ -383,7 +383,7 @@ router.get(
   }
 );
 
-router.get("/user/useful", auth, role('admin', 'user'), async(req, res, next) => {
+router.get("/user/useful", auth, role('admin', 'user'), async (req, res, next) => {
   res.render('./user/useful', {
     title: "Useful Tips"
   });
@@ -400,8 +400,8 @@ router.get(
         slug: req.params.slug
       }).populate("category");
       if (!article) res.render("404");
-      let articles = await Article.find({postedBy : req.user._id});
-      
+      let articles = await Article.find({ postedBy: req.user._id });
+
       switch (article.postType) {
         case "post":
           res.render("./user/edit-post", {
@@ -776,6 +776,25 @@ router.get(
     res.render("./user/followings", { title: "Followings", followers });
   }
 );
+
+router.get('/user/authorstatus', async (req, res, next) => {
+  let totalPost = await Article.countDocuments({ postedBy: req.user.id });
+  let pendingPost = await Article.countDocuments({
+    postedBy: req.user.id,
+    active: false
+  });
+  res.render("./user/author", {
+    title: "Dashboard",
+    totalPost: totalPost,
+    pendingPost: pendingPost
+  });
+});
+
+router.get('/user/payout', async(req, res, next) => {
+  res.render("./user/payout", {
+    title: "User-Payout"
+  });
+});
 
 router.get(
   "/user/bookmarks",

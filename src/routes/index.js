@@ -427,13 +427,18 @@ router.get('/blogrecent', install.redirectToLogin, async (req, res, next) => {
 		.populate('category')
 		.populate('postedBy')
 		.sort({ views: -1 })
-		.sort({ createdAt: -1 })
-		.limit(6);
+		.sort({ createdAt: -1 });
 	let trends = [];
-	trendings.forEach(element => {
-		if (element.category.slug != "official") {
-			trends.push(element);
-		}
+	usercategoryList.forEach(element => {
+		trendings.forEach(item => {
+			if (item.category.slug != "official") {
+				if (element == item.category.slug) {
+					if (trends.length < 6) {
+						trends.push(item);
+					}
+				}
+			}
+		});
 	});
 	let followers = await User.find({
 		following: { $in: req.user.id }
@@ -505,33 +510,41 @@ router.get('/blogrecent', install.redirectToLogin, async (req, res, next) => {
 });
 
 router.get('/ourwork', async (req, res, next) => {
-	let userId = req.user._id;
-	let user = await User.findOne({ _id: userId });
-	let category = await Category.find({});
-	let usercategoryList = user.categoryList;
-	let categories = [];
-	category.forEach(element => {
-		usercategoryList.forEach(item => {
-			if (item == element.slug) {
-				categories.push(element);
-			}
+	if (!req.user){
+		let favorites = await Article.find({}).limit(9);
+		res.render('ourwork', {
+			title: "Our Work",
+			favorites: favorites
 		});
-	});
-	let favorites = [];
-	let total_article = await Article.find({})
-		.populate('category')
-		.populate('postedBy').sort('create_at').limit(10);
-	categories.forEach(element => {
-		total_article.forEach(item => {
-			if (item.category.slug == element.slug) {
-				favorites.push(item);
-			}
+	} else{
+		let userId = req.user._id;
+		let user = await User.findOne({ _id: userId });
+		let category = await Category.find({});
+		let usercategoryList = user.categoryList;
+		let categories = [];
+		category.forEach(element => {
+			usercategoryList.forEach(item => {
+				if (item == element.slug) {
+					categories.push(element);
+				}
+			});
 		});
-	});
-	res.render('ourwork', {
-		title: "Our Work",
-		favorites: favorites
-	});
+		let favorites = [];
+		let total_article = await Article.find({})
+			.populate('category')
+			.populate('postedBy').sort('create_at').limit(10);
+		categories.forEach(element => {
+			total_article.forEach(item => {
+				if (item.category.slug == element.slug) {
+					favorites.push(item);
+				}
+			});
+		});
+		res.render('ourwork', {
+			title: "Our Work",
+			favorites: favorites
+		});
+	}
 });
 // Get index page
 router.get('/', install.redirectToLogin, async (req, res, next) => {
@@ -864,7 +877,7 @@ router.get('/vision', install.redirectToLogin, async (req, res, next) => {
 	res.render('vision');
 })
 
-router.get('/membership', install.redirectToLogin, async (req, res, next) => {
+router.get('/membership', async (req, res, next) => {
 	res.render('membership');
 })
 

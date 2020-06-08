@@ -1,17 +1,12 @@
-"use strict";
+import mongoose from 'mongoose';
+const Schema = mongoose.Schema;
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+const contactSchema = new Schema({
+    fullname: String,
+    email: String,
+    number: Number,
+    help: String,
+    message: String
+}, {timestamps: true});
 
-var _mongoose = _interopRequireDefault(require("mongoose"));
-
-var Schema = _mongoose["default"].Schema;
-var contactSchema = new Schema({
-  fullname: String,
-  email: String,
-  number: Number,
-  help: String,
-  message: String
-}, {
-  timestamps: true
-});
-module.exports = _mongoose["default"].model('Contact', contactSchema);
+module.exports = mongoose.model('Contact', contactSchema);

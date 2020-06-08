@@ -1,186 +1,147 @@
-"use strict";
+import nodemailer from 'nodemailer';
+import AWS from 'aws-sdk';
+import ejs from 'ejs';
+import fs from 'fs';
+import Settings from '../models/settings';
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
-var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
-
-var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
-
-var _nodemailer = _interopRequireDefault(require("nodemailer"));
-
-var _awsSdk = _interopRequireDefault(require("aws-sdk"));
-
-var _ejs = _interopRequireDefault(require("ejs"));
-
-var _fs = _interopRequireDefault(require("fs"));
-
-var _settings = _interopRequireDefault(require("../models/settings"));
-
-var readHTMLFile = function readHTMLFile(path, callback) {
-  _fs["default"].readFile(path, {
-    encoding: 'utf-8'
-  }, function (err, html) {
-    if (err) callback(err);else callback(null, html);
-  });
+const readHTMLFile = (path, callback) => {
+    fs.readFile(path, { encoding: 'utf-8' }, (err, html) => {
+        if (err) callback(err);
+        else callback(null, html);
+    });
 };
 
-module.exports = /*#__PURE__*/function () {
-  var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(subject, to, html, replace, siteUrl, callback) {
-    var set, gmailAuth, gmailSmtpTransport, sendgridSmtpTransport, smtpTransport, transporter;
-    return _regenerator["default"].wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            _context.next = 2;
-            return _settings["default"].findOne();
+module.exports = async (subject, to, html, replace, siteUrl, callback) => {
+    let set = await Settings.findOne();
 
-          case 2:
-            set = _context.sent;
-            // Gmail Config
-            gmailAuth = {
-              type: 'oauth2',
-              user: set.email.config.gmail.username,
-              clientId: set.email.config.gmail.clientId,
-              clientSecret: set.email.config.gmail.clientSecret,
-              refreshToken: set.email.config.gmail.refreshToken
-            };
-            gmailSmtpTransport = _nodemailer["default"].createTransport({
-              service: 'gmail',
-              auth: gmailAuth
-            }); // Sendgrid Config
+    // Gmail Config
+    let gmailAuth = {
+        type: 'oauth2',
+        user: set.email.config.gmail.username,
+        clientId: set.email.config.gmail.clientId,
+        clientSecret: set.email.config.gmail.clientSecret,
+        refreshToken: set.email.config.gmail.refreshToken,
+    };
 
-            sendgridSmtpTransport = _nodemailer["default"].createTransport({
-              service: 'sendgrid',
-              auth: {
-                user: set.email.config.sendgrid.username,
-                pass: set.email.config.sendgrid.password
-              }
-            }); // SMTP config
+    const gmailSmtpTransport = nodemailer.createTransport({
+        service: 'gmail',
+        auth: gmailAuth
+    });
 
-            smtpTransport = _nodemailer["default"].createTransport({
-              host: set.email.config.smtp.host,
-              port: set.email.config.smtp.port,
-              secure: true,
-              tls: {
-                rejectUnauthorized: false
-              },
-              auth: {
-                user: set.email.config.smtp.username,
-                pass: set.email.config.smtp.password
-              }
-            }); // Aws Config
-
-            _awsSdk["default"].config.update({
-              accessKeyId: set.email.config.aws.accessKeyId,
-              secretAccessKey: set.email.config.aws.secretAccessKey,
-              region: set.email.config.aws.region
-            }); // create Nodemailer SES transporter
-
-
-            transporter = _nodemailer["default"].createTransport({
-              SES: new _awsSdk["default"].SES({
-                apiVersion: '2010-12-01'
-              })
-            });
-            _context.t0 = set.email.provider;
-            _context.next = _context.t0 === 'gmail' ? 12 : _context.t0 === 'sendgrid' ? 14 : _context.t0 === 'smtp' ? 16 : _context.t0 === 'aws' ? 18 : 20;
-            break;
-
-          case 12:
-            readHTMLFile(__dirname + "/../views/email-templates/".concat(html, ".html"), function (err, html) {
-              var template = _ejs["default"].compile(html);
-
-              var replacements = replace;
-              var htmlToSend = template(replacements);
-              var mailOptions = {
-                to: to,
-                from: "".concat(set.siteName, " no-reply@").concat(siteUrl),
-                subject: subject,
-                html: htmlToSend,
-                sender: "no-reply@".concat(siteUrl),
-                replyTo: "no-reply@".concat(siteUrl)
-              };
-              gmailSmtpTransport.sendMail(mailOptions, function (err, info) {
-                if (err) callback(err);else callback(null, info);
-              });
-            });
-            return _context.abrupt("break", 21);
-
-          case 14:
-            readHTMLFile(__dirname + "/../views/email-templates/".concat(html, ".html"), function (err, html) {
-              var template = _ejs["default"].compile(html);
-
-              var replacements = replace;
-              var htmlToSend = template(replacements);
-              var mailOptions = {
-                to: to,
-                from: "".concat(set.siteName, " <no-reply@").concat(siteUrl, ">"),
-                subject: subject,
-                html: htmlToSend,
-                sender: "no-reply@".concat(siteUrl),
-                replyTo: "no-reply@".concat(siteUrl)
-              };
-              sendgridSmtpTransport.sendMail(mailOptions, function (err, info) {
-                if (err) callback(err);else callback(null, info);
-              });
-            });
-            return _context.abrupt("break", 21);
-
-          case 16:
-            readHTMLFile(__dirname + "/../views/email-templates/".concat(html, ".html"), function (err, html) {
-              var template = _ejs["default"].compile(html);
-
-              var replacements = replace;
-              var htmlToSend = template(replacements);
-              var mailOptions = {
-                to: to,
-                from: "".concat(set.siteName, " <no-reply@").concat(siteUrl, ">"),
-                subject: subject,
-                html: htmlToSend,
-                sender: "no-reply@".concat(siteUrl),
-                replyTo: "no-reply@".concat(siteUrl)
-              };
-              smtpTransport.sendMail(mailOptions, function (err, info) {
-                if (err) callback(err);else callback(null, info);
-              });
-            });
-            return _context.abrupt("break", 21);
-
-          case 18:
-            readHTMLFile(__dirname + "/../views/email-templates/".concat(html, ".html"), function (err, html) {
-              var template = _ejs["default"].compile(html);
-
-              var replacements = replace;
-              var htmlToSend = template(replacements);
-              var mailOptions = {
-                to: to,
-                from: "".concat(set.siteName, " <no-reply@").concat(siteUrl, ">"),
-                subject: subject,
-                html: htmlToSend,
-                sender: "no-reply@".concat(siteUrl),
-                replyTo: "no-reply@".concat(siteUrl)
-              };
-              transporter.sendMail(mailOptions, function (err, info) {
-                if (err) callback(err);else callback(null, info);
-              });
-            });
-            return _context.abrupt("break", 21);
-
-          case 20:
-            return _context.abrupt("break", 21);
-
-          case 21:
-            ;
-
-          case 22:
-          case "end":
-            return _context.stop();
+    // Sendgrid Config
+    const sendgridSmtpTransport = nodemailer.createTransport({
+        service: 'sendgrid',
+        auth: {
+            user: set.email.config.sendgrid.username,
+            pass: set.email.config.sendgrid.password
         }
-      }
-    }, _callee);
-  }));
+    });
 
-  return function (_x, _x2, _x3, _x4, _x5, _x6) {
-    return _ref.apply(this, arguments);
-  };
-}();
+    // SMTP config
+    const smtpTransport = nodemailer.createTransport({
+        host: set.email.config.smtp.host,
+        port: set.email.config.smtp.port,
+        secure: true,
+        tls: {
+            rejectUnauthorized: false
+        },
+        auth: {
+            user: set.email.config.smtp.username,
+            pass: set.email.config.smtp.password
+        }
+    });
+
+    // Aws Config
+    AWS.config.update({
+        accessKeyId: set.email.config.aws.accessKeyId,
+        secretAccessKey: set.email.config.aws.secretAccessKey,
+        region: set.email.config.aws.region
+    });
+
+    // create Nodemailer SES transporter
+    let transporter = nodemailer.createTransport({
+        SES: new AWS.SES({
+            apiVersion: '2010-12-01'
+        })
+    });
+
+    switch (set.email.provider) {
+        case 'gmail':
+            readHTMLFile(__dirname + `/../views/email-templates/${html}.html`, (err, html) => {
+                const template = ejs.compile(html);
+                const replacements = replace;
+                const htmlToSend = template(replacements);
+                const mailOptions = {
+                    to: to,
+                    from: `${set.siteName} no-reply@${siteUrl}`,
+                    subject: subject,
+                    html: htmlToSend,
+                    sender: `no-reply@${siteUrl}`,
+                    replyTo: `no-reply@${siteUrl}`,
+                };
+                gmailSmtpTransport.sendMail(mailOptions, (err, info) => {
+                    if (err) callback(err);
+                    else callback(null, info);
+                });
+            });
+            break;
+        case 'sendgrid':
+            readHTMLFile(__dirname + `/../views/email-templates/${html}.html`, (err, html) => {
+                const template = ejs.compile(html);
+                const replacements = replace;
+                const htmlToSend = template(replacements);
+                const mailOptions = {
+                    to: to,
+                    from: `${set.siteName} <no-reply@${siteUrl}>`,
+                    subject: subject,
+                    html: htmlToSend,
+                    sender: `no-reply@${siteUrl}`,
+                    replyTo: `no-reply@${siteUrl}`,
+                };
+                sendgridSmtpTransport.sendMail(mailOptions, (err, info) => {
+                    if (err) callback(err);
+                    else callback(null, info);
+                });
+            });
+            break;
+        case 'smtp':
+            readHTMLFile(__dirname + `/../views/email-templates/${html}.html`, (err, html) => {
+                const template = ejs.compile(html);
+                const replacements = replace;
+                const htmlToSend = template(replacements);
+                const mailOptions = {
+                    to: to,
+                    from: `${set.siteName} <no-reply@${siteUrl}>`,
+                    subject: subject,
+                    html: htmlToSend,
+                    sender: `no-reply@${siteUrl}`,
+                    replyTo: `no-reply@${siteUrl}`,
+                };
+                smtpTransport.sendMail(mailOptions, (err, info) => {
+                    if (err) callback(err);
+                    else callback(null, info);
+                });
+            });
+            break;
+        case 'aws':
+                readHTMLFile(__dirname + `/../views/email-templates/${html}.html`, (err, html) => {
+                    const template = ejs.compile(html);
+                    const replacements = replace;
+                    const htmlToSend = template(replacements);
+                    const mailOptions = {
+                        to: to,
+                        from: `${set.siteName} <no-reply@${siteUrl}>`,
+                        subject: subject,
+                        html: htmlToSend,
+                        sender: `no-reply@${siteUrl}`,
+                        replyTo: `no-reply@${siteUrl}`,
+                    };
+                    transporter.sendMail(mailOptions, (err, info) => {
+                        if (err) callback(err);
+                        else callback(null, info);
+                    });
+                });
+            break;
+        default: break
+    };
+};

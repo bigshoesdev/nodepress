@@ -12,8 +12,10 @@ const countingSchema = new Schema(
     },
     spentTime: Number,
     authorName: String,
+    mostCategory: String, 
+    spentCount: Number
   },
   { timestamps: true }
 );
 
-export default mongoose.model("counting", countingSchema);
+export default mongoose.model("average", countingSchema);

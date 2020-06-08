@@ -1,20 +1,18 @@
-"use strict";
+import mongoose from "mongoose";
+const Schema = mongoose.Schema;
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+const newsletterSchema = new Schema(
+  {
+    email: String,
+    firstname: String,
+    lastname: String,
+    newsletterType: {
+      type: String,
+      enum: ["daily", "weekly", "monthly"],
+      default: "weekly"
+    }
+  },
+  { timestamps: true }
+);
 
-var _mongoose = _interopRequireDefault(require("mongoose"));
-
-var Schema = _mongoose["default"].Schema;
-var newsletterSchema = new Schema({
-  email: String,
-  firstname: String,
-  lastname: String,
-  newsletterType: {
-    type: String,
-    "enum": ["daily", "weekly", "monthly"],
-    "default": "weekly"
-  }
-}, {
-  timestamps: true
-});
-module.exports = _mongoose["default"].model("Newsletter", newsletterSchema);
+module.exports = mongoose.model("Newsletter", newsletterSchema);

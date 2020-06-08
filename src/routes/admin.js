@@ -17,6 +17,7 @@ import _mail from "../helpers/_mail";
 import Menu from '../models/menu';
 import Counting from '../models/counting';
 import install from '../helpers/install';
+import average from "../models/average";
 const router = express.Router();
 
 router.use(async (req, res, next) => {
@@ -24,19 +25,19 @@ router.use(async (req, res, next) => {
   next();
 });
 
-router.post("/dashboard/article/decline", install.redirectToLogin,  auth, role('admin'), async(req, res, next) => {
+router.post("/dashboard/article/decline", install.redirectToLogin, auth, role('admin'), async (req, res, next) => {
   var articleId = req.body.articleId;
-  await Article.updateOne({_id: articleId}, {qualify: "declined"});
+  await Article.updateOne({ _id: articleId }, { qualify: "declined" });
   res.redirect('back');
 });
-router.post("/dashboard/article/accept", install.redirectToLogin,  auth, role('admin'), async(req, res, next) => {
+router.post("/dashboard/article/accept", install.redirectToLogin, auth, role('admin'), async (req, res, next) => {
   var articleId = req.body.articleId;
-  await Article.updateOne({_id: articleId}, {qualify: "qualify"});
+  await Article.updateOne({ _id: articleId }, { qualify: "qualify" });
   res.redirect('back');
 });
-router.post("/dashboard/article/message", install.redirectToLogin,  auth, role('admin'), async(req, res, next) => {
+router.post("/dashboard/article/message", install.redirectToLogin, auth, role('admin'), async (req, res, next) => {
   var articleId = req.body.articleId;
-  await Article.updateOne({_id: articleId}, {qualify: "message"});
+  await Article.updateOne({ _id: articleId }, { qualify: "message" });
   res.redirect('back');
 });
 
@@ -732,10 +733,10 @@ router.get(
 );
 
 router.get(
-  "/dashboard/qualify", 
-  auth, 
-  install.redirectToLogin, 
-  role('admin'), 
+  "/dashboard/qualify",
+  auth,
+  install.redirectToLogin,
+  role('admin'),
   async (req, res, next) => {
     if (req.query.category) {
       let perPage = 10;
@@ -1133,7 +1134,7 @@ router.post('/dashboard/meta-save', auth, install.redirectToLogin, role('admin')
     let homeMeta = req.body.homeMeta;
     let publisherMeta = req.body.publisherMeta;
     let set = await Settings.find();
-    await Settings.updateOne({ _id: set[0]._id }, {homeMeta: homeMeta, publisherMeta: publisherMeta});
+    await Settings.updateOne({ _id: set[0]._id }, { homeMeta: homeMeta, publisherMeta: publisherMeta });
     req.flash("success_msg", "Meta Description Updated Successfully");
     res.redirect('back');
   } catch (error) { next(error); }
@@ -1388,6 +1389,51 @@ router.get(
   }
 );
 
+router.get('/dashboard/usermetric', auth, install.redirectToLogin, role("admin"), async (req, res, next) => {
+  try {
+    let perPage = 10;
+    let page = req.query.page || 1;
+    let users = req.query.q
+      ? await User.find({
+        roleId: {
+          $ne: "admin"
+        },
+        $or: [
+          { username: { $regex: req.query.q, $options: "i" } },
+          { email: { $regex: req.query.q, $options: "i" } }
+        ]
+      })
+        .skip(perPage * page - perPage)
+        .limit(perPage)
+      : await User.find({ roleId: { $ne: "admin" } })
+        .sort({ createdAt: -1 })
+        .skip(perPage * page - perPage)
+        .limit(perPage);
+
+    let count = req.query.q
+      ? await User.countDocuments({
+        roleId: {
+          $ne: "admin"
+        },
+        $or: [
+          { username: { $regex: req.query.q, $options: "i" } },
+          { email: { $regex: req.query.q, $options: "i" } }
+        ]
+      })
+      : await User.countDocuments({ roleId: { $ne: "admin" } });
+    let countings = await average.find({}).populate('articleId').populate('userId');
+
+    res.render("./admin/usermetric", {
+      title: "User-Metric",
+      allusers: countings,
+      current: page,
+      pages: Math.ceil(count / perPage)
+    });
+  } catch (error) {
+    next(error);
+  }
+})
+
 router.get("/dashboard/users", auth, install.redirectToLogin, role("admin"), async (req, res, next) => {
   try {
     let perPage = 10;
@@ -1484,7 +1530,7 @@ router.get(
       let userInfo = await User.findOne({ username: req.params.username });
       if (!userInfo) res.render("404");
       else {
-        let countinglist = await Counting.find({userId: userInfo._id}).populate('articleId');
+        let countinglist = await Counting.find({ userId: userInfo._id }).populate('articleId');
         res.render("./admin/edit-users", {
           title: `Edit User - ${userInfo.username}`,
           userInfo: userInfo,

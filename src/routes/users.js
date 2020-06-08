@@ -17,6 +17,7 @@ import AWS from "aws-sdk";
 import { v2 as cloudinary } from "cloudinary";
 import Article from "../models/articles";
 import Counting from "../models/counting";
+import average from "../models/average";
 const router = express.Router();
 import install from "../helpers/install";
 import role from "../helpers/role";
@@ -32,7 +33,6 @@ function checkIfLoggedIn(req, res, next) {
     next();
   }
 }
-
 // Facebook Login auth
 router.get(
   "/auth/facebook",
@@ -266,37 +266,42 @@ router.post("/api/sign-up", async (req, res, next) => {
       if (element == "ü") { array[index] = "ue"; }
     });
     let usernameslug = array.join("");
-    let payload = {
-      email: req.body.email.trim(),
-      password: req.body.password.trim(),
-      token: crypto.randomBytes(16).toString("hex"),
-      username: req.body.username.trim().toLowerCase(),
-      usernameslug: usernameslug,
-      profilePicture:
-        "https://gravatar.com/avatar/" +
-        crypto
-          .createHash("md5")
-          .update(req.body.email)
-          .digest("hex")
-          .toString() +
-        "?s=200" +
-        "&d=retro",
-      active:
-        typeof set.emailVerification == "undefined"
-          ? true
-          : set.emailVerification == true
-            ? false
-            : true,
-      roleId: "user",
-      firstName: "Not Specified",
-      lastName: "Not Specified",
-      siteLink: res.locals.siteLink,
-      logo: res.locals.siteLogo,
-      instagram: res.locals.instagram,
-      facebook: res.locals.facebook,
-      twitter: res.locals.twitter,
-      signupProcess: "/enterinformation"
-    };
+    let token = crypto.randomBytes(16).toString("hex");
+    console.log(token);
+    let payload = {};
+    if (token) {
+       payload = {
+        email: req.body.email.trim(),
+        password: req.body.password.trim(),
+        token: token,
+        username: req.body.username.trim().toLowerCase(),
+        usernameslug: usernameslug,
+        profilePicture:
+          "https://gravatar.com/avatar/" +
+          crypto
+            .createHash("md5")
+            .update(req.body.email)
+            .digest("hex")
+            .toString() +
+          "?s=200" +
+          "&d=retro",
+        active:
+          typeof set.emailVerification == "undefined"
+            ? true
+            : set.emailVerification == true
+              ? false
+              : true,
+        roleId: "user",
+        firstName: "Not Specified",
+        lastName: "Not Specified",
+        siteLink: res.locals.siteLink,
+        logo: res.locals.siteLogo,
+        instagram: res.locals.instagram,
+        facebook: res.locals.facebook,
+        twitter: res.locals.twitter,
+        signupProcess: "/enterinformation"
+      };
+    }
     if (req.body.password !== req.body.cPassword) {
       message = { "Error": "Password Doesn't match" }
       return res.json(message);
@@ -320,7 +325,6 @@ router.post("/api/sign-up", async (req, res, next) => {
             }
           )
           : null;
-        console.log(set.emailVerification);
         if (set.emailVerification == true) {
           message = { "Error": "Registration Successfull, pls check your email for futher instrcutions" }
           return res.json(message);
@@ -1328,12 +1332,13 @@ router.post("/saveTime", async (req, res) => {
   let spentTime = parseInt(req.body.time);
   let readingTime = req.body.readingTime;
   var message = "success";
-  let article = await Article.findOne({_id: articleId}).populate('postedBy');
-  if((spentTime % 60) > 30){
+  let article = await Article.findOne({ _id: articleId }).populate('postedBy');
+  let user = await User.findOne({ _id: userId });
+  if ((spentTime % 60) > 30) {
     spentTime = parseInt(spentTime / 60) + 1;
-  }else if((spentTime % 60) < 30){
+  } else if ((spentTime % 60) < 30) {
     spentTime = parseInt(spentTime / 60);
-    if(spentTime > (readingTime / 60)){
+    if (spentTime > (readingTime / 60)) {
       spentTime = 300;
     }
   }
@@ -1347,17 +1352,41 @@ router.post("/saveTime", async (req, res) => {
   if (check) {
     let oldspentTime = check.spentTime;
     let newspentTime = 0;
-    if(oldspentTime < readingTime){
+    if (oldspentTime < readingTime) {
       let id = check.id;
       newspentTime = parseInt(oldspentTime) + parseInt(spentTime);
-      if(newspentTime > readingTime){
+      if (newspentTime > readingTime) {
         newspentTime = readingTime;
       }
-      await Counting.updateOne({_id: id}, {spentTime: newspentTime});
+      await Counting.updateOne({ _id: id }, { spentTime: newspentTime });
+      let averageold = await average.findOne({ userId: userId });
+
+      let averageInfo = {
+        spentTime: (averageold.spentTime + newspentTime),
+        spentCount: (averageold.spentCount + 1)
+      }
+      await average.updateOne({ userId: userId }, averageInfo);
     }
   } else {
-    Counting.create(payload).then(created => {
-      return res.json(message);
+    Counting.create(payload).then(async created => {
+      let averageInfo = {
+        userId: userId,
+        articleId: articleId,
+        spentTime: payload.spentTime,
+        spentCount: 1
+      }
+      let averageold = await average.findOne({ userId: userId });
+      if (averageold) {
+        let averageInfo = {
+          spentTime: (averageold.spentTime + spentTime),
+          spentCount: (averageold.spentCount + 1)
+        }
+        await average.updateOne({ userId: userId }, averageInfo);
+      } else {
+        average.create(averageInfo).then(result => {
+          return res.json(message);
+        })
+      }
     })
       .catch(e => next(e));
   }

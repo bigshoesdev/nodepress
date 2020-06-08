@@ -65,7 +65,8 @@ const userSchema = new Schema(
     birthday: Date,
     phone: String,
     postenable: String,
-    tax: String
+    tax: String,
+
   },
   { timestamps: true }
 );
