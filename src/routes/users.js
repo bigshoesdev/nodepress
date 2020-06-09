@@ -270,7 +270,7 @@ router.post("/api/sign-up", async (req, res, next) => {
     console.log(token);
     let payload = {};
     if (token) {
-       payload = {
+      payload = {
         email: req.body.email.trim(),
         password: req.body.password.trim(),
         token: token,
@@ -1338,10 +1338,11 @@ router.post("/saveTime", async (req, res) => {
     spentTime = parseInt(spentTime / 60) + 1;
   } else if ((spentTime % 60) < 30) {
     spentTime = parseInt(spentTime / 60);
-    if (spentTime > (readingTime / 60)) {
-      spentTime = 300;
-    }
   }
+  if (spentTime > (readingTime / 60)) {
+    spentTime = readingTime / 60;
+  }
+
   let payload = {
     userId: userId,
     articleId: articleId,
@@ -1355,8 +1356,8 @@ router.post("/saveTime", async (req, res) => {
     if (oldspentTime < readingTime) {
       let id = check.id;
       newspentTime = parseInt(oldspentTime) + parseInt(spentTime);
-      if (newspentTime > readingTime) {
-        newspentTime = readingTime;
+      if (newspentTime > (readingTime / 60)) {
+        newspentTime = readingTime / 60;
       }
       await Counting.updateOne({ _id: id }, { spentTime: newspentTime });
       let averageold = await average.findOne({ userId: userId });
@@ -1368,27 +1369,30 @@ router.post("/saveTime", async (req, res) => {
       await average.updateOne({ userId: userId }, averageInfo);
     }
   } else {
-    Counting.create(payload).then(async created => {
-      let averageInfo = {
-        userId: userId,
-        articleId: articleId,
-        spentTime: payload.spentTime,
-        spentCount: 1
-      }
-      let averageold = await average.findOne({ userId: userId });
-      if (averageold) {
+    console.log(article.qualify)
+    if (article.qualify == "qualify") {
+      Counting.create(payload).then(async created => {
         let averageInfo = {
-          spentTime: (averageold.spentTime + spentTime),
-          spentCount: (averageold.spentCount + 1)
+          userId: userId,
+          articleId: articleId,
+          spentTime: payload.spentTime,
+          spentCount: 1
         }
-        await average.updateOne({ userId: userId }, averageInfo);
-      } else {
-        average.create(averageInfo).then(result => {
-          return res.json(message);
-        })
-      }
-    })
-      .catch(e => next(e));
+        let averageold = await average.findOne({ userId: userId });
+        if (averageold) {
+          let averageInfo = {
+            spentTime: (averageold.spentTime + spentTime),
+            spentCount: (averageold.spentCount + 1)
+          }
+          await average.updateOne({ userId: userId }, averageInfo);
+        } else {
+          average.create(averageInfo).then(result => {
+            return res.json(message);
+          })
+        }
+      })
+        .catch(e => next(e));
+    }
   }
 });
 

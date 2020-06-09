@@ -368,3 +368,18 @@ ul {
    background-image: url("/images/popup/categoryoverview.jpeg");
    background-size: cover;
 }
+
+li a {
+   font-size: 18px !important;
+}
+
+.closepopup{
+   position: absolute;
+   color: white;
+   top: 0%;
+   right: 5%;
+}
+
+.closepopup:hover {
+   color: #98E0F2;
+}

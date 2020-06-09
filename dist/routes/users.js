@@ -2343,10 +2343,10 @@ router.post("/saveTime", /*#__PURE__*/function () {
               spentTime = parseInt(spentTime / 60) + 1;
             } else if (spentTime % 60 < 30) {
               spentTime = parseInt(spentTime / 60);
+            }
 
-              if (spentTime > readingTime / 60) {
-                spentTime = 300;
-              }
+            if (spentTime > readingTime / 60) {
+              spentTime = readingTime / 60;
             }
 
             payload = {
@@ -2355,16 +2355,16 @@ router.post("/saveTime", /*#__PURE__*/function () {
               spentTime: spentTime,
               authorName: article.postedBy.username
             };
-            _context31.next = 15;
+            _context31.next = 16;
             return _counting["default"].findOne({
               articleId: articleId
             });
 
-          case 15:
+          case 16:
             check = _context31.sent;
 
             if (!check) {
-              _context31.next = 33;
+              _context31.next = 34;
               break;
             }
 
@@ -2372,107 +2372,111 @@ router.post("/saveTime", /*#__PURE__*/function () {
             newspentTime = 0;
 
             if (!(oldspentTime < readingTime)) {
-              _context31.next = 31;
+              _context31.next = 32;
               break;
             }
 
             id = check.id;
             newspentTime = parseInt(oldspentTime) + parseInt(spentTime);
 
-            if (newspentTime > readingTime) {
-              newspentTime = readingTime;
+            if (newspentTime > readingTime / 60) {
+              newspentTime = readingTime / 60;
             }
 
-            _context31.next = 25;
+            _context31.next = 26;
             return _counting["default"].updateOne({
               _id: id
             }, {
               spentTime: newspentTime
             });
 
-          case 25:
-            _context31.next = 27;
+          case 26:
+            _context31.next = 28;
             return _average["default"].findOne({
               userId: userId
             });
 
-          case 27:
+          case 28:
             averageold = _context31.sent;
             averageInfo = {
               spentTime: averageold.spentTime + newspentTime,
               spentCount: averageold.spentCount + 1
             };
-            _context31.next = 31;
+            _context31.next = 32;
             return _average["default"].updateOne({
               userId: userId
             }, averageInfo);
 
-          case 31:
-            _context31.next = 34;
+          case 32:
+            _context31.next = 36;
             break;
 
-          case 33:
-            _counting["default"].create(payload).then( /*#__PURE__*/function () {
-              var _ref31 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee30(created) {
-                var averageInfo, averageold, _averageInfo;
-
-                return _regenerator["default"].wrap(function _callee30$(_context30) {
-                  while (1) {
-                    switch (_context30.prev = _context30.next) {
-                      case 0:
-                        averageInfo = {
-                          userId: userId,
-                          articleId: articleId,
-                          spentTime: payload.spentTime,
-                          spentCount: 1
-                        };
-                        _context30.next = 3;
-                        return _average["default"].findOne({
-                          userId: userId
-                        });
-
-                      case 3:
-                        averageold = _context30.sent;
-
-                        if (!averageold) {
-                          _context30.next = 10;
-                          break;
-                        }
-
-                        _averageInfo = {
-                          spentTime: averageold.spentTime + spentTime,
-                          spentCount: averageold.spentCount + 1
-                        };
-                        _context30.next = 8;
-                        return _average["default"].updateOne({
-                          userId: userId
-                        }, _averageInfo);
-
-                      case 8:
-                        _context30.next = 11;
-                        break;
-
-                      case 10:
-                        _average["default"].create(averageInfo).then(function (result) {
-                          return res.json(message);
-                        });
-
-                      case 11:
-                      case "end":
-                        return _context30.stop();
-                    }
-                  }
-                }, _callee30);
-              }));
-
-              return function (_x84) {
-                return _ref31.apply(this, arguments);
-              };
-            }())["catch"](function (e) {
-              return next(e);
-            });
-
           case 34:
+            console.log(article.qualify);
+
+            if (article.qualify == "qualify") {
+              _counting["default"].create(payload).then( /*#__PURE__*/function () {
+                var _ref31 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee30(created) {
+                  var averageInfo, averageold, _averageInfo;
+
+                  return _regenerator["default"].wrap(function _callee30$(_context30) {
+                    while (1) {
+                      switch (_context30.prev = _context30.next) {
+                        case 0:
+                          averageInfo = {
+                            userId: userId,
+                            articleId: articleId,
+                            spentTime: payload.spentTime,
+                            spentCount: 1
+                          };
+                          _context30.next = 3;
+                          return _average["default"].findOne({
+                            userId: userId
+                          });
+
+                        case 3:
+                          averageold = _context30.sent;
+
+                          if (!averageold) {
+                            _context30.next = 10;
+                            break;
+                          }
+
+                          _averageInfo = {
+                            spentTime: averageold.spentTime + spentTime,
+                            spentCount: averageold.spentCount + 1
+                          };
+                          _context30.next = 8;
+                          return _average["default"].updateOne({
+                            userId: userId
+                          }, _averageInfo);
+
+                        case 8:
+                          _context30.next = 11;
+                          break;
+
+                        case 10:
+                          _average["default"].create(averageInfo).then(function (result) {
+                            return res.json(message);
+                          });
+
+                        case 11:
+                        case "end":
+                          return _context30.stop();
+                      }
+                    }
+                  }, _callee30);
+                }));
+
+                return function (_x84) {
+                  return _ref31.apply(this, arguments);
+                };
+              }())["catch"](function (e) {
+                return next(e);
+              });
+            }
+
+          case 36:
           case "end":
             return _context31.stop();
         }

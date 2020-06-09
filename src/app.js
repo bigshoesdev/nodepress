@@ -16,6 +16,7 @@ import _view from "./helpers/_dailyViews";
 import install from "./helpers/install";
 import cors from 'cors';
 const MongoStore = require("connect-mongo")(session);
+
 // Load environment variables from.env file, where API keys and passwords are configured.
 dotenv.config({ path: "./.env" });
 const app = express();

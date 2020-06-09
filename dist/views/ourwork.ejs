@@ -8,16 +8,17 @@
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
    <!-- css -->
-   <link rel="stylesheet" href="/css/owl.carousel.min.css">
-   <link rel="stylesheet" href="/css/ionicons.min.css">
-   <link rel="stylesheet" href="/css/owl.carousel.css">
-   <link rel="stylesheet" href="/css/owl.theme.css">
-   <link rel="stylesheet" href="/css/animate.css">
-   <link rel="stylesheet" href="/css/style1.css">
-   <link rel="stylesheet" href="/css/style2.css">
-   <link rel="stylesheet" href="/css/style5.css">
-   <link rel="stylesheet" href="/css/header.css">
+   <link rel="stylesheet" href="/css/owl.carousel.min.css" async>
+   <link rel="stylesheet" href="/css/ionicons.min.css" async>
+   <link rel="stylesheet" href="/css/owl.carousel.css" async>
+   <link rel="stylesheet" href="/css/owl.theme.css" async>
+   <link rel="stylesheet" href="/css/animate.css" async>
+   <link rel="stylesheet" href="/css/style1.css" async>
+   <link rel="stylesheet" href="/css/style2.css" async>
+   <link rel="stylesheet" href="/css/style5.css" async>
+   <link rel="stylesheet" href="/css/header.css" async>
    <link rel="stylesheet" href="/css/style4.css" async>
+   <link rel="stylesheet" href="/css/ourwork.css" async>
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
    <!-- fonts -->
    <link
@@ -29,7 +30,7 @@
       rel="stylesheet">
 
    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-   <link rel="stylesheet" href="/css/blogrecent.css">
+   <!-- <link rel="stylesheet" href="/css/blogrecent.css"> -->
 </head>
 
 <body class="Blog-recent-post">
@@ -57,14 +58,16 @@
       <hr>
       <a href="/dashboard/index" class="searchbar"><i class="fa fa-cog profileicon"></i>Dashboard</a>
       </a>
-      <a href="/author/<%= user.username%>" class="searchbar"><i class="fa fa-user-circle profileicon"></i>Mein Profil</a>
+      <a href="/author/<%= user.username%>" class="searchbar"><i class="fa fa-user-circle profileicon"></i>Mein
+         Profil</a>
       <a href="/log-out" class="searchbar"><i class="fa fa-sign-out profileicon"></i>Sign Out</a>
       <% } else {%>
       <span class="username_span"><%= user.username%></span>
       <hr>
       <a href="/user/dashboard" class="searchbar"><i class="fa fa-cog profileicon"></i>Dashboard</a>
 
-      <a href="/author/<%= user.username%>" class="searchbar"><i class="fa fa-user-circle profileicon"></i>Mein Profil</a>
+      <a href="/author/<%= user.username%>" class="searchbar"><i class="fa fa-user-circle profileicon"></i>Mein
+         Profil</a>
       <a href="/log-out" class="searchbar"><i class="fa fa-sign-out profileicon"></i>Sign Out</a>
       <% } %>
       <% } else {%>
@@ -143,8 +146,9 @@
                   <% } %>
                   </ul>
                </div>
-               <a class="searchbar" href="javascript:void()"><span style="font-size:20px; padding-left: 10px;cursor:pointer"
-                     onclick="openNotification()"><i class="fa fa-bell-o" aria-hidden="true"></i></span></a>
+               <a class="searchbar" href="javascript:void()"><span
+                     style="font-size:20px; padding-left: 10px;cursor:pointer" onclick="openNotification()"><i
+                        class="fa fa-bell-o" aria-hidden="true"></i></span></a>
                <% } else {%>
                <a class="searchbar" href="/publisher"><span class="menu-title">Blogger werden</span></a>
                <a class="searchbar" href="/afterlogin"><span class="menu-title">Inhalte entdecken</span></a>
@@ -172,7 +176,7 @@
          <div class="col-md-12 col-lg-12">
             <div class="row">
                <% for(var i = 0; i < favorites.length; i ++){%>
-                  <% var url = "#";
+               <% var url = "#";
                      if(favorites[i].postedBy.roleId == "admin"){
                         url = "/d/" + favorites[i].category.slug + "/" + favorites[i].slug; 
                      } else {
@@ -181,59 +185,60 @@
                   %>
                <div class="col-12 col-sm-4 mb-5 ourwork-article" url="<%= url%>">
                   <section class="main">
-                    <div class="wrap wrap--1">
-                     <div class="paralax paralax--1">
-                        <div class="work_overley_item">
-                           <div class="parent" onclick="">
-                              <div class="child bg-one" style="background-image: url('<%= favorites[i].file%>');">
-                                <div class="content_border">
-                                 <a href="#">
-                                    <h2 style="font-size: 25px"><%= favorites[i].title%> </h2>
-                                    <p><%= favorites[i].category.name%></p>
-                                 </a>
-                                </div>
+                     <div class="wrap wrap--1">
+                        <div class="paralax paralax--1">
+                           <div class="work_overley_item">
+                              <div class="parent" onclick="">
+                                 <div class="child bg-one" style="background-image: url('<%= favorites[i].file%>');">
+                                    <div class="content_border">
+                                       <a href="#">
+                                          <h2 style="font-size: 25px"><%= favorites[i].title%> </h2>
+                                          <p><%= favorites[i].category.name%></p>
+                                       </a>
+                                    </div>
+                                 </div>
                               </div>
                            </div>
                         </div>
                      </div>
-                    </div>
                   </section>
                </div>
                <% }%>
             </div>
-         </div>				
-      </div>
-   </div>
-</div>
-<section class="footer-main recent_blog_footer" id="footer">
-   <div class="container">
-      <div class="innner-footer-main">
-         <div class="footer-social-icons">
-            <div class="col-md-12 col-sm-12 social-media">
-               <a href="<%= twitter %>"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                 <a style="padding: 11px 20px;" href="<%= facebook %>"><i class="fa fa-facebook"
-                     aria-hidden="true"></i></a>
-                 <a href="<%= linkedin %>"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-                 <a href="<%= youtube %>"><i class="fa fa-youtube" aria-hidden="true"></i></a>
-                 <a href="<%= instagram %>"><i class="fa fa-instagram" aria-hidden="true"></i></a>
-                 <a href="<%= pinterest %>"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
-               </div>
- 
-             </div>
-             <div class="footer-copyright">
-               <p><% if(copyright != undefined) { %><p>
-                   <%= copyright.charAt(0).toUpperCase() + copyright.substring(1) %></a></p><%}%></p>
+            </div>
+            </div>
+            </div>
+            </div>
+            <section class="footer-main recent_blog_footer" id="footer">
+               <div class="container">
+                  <div class="innner-footer-main">
+                     <div class="footer-social-icons">
+                        <div class="col-md-12 col-sm-12 social-media">
+                           <a href="<%= twitter %>"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                           <a style="padding: 11px 20px;" href="<%= facebook %>"><i class="fa fa-facebook"
+                                 aria-hidden="true"></i></a>
+                           <a href="<%= linkedin %>"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                           <a href="<%= youtube %>"><i class="fa fa-youtube" aria-hidden="true"></i></a>
+                           <a href="<%= instagram %>"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                           <a href="<%= pinterest %>"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+                        </div>
+
+                     </div>
+                     <div class="footer-copyright">
+                        <p><% if(copyright != undefined) { %>
+                        <p>
+                           <%= copyright.charAt(0).toUpperCase() + copyright.substring(1) %></a></p><%}%></p>
          </div>
          <hr>
          <div class="row">
             <div class="col-md-10">
                <div class="row">
                   <% for(var i = 0; i < footercategory.length; i ++){%>
-                 <div class="col-md-3 text-left">
-                   <a style="color: black;" href="/kategorie/<%= footercategory[i].slug%>"
-                     class="footercategory"><%= footercategory[i].name %></a>
-                 </div>
-                 <%}%>
+                        <div class="col-md-3 text-left">
+                           <a style="color: black;" href="/kategorie/<%= footercategory[i].slug%>"
+                              class="footercategory"><%= footercategory[i].name %></a>
+                        </div>
+                        <%}%>
                </div>
             </div>
             <div class="col-md-2">
@@ -258,6 +263,7 @@
       </div>
       <a href="#" id="scroll" style="display: none;"><span></span></a>
    </div>
+   
 </section>
          <div class="notification" style="display: none;">
             <div class="row">
@@ -273,6 +279,28 @@
               </div>
             </div>
             <hr>
+          </div>
+          <div class="popup" id="qualifyPopup">
+            <div class="popupContainer">
+              <p class="popupTitle">Leider sind unsere exklusiven Inhalte nur Premium-Mitgliedern zugänglich.</p>
+              <p class="popupContent">Du möchtest qualifizierte Beiträge lesen, viele weitere exklusive Vorteile
+                genießen und unsere Autoren unterstützen? Dann werde jetzt Premium-Member!</p><br><br>
+              <a class="popupButton" href="/membership">Jetzt Premium-Mitglied werden</a>
+            </div>
+            <div class="closepopup">
+              <h1 class="text-white">&times;</h1>
+            </div>
+          </div>
+          <div class="popup-back"></div>
+          <div class="popup" id="adPopup">
+            <div class="adpopupContainer">
+              <p class="adpopupTitle">Ad-Blocker</p>
+              <p class="adpopupContent">Du verwendest einen Ad-Blocker. Leider kannst du so keine qualifizierten Beiträge einsehen. Wir benötigen die Daten deiner Lesezeit, um unsere Autoren fair zu entlohnen.
+                Schalte ihn aus, um die unbegrenzte Vielfalt Dype‘s zu genießen!
+              </p><br><br>
+            </div>
+            <div class="closepopup">
+              <h1 class="text-white">&times;</h1>
           </div>
          <!-- footer end -->
          <script src="/js/jquery-2.1.3.min.js"></script>
@@ -294,7 +322,7 @@
             $('.clear-notification').click(function () {
                $('.notification').hide();
             });
-            $('.ourwork-article').click(function() {
+            $('.ourwork-article').click(function () {
                window.open($(this).attr('url'));
             });
          </script>
@@ -362,6 +390,16 @@
             function openSidebar() {
                document.getElementById("sidenav").style.display = "block";
             }
+
+            var userType = "<%if(user){%><%= user.paid%><%}%>";
+            if (userType != "paid") {
+               $('#qualifyPopup').css('display', 'block');
+               $('.popup-back').css('display', 'block');
+            }
+            $('.closepopup').click(function () {
+               location.replace('/');
+            });
          </script>
 </body>
+
 </html>

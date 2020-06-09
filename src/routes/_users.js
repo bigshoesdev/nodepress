@@ -779,14 +779,34 @@ router.get(
 
 router.get('/user/authorstatus', async (req, res, next) => {
   let totalPost = await Article.countDocuments({ postedBy: req.user.id });
-  let pendingPost = await Article.countDocuments({
-    postedBy: req.user.id,
-    active: false
+  let inactivePost = await Article.countDocuments({postedBy: req.user.id, active: false});
+  let qualifyPost = await Article.countDocuments({postedBy: req.user.id, qualify: "qualify"});
+  let authorrank = "";
+  let users = await Article.find({}).sort({views: -1});
+  users.forEach((element, index) => {
+    if(element.postedBy == req.user.id){
+      authorrank = index + 1;
+    }
   });
+  let upvotesCount = 0;
+  let veiwsCount = 0;
+  let articles = await Article.find({postedBy: req.user.id});
+  articles.forEach(element => {
+    upvotesCount = element.upvote.count;
+    veiwsCount = element.views;
+  });
+  const followers = await User.countDocuments({_id: req.user.id}).populate("following").sort({ createdAt: -1 });
+
   res.render("./user/author", {
     title: "Dashboard",
     totalPost: totalPost,
-    pendingPost: pendingPost
+    inactivePost: inactivePost,
+    qualifyPost: qualifyPost,
+    authorrank: authorrank,
+    upvotesCount: upvotesCount,
+    veiwsCount: veiwsCount,
+    pendingPost: pendingPost,
+    followers: followers
   });
 });
 

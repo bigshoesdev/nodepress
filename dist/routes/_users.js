@@ -28,7 +28,8 @@ var router = _express["default"].Router();
 
 router.get("/user/dashboard", _auth["default"], (0, _role["default"])("admin", "user"), /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res, next) {
-    var totalPost, pendingPost;
+    var totalPost, _pendingPost;
+
     return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -48,11 +49,11 @@ router.get("/user/dashboard", _auth["default"], (0, _role["default"])("admin", "
             });
 
           case 6:
-            pendingPost = _context.sent;
+            _pendingPost = _context.sent;
             res.render("./user/index", {
               title: "Dashboard",
               totalPost: totalPost,
-              pendingPost: pendingPost
+              pendingPost: _pendingPost
             });
             _context.next = 13;
             break;
@@ -967,7 +968,7 @@ router.get("/user/following", _auth["default"], (0, _role["default"])("admin", "
 }());
 router.get('/user/authorstatus', /*#__PURE__*/function () {
   var _ref11 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee11(req, res, next) {
-    var totalPost, pendingPost;
+    var totalPost, inactivePost, qualifyPost, authorrank, users, upvotesCount, veiwsCount, articles, followers;
     return _regenerator["default"].wrap(function _callee11$(_context11) {
       while (1) {
         switch (_context11.prev = _context11.next) {
@@ -986,14 +987,63 @@ router.get('/user/authorstatus', /*#__PURE__*/function () {
             });
 
           case 5:
-            pendingPost = _context11.sent;
+            inactivePost = _context11.sent;
+            _context11.next = 8;
+            return _articles["default"].countDocuments({
+              postedBy: req.user.id,
+              qualify: "qualify"
+            });
+
+          case 8:
+            qualifyPost = _context11.sent;
+            authorrank = "";
+            _context11.next = 12;
+            return _articles["default"].find({}).sort({
+              views: -1
+            });
+
+          case 12:
+            users = _context11.sent;
+            users.forEach(function (element, index) {
+              if (element.postedBy == req.user.id) {
+                authorrank = index + 1;
+              }
+            });
+            upvotesCount = 0;
+            veiwsCount = 0;
+            _context11.next = 18;
+            return _articles["default"].find({
+              postedBy: req.user.id
+            });
+
+          case 18:
+            articles = _context11.sent;
+            articles.forEach(function (element) {
+              upvotesCount = element.upvote.count;
+              veiwsCount = element.views;
+            });
+            _context11.next = 22;
+            return _users["default"].countDocuments({
+              _id: req.user.id
+            }).populate("following").sort({
+              createdAt: -1
+            });
+
+          case 22:
+            followers = _context11.sent;
             res.render("./user/author", {
               title: "Dashboard",
               totalPost: totalPost,
-              pendingPost: pendingPost
+              inactivePost: inactivePost,
+              qualifyPost: qualifyPost,
+              authorrank: authorrank,
+              upvotesCount: upvotesCount,
+              veiwsCount: veiwsCount,
+              pendingPost: pendingPost,
+              followers: followers
             });
 
-          case 7:
+          case 24:
           case "end":
             return _context11.stop();
         }

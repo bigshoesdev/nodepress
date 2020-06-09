@@ -755,7 +755,7 @@
                                 }, 70000);
                                 $('.prev-next').click(function () {
                                     sendTime();
-                                    window.open($(this).attr('url'));
+                                    location.replace($(this).attr('url'));
                                 });
                                 var userType = "<%= user.paid%>";
                                 var articleType = "<%= article.qualify%>";
