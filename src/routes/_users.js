@@ -805,7 +805,6 @@ router.get('/user/authorstatus', async (req, res, next) => {
     authorrank: authorrank,
     upvotesCount: upvotesCount,
     veiwsCount: veiwsCount,
-    pendingPost: pendingPost,
     followers: followers
   });
 });

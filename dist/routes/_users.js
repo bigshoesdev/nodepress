@@ -28,8 +28,7 @@ var router = _express["default"].Router();
 
 router.get("/user/dashboard", _auth["default"], (0, _role["default"])("admin", "user"), /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res, next) {
-    var totalPost, _pendingPost;
-
+    var totalPost, pendingPost;
     return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -49,11 +48,11 @@ router.get("/user/dashboard", _auth["default"], (0, _role["default"])("admin", "
             });
 
           case 6:
-            _pendingPost = _context.sent;
+            pendingPost = _context.sent;
             res.render("./user/index", {
               title: "Dashboard",
               totalPost: totalPost,
-              pendingPost: _pendingPost
+              pendingPost: pendingPost
             });
             _context.next = 13;
             break;
@@ -1039,7 +1038,6 @@ router.get('/user/authorstatus', /*#__PURE__*/function () {
               authorrank: authorrank,
               upvotesCount: upvotesCount,
               veiwsCount: veiwsCount,
-              pendingPost: pendingPost,
               followers: followers
             });
 
