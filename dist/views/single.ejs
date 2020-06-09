@@ -757,9 +757,9 @@
                                     sendTime();
                                     location.replace($(this).attr('url'));
                                 });
-                                var userType = "free";
-                                userType = "<%if(user){%><%= user.paid%><%}%>";
+                                var userType = "<%if(user){%><%= user.paid%><%}else{%>free<%}%>";
                                 var articleType = "<%= article.qualify%>";
+                                console.log(userType);
 
                                 if (articleType == "qualify") {
                                     if (userType != "paid") {
