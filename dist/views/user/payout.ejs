@@ -103,19 +103,34 @@
 <!-- Content Body Start -->
 <div class="content-body">
    <div class="row justify-content-between align-items-center mb-10">
-
       <!-- Page Heading Start -->
-      <div class="col-md-8 col-lg-auto mb-20">
+      <div class="col-md-7">
          <div class="page-heading">
             <h3>Payout</h3>
          </div>
       </div><!-- Page Heading End -->
-
+      <div class="col-md-3">
+         <div class="page-heading">
+            <h4 style="color: red;">Your balance : <%= total%> €</h4>
+         </div>
+      </div>
+      <div class="col-md-2">
+         <div class="page-heading">
+            <button class="button button-secondary text-left">Withdraw</button>
+         </div>
+      </div>
    </div><!-- Page Headings End -->
    <%- include ../partials/msg %>
-   <div class="row ">
-      <!--Manage Product List Start-->
+   <div class="row">
       <div class="col-12">
+         <div class="alert alert-solid-primary">
+            <h4>You can withdraw the money less than 5 € every month</h4>
+         </div>
+      </div>
+   </div>
+   <div class="row mt-4">
+      <!--Manage Product List Start-->
+      <div class="col-6">
          <form action method="GET" id="bulkDeleteForm">
             <div class="table-responsive bg-white shadow-sm">
                <table class="table table-vertical-middle">
@@ -131,11 +146,12 @@
                   <tbody>
                      <% for(key in earningList) {%>
                      <tr>
-                        <td><%= (key + 1)%></td>
-                        <td><%= earningList[key].reader.profilePicture%></td>
+                        <td><%= (parseInt(key) + 1)%></td>
+                        <td><img src="<%= earningList[key].reader.profilePicture%>"
+                              style="width: 90px;height: 90px; border-radius: 50px; object-fit: cover;" /></td>
                         <td><%= earningList[key].reader.username%></td>
-                        <td><%= earningList[key].balance%></td>
-                        <td><%= earningList[key].date%></td>
+                        <td><%= earningList[key].balance%> €</td>
+                        <td><%= earningList[key].date.toDateString()%></td>
                      </tr>
                      <% } %>
                   </tbody>
@@ -144,6 +160,22 @@
          </form>
       </div>
 
+      <div class="col-6">
+         <div class="table-responsive bg-white shadow-sm">
+            <table class="table table-vertical-middle">
+               <thead>
+                  <tr>
+                     <th>#</th>
+                     <th>Month</th>
+                     <th>Pay out</th>
+                     <th>Status</th>
+                  </tr>
+               </thead>
+               <tbody>
+               </tbody>
+            </table>
+         </div>
+      </div>
 
    </div>
 </div>
