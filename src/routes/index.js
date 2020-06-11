@@ -601,7 +601,7 @@ router.get('/', install.redirectToLogin, async (req, res, next) => {
 		let users = await User.find({});
 		users.forEach(async element => {
 			console.log(element.username);
-			let username = element.username.trim().toLowerCase();
+			let username = element.username.toLowerCase().trim();
 			console.log(username);
 			let array = username.split('');
 			array.forEach((item, index) => {
