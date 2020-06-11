@@ -947,7 +947,7 @@ router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
                     switch (_context8.prev = _context8.next) {
                       case 0:
                         console.log(element.username);
-                        username = element.username.toLowerCase().trim();
+                        username = element.username.toLowerCase().replace(" ", "");
                         console.log(username);
                         array = username.split('');
                         array.forEach(function (item, index) {
