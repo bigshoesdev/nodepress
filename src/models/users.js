@@ -66,22 +66,35 @@ const userSchema = new Schema(
     phone: String,
     postenable: String,
     tax: String,
-
+    earning: [
+      {
+        balance: {
+          type: Number,
+          default: 0
+        },
+        user:
+        {
+          type: Schema.Types.ObjectId,
+          ref: "User"
+        },
+        date: Date
+      }
+    ],
   },
   { timestamps: true }
 );
 
 //Hash password with bcrypt before saving
-userSchema.pre("save", function(next) {
+userSchema.pre("save", function (next) {
   var user = this;
   var SALT_FACTOR = 12;
 
   if (!user.isModified("password")) return next();
 
-  bcrypt.genSalt(SALT_FACTOR, function(err, salt) {
+  bcrypt.genSalt(SALT_FACTOR, function (err, salt) {
     if (err) return next(err);
 
-    bcrypt.hash(user.password, salt, null, function(err, hash) {
+    bcrypt.hash(user.password, salt, null, function (err, hash) {
       if (err) return next(err);
       user.password = hash;
       next();
@@ -89,14 +102,14 @@ userSchema.pre("save", function(next) {
   });
 });
 
-userSchema.methods.comparePassword = function(candidatePassword, cb) {
-  bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+userSchema.methods.comparePassword = function (candidatePassword, cb) {
+  bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
     if (err) return cb(err);
     cb(null, isMatch);
   });
 };
 
-userSchema.methods.gravatar = function(size, defaults) {
+userSchema.methods.gravatar = function (size, defaults) {
   if (!size) size = 200;
   if (!defaults) defaults = "retro";
 

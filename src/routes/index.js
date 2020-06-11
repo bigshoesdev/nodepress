@@ -15,6 +15,9 @@ import Menu from '../models/menu';
 import Bookmark from "../models/bookmark";
 var fs = require('fs');
 
+const { SitemapStream, streamToPromise } = require('sitemap')
+const { createGzip } = require('zlib')
+
 const router = express.Router();
 
 const SitemapGenerator = require('sitemap-generator');
@@ -374,10 +377,55 @@ router.get('/publisher', install.redirectToLogin, async (req, res, next) => {
 	});
 });
 
-router.get('/sitemap.xml', install.redirectToLogin, async (req, res, next) => {
-	fs.readFile('./survey.xml', function (err, data) {
-		console.log(data);
-	});
+let sitemap;
+router.get('/sitemap', async (req, res, next) => {
+	res.header('Content-Type', 'application/xml');
+	res.header('Content-Encoding', 'gzip');
+	if (sitemap) {
+		res.send(sitemap);
+	}
+	try {
+		const smStream = new SitemapStream({ hostname: 'https://dype.me/' })
+		const pipeline = smStream.pipe(createGzip())
+
+		// pipe your entries or directly write them.
+		smStream.write({ url: '', priority: 1.0 })
+		smStream.write({ url: '/login', priority: 0.9 })
+		smStream.write({ url: '/sign-up', priority: 0.9 })
+		smStream.write({ url: '/aterlogin', priority: 0.9 })
+		smStream.write({ url: '/blogrecent', priority: 0.9 })
+		smStream.write({ url: '/enterinformation', priority: 0.9 })
+		smStream.write({ url: '/membership', priority: 0.9 })
+		smStream.write({ url: '/publisher', priority: 0.9 })
+		smStream.write({ url: '/show-category-all', priority: 0.9 })
+		smStream.write({ url: '/vision', priority: 0.9 })
+		smStream.write({ url: '/forgot-password', priority: 0.9 })
+
+		let articles = await Article.find({}).populate("category").populate('postedBy');
+		articles.forEach(element => {
+			let url = "";
+			if(element.postedBy.roleId == "admin"){
+				url = "/d/" + element.category.slug + "/" + element.slug;
+			}else {
+				url = "/p/" + element.category.slug + "/" + element.slug;
+			}
+			smStream.write({ url: url, priority: 0.9 })
+		})
+		let users = await User.find({});
+		users.forEach(element => {
+			let url = '/author/' + element.usernameslug;
+			smStream.write({ url: url, priority: 0.9 })
+		});
+		
+		smStream.end()
+		// cache the response
+		streamToPromise(pipeline).then(sm => sitemap = sm)
+		// stream write the response
+		pipeline.pipe(res).on('error', (e) => { throw e })
+	} catch (e) {
+		console.error(e)
+		res.status(500).end()
+	}
 });
 
 router.get('/lostpassword', install.redirectToLogin, async (req, res, next) => {
@@ -429,6 +477,7 @@ router.get('/blogrecent', install.redirectToLogin, async (req, res, next) => {
 		.sort({ views: -1 })
 		.sort({ createdAt: -1 });
 	let trends = [];
+	console.log(usercategoryList);
 	usercategoryList.forEach(element => {
 		trendings.forEach(item => {
 			if (item.category.slug != "official") {
@@ -510,13 +559,13 @@ router.get('/blogrecent', install.redirectToLogin, async (req, res, next) => {
 });
 
 router.get('/ourwork', async (req, res, next) => {
-	if (!req.user){
+	if (!req.user) {
 		let favorites = await Article.find({}).limit(9);
 		res.render('ourwork', {
 			title: "Our Work",
 			favorites: favorites
 		});
-	} else{
+	} else {
 		let userId = req.user._id;
 		let user = await User.findOne({ _id: userId });
 		let category = await Category.find({});

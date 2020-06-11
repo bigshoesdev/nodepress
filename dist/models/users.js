@@ -70,7 +70,18 @@ var userSchema = new Schema({
   birthday: Date,
   phone: String,
   postenable: String,
-  tax: String
+  tax: String,
+  earning: [{
+    balance: {
+      type: Number,
+      "default": 0
+    },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User"
+    },
+    date: Date
+  }]
 }, {
   timestamps: true
 }); //Hash password with bcrypt before saving

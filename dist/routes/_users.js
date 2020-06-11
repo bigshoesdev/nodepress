@@ -1054,21 +1054,67 @@ router.get('/user/authorstatus', /*#__PURE__*/function () {
   };
 }());
 router.get('/user/payout', /*#__PURE__*/function () {
-  var _ref12 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee12(req, res, next) {
-    return _regenerator["default"].wrap(function _callee12$(_context12) {
+  var _ref12 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee13(req, res, next) {
+    var user, earningList, result;
+    return _regenerator["default"].wrap(function _callee13$(_context13) {
       while (1) {
-        switch (_context12.prev = _context12.next) {
+        switch (_context13.prev = _context13.next) {
           case 0:
-            res.render("./user/payout", {
-              title: "User-Payout"
+            _context13.next = 2;
+            return _users["default"].findOne({
+              _id: req.user.id
             });
 
-          case 1:
+          case 2:
+            user = _context13.sent;
+            earningList = user.earning;
+            result = [];
+            earningList.forEach( /*#__PURE__*/function () {
+              var _ref13 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee12(element) {
+                var reader, payload;
+                return _regenerator["default"].wrap(function _callee12$(_context12) {
+                  while (1) {
+                    switch (_context12.prev = _context12.next) {
+                      case 0:
+                        _context12.next = 2;
+                        return _users["default"].findOne({
+                          _id: element.user
+                        });
+
+                      case 2:
+                        reader = _context12.sent;
+                        payload = {
+                          reader: reader,
+                          balance: element.balance,
+                          date: element.date
+                        };
+                        _context12.next = 6;
+                        return result.push(payload);
+
+                      case 6:
+                      case "end":
+                        return _context12.stop();
+                    }
+                  }
+                }, _callee12);
+              }));
+
+              return function (_x37) {
+                return _ref13.apply(this, arguments);
+              };
+            }());
+            console.log(result);
+            res.render("./user/payout", {
+              title: "User-Payout",
+              earningList: result
+            });
+
+          case 8:
           case "end":
-            return _context12.stop();
+            return _context13.stop();
         }
       }
-    }, _callee12);
+    }, _callee13);
   }));
 
   return function (_x34, _x35, _x36) {
@@ -1076,13 +1122,13 @@ router.get('/user/payout', /*#__PURE__*/function () {
   };
 }());
 router.get("/user/bookmarks", _auth["default"], (0, _role["default"])("admin", "user"), /*#__PURE__*/function () {
-  var _ref13 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee13(req, res, next) {
+  var _ref14 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee14(req, res, next) {
     var bookmark;
-    return _regenerator["default"].wrap(function _callee13$(_context13) {
+    return _regenerator["default"].wrap(function _callee14$(_context14) {
       while (1) {
-        switch (_context13.prev = _context13.next) {
+        switch (_context14.prev = _context14.next) {
           case 0:
-            _context13.next = 2;
+            _context14.next = 2;
             return _bookmark["default"].find({
               userId: req.user.id
             }).populate({
@@ -1095,45 +1141,10 @@ router.get("/user/bookmarks", _auth["default"], (0, _role["default"])("admin", "
             });
 
           case 2:
-            bookmark = _context13.sent;
+            bookmark = _context14.sent;
             res.render("./user/bookmark", {
               title: "Reading List",
               bookmark: bookmark
-            });
-
-          case 4:
-          case "end":
-            return _context13.stop();
-        }
-      }
-    }, _callee13);
-  }));
-
-  return function (_x37, _x38, _x39) {
-    return _ref13.apply(this, arguments);
-  };
-}());
-router.get("/user/marking", _auth["default"], (0, _role["default"])("admin", "user"), /*#__PURE__*/function () {
-  var _ref14 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee14(req, res, next) {
-    var marking;
-    return _regenerator["default"].wrap(function _callee14$(_context14) {
-      while (1) {
-        switch (_context14.prev = _context14.next) {
-          case 0:
-            _context14.next = 2;
-            return _savetext["default"].find({
-              userId: req.user.id
-            }).populate({
-              path: "articleId"
-            }).sort({
-              createdAt: -1
-            });
-
-          case 2:
-            marking = _context14.sent;
-            res.render("./user/marking", {
-              title: "Marking List",
-              marking: marking
             });
 
           case 4:
@@ -1144,8 +1155,43 @@ router.get("/user/marking", _auth["default"], (0, _role["default"])("admin", "us
     }, _callee14);
   }));
 
-  return function (_x40, _x41, _x42) {
+  return function (_x38, _x39, _x40) {
     return _ref14.apply(this, arguments);
+  };
+}());
+router.get("/user/marking", _auth["default"], (0, _role["default"])("admin", "user"), /*#__PURE__*/function () {
+  var _ref15 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee15(req, res, next) {
+    var marking;
+    return _regenerator["default"].wrap(function _callee15$(_context15) {
+      while (1) {
+        switch (_context15.prev = _context15.next) {
+          case 0:
+            _context15.next = 2;
+            return _savetext["default"].find({
+              userId: req.user.id
+            }).populate({
+              path: "articleId"
+            }).sort({
+              createdAt: -1
+            });
+
+          case 2:
+            marking = _context15.sent;
+            res.render("./user/marking", {
+              title: "Marking List",
+              marking: marking
+            });
+
+          case 4:
+          case "end":
+            return _context15.stop();
+        }
+      }
+    }, _callee15);
+  }));
+
+  return function (_x41, _x42, _x43) {
+    return _ref15.apply(this, arguments);
   };
 }());
 module.exports = router;

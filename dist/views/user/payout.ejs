@@ -124,11 +124,20 @@
                         <th>#</th>
                         <th>Avatar</th>
                         <th>User Name</th>
-                        <th>Actions</th>
+                        <th>Amount</th>
+                        <th>Date</th>
                      </tr>
                   </thead>
                   <tbody>
-                    
+                     <% for(key in earningList) {%>
+                     <tr>
+                        <td><%= (key + 1)%></td>
+                        <td><%= earningList[key].reader.profilePicture%></td>
+                        <td><%= earningList[key].reader.username%></td>
+                        <td><%= earningList[key].balance%></td>
+                        <td><%= earningList[key].date%></td>
+                     </tr>
+                     <% } %>
                   </tbody>
                </table>
             </div>

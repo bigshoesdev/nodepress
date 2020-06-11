@@ -16,6 +16,7 @@ import _view from "./helpers/_dailyViews";
 import install from "./helpers/install";
 import cors from 'cors';
 const MongoStore = require("connect-mongo")(session);
+// site-map generator part
 
 // Load environment variables from.env file, where API keys and passwords are configured.
 dotenv.config({ path: "./.env" });

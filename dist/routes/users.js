@@ -1015,14 +1015,14 @@ router.get("/login", _install["default"].redirectToLogin, checkIfLoggedIn, funct
 });
 router.get('/afterlogin', _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref13 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee13(req, res, next) {
-    var editorsPicker, a, i, usercategory, _category, article, b, followers, authorarticle, art, j, popular, p, random, r, e, currentUser, favoriteCat, category, categories, _random, _r, _e, _editorsPicker, _categories;
+    var editorsPicker, a, i, usercategory, _category, article, b, followers, authorarticle, art, j, usercategoryList, popular, p, random, r, e, currentUser, favoriteCat, category, categories, _random, _r, _e, _editorsPicker, _categories;
 
     return _regenerator["default"].wrap(function _callee13$(_context13) {
       while (1) {
         switch (_context13.prev = _context13.next) {
           case 0:
             if (!req.user) {
-              _context13.next = 76;
+              _context13.next = 77;
               break;
             }
 
@@ -1170,30 +1170,40 @@ router.get('/afterlogin', _install["default"].redirectToLogin, /*#__PURE__*/func
             break;
 
           case 51:
-            _context13.next = 53;
+            // let authorarticle = await Article.find({ postedBy: req.user.id }).populate('category');
+            usercategoryList = req.user.categoryList;
+            _context13.next = 54;
             return _articles["default"].find({
               active: true
             }).populate('category').sort({
               views: -1
-            }).limit(5);
+            });
 
-          case 53:
+          case 54:
             popular = _context13.sent;
             p = [];
-            popular.forEach(function (element) {
-              if (element.category.slug != "official") {
-                p.push(element);
-              }
+            usercategoryList.forEach(function (item) {
+              popular.forEach(function (element) {
+                if (element.category.slug != "official") {
+                  if (item == element.category.slug) {
+                    if (p.length < 6) {
+                      p.push(element);
+                    }
+                  }
+                }
+              });
             });
-            _context13.next = 58;
-            return _articles["default"].find({}).populate('category').populate('postedBy').limit(5);
+            _context13.next = 59;
+            return _articles["default"].find({}).populate('category').populate('postedBy');
 
-          case 58:
+          case 59:
             random = _context13.sent;
             r = [];
             random.forEach(function (element) {
               if (element.category.slug != "official") {
-                r.push(element);
+                if (r.length < 6) {
+                  r.push(element);
+                }
               }
             });
             e = [];
@@ -1203,18 +1213,18 @@ router.get('/afterlogin', _install["default"].redirectToLogin, /*#__PURE__*/func
               }
             });
             editorsPicker = e;
-            _context13.next = 66;
+            _context13.next = 67;
             return _users["default"].findOne({
               _id: req.user._id
             });
 
-          case 66:
+          case 67:
             currentUser = _context13.sent;
             favoriteCat = currentUser.categoryList;
-            _context13.next = 70;
+            _context13.next = 71;
             return _category2["default"].find({});
 
-          case 70:
+          case 71:
             category = _context13.sent;
             categories = [];
             favoriteCat.forEach(function (element) {
@@ -1232,20 +1242,22 @@ router.get('/afterlogin', _install["default"].redirectToLogin, /*#__PURE__*/func
               random: r,
               categories: categories
             });
-            _context13.next = 89;
+            _context13.next = 90;
             break;
 
-          case 76:
-            _context13.next = 78;
-            return _articles["default"].find({}).populate('category').populate('postedBy').limit(5);
+          case 77:
+            _context13.next = 79;
+            return _articles["default"].find({}).populate('category').populate('postedBy');
 
-          case 78:
+          case 79:
             _random = _context13.sent;
             _r = [];
 
             _random.forEach(function (element) {
               if (element.category.slug != "official") {
-                _r.push(element);
+                if (_r.length < 6) {
+                  _r.push(element);
+                }
               }
             });
 
@@ -1254,15 +1266,17 @@ router.get('/afterlogin', _install["default"].redirectToLogin, /*#__PURE__*/func
 
             _random.forEach(function (element) {
               if (element.category.slug != 'official') {
-                _e.push(element);
+                if (_e.length < 6) {
+                  _e.push(element);
+                }
               }
             });
 
             _editorsPicker = _e;
-            _context13.next = 87;
+            _context13.next = 88;
             return _category2["default"].find({}).limit(6);
 
-          case 87:
+          case 88:
             _categories = _context13.sent;
             res.render('afterloginuser', {
               title: "After Login",
@@ -1273,7 +1287,7 @@ router.get('/afterlogin', _install["default"].redirectToLogin, /*#__PURE__*/func
               categories: _categories
             });
 
-          case 89:
+          case 90:
           case "end":
             return _context13.stop();
         }
@@ -2313,31 +2327,31 @@ router.get("/public-key", function (req, res) {
   });
 });
 router.post("/saveTime", /*#__PURE__*/function () {
-  var _ref30 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee31(req, res) {
-    var userId, articleId, spentTime, readingTime, message, article, user, payload, check, oldspentTime, newspentTime, id, averageold, averageInfo;
-    return _regenerator["default"].wrap(function _callee31$(_context31) {
+  var _ref30 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee32(req, res) {
+    var userId, articleId, spentTime, readingTime, message, article, user, payload, check, oldspentTime, newspentTime, id, averageold, averageInfo, totalCountings, totalSpentTime, countings, balanceTime, balance, author, earningList, earning;
+    return _regenerator["default"].wrap(function _callee32$(_context32) {
       while (1) {
-        switch (_context31.prev = _context31.next) {
+        switch (_context32.prev = _context32.next) {
           case 0:
             userId = req.body.userId;
             articleId = req.body.articleId;
             spentTime = parseInt(req.body.time);
             readingTime = req.body.readingTime;
             message = "success";
-            _context31.next = 7;
+            _context32.next = 7;
             return _articles["default"].findOne({
               _id: articleId
             }).populate('postedBy');
 
           case 7:
-            article = _context31.sent;
-            _context31.next = 10;
+            article = _context32.sent;
+            _context32.next = 10;
             return _users["default"].findOne({
               _id: userId
             });
 
           case 10:
-            user = _context31.sent;
+            user = _context32.sent;
 
             if (spentTime % 60 > 30) {
               spentTime = parseInt(spentTime / 60) + 1;
@@ -2355,16 +2369,16 @@ router.post("/saveTime", /*#__PURE__*/function () {
               spentTime: spentTime,
               authorName: article.postedBy.username
             };
-            _context31.next = 16;
+            _context32.next = 16;
             return _counting["default"].findOne({
               articleId: articleId
             });
 
           case 16:
-            check = _context31.sent;
+            check = _context32.sent;
 
             if (!check) {
-              _context31.next = 34;
+              _context32.next = 34;
               break;
             }
 
@@ -2372,7 +2386,7 @@ router.post("/saveTime", /*#__PURE__*/function () {
             newspentTime = 0;
 
             if (!(oldspentTime < readingTime)) {
-              _context31.next = 32;
+              _context32.next = 32;
               break;
             }
 
@@ -2383,7 +2397,7 @@ router.post("/saveTime", /*#__PURE__*/function () {
               newspentTime = readingTime / 60;
             }
 
-            _context31.next = 26;
+            _context32.next = 26;
             return _counting["default"].updateOne({
               _id: id
             }, {
@@ -2391,97 +2405,198 @@ router.post("/saveTime", /*#__PURE__*/function () {
             });
 
           case 26:
-            _context31.next = 28;
+            _context32.next = 28;
             return _average["default"].findOne({
               userId: userId
             });
 
           case 28:
-            averageold = _context31.sent;
+            averageold = _context32.sent;
             averageInfo = {
               spentTime: averageold.spentTime + newspentTime,
               spentCount: averageold.spentCount + 1
             };
-            _context31.next = 32;
+            _context32.next = 32;
             return _average["default"].updateOne({
               userId: userId
             }, averageInfo);
 
           case 32:
-            _context31.next = 36;
+            _context32.next = 37;
             break;
 
           case 34:
-            console.log(article.qualify);
-
-            if (article.qualify == "qualify") {
-              _counting["default"].create(payload).then( /*#__PURE__*/function () {
-                var _ref31 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee30(created) {
-                  var averageInfo, averageold, _averageInfo;
-
-                  return _regenerator["default"].wrap(function _callee30$(_context30) {
-                    while (1) {
-                      switch (_context30.prev = _context30.next) {
-                        case 0:
-                          averageInfo = {
-                            userId: userId,
-                            articleId: articleId,
-                            spentTime: payload.spentTime,
-                            spentCount: 1
-                          };
-                          _context30.next = 3;
-                          return _average["default"].findOne({
-                            userId: userId
-                          });
-
-                        case 3:
-                          averageold = _context30.sent;
-
-                          if (!averageold) {
-                            _context30.next = 10;
-                            break;
-                          }
-
-                          _averageInfo = {
-                            spentTime: averageold.spentTime + spentTime,
-                            spentCount: averageold.spentCount + 1
-                          };
-                          _context30.next = 8;
-                          return _average["default"].updateOne({
-                            userId: userId
-                          }, _averageInfo);
-
-                        case 8:
-                          _context30.next = 11;
-                          break;
-
-                        case 10:
-                          _average["default"].create(averageInfo).then(function (result) {
-                            return res.json(message);
-                          });
-
-                        case 11:
-                        case "end":
-                          return _context30.stop();
-                      }
-                    }
-                  }, _callee30);
-                }));
-
-                return function (_x84) {
-                  return _ref31.apply(this, arguments);
-                };
-              }())["catch"](function (e) {
-                return next(e);
-              });
+            if (!(article.qualify == "qualify")) {
+              _context32.next = 37;
+              break;
             }
 
-          case 36:
+            _context32.next = 37;
+            return _counting["default"].create(payload).then( /*#__PURE__*/function () {
+              var _ref31 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee31(created) {
+                var averageInfo, averageold, _averageInfo;
+
+                return _regenerator["default"].wrap(function _callee31$(_context31) {
+                  while (1) {
+                    switch (_context31.prev = _context31.next) {
+                      case 0:
+                        averageInfo = {
+                          userId: userId,
+                          articleId: articleId,
+                          spentTime: payload.spentTime,
+                          spentCount: 1
+                        };
+                        _context31.next = 3;
+                        return _average["default"].findOne({
+                          userId: userId
+                        });
+
+                      case 3:
+                        averageold = _context31.sent;
+
+                        if (!averageold) {
+                          _context31.next = 10;
+                          break;
+                        }
+
+                        _averageInfo = {
+                          spentTime: averageold.spentTime + spentTime,
+                          spentCount: averageold.spentCount + 1
+                        };
+                        _context31.next = 8;
+                        return _average["default"].updateOne({
+                          userId: userId
+                        }, _averageInfo);
+
+                      case 8:
+                        _context31.next = 12;
+                        break;
+
+                      case 10:
+                        _context31.next = 12;
+                        return _average["default"].create(averageInfo).then( /*#__PURE__*/function () {
+                          var _ref32 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee30(result) {
+                            return _regenerator["default"].wrap(function _callee30$(_context30) {
+                              while (1) {
+                                switch (_context30.prev = _context30.next) {
+                                  case 0:
+                                  case "end":
+                                    return _context30.stop();
+                                }
+                              }
+                            }, _callee30);
+                          }));
+
+                          return function (_x85) {
+                            return _ref32.apply(this, arguments);
+                          };
+                        }());
+
+                      case 12:
+                      case "end":
+                        return _context31.stop();
+                    }
+                  }
+                }, _callee31);
+              }));
+
+              return function (_x84) {
+                return _ref31.apply(this, arguments);
+              };
+            }())["catch"](function (e) {
+              return next(e);
+            });
+
+          case 37:
+            _context32.next = 39;
+            return _counting["default"].find({});
+
+          case 39:
+            totalCountings = _context32.sent;
+            totalSpentTime = 0;
+            totalCountings.forEach(function (item) {
+              totalSpentTime = totalSpentTime + item.spentTime;
+            });
+            _context32.next = 44;
+            return _counting["default"].find({
+              userId: userId
+            });
+
+          case 44:
+            countings = _context32.sent;
+            balanceTime = 0;
+            countings.forEach(function (element) {
+              if (element.authorName == article.postedBy.username) {
+                balanceTime = balanceTime + element.spentTime;
+              }
+            });
+            balance = 0;
+
+            if (totalSpentTime != 0) {
+              balance = 3.02 * balanceTime / totalSpentTime;
+            }
+
+            _context32.next = 51;
+            return _users["default"].findOne({
+              _id: article.postedBy._id
+            });
+
+          case 51:
+            author = _context32.sent;
+            earningList = author.earning;
+            earning = {
+              balance: balance,
+              user: userId,
+              date: Date.now()
+            };
+
+            if (!(earningList.length == 0)) {
+              _context32.next = 60;
+              break;
+            }
+
+            if (!(balance != 0)) {
+              _context32.next = 58;
+              break;
+            }
+
+            _context32.next = 58;
+            return _users["default"].updateOne({
+              _id: article.postedBy._id
+            }, {
+              $push: {
+                "earning": earning
+              }
+            });
+
+          case 58:
+            _context32.next = 64;
+            break;
+
+          case 60:
+            earningList.forEach(function (element, index) {
+              if (element.user == userId) {
+                earningList[index].balance = balance;
+                earningList[index].date = Date.now();
+              }
+            });
+            console.log(earningList);
+            _context32.next = 64;
+            return _users["default"].updateOne({
+              _id: article.postedBy._id
+            }, {
+              earning: earningList
+            });
+
+          case 64:
+            return _context32.abrupt("return", res.json(message));
+
+          case 65:
           case "end":
-            return _context31.stop();
+            return _context32.stop();
         }
       }
-    }, _callee31);
+    }, _callee32);
   }));
 
   return function (_x82, _x83) {

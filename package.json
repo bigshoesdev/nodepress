@@ -52,6 +52,7 @@
     "passport-twitter": "^1.0.4",
     "passport-vkontakte": "^0.3.2",
     "request": "^2.88.0",
+    "sitemap": "^6.1.5",
     "sitemap-generator": "^8.4.2",
     "stripe": "^8.43.0"
   },

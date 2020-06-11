@@ -623,22 +623,31 @@ router.get('/afterlogin', install.redirectToLogin, async (req, res, next) => {
       }
     }
     // let authorarticle = await Article.find({ postedBy: req.user.id }).populate('category');
+
+    let usercategoryList = req.user.categoryList;
     let popular = await Article.find({
       active: true,
     }).populate('category')
       .sort({ views: -1 })
-      .limit(5);
     let p = [];
-    popular.forEach(element => {
-      if (element.category.slug != "official") {
-        p.push(element);
-      }
-    });
-    let random = await Article.find({}).populate('category').populate('postedBy').limit(5);
+    usercategoryList.forEach(item => {
+      popular.forEach(element => {
+        if (element.category.slug != "official") {
+          if (item == element.category.slug) {
+            if (p.length < 6) {
+              p.push(element);
+            }
+          }
+        }
+      })
+    })
+    let random = await Article.find({}).populate('category').populate('postedBy');
     let r = [];
     random.forEach(element => {
       if (element.category.slug != "official") {
-        r.push(element);
+        if (r.length < 6) {
+          r.push(element);
+        }
       }
     });
     let e = [];
@@ -668,18 +677,22 @@ router.get('/afterlogin', install.redirectToLogin, async (req, res, next) => {
       categories: categories
     });
   } else {
-    let random = await Article.find({}).populate('category').populate('postedBy').limit(5);
+    let random = await Article.find({}).populate('category').populate('postedBy');
     let r = [];
     random.forEach(element => {
       if (element.category.slug != "official") {
-        r.push(element);
+        if (r.length < 6) {
+          r.push(element);
+        }
       }
     });
     let e = [];
     let editorsPicker = [];
     random.forEach(element => {
       if (element.category.slug != 'official') {
-        e.push(element);
+        if (e.length < 6) {
+          e.push(element);
+        }
       }
     });
     editorsPicker = e;
@@ -1369,9 +1382,8 @@ router.post("/saveTime", async (req, res) => {
       await average.updateOne({ userId: userId }, averageInfo);
     }
   } else {
-    console.log(article.qualify)
     if (article.qualify == "qualify") {
-      Counting.create(payload).then(async created => {
+      await Counting.create(payload).then(async created => {
         let averageInfo = {
           userId: userId,
           articleId: articleId,
@@ -1386,14 +1398,59 @@ router.post("/saveTime", async (req, res) => {
           }
           await average.updateOne({ userId: userId }, averageInfo);
         } else {
-          average.create(averageInfo).then(result => {
-            return res.json(message);
+          await average.create(averageInfo).then(async result => {
+            // save the earning to the author wallet
+            // return res.json(message);
           })
         }
       })
         .catch(e => next(e));
     }
   }
+
+  //balance calculation part
+
+  let totalCountings = await Counting.find({});
+  let totalSpentTime = 0;
+  totalCountings.forEach(item => {
+    totalSpentTime = totalSpentTime + item.spentTime;
+  });
+
+  let countings = await Counting.find({ userId: userId });
+  let balanceTime = 0;
+  countings.forEach(element => {
+    if (element.authorName == article.postedBy.username) {
+      balanceTime = balanceTime + element.spentTime;
+    }
+  });
+  let balance = 0;
+  if (totalSpentTime != 0) {
+    balance = 3.02 * balanceTime / totalSpentTime;
+  }
+  let author = await User.findOne({ _id: article.postedBy._id });
+  let earningList = author.earning;
+  let earning = {
+    balance: balance,
+    user: userId,
+    date: Date.now()
+  }
+  if (earningList.length == 0) {
+    if (balance != 0) {
+      await User.updateOne(
+        { _id: article.postedBy._id },
+        { $push: { "earning": earning } });
+    }
+  }else {
+    earningList.forEach((element, index) => {
+      if(element.user == userId){
+        earningList[index].balance = balance;
+        earningList[index].date = Date.now();
+      }
+    });
+    console.log(earningList);
+    await User.updateOne({_id: article.postedBy._id}, {earning: earningList});
+  }
+  return res.json(message);
 });
 
 module.exports = router;

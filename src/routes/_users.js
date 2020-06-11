@@ -779,23 +779,23 @@ router.get(
 
 router.get('/user/authorstatus', async (req, res, next) => {
   let totalPost = await Article.countDocuments({ postedBy: req.user.id });
-  let inactivePost = await Article.countDocuments({postedBy: req.user.id, active: false});
-  let qualifyPost = await Article.countDocuments({postedBy: req.user.id, qualify: "qualify"});
+  let inactivePost = await Article.countDocuments({ postedBy: req.user.id, active: false });
+  let qualifyPost = await Article.countDocuments({ postedBy: req.user.id, qualify: "qualify" });
   let authorrank = "";
-  let users = await Article.find({}).sort({views: -1});
+  let users = await Article.find({}).sort({ views: -1 });
   users.forEach((element, index) => {
-    if(element.postedBy == req.user.id){
+    if (element.postedBy == req.user.id) {
       authorrank = index + 1;
     }
   });
   let upvotesCount = 0;
   let veiwsCount = 0;
-  let articles = await Article.find({postedBy: req.user.id});
+  let articles = await Article.find({ postedBy: req.user.id });
   articles.forEach(element => {
     upvotesCount = element.upvote.count;
     veiwsCount = element.views;
   });
-  const followers = await User.countDocuments({_id: req.user.id}).populate("following").sort({ createdAt: -1 });
+  const followers = await User.countDocuments({ _id: req.user.id }).populate("following").sort({ createdAt: -1 });
 
   res.render("./user/author", {
     title: "Dashboard",
@@ -809,9 +809,23 @@ router.get('/user/authorstatus', async (req, res, next) => {
   });
 });
 
-router.get('/user/payout', async(req, res, next) => {
+router.get('/user/payout', async (req, res, next) => {
+  let user = await User.findOne({ _id: req.user.id });
+  let earningList = user.earning;
+  let result = [];
+  earningList.forEach(async element => {
+    let reader = await User.findOne({ _id: element.user });
+    let payload = {
+      reader: reader,
+      balance: element.balance,
+      date: element.date
+    }
+    await result.push(payload);
+  });
+  console.log(result);
   res.render("./user/payout", {
-    title: "User-Payout"
+    title: "User-Payout",
+    earningList: result
   });
 });
 

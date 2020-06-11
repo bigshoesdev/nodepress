@@ -38,6 +38,13 @@ var _bookmark = _interopRequireDefault(require("../models/bookmark"));
 
 var fs = require('fs');
 
+var _require = require('sitemap'),
+    SitemapStream = _require.SitemapStream,
+    streamToPromise = _require.streamToPromise;
+
+var _require2 = require('zlib'),
+    createGzip = _require2.createGzip;
+
 var router = _express["default"].Router();
 
 var SitemapGenerator = require('sitemap-generator'); // drowningsummer.228@gmail.com
@@ -471,22 +478,126 @@ router.get('/publisher', _install["default"].redirectToLogin, /*#__PURE__*/funct
     return _ref2.apply(this, arguments);
   };
 }());
-router.get('/sitemap.xml', _install["default"].redirectToLogin, /*#__PURE__*/function () {
+var sitemap;
+router.get('/sitemap', /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(req, res, next) {
+    var smStream, pipeline, articles, users;
     return _regenerator["default"].wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            fs.readFile('./survey.xml', function (err, data) {
-              console.log(data);
-            });
+            res.header('Content-Type', 'application/xml');
+            res.header('Content-Encoding', 'gzip');
 
-          case 1:
+            if (sitemap) {
+              res.send(sitemap);
+            }
+
+            _context3.prev = 3;
+            smStream = new SitemapStream({
+              hostname: 'https://dype.me/'
+            });
+            pipeline = smStream.pipe(createGzip()); // pipe your entries or directly write them.
+
+            smStream.write({
+              url: '',
+              priority: 1.0
+            });
+            smStream.write({
+              url: '/login',
+              priority: 0.9
+            });
+            smStream.write({
+              url: '/sign-up',
+              priority: 0.9
+            });
+            smStream.write({
+              url: '/aterlogin',
+              priority: 0.9
+            });
+            smStream.write({
+              url: '/blogrecent',
+              priority: 0.9
+            });
+            smStream.write({
+              url: '/enterinformation',
+              priority: 0.9
+            });
+            smStream.write({
+              url: '/membership',
+              priority: 0.9
+            });
+            smStream.write({
+              url: '/publisher',
+              priority: 0.9
+            });
+            smStream.write({
+              url: '/show-category-all',
+              priority: 0.9
+            });
+            smStream.write({
+              url: '/vision',
+              priority: 0.9
+            });
+            smStream.write({
+              url: '/forgot-password',
+              priority: 0.9
+            });
+            _context3.next = 19;
+            return _articles["default"].find({}).populate("category").populate('postedBy');
+
+          case 19:
+            articles = _context3.sent;
+            articles.forEach(function (element) {
+              var url = "";
+
+              if (element.postedBy.roleId == "admin") {
+                url = "/d/" + element.category.slug + "/" + element.slug;
+              } else {
+                url = "/p/" + element.category.slug + "/" + element.slug;
+              }
+
+              smStream.write({
+                url: url,
+                priority: 0.9
+              });
+            });
+            _context3.next = 23;
+            return _users["default"].find({});
+
+          case 23:
+            users = _context3.sent;
+            users.forEach(function (element) {
+              var url = '/author/' + element.usernameslug;
+              smStream.write({
+                url: url,
+                priority: 0.9
+              });
+            });
+            smStream.end(); // cache the response
+
+            streamToPromise(pipeline).then(function (sm) {
+              return sitemap = sm;
+            }); // stream write the response
+
+            pipeline.pipe(res).on('error', function (e) {
+              throw e;
+            });
+            _context3.next = 34;
+            break;
+
+          case 30:
+            _context3.prev = 30;
+            _context3.t0 = _context3["catch"](3);
+            console.error(_context3.t0);
+            res.status(500).end();
+
+          case 34:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3);
+    }, _callee3, null, [[3, 30]]);
   }));
 
   return function (_x7, _x8, _x9) {
@@ -599,6 +710,7 @@ router.get('/blogrecent', _install["default"].redirectToLogin, /*#__PURE__*/func
           case 21:
             trendings = _context6.sent;
             trends = [];
+            console.log(usercategoryList);
             usercategoryList.forEach(function (element) {
               trendings.forEach(function (item) {
                 if (item.category.slug != "official") {
@@ -610,7 +722,7 @@ router.get('/blogrecent', _install["default"].redirectToLogin, /*#__PURE__*/func
                 }
               });
             });
-            _context6.next = 26;
+            _context6.next = 27;
             return _users["default"].find({
               following: {
                 $in: req.user.id
@@ -619,19 +731,19 @@ router.get('/blogrecent', _install["default"].redirectToLogin, /*#__PURE__*/func
               createdAt: -1
             });
 
-          case 26:
+          case 27:
             followers = _context6.sent;
             authorarticle = [];
             _context6.t0 = _regenerator["default"].keys(followers);
 
-          case 29:
+          case 30:
             if ((_context6.t1 = _context6.t0()).done) {
-              _context6.next = 46;
+              _context6.next = 47;
               break;
             }
 
             i = _context6.t1.value;
-            _context6.next = 33;
+            _context6.next = 34;
             return _articles["default"].find({
               postedBy: followers[i]._id
             }).populate('category').populate('postedBy').sort({
@@ -640,43 +752,43 @@ router.get('/blogrecent', _install["default"].redirectToLogin, /*#__PURE__*/func
               createdAt: -1
             });
 
-          case 33:
+          case 34:
             art = _context6.sent;
             _context6.t2 = _regenerator["default"].keys(art);
 
-          case 35:
+          case 36:
             if ((_context6.t3 = _context6.t2()).done) {
-              _context6.next = 44;
+              _context6.next = 45;
               break;
             }
 
             j = _context6.t3.value;
 
             if (!(authorarticle.length > 5)) {
-              _context6.next = 41;
+              _context6.next = 42;
               break;
             }
 
-            return _context6.abrupt("break", 44);
-
-          case 41:
-            authorarticle.push(art[j]);
+            return _context6.abrupt("break", 45);
 
           case 42:
-            _context6.next = 35;
+            authorarticle.push(art[j]);
+
+          case 43:
+            _context6.next = 36;
             break;
 
-          case 44:
-            _context6.next = 29;
+          case 45:
+            _context6.next = 30;
             break;
 
-          case 46:
-            _context6.next = 48;
+          case 47:
+            _context6.next = 49;
             return _articles["default"].find({}).sort({
               createdAt: -1
             }).populate('category').populate('postedBy');
 
-          case 48:
+          case 49:
             newest = _context6.sent;
             news = [];
             newest.forEach(function (element) {
@@ -686,10 +798,10 @@ router.get('/blogrecent', _install["default"].redirectToLogin, /*#__PURE__*/func
                 }
               }
             });
-            _context6.next = 53;
+            _context6.next = 54;
             return _articles["default"].find({}).populate('category').populate('postedBy');
 
-          case 53:
+          case 54:
             random = _context6.sent;
             randoms = [];
             random.forEach(function (element) {
@@ -700,10 +812,10 @@ router.get('/blogrecent', _install["default"].redirectToLogin, /*#__PURE__*/func
               }
             });
             favorites = [];
-            _context6.next = 59;
+            _context6.next = 60;
             return _articles["default"].find({}).populate('category').populate('postedBy').sort('create_at').limit(10);
 
-          case 59:
+          case 60:
             total_article = _context6.sent;
             categories.forEach(function (element) {
               total_article.forEach(function (item) {
@@ -723,7 +835,7 @@ router.get('/blogrecent', _install["default"].redirectToLogin, /*#__PURE__*/func
               favorites: favorites
             });
 
-          case 62:
+          case 63:
           case "end":
             return _context6.stop();
         }

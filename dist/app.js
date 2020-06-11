@@ -66,7 +66,8 @@ var _menu = _interopRequireDefault(require("./routes/menu"));
 
 var _bookmark = _interopRequireDefault(require("./routes/bookmark"));
 
-var MongoStore = require("connect-mongo")(_expressSession["default"]); // Load environment variables from.env file, where API keys and passwords are configured.
+var MongoStore = require("connect-mongo")(_expressSession["default"]); // site-map generator part
+// Load environment variables from.env file, where API keys and passwords are configured.
 
 
 _dotenv["default"].config({
