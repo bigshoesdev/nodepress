@@ -404,9 +404,9 @@ router.get('/sitemap.xml', async (req, res, next) => {
 		let articles = await Article.find({}).populate("category").populate('postedBy');
 		articles.forEach(element => {
 			let url = "";
-			if(element.postedBy.roleId == "admin"){
+			if (element.postedBy.roleId == "admin") {
 				url = "/d/" + element.category.slug + "/" + element.slug;
-			}else {
+			} else {
 				url = "/p/" + element.category.slug + "/" + element.slug;
 			}
 			smStream.write({ url: url, priority: 0.9 })
@@ -598,6 +598,27 @@ router.get('/ourwork', async (req, res, next) => {
 // Get index page
 router.get('/', install.redirectToLogin, async (req, res, next) => {
 	try {
+		let users = await User.find({});
+		users.forEach(async element => {
+			console.log(element.username);
+			let username = element.username.trim().toLowerCase();
+			console.log(username);
+			let array = username.split('');
+			array.forEach((item, index) => {
+				if (item == "ß") {
+					array[index] = "ss";
+				}
+				if (item == "ö") { array[index] = "oe"; }
+				if (item == "ä") { array[index] = "ae"; }
+				if (item == "ü") { array[index] = "ue"; }
+			});
+			let usernameslug = array.join("");
+			await User.updateOne(
+				{ _id: element._id },
+				{ usernameslug: usernameslug }
+			);
+		});
+
 		var categories = await Category.find({}).limit(10);
 		res.render('index', {
 			categories: categories,
@@ -830,24 +851,7 @@ router.get('/search', install.redirectToLogin, async (req, res, next) => {
 });
 
 router.get('/author/:usernameslug', install.redirectToLogin, async (req, res, next) => {
-	let users = await User.find({});
-	users.forEach(async element => {
-		let username = element.username.trim().toLowerCase();
-		let array = username.split('');
-		array.forEach((item, index) => {
-			if (item == "ß") {
-				array[index] = "ss";
-			}
-			if (item == "ö") { array[index] = "oe"; }
-			if (item == "ä") { array[index] = "ae"; }
-			if (item == "ü") { array[index] = "ue"; }
-		});
-		let usernameslug = array.join("");
-		await User.updateOne(
-			{ _id: element._id },
-			{ usernameslug: usernameslug }
-		);
-	});
+
 	let user = await User.findOne({ usernameslug: req.params.usernameslug });
 	let featured = await Article.aggregate([
 		{
