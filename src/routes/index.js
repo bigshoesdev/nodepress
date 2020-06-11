@@ -378,7 +378,7 @@ router.get('/publisher', install.redirectToLogin, async (req, res, next) => {
 });
 
 let sitemap;
-router.get('/sitemap', async (req, res, next) => {
+router.get('/sitemap.xml', async (req, res, next) => {
 	res.header('Content-Type', 'application/xml');
 	res.header('Content-Encoding', 'gzip');
 	if (sitemap) {
@@ -416,7 +416,7 @@ router.get('/sitemap', async (req, res, next) => {
 			let url = '/author/' + element.usernameslug;
 			smStream.write({ url: url, priority: 0.9 })
 		});
-		
+
 		smStream.end()
 		// cache the response
 		streamToPromise(pipeline).then(sm => sitemap = sm)

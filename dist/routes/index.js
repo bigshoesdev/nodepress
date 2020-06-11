@@ -479,7 +479,7 @@ router.get('/publisher', _install["default"].redirectToLogin, /*#__PURE__*/funct
   };
 }());
 var sitemap;
-router.get('/sitemap', /*#__PURE__*/function () {
+router.get('/sitemap.xml', /*#__PURE__*/function () {
   var _ref3 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(req, res, next) {
     var smStream, pipeline, articles, users;
     return _regenerator["default"].wrap(function _callee3$(_context3) {
