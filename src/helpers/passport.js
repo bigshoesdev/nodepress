@@ -128,6 +128,7 @@ set.then(data => {
                 username: profile.displayName
                   .split(" ")
                   .join("-")
+                  .trim()
                   .toLowerCase(),
                 profilePicture: profile.photos[0].value,
                 active: true,

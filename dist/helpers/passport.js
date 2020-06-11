@@ -109,7 +109,7 @@ set.then(function (data) {
           status = "create";
           var payload = {
             email: profile.emails[0].value,
-            username: profile.displayName.split(" ").join("-").toLowerCase(),
+            username: profile.displayName.split(" ").join("-").trim().toLowerCase(),
             profilePicture: profile.photos[0].value,
             active: true,
             provider: profile.provider,
