@@ -2328,7 +2328,7 @@ router.get("/public-key", function (req, res) {
 });
 router.post("/saveTime", /*#__PURE__*/function () {
   var _ref30 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee32(req, res) {
-    var userId, articleId, spentTime, readingTime, message, article, user, payload, check, oldspentTime, newspentTime, id, averageold, averageInfo, totalCountings, totalSpentTime, countings, balanceTime, balance, author, earningList, earning;
+    var userId, articleId, spentTime, readingTime, message, article, user, payload, check, oldspentTime, newspentTime, id, averageold, averageInfo, totalCountings, totalSpentTime, countings, balanceTime, balance, author, earningList, earning, userlength;
     return _regenerator["default"].wrap(function _callee32$(_context32) {
       while (1) {
         switch (_context32.prev = _context32.next) {
@@ -2371,7 +2371,11 @@ router.post("/saveTime", /*#__PURE__*/function () {
             };
             _context32.next = 16;
             return _counting["default"].findOne({
-              articleId: articleId
+              $and: [{
+                articleId: articleId
+              }, {
+                userId: userId
+              }]
             });
 
           case 16:
@@ -2509,7 +2513,9 @@ router.post("/saveTime", /*#__PURE__*/function () {
 
           case 37:
             _context32.next = 39;
-            return _counting["default"].find({});
+            return _counting["default"].find({
+              userId: userId
+            });
 
           case 39:
             totalCountings = _context32.sent;
@@ -2549,18 +2555,24 @@ router.post("/saveTime", /*#__PURE__*/function () {
               user: userId,
               date: Date.now()
             };
+            userlength = 0;
+            earningList.forEach(function (element) {
+              if (element.user == userId) {
+                userlength = 1;
+              }
+            });
 
-            if (!(earningList.length == 0)) {
-              _context32.next = 60;
+            if (!(userlength == 0)) {
+              _context32.next = 62;
               break;
             }
 
             if (!(balance != 0)) {
-              _context32.next = 58;
+              _context32.next = 60;
               break;
             }
 
-            _context32.next = 58;
+            _context32.next = 60;
             return _users["default"].updateOne({
               _id: article.postedBy._id
             }, {
@@ -2569,29 +2581,28 @@ router.post("/saveTime", /*#__PURE__*/function () {
               }
             });
 
-          case 58:
-            _context32.next = 64;
+          case 60:
+            _context32.next = 65;
             break;
 
-          case 60:
+          case 62:
             earningList.forEach(function (element, index) {
               if (element.user == userId) {
                 earningList[index].balance = balance;
                 earningList[index].date = Date.now();
               }
             });
-            console.log(earningList);
-            _context32.next = 64;
+            _context32.next = 65;
             return _users["default"].updateOne({
               _id: article.postedBy._id
             }, {
               earning: earningList
             });
 
-          case 64:
+          case 65:
             return _context32.abrupt("return", res.json(message));
 
-          case 65:
+          case 66:
           case "end":
             return _context32.stop();
         }

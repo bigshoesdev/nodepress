@@ -832,7 +832,7 @@ router.get('/search', install.redirectToLogin, async (req, res, next) => {
 router.get('/author/:usernameslug', install.redirectToLogin, async (req, res, next) => {
 	let users = await User.find({});
 	users.forEach(async element => {
-		let username = element.username.toLowerCase();
+		let username = element.username.trim().toLowerCase();
 		let array = username.split('');
 		array.forEach((item, index) => {
 			if (item == "ß") {

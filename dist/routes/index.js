@@ -1546,7 +1546,7 @@ router.get('/author/:usernameslug', _install["default"].redirectToLogin, /*#__PU
                   while (1) {
                     switch (_context18.prev = _context18.next) {
                       case 0:
-                        username = element.username.toLowerCase();
+                        username = element.username.trim().toLowerCase();
                         array = username.split('');
                         array.forEach(function (item, index) {
                           if (item == "ß") {

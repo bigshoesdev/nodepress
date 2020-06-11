@@ -813,19 +813,22 @@ router.get('/user/payout', async (req, res, next) => {
   let user = await User.findOne({ _id: req.user.id });
   let earningList = user.earning;
   let result = [];
-  earningList.forEach(async element => {
-    let reader = await User.findOne({ _id: element.user });
+  let total = 0;
+  for(var i = 0; i < earningList.length; i ++){
+    let reader = await User.findOne({ _id: earningList[i].user });
     let payload = {
       reader: reader,
-      balance: element.balance,
-      date: element.date
+      balance: earningList[i].balance,
+      date: earningList[i].date
     }
-    await result.push(payload);
-  });
-  console.log(result);
+    total = total + earningList[i].balance;
+    result.push(payload);
+  }
+  
   res.render("./user/payout", {
     title: "User-Payout",
-    earningList: result
+    earningList: result,
+    total: total
   });
 });
 

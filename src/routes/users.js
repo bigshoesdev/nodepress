@@ -1355,14 +1355,13 @@ router.post("/saveTime", async (req, res) => {
   if (spentTime > (readingTime / 60)) {
     spentTime = readingTime / 60;
   }
-
   let payload = {
     userId: userId,
     articleId: articleId,
     spentTime: spentTime,
     authorName: article.postedBy.username
   }
-  let check = await Counting.findOne({ articleId: articleId });
+  let check = await Counting.findOne({ $and: [{ articleId: articleId }, { userId: userId }] });
   if (check) {
     let oldspentTime = check.spentTime;
     let newspentTime = 0;
@@ -1374,7 +1373,6 @@ router.post("/saveTime", async (req, res) => {
       }
       await Counting.updateOne({ _id: id }, { spentTime: newspentTime });
       let averageold = await average.findOne({ userId: userId });
-
       let averageInfo = {
         spentTime: (averageold.spentTime + newspentTime),
         spentCount: (averageold.spentCount + 1)
@@ -1410,7 +1408,7 @@ router.post("/saveTime", async (req, res) => {
 
   //balance calculation part
 
-  let totalCountings = await Counting.find({});
+  let totalCountings = await Counting.find({userId: userId});
   let totalSpentTime = 0;
   totalCountings.forEach(item => {
     totalSpentTime = totalSpentTime + item.spentTime;
@@ -1434,21 +1432,27 @@ router.post("/saveTime", async (req, res) => {
     user: userId,
     date: Date.now()
   }
-  if (earningList.length == 0) {
+  let userlength = 0;
+  earningList.forEach(element => {
+    if(element.user == userId){
+      userlength = 1;
+    }
+  })
+  
+  if (userlength == 0) {
     if (balance != 0) {
       await User.updateOne(
         { _id: article.postedBy._id },
         { $push: { "earning": earning } });
     }
-  }else {
+  } else {
     earningList.forEach((element, index) => {
-      if(element.user == userId){
+      if (element.user == userId) {
         earningList[index].balance = balance;
         earningList[index].date = Date.now();
       }
     });
-    console.log(earningList);
-    await User.updateOne({_id: article.postedBy._id}, {earning: earningList});
+    await User.updateOne({ _id: article.postedBy._id }, { earning: earningList });
   }
   return res.json(message);
 });
