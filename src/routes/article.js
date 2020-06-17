@@ -10,7 +10,6 @@ import install from "../helpers/install";
 import Flag from "../models/flag";
 import Bookmark from "../models/bookmark";
 const router = express.Router();
-
 // Create a new article
 router.post(
   "/article/create",
@@ -754,7 +753,40 @@ router.get("/p/:category/:slug", install.redirectToLogin, async (req, res, next)
         req.socket.remoteAddress ||
         (req.connection.socket ? req.connection.socket.remoteAddress : null);
       let articleCount = await Article.countDocuments();
-      if (art.viewers.indexOf(ips) !== -1) {
+      console.log(art.viewers.indexOf(ips));
+      // if (art.viewers.indexOf(ips) !== -1) {
+      //   res.render("single", {
+      //     articleCount: articleCount,
+      //     title: article[0].title,
+      //     article: article[0],
+      //     settings: settings,
+      //     previous: previousarticle[0],
+      //     next: nextarticle[0],
+      //     featured: featured,
+      //     popular: popular,
+      //     recommended: recommended,
+      //     related: related,
+      //     bookmark: book,
+      //     bookmarkId: bookmark == null ? null : bookmark._id
+      //   });
+      // } else {
+      let ip =
+        req.headers["x-forwarded-for"] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        (req.connection.socket ? req.connection.socket.remoteAddress : null);
+      let payload = {
+        ip: ip,
+        date: new Date()
+      }
+      await Article.updateOne(
+        { slug: req.params.slug.trim() },
+        { $push: { viewers: payload } }
+      );
+      Article.updateOne(
+        { slug: req.params.slug.trim() },
+        { $inc: { views: 1 } }
+      ).then(views => {
         res.render("single", {
           articleCount: articleCount,
           title: article[0].title,
@@ -769,41 +801,10 @@ router.get("/p/:category/:slug", install.redirectToLogin, async (req, res, next)
           bookmark: book,
           bookmarkId: bookmark == null ? null : bookmark._id
         });
-
-      } else {
-        let ip =
-          req.headers["x-forwarded-for"] ||
-          req.connection.remoteAddress ||
-          req.socket.remoteAddress ||
-          (req.connection.socket ? req.connection.socket.remoteAddress : null);
-        await Article.updateOne(
-          { slug: req.params.slug.trim() },
-          { $push: { viewers: ip } }
-        );
-        Article.updateOne(
-          { slug: req.params.slug.trim() },
-          { $inc: { views: 1 } }
-        )
-          .then(views => {
-
-            res.render("single", {
-              articleCount: articleCount,
-              title: article[0].title,
-              article: article[0],
-              settings: settings,
-              previous: previousarticle[0],
-              next: nextarticle[0],
-              featured: featured,
-              popular: popular,
-              recommended: recommended,
-              related: related,
-              bookmark: book,
-              bookmarkId: bookmark == null ? null : bookmark._id
-            });
-          })
-          .catch(err => next(err));
-      }
+      })
+        .catch(err => next(err));
     }
+    // }
   } catch (error) {
     next(error);
   }
@@ -1052,7 +1053,7 @@ router.get(
     try {
       let perPage = 6;
       let page = req.query.page || 1;
-      let cat = await Category.findOne({ slug: req.params.slug});
+      let cat = await Category.findOne({ slug: req.params.slug });
       if (!cat) res.render("404");
       else {
         let post = await Article.find({ active: true, category: cat._id })
@@ -1066,7 +1067,7 @@ router.get(
           active: true,
           category: cat._id
         });
-        let recent = [];        
+        let recent = [];
         let recentdata = await Article.find({
           active: true,
           category: { $ne: cat._id }
@@ -1076,7 +1077,7 @@ router.get(
           .populate("postedBy")
           .limit(5);
         recentdata.forEach(item => {
-          if(item.category.slug != "official"){
+          if (item.category.slug != "official") {
             recent.push(item);
           }
         })
@@ -1191,20 +1192,30 @@ router.post("/article/add-to-breaking", (req, res, next) => {
 
 // Upvote a post
 router.post("/article/upvote", auth, async (req, res, next) => {
-  await Article.updateOne(
-    { _id: req.body.articleId },
-    { $push: { "update.users": req.user.id }, $inc: { "upvote.count": 1 } }
-  );
-  // res.status(200).send("Post Has been Upvoted");
+
+  // let payload = {
+  //   date: date,
+  //   user: req.user.id
+  // }
+  // await Article.updateOne(
+  //   { _id: req.body.articleId },
+  //   { $push: { "upvote.user": payload }, $inc: { "upvote.count": 1 } }
+  // );
+  // // res.status(200).send("Post Has been Upvoted");
   return res.redirect(`back`);
 });
 router.post('/article/upvote-ajax', async (req, res, next) => {
+  let date = new Date();
   let articleId = req.body.articleId;
   let userId = req.body.userId;
-
+  console.log("This part is the upvote call part");
+  let payload = {
+    date: date,
+    user: req.user.id
+  }
   await Article.updateOne(
     { _id: req.body.articleId },
-    { $inc: { "upvote.count": 1 } }
+    { $push: { "upvote.users": payload }, $inc: { "upvote.count": 1 } }
   );
   let article = await Article.findOne({ _id: articleId });
   let upvotecount = article.upvote.count;
@@ -1230,11 +1241,9 @@ router.post("/article/flag", async (req, res, next) => {
     .status(200)
     .send("Post has been flagged, Admin will look into it anytime soon.");
 });
-
 // Clap under an article
 router.post("/article/clap", async (req, res, next) => {
   await Article.updateOne({ _id: req.body.articleId }, { $inc: { claps: 1 } });
   res.status(200).send("Clapped under post");
 });
-
 module.exports = router;

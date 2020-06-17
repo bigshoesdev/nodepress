@@ -778,9 +778,107 @@ router.get(
 );
 
 router.get('/user/authorstatus', async (req, res, next) => {
-  let totalPost = await Article.countDocuments({ postedBy: req.user.id });
-  let inactivePost = await Article.countDocuments({ postedBy: req.user.id, active: false });
-  let qualifyPost = await Article.countDocuments({ postedBy: req.user.id, qualify: "qualify" });
+
+  var date = new Date();
+  var currentMonth = date.getMonth();
+  let limitViews = 99999999;
+  //content views
+  let lastMonthContentViews = 0;
+  let thisMonthContentViews = 0;
+  let increaseContenViews = 0;
+  let upvote_lastmonth = 0;
+  let upvote_thismonth = 0;
+  let upvote_increase = 0;
+  let userArticles = await Article.find({ postedBy: req.user.id });
+  userArticles.forEach(element => {
+    element.viewers.forEach(item => {
+      let viewMonth = item.date.getMonth();
+      if (currentMonth == viewMonth) {
+        thisMonthContentViews++;
+      } else if ((viewMonth + 1) == currentMonth) {
+        lastMonthContentViews++;
+      }
+    });
+    element.upvote.users.forEach(item => {
+      let viewMonth = item.date.getMonth();
+      if (currentMonth == viewMonth) {
+        upvote_thismonth++;
+      } else if ((viewMonth + 1) == currentMonth) {
+        upvote_lastmonth++;
+      }
+    })
+  });
+
+  if (lastMonthContentViews == 0) {
+    increaseContenViews = ((thisMonthContentViews + limitViews) / limitViews * 100).toFixed(2);
+  } else {
+    increaseContenViews = ((thisMonthContentViews - lastMonthContentViews) / lastMonthContentViews * 100).toFixed(2);
+  }
+  if (upvote_lastmonth == 0) {
+    upvote_increase = ((upvote_thismonth + limitViews) / limitViews * 100).toFixed(2);
+  } else {
+    upvote_increase = ((upvote_thismonth - upvote_lastmonth) / upvote_lastmonth * 100).toFixed(2);
+  }
+  // profile views
+  let profile_lastmonth = 0;
+  let profile_thismonth = 0;
+  let profile_increase = 0;
+  let follow_lastmonth = 0;
+  let follow_thismonth = 0;
+  let follow_increase = 0;
+
+  let totalusers = await User.find({_id: req.user.id});
+  totalusers.forEach(element => {
+    element.viewers.forEach(item => {
+      let viewMonth = item.date.getMonth();
+      if (currentMonth == viewMonth) {
+        profile_thismonth++;
+      } else if ((viewMonth + 1) == currentMonth) {
+        profile_lastmonth++;
+      }
+    });
+    element.following.forEach(item => {
+      let viewMonth = item.date.getMonth();
+      if (currentMonth == viewMonth) {
+        follow_thismonth++;
+      } else if ((viewMonth + 1) == currentMonth) {
+        follow_lastmonth++;
+      }
+    })
+  })
+
+  if (profile_lastmonth == 0) {
+    profile_increase = ((profile_thismonth + limitViews) / limitViews * 100).toFixed(2);
+  } else {
+    profile_increase = ((profile_thismonth - profile_lastmonth) / profile_lastmonth * 100).toFixed(2);
+  }
+
+  // if (follow_thismonth == 0) {
+  //   follow_increase = ((follow_thismonth + limitViews) / limitViews * 100).toFixed(2);
+  // } else {
+  //   follow_increase = ((follow_thismonth - follow_lastmonth) / follow_lastmonth * 100).toFixed(2);
+  // }
+  follow_increase = follow_thismonth - follow_lastmonth;
+
+
+  let statusCounts = {
+    contentView: {
+      count: thisMonthContentViews,
+      increase: increaseContenViews
+    },
+    profileView: {
+      count: profile_thismonth,
+      increase: profile_increase
+    },
+    upvote: {
+      count: upvote_thismonth,
+      increase: upvote_increase
+    },
+    follow: {
+      count: follow_thismonth,
+      increase: follow_increase
+    }
+  }
   let authorrank = "";
   let users = await Article.find({}).sort({ views: -1 });
   users.forEach((element, index) => {
@@ -799,13 +897,7 @@ router.get('/user/authorstatus', async (req, res, next) => {
 
   res.render("./user/author", {
     title: "Dashboard",
-    totalPost: totalPost,
-    inactivePost: inactivePost,
-    qualifyPost: qualifyPost,
-    authorrank: authorrank,
-    upvotesCount: upvotesCount,
-    veiwsCount: veiwsCount,
-    followers: followers
+    statusCounts: statusCounts
   });
 });
 
@@ -814,7 +906,7 @@ router.get('/user/payout', async (req, res, next) => {
   let earningList = user.earning;
   let result = [];
   let total = 0;
-  for(var i = 0; i < earningList.length; i ++){
+  for (var i = 0; i < earningList.length; i++) {
     let reader = await User.findOne({ _id: earningList[i].user });
     let payload = {
       reader: reader,
@@ -824,7 +916,7 @@ router.get('/user/payout', async (req, res, next) => {
     total = total + earningList[i].balance;
     result.push(payload);
   }
-  
+
   res.render("./user/payout", {
     title: "User-Payout",
     earningList: result,

@@ -15,7 +15,12 @@ const articleSchema = new Schema(
     slug: String,
     views: Number,
     dateViewed: Array,
-    viewers: Array,
+    viewers: [
+      {
+        ip: String,
+        date: Date
+      }
+    ],
     tags: Array,
     category: {
       type: Schema.Types.ObjectId,
@@ -80,10 +85,13 @@ const articleSchema = new Schema(
       },
       users: [
         {
-          type: Schema.Types.ObjectId,
-          ref: "User"
+          date: Date,
+          user: {
+            type: Schema.Types.ObjectId,
+            ref: "User"
+          }
         }
-      ]
+      ],
     },
     downvote: {
       count: {

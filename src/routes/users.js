@@ -267,7 +267,6 @@ router.post("/api/sign-up", async (req, res, next) => {
     });
     let usernameslug = array.join("");
     let token = crypto.randomBytes(16).toString("hex");
-    console.log(token);
     let payload = {};
     if (token) {
       payload = {
@@ -1275,9 +1274,14 @@ router.post(
 
 // Follow a user
 router.get("/follow-user", auth, async (req, res, next) => {
+  let date = new Date();
+  let payload = {
+    date: date,
+    user: req.user.id
+  }
   await User.updateOne(
     { _id: req.query.followerId },
-    { $push: { following: req.user.id } }
+    { $push: { following: payload } }
   );
   // req.flash("success_msg", "User added to followers list Successfully");
   return res.redirect("back");
@@ -1285,10 +1289,16 @@ router.get("/follow-user", auth, async (req, res, next) => {
 
 // unfollow a user
 router.get("/unfollow-user", auth, async (req, res, next) => {
+  following.forEach(element => {
+    if(element.user == req.user.id){
+      removefield = element._id;
+    }
+  });
+  console.log(following)
   if (req.query.authorId) {
     await User.updateOne(
       { _id: req.query.authorId },
-      { $pull: { following: req.user.id } }
+      { $pull: { following: {user: req.user.id}} }
     );
   } else {
     await User.updateOne(

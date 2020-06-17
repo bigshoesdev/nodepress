@@ -18,7 +18,10 @@ var articleSchema = new Schema({
   slug: String,
   views: Number,
   dateViewed: Array,
-  viewers: Array,
+  viewers: [{
+    ip: String,
+    date: Date
+  }],
   tags: Array,
   category: {
     type: Schema.Types.ObjectId,
@@ -82,8 +85,11 @@ var articleSchema = new Schema({
       "default": 0
     },
     users: [{
-      type: Schema.Types.ObjectId,
-      ref: "User"
+      date: Date,
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+      }
     }]
   },
   downvote: {

@@ -967,41 +967,133 @@ router.get("/user/following", _auth["default"], (0, _role["default"])("admin", "
 }());
 router.get('/user/authorstatus', /*#__PURE__*/function () {
   var _ref11 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee11(req, res, next) {
-    var totalPost, inactivePost, qualifyPost, authorrank, users, upvotesCount, veiwsCount, articles, followers;
+    var date, currentMonth, limitViews, lastMonthContentViews, thisMonthContentViews, increaseContenViews, upvote_lastmonth, upvote_thismonth, upvote_increase, userArticles, profile_lastmonth, profile_thismonth, profile_increase, follow_lastmonth, follow_thismonth, follow_increase, totalusers, statusCounts, authorrank, users, upvotesCount, veiwsCount, articles, followers;
     return _regenerator["default"].wrap(function _callee11$(_context11) {
       while (1) {
         switch (_context11.prev = _context11.next) {
           case 0:
-            _context11.next = 2;
-            return _articles["default"].countDocuments({
+            date = new Date();
+            currentMonth = date.getMonth();
+            limitViews = 99999999; //content views
+
+            lastMonthContentViews = 0;
+            thisMonthContentViews = 0;
+            increaseContenViews = 0;
+            upvote_lastmonth = 0;
+            upvote_thismonth = 0;
+            upvote_increase = 0;
+            _context11.next = 11;
+            return _articles["default"].find({
               postedBy: req.user.id
             });
 
-          case 2:
-            totalPost = _context11.sent;
-            _context11.next = 5;
-            return _articles["default"].countDocuments({
-              postedBy: req.user.id,
-              active: false
+          case 11:
+            userArticles = _context11.sent;
+            userArticles.forEach(function (element) {
+              element.viewers.forEach(function (item) {
+                var viewMonth = item.date.getMonth();
+
+                if (currentMonth == viewMonth) {
+                  thisMonthContentViews++;
+                } else if (viewMonth + 1 == currentMonth) {
+                  lastMonthContentViews++;
+                }
+              });
+              element.upvote.users.forEach(function (item) {
+                var viewMonth = item.date.getMonth();
+
+                if (currentMonth == viewMonth) {
+                  upvote_thismonth++;
+                } else if (viewMonth + 1 == currentMonth) {
+                  upvote_lastmonth++;
+                }
+              });
             });
 
-          case 5:
-            inactivePost = _context11.sent;
-            _context11.next = 8;
-            return _articles["default"].countDocuments({
-              postedBy: req.user.id,
-              qualify: "qualify"
+            if (lastMonthContentViews == 0) {
+              increaseContenViews = ((thisMonthContentViews + limitViews) / limitViews * 100).toFixed(2);
+            } else {
+              increaseContenViews = ((thisMonthContentViews - lastMonthContentViews) / lastMonthContentViews * 100).toFixed(2);
+            }
+
+            if (upvote_lastmonth == 0) {
+              upvote_increase = ((upvote_thismonth + limitViews) / limitViews * 100).toFixed(2);
+            } else {
+              upvote_increase = ((upvote_thismonth - upvote_lastmonth) / upvote_lastmonth * 100).toFixed(2);
+            } // profile views
+
+
+            profile_lastmonth = 0;
+            profile_thismonth = 0;
+            profile_increase = 0;
+            follow_lastmonth = 0;
+            follow_thismonth = 0;
+            follow_increase = 0;
+            _context11.next = 23;
+            return _users["default"].find({
+              _id: req.user.id
             });
 
-          case 8:
-            qualifyPost = _context11.sent;
+          case 23:
+            totalusers = _context11.sent;
+            totalusers.forEach(function (element) {
+              element.viewers.forEach(function (item) {
+                var viewMonth = item.date.getMonth();
+
+                if (currentMonth == viewMonth) {
+                  profile_thismonth++;
+                } else if (viewMonth + 1 == currentMonth) {
+                  profile_lastmonth++;
+                }
+              });
+              element.following.forEach(function (item) {
+                var viewMonth = item.date.getMonth();
+
+                if (currentMonth == viewMonth) {
+                  follow_thismonth++;
+                } else if (viewMonth + 1 == currentMonth) {
+                  follow_lastmonth++;
+                }
+              });
+            });
+
+            if (profile_lastmonth == 0) {
+              profile_increase = ((profile_thismonth + limitViews) / limitViews * 100).toFixed(2);
+            } else {
+              profile_increase = ((profile_thismonth - profile_lastmonth) / profile_lastmonth * 100).toFixed(2);
+            } // if (follow_thismonth == 0) {
+            //   follow_increase = ((follow_thismonth + limitViews) / limitViews * 100).toFixed(2);
+            // } else {
+            //   follow_increase = ((follow_thismonth - follow_lastmonth) / follow_lastmonth * 100).toFixed(2);
+            // }
+
+
+            follow_increase = follow_thismonth - follow_lastmonth;
+            statusCounts = {
+              contentView: {
+                count: thisMonthContentViews,
+                increase: increaseContenViews
+              },
+              profileView: {
+                count: profile_thismonth,
+                increase: profile_increase
+              },
+              upvote: {
+                count: upvote_thismonth,
+                increase: upvote_increase
+              },
+              follow: {
+                count: follow_thismonth,
+                increase: follow_increase
+              }
+            };
             authorrank = "";
-            _context11.next = 12;
+            _context11.next = 31;
             return _articles["default"].find({}).sort({
               views: -1
             });
 
-          case 12:
+          case 31:
             users = _context11.sent;
             users.forEach(function (element, index) {
               if (element.postedBy == req.user.id) {
@@ -1010,38 +1102,32 @@ router.get('/user/authorstatus', /*#__PURE__*/function () {
             });
             upvotesCount = 0;
             veiwsCount = 0;
-            _context11.next = 18;
+            _context11.next = 37;
             return _articles["default"].find({
               postedBy: req.user.id
             });
 
-          case 18:
+          case 37:
             articles = _context11.sent;
             articles.forEach(function (element) {
               upvotesCount = element.upvote.count;
               veiwsCount = element.views;
             });
-            _context11.next = 22;
+            _context11.next = 41;
             return _users["default"].countDocuments({
               _id: req.user.id
             }).populate("following").sort({
               createdAt: -1
             });
 
-          case 22:
+          case 41:
             followers = _context11.sent;
             res.render("./user/author", {
               title: "Dashboard",
-              totalPost: totalPost,
-              inactivePost: inactivePost,
-              qualifyPost: qualifyPost,
-              authorrank: authorrank,
-              upvotesCount: upvotesCount,
-              veiwsCount: veiwsCount,
-              followers: followers
+              statusCounts: statusCounts
             });
 
-          case 24:
+          case 43:
           case "end":
             return _context11.stop();
         }

@@ -532,7 +532,7 @@ router.post("/api/sign-up", /*#__PURE__*/function () {
             set = _context9.sent;
 
             if (!(set.registrationSystem == true)) {
-              _context9.next = 48;
+              _context9.next = 47;
               break;
             }
 
@@ -557,7 +557,6 @@ router.post("/api/sign-up", /*#__PURE__*/function () {
             });
             usernameslug = array.join("");
             token = _crypto["default"].randomBytes(16).toString("hex");
-            console.log(token);
             payload = {};
 
             if (token) {
@@ -582,7 +581,7 @@ router.post("/api/sign-up", /*#__PURE__*/function () {
             }
 
             if (!(req.body.password !== req.body.cPassword)) {
-              _context9.next = 18;
+              _context9.next = 17;
               break;
             }
 
@@ -591,17 +590,17 @@ router.post("/api/sign-up", /*#__PURE__*/function () {
             };
             return _context9.abrupt("return", res.json(message));
 
-          case 18:
-            _context9.next = 20;
+          case 17:
+            _context9.next = 19;
             return _users["default"].findOne({
               email: req.body.email
             });
 
-          case 20:
+          case 19:
             check = _context9.sent;
 
             if (!check) {
-              _context9.next = 26;
+              _context9.next = 25;
               break;
             }
 
@@ -610,33 +609,33 @@ router.post("/api/sign-up", /*#__PURE__*/function () {
             };
             return _context9.abrupt("return", res.json(message));
 
-          case 26:
-            _context9.next = 28;
+          case 25:
+            _context9.next = 27;
             return _users["default"].create(payload);
 
-          case 28:
+          case 27:
             user = _context9.sent;
 
             if (!(set.emailVerification == true)) {
-              _context9.next = 34;
+              _context9.next = 33;
               break;
             }
 
-            _context9.next = 32;
+            _context9.next = 31;
             return (0, _mail2["default"])("Registration Successfull", req.body.email, "reg-email", payload, req.headers.host, function (err, info) {
               if (err) console.log(err);
             });
 
-          case 32:
-            _context9.next = 35;
+          case 31:
+            _context9.next = 34;
             break;
 
-          case 34:
+          case 33:
             null;
 
-          case 35:
+          case 34:
             if (!(set.emailVerification == true)) {
-              _context9.next = 40;
+              _context9.next = 39;
               break;
             }
 
@@ -645,9 +644,9 @@ router.post("/api/sign-up", /*#__PURE__*/function () {
             };
             return _context9.abrupt("return", res.json(message));
 
-          case 40:
+          case 39:
             if (!(set.autoLogin == true)) {
-              _context9.next = 44;
+              _context9.next = 43;
               break;
             }
 
@@ -658,26 +657,26 @@ router.post("/api/sign-up", /*#__PURE__*/function () {
               } else if (user.roleId === "admin") {//return res.redirect(`/dashboard/index`);
               }
             });
-            _context9.next = 46;
+            _context9.next = 45;
             break;
 
-          case 44:
+          case 43:
             message = {
               "Success": "Registration Successfull"
             };
             return _context9.abrupt("return", res.json(message));
 
-          case 46:
-            _context9.next = 50;
+          case 45:
+            _context9.next = 49;
             break;
 
-          case 48:
+          case 47:
             message = {
               "ERROR": "not registersystem"
             };
             return _context9.abrupt("return", res.json(message));
 
-          case 50:
+          case 49:
           case "end":
             return _context9.stop();
         }
@@ -2159,23 +2158,29 @@ router.post("/user/dashboard/ban-user", _auth["default"], (0, _role["default"])(
 
 router.get("/follow-user", _auth["default"], /*#__PURE__*/function () {
   var _ref25 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee25(req, res, next) {
+    var date, payload;
     return _regenerator["default"].wrap(function _callee25$(_context25) {
       while (1) {
         switch (_context25.prev = _context25.next) {
           case 0:
-            _context25.next = 2;
+            date = new Date();
+            payload = {
+              date: date,
+              user: req.user.id
+            };
+            _context25.next = 4;
             return _users["default"].updateOne({
               _id: req.query.followerId
             }, {
               $push: {
-                following: req.user.id
+                following: payload
               }
             });
 
-          case 2:
+          case 4:
             return _context25.abrupt("return", res.redirect("back"));
 
-          case 3:
+          case 5:
           case "end":
             return _context25.stop();
         }
@@ -2194,26 +2199,35 @@ router.get("/unfollow-user", _auth["default"], /*#__PURE__*/function () {
       while (1) {
         switch (_context26.prev = _context26.next) {
           case 0:
+            following.forEach(function (element) {
+              if (element.user == req.user.id) {
+                removefield = element._id;
+              }
+            });
+            console.log(following);
+
             if (!req.query.authorId) {
-              _context26.next = 5;
+              _context26.next = 7;
               break;
             }
 
-            _context26.next = 3;
+            _context26.next = 5;
             return _users["default"].updateOne({
               _id: req.query.authorId
             }, {
               $pull: {
-                following: req.user.id
+                following: {
+                  user: req.user.id
+                }
               }
             });
 
-          case 3:
-            _context26.next = 7;
+          case 5:
+            _context26.next = 9;
             break;
 
-          case 5:
-            _context26.next = 7;
+          case 7:
+            _context26.next = 9;
             return _users["default"].updateOne({
               _id: req.query.followerId
             }, {
@@ -2222,10 +2236,10 @@ router.get("/unfollow-user", _auth["default"], /*#__PURE__*/function () {
               }
             });
 
-          case 7:
+          case 9:
             return _context26.abrupt("return", res.redirect('back'));
 
-          case 8:
+          case 10:
           case "end":
             return _context26.stop();
         }

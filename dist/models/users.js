@@ -59,7 +59,13 @@ var userSchema = new Schema({
   googleId: String,
   vkontakteId: String,
   appleId: String,
-  following: Array,
+  following: [{
+    date: Date,
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User"
+    }
+  }],
   fromgoogle: String,
   fromfacebook: String,
   fromlinkedin: String,
@@ -71,6 +77,10 @@ var userSchema = new Schema({
   phone: String,
   postenable: String,
   tax: String,
+  viewers: [{
+    ip: String,
+    date: Date
+  }],
   earning: [{
     balance: {
       type: Number,

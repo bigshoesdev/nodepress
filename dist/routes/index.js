@@ -946,9 +946,7 @@ router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
                   while (1) {
                     switch (_context8.prev = _context8.next) {
                       case 0:
-                        console.log(element.username);
                         username = element.username.toLowerCase().replace(" ", "");
-                        console.log(username);
                         array = username.split('');
                         array.forEach(function (item, index) {
                           if (item == "ß") {
@@ -968,14 +966,14 @@ router.get('/', _install["default"].redirectToLogin, /*#__PURE__*/function () {
                           }
                         });
                         usernameslug = array.join("");
-                        _context8.next = 8;
+                        _context8.next = 6;
                         return _users["default"].updateOne({
                           _id: element._id
                         }, {
                           usernameslug: usernameslug
                         });
 
-                      case 8:
+                      case 6:
                       case "end":
                         return _context8.stop();
                     }
@@ -1582,7 +1580,7 @@ router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function
 }());
 router.get('/author/:usernameslug', _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref19 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee19(req, res, next) {
-    var user, featured, perPage, page, article, count;
+    var user, featured, ip, payload, perPage, page, article, count;
     return _regenerator["default"].wrap(function _callee19$(_context19) {
       while (1) {
         switch (_context19.prev = _context19.next) {
@@ -1648,13 +1646,28 @@ router.get('/author/:usernameslug', _install["default"].redirectToLogin, /*#__PU
             }
 
             res.render('404');
-            _context19.next = 19;
+            _context19.next = 23;
             break;
 
           case 10:
+            ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress || req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null);
+            payload = {
+              ip: ip,
+              date: new Date()
+            };
+            _context19.next = 14;
+            return _users["default"].updateOne({
+              _id: user.id
+            }, {
+              $push: {
+                viewers: payload
+              }
+            });
+
+          case 14:
             perPage = 9;
             page = req.query.page || 1;
-            _context19.next = 14;
+            _context19.next = 18;
             return _articles["default"].find({
               active: true,
               postedBy: user._id
@@ -1662,15 +1675,15 @@ router.get('/author/:usernameslug', _install["default"].redirectToLogin, /*#__PU
               createdAt: -1
             });
 
-          case 14:
+          case 18:
             article = _context19.sent;
-            _context19.next = 17;
+            _context19.next = 21;
             return _articles["default"].countDocuments({
               active: true,
               postedBy: user._id
             });
 
-          case 17:
+          case 21:
             count = _context19.sent;
             res.render('author', {
               author: user,
@@ -1680,7 +1693,7 @@ router.get('/author/:usernameslug', _install["default"].redirectToLogin, /*#__PU
               pages: Math.ceil(count / perPage)
             });
 
-          case 19:
+          case 23:
           case "end":
             return _context19.stop();
         }
