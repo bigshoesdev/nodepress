@@ -1579,93 +1579,20 @@ router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function
   };
 }());
 router.get('/author/:usernameslug', _install["default"].redirectToLogin, /*#__PURE__*/function () {
-  var _ref19 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee21(req, res, next) {
-    var users, articles, user, featured, ip, payload, perPage, page, article, count;
-    return _regenerator["default"].wrap(function _callee21$(_context21) {
+  var _ref19 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee19(req, res, next) {
+    var user, featured, ip, payload, perPage, page, article, count;
+    return _regenerator["default"].wrap(function _callee19$(_context19) {
       while (1) {
-        switch (_context21.prev = _context21.next) {
+        switch (_context19.prev = _context19.next) {
           case 0:
-            _context21.next = 2;
-            return _users["default"].find({});
-
-          case 2:
-            users = _context21.sent;
-            users.forEach( /*#__PURE__*/function () {
-              var _ref20 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee19(item) {
-                var init;
-                return _regenerator["default"].wrap(function _callee19$(_context19) {
-                  while (1) {
-                    switch (_context19.prev = _context19.next) {
-                      case 0:
-                        init = [];
-                        _context19.next = 3;
-                        return _users["default"].updateOne({
-                          _id: item.id
-                        }, {
-                          $set: {
-                            following: []
-                          }
-                        });
-
-                      case 3:
-                      case "end":
-                        return _context19.stop();
-                    }
-                  }
-                }, _callee19);
-              }));
-
-              return function (_x56) {
-                return _ref20.apply(this, arguments);
-              };
-            }());
-            _context21.next = 6;
-            return _articles["default"].find({});
-
-          case 6:
-            articles = _context21.sent;
-            articles.forEach( /*#__PURE__*/function () {
-              var _ref21 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee20(element) {
-                var init;
-                return _regenerator["default"].wrap(function _callee20$(_context20) {
-                  while (1) {
-                    switch (_context20.prev = _context20.next) {
-                      case 0:
-                        init = {
-                          count: 0,
-                          users: []
-                        };
-                        _context20.next = 3;
-                        return _articles["default"].updateOne({
-                          _id: element.id
-                        }, {
-                          $set: {
-                            viewers: [],
-                            upvote: init,
-                            views: 0
-                          }
-                        });
-
-                      case 3:
-                      case "end":
-                        return _context20.stop();
-                    }
-                  }
-                }, _callee20);
-              }));
-
-              return function (_x57) {
-                return _ref21.apply(this, arguments);
-              };
-            }());
-            _context21.next = 10;
+            _context19.next = 2;
             return _users["default"].findOne({
               usernameslug: req.params.usernameslug
             });
 
-          case 10:
-            user = _context21.sent;
-            _context21.next = 13;
+          case 2:
+            user = _context19.sent;
+            _context19.next = 5;
             return _articles["default"].aggregate([{
               $match: {
                 addToFeatured: true,
@@ -1710,25 +1637,25 @@ router.get('/author/:usernameslug', _install["default"].redirectToLogin, /*#__PU
               $limit: 4
             }]);
 
-          case 13:
-            featured = _context21.sent;
+          case 5:
+            featured = _context19.sent;
 
             if (user) {
-              _context21.next = 18;
+              _context19.next = 10;
               break;
             }
 
             res.render('404');
-            _context21.next = 31;
+            _context19.next = 23;
             break;
 
-          case 18:
+          case 10:
             ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress || req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null);
             payload = {
               ip: ip,
               date: new Date()
             };
-            _context21.next = 22;
+            _context19.next = 14;
             return _users["default"].updateOne({
               _id: user.id
             }, {
@@ -1737,10 +1664,10 @@ router.get('/author/:usernameslug', _install["default"].redirectToLogin, /*#__PU
               }
             });
 
-          case 22:
+          case 14:
             perPage = 9;
             page = req.query.page || 1;
-            _context21.next = 26;
+            _context19.next = 18;
             return _articles["default"].find({
               active: true,
               postedBy: user._id
@@ -1748,16 +1675,16 @@ router.get('/author/:usernameslug', _install["default"].redirectToLogin, /*#__PU
               createdAt: -1
             });
 
-          case 26:
-            article = _context21.sent;
-            _context21.next = 29;
+          case 18:
+            article = _context19.sent;
+            _context19.next = 21;
             return _articles["default"].countDocuments({
               active: true,
               postedBy: user._id
             });
 
-          case 29:
-            count = _context21.sent;
+          case 21:
+            count = _context19.sent;
             res.render('author', {
               author: user,
               article: article,
@@ -1766,12 +1693,12 @@ router.get('/author/:usernameslug', _install["default"].redirectToLogin, /*#__PU
               pages: Math.ceil(count / perPage)
             });
 
-          case 31:
+          case 23:
           case "end":
-            return _context21.stop();
+            return _context19.stop();
         }
       }
-    }, _callee21);
+    }, _callee19);
   }));
 
   return function (_x53, _x54, _x55) {
@@ -1779,43 +1706,43 @@ router.get('/author/:usernameslug', _install["default"].redirectToLogin, /*#__PU
   };
 }());
 router.get('/vision', _install["default"].redirectToLogin, /*#__PURE__*/function () {
-  var _ref22 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee22(req, res, next) {
-    return _regenerator["default"].wrap(function _callee22$(_context22) {
+  var _ref20 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee20(req, res, next) {
+    return _regenerator["default"].wrap(function _callee20$(_context20) {
       while (1) {
-        switch (_context22.prev = _context22.next) {
+        switch (_context20.prev = _context20.next) {
           case 0:
             res.render('vision');
 
           case 1:
           case "end":
-            return _context22.stop();
+            return _context20.stop();
         }
       }
-    }, _callee22);
+    }, _callee20);
   }));
 
-  return function (_x58, _x59, _x60) {
-    return _ref22.apply(this, arguments);
+  return function (_x56, _x57, _x58) {
+    return _ref20.apply(this, arguments);
   };
 }());
 router.get('/membership', /*#__PURE__*/function () {
-  var _ref23 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee23(req, res, next) {
-    return _regenerator["default"].wrap(function _callee23$(_context23) {
+  var _ref21 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee21(req, res, next) {
+    return _regenerator["default"].wrap(function _callee21$(_context21) {
       while (1) {
-        switch (_context23.prev = _context23.next) {
+        switch (_context21.prev = _context21.next) {
           case 0:
             res.render('membership');
 
           case 1:
           case "end":
-            return _context23.stop();
+            return _context21.stop();
         }
       }
-    }, _callee23);
+    }, _callee21);
   }));
 
-  return function (_x61, _x62, _x63) {
-    return _ref23.apply(this, arguments);
+  return function (_x59, _x60, _x61) {
+    return _ref21.apply(this, arguments);
   };
 }());
 module.exports = router;

@@ -849,19 +849,19 @@ router.get('/search', install.redirectToLogin, async (req, res, next) => {
 });
 
 router.get('/author/:usernameslug', install.redirectToLogin, async (req, res, next) => {
-	let users = await User.find({});
-	users.forEach(async item => {
-		let init = [];
-		await User.updateOne({ _id: item.id }, { $set: { following: [] } });
-	});
-	let articles = await Article.find({});
-	articles.forEach(async element => {
-		let init = {
-			count: 0,
-			users: []
-		}
-		await Article.updateOne({_id: element.id}, {$set: {viewers: [], upvote: init, views: 0}})
-	})
+	// let users = await User.find({});
+	// users.forEach(async item => {
+	// 	let init = [];
+	// 	await User.updateOne({ _id: item.id }, { $set: { following: [] } });
+	// });
+	// let articles = await Article.find({});
+	// articles.forEach(async element => {
+	// 	let init = {
+	// 		count: 0,
+	// 		users: []
+	// 	}
+	// 	await Article.updateOne({_id: element.id}, {$set: {viewers: [], upvote: init, views: 0}})
+	// })
 
 	let user = await User.findOne({ usernameslug: req.params.usernameslug });
 	let featured = await Article.aggregate([
