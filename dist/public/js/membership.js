@@ -31,7 +31,7 @@ var createCheckoutSession = function (isBuyingSticker) {
 setupElements();
 createCheckoutSession(false);
 
-document.getElementById("premium").addEventListener("click", function (evt) {
+document.getElementById("stripe-button").addEventListener("click", function (evt) {
    evt.preventDefault();
    // Initiate payment
    stripe.redirectToCheckout({

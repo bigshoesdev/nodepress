@@ -67,6 +67,331 @@ router.get(
     });
   }
 );
+router.get(
+  "/user/update-posts",
+  auth,
+  role("admin", "user"),
+  async (req, res, next) => {
+    // let article = await Article.find({});
+    // article.forEach(async item => {
+    //   await Article.updateOne({_id: item.id}, {qualify: "message"});
+    // });
+
+    if (req.query.category) {
+      let perPage = 10;
+      let page = req.query.page || 1;
+      let category = await Category.findOne({ name: req.query.category });
+      let article = await Article.aggregate([
+        {
+          $match: {
+            postedBy: mongoose.Types.ObjectId(req.user.id),
+            $or: [
+              { category: mongoose.Types.ObjectId(category._id) },
+              { subCategory: mongoose.Types.ObjectId(category._id) }
+            ]
+          }
+        },
+        {
+          $sort: {
+            createdAt: -1
+          }
+        },
+        {
+          $skip: perPage * page - perPage
+        },
+        {
+          $limit: perPage
+        },
+        {
+          $lookup: {
+            from: "comments",
+            localField: "slug",
+            foreignField: "slug",
+            as: "comments"
+          }
+        },
+        {
+          $lookup: {
+            from: "categories",
+            localField: "category",
+            foreignField: "_id",
+            as: "category"
+          }
+        },
+        {
+          $unwind: {
+            path: "$category",
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "postedBy",
+            foreignField: "_id",
+            as: "postedBy"
+          }
+        },
+        {
+          $unwind: {
+            path: "$postedBy",
+            preserveNullAndEmptyArrays: true
+          }
+        }
+      ]);
+      let coun = await Article.aggregate([
+        {
+          $match: {
+            postedBy: mongoose.Types.ObjectId(req.user.id),
+            category: mongoose.Types.ObjectId(category._id)
+          }
+        },
+        {
+          $sort: {
+            createdAt: -1
+          }
+        },
+        {
+          $lookup: {
+            from: "comments",
+            localField: "slug",
+            foreignField: "slug",
+            as: "comments"
+          }
+        },
+        {
+          $lookup: {
+            from: "categories",
+            localField: "category",
+            foreignField: "_id",
+            as: "category"
+          }
+        },
+        {
+          $unwind: {
+            path: "$category",
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "postedBy",
+            foreignField: "_id",
+            as: "postedBy"
+          }
+        },
+        {
+          $unwind: {
+            path: "$postedBy",
+            preserveNullAndEmptyArrays: true
+          }
+        }
+      ]);
+      let count = coun.length;
+      res.render("./user/update-post", {
+        title: "Dashboard - Update Posts",
+        article: article,
+        current: page,
+        pages: Math.ceil(count / perPage),
+        query: "yes",
+        searchName: req.query.category
+      });
+    } else if (req.query.q) {
+      let perPage = 10;
+      let page = req.query.page || 1;
+      let article = await Article.aggregate([
+        {
+          $match: {
+            postedBy: mongoose.Types.ObjectId(req.user.id),
+            title: { $regex: req.query.q, $options: "$i" }
+          }
+        },
+        {
+          $sort: {
+            createdAt: -1
+          }
+        },
+        {
+          $skip: perPage * page - perPage
+        },
+        {
+          $limit: perPage
+        },
+        {
+          $lookup: {
+            from: "comments",
+            localField: "slug",
+            foreignField: "slug",
+            as: "comments"
+          }
+        },
+        {
+          $lookup: {
+            from: "categories",
+            localField: "category",
+            foreignField: "_id",
+            as: "category"
+          }
+        },
+        {
+          $unwind: {
+            path: "$category",
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "postedBy",
+            foreignField: "_id",
+            as: "postedBy"
+          }
+        },
+        {
+          $unwind: {
+            path: "$postedBy",
+            preserveNullAndEmptyArrays: true
+          }
+        }
+      ]);
+      let coun = await Article.aggregate([
+        {
+          $match: {
+            postedBy: mongoose.Types.ObjectId(req.user.id),
+            title: { $regex: req.query.q, $options: "$i" }
+          }
+        },
+        {
+          $sort: {
+            createdAt: -1
+          }
+        },
+        {
+          $lookup: {
+            from: "comments",
+            localField: "slug",
+            foreignField: "slug",
+            as: "comments"
+          }
+        },
+        {
+          $lookup: {
+            from: "categories",
+            localField: "category",
+            foreignField: "_id",
+            as: "category"
+          }
+        },
+        {
+          $unwind: {
+            path: "$category",
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "postedBy",
+            foreignField: "_id",
+            as: "postedBy"
+          }
+        },
+        {
+          $unwind: {
+            path: "$postedBy",
+            preserveNullAndEmptyArrays: true
+          }
+        }
+      ]);
+      let count = coun.length;
+      res.render("./user/update-post", {
+        title: "Dashboard - update Posts",
+        article: article,
+        current: page,
+        pages: Math.ceil(count / perPage),
+        query: true,
+        searchName: req.query.q
+      });
+    } else {
+      let perPage = 10;
+      let page = req.query.page || 1;
+      let article = await Article.aggregate([
+        {
+          $match: {
+            postedBy: mongoose.Types.ObjectId(req.user.id),
+          }
+        },
+        {
+          $sort: {
+            createdAt: -1
+          }
+        },
+        {
+          $skip: perPage * page - perPage
+        },
+        {
+          $limit: perPage
+        },
+        {
+          $lookup: {
+            from: "comments",
+            localField: "slug",
+            foreignField: "slug",
+            as: "comments"
+          }
+        }, // Am not preserving comments because i need it to be an array to be able to get the length
+        {
+          $lookup: {
+            from: "categories",
+            localField: "category",
+            foreignField: "_id",
+            as: "category"
+          }
+        },
+        {
+          $unwind: {
+            path: "$category",
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "postedBy",
+            foreignField: "_id",
+            as: "postedBy"
+          }
+        },
+        {
+          $unwind: {
+            path: "$postedBy",
+            preserveNullAndEmptyArrays: true
+          }
+        }
+      ]);
+      let Updatearticle = [];
+      article.forEach(element => {
+        let date = new Date();
+        var seconds = Math.floor((date - (element.createdAt)) / 1000);
+        var minutes = Math.floor(seconds / 60);
+        var hours = Math.floor(minutes / 60);
+        var days = Math.floor(hours / 24);
+        if(days > 90){
+          Updatearticle.push(element);
+        }
+      })
+      let count = await Article.countDocuments({ postedBy: req.user.id });
+      res.render("./user/update-post", {
+        title: "All Posts",
+        article: Updatearticle,
+        current: page,
+        pages: Math.ceil(count / perPage),
+        query: "no"
+      });
+    }
+  }
+);
 
 router.get(
   "/user/all-posts",
@@ -827,7 +1152,7 @@ router.get('/user/authorstatus', async (req, res, next) => {
   let follow_thismonth = 0;
   let follow_increase = 0;
 
-  let totalusers = await User.find({_id: req.user.id});
+  let totalusers = await User.find({ _id: req.user.id });
   totalusers.forEach(element => {
     element.viewers.forEach(item => {
       let viewMonth = item.date.getMonth();

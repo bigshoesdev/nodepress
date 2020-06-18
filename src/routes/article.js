@@ -459,7 +459,8 @@ router.post(
       }
       switch (req.body.postType) {
         case "post":
-          Article.updateOne({ _id: req.body.articleId.trim() }, req.body)
+          let date = new Date();
+          Article.updateOne({ _id: req.body.articleId.trim() }, req.body, { updatedAt: date })
             .then(updated => {
               req.flash("success_msg", "Article has been updated successfully");
               if (req.user.roleId == "admin") {

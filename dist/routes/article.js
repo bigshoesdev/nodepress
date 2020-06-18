@@ -378,9 +378,13 @@ router.post("/article/edit", _install["default"].redirectToLogin, _auth["default
 
     switch (req.body.postType) {
       case "post":
+        var date = new Date();
+
         _articles["default"].updateOne({
           _id: req.body.articleId.trim()
-        }, req.body).then(function (updated) {
+        }, req.body, {
+          updatedAt: date
+        }).then(function (updated) {
           req.flash("success_msg", "Article has been updated successfully");
 
           if (req.user.roleId == "admin") {
