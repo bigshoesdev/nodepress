@@ -603,9 +603,8 @@ router.get('/afterlogin', install.redirectToLogin, async (req, res, next) => {
       }
     }
     let followers = await User.find({
-      following: { $in: req.user.id }
+      "following.user": { $in: req.user.id }
     }).populate("following").sort({ createdAt: -1 });
-
     let authorarticle = [];
     for (var i in followers) {
       let art = await Article.find({
@@ -621,6 +620,7 @@ router.get('/afterlogin', install.redirectToLogin, async (req, res, next) => {
         }
       }
     }
+
     // let authorarticle = await Article.find({ postedBy: req.user.id }).populate('category');
 
     let usercategoryList = req.user.categoryList;

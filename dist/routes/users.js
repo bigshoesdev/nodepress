@@ -1107,7 +1107,7 @@ router.get('/afterlogin', _install["default"].redirectToLogin, /*#__PURE__*/func
           case 28:
             _context13.next = 30;
             return _users["default"].find({
-              following: {
+              "following.user": {
                 $in: req.user.id
               }
             }).populate("following").sort({

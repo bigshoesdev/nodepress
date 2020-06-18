@@ -724,7 +724,7 @@ router.get('/blogrecent', _install["default"].redirectToLogin, /*#__PURE__*/func
             });
             _context6.next = 27;
             return _users["default"].find({
-              following: {
+              "following.user": {
                 $in: req.user.id
               }
             }).populate("following").sort({

@@ -939,7 +939,7 @@ router.get("/user/following", _auth["default"], (0, _role["default"])("admin", "
           case 0:
             _context10.next = 2;
             return _users["default"].find({
-              following: {
+              "following.user": {
                 $in: req.user.id
               }
             }).populate("following").sort({

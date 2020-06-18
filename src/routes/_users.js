@@ -771,7 +771,7 @@ router.get(
   role("admin", "user"),
   async (req, res, next) => {
     const followers = await User.find({
-      following: { $in: req.user.id }
+      "following.user": { $in: req.user.id }
     }).populate("following").sort({ createdAt: -1 });
     res.render("./user/followings", { title: "Followings", followers });
   }

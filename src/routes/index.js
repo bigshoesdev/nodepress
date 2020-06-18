@@ -490,7 +490,7 @@ router.get('/blogrecent', install.redirectToLogin, async (req, res, next) => {
 		});
 	});
 	let followers = await User.find({
-		following: { $in: req.user.id }
+		"following.user": { $in: req.user.id }
 	}).populate("following").sort({ createdAt: -1 });
 
 	let authorarticle = [];
