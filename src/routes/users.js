@@ -751,9 +751,7 @@ router.post("/close", async (req, res, next) => {
 router.post(
   "/login",
   install.redirectToLogin,
-  checkIfLoggedIn,
-  (req, res, next) => {
-    console.log(req.body);
+  checkIfLoggedIn, (req, res, next) => {
     if (!req.body['g-recaptcha-response']) {
       req.flash("success_msg", "Captcha is required!");
       return res.redirect("back");

@@ -62,8 +62,7 @@ var userSchema = new Schema({
   following: [{
     date: Date,
     user: {
-      type: Schema.Types.ObjectId,
-      ref: "User"
+      type: Schema.Types.ObjectId
     }
   }],
   fromgoogle: String,

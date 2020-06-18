@@ -1378,8 +1378,6 @@ router.post("/close", /*#__PURE__*/function () {
   };
 }());
 router.post("/login", _install["default"].redirectToLogin, checkIfLoggedIn, function (req, res, next) {
-  console.log(req.body);
-
   if (!req.body['g-recaptcha-response']) {
     req.flash("success_msg", "Captcha is required!");
     return res.redirect("back");
