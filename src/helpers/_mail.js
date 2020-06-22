@@ -95,8 +95,8 @@ module.exports = async (subject, to, html, replace, siteUrl, callback) => {
                 const htmlToSend = template(replacements);
                 const mailOptions = {
                     to: to,
-                    // from: `${set.siteName} <no-reply@${siteUrl}>`,
-                    from: "dype",
+                    from: `${set.siteName} <no-reply@${siteUrl}>`,
+                    // from: "dype",
                     subject: subject,
                     html: htmlToSend,
                     sender: `no-reply@${siteUrl}`,

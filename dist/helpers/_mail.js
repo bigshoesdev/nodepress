@@ -117,8 +117,8 @@ module.exports = /*#__PURE__*/function () {
               var htmlToSend = template(replacements);
               var mailOptions = {
                 to: to,
-                // from: `${set.siteName} <no-reply@${siteUrl}>`,
-                from: "dype",
+                from: "".concat(set.siteName, " <no-reply@").concat(siteUrl, ">"),
+                // from: "dype",
                 subject: subject,
                 html: htmlToSend,
                 sender: "no-reply@".concat(siteUrl),
