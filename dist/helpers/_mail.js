@@ -54,6 +54,9 @@ module.exports = /*#__PURE__*/function () {
               auth: {
                 user: set.email.config.sendgrid.username,
                 pass: set.email.config.sendgrid.password
+              },
+              tls: {
+                rejectUnauthorized: false
               }
             }); // SMTP config
 
@@ -114,7 +117,8 @@ module.exports = /*#__PURE__*/function () {
               var htmlToSend = template(replacements);
               var mailOptions = {
                 to: to,
-                from: "".concat(set.siteName, " <no-reply@").concat(siteUrl, ">"),
+                // from: `${set.siteName} <no-reply@${siteUrl}>`,
+                from: "dype",
                 subject: subject,
                 html: htmlToSend,
                 sender: "no-reply@".concat(siteUrl),

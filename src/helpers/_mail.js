@@ -34,6 +34,9 @@ module.exports = async (subject, to, html, replace, siteUrl, callback) => {
         auth: {
             user: set.email.config.sendgrid.username,
             pass: set.email.config.sendgrid.password
+        },
+        tls: {
+            rejectUnauthorized: false
         }
     });
 
@@ -92,7 +95,8 @@ module.exports = async (subject, to, html, replace, siteUrl, callback) => {
                 const htmlToSend = template(replacements);
                 const mailOptions = {
                     to: to,
-                    from: `${set.siteName} <no-reply@${siteUrl}>`,
+                    // from: `${set.siteName} <no-reply@${siteUrl}>`,
+                    from: "dype",
                     subject: subject,
                     html: htmlToSend,
                     sender: `no-reply@${siteUrl}`,
