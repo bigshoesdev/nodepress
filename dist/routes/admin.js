@@ -713,7 +713,7 @@ router.get("/dashboard/all-posts/edit/:slug", _auth["default"], _install["defaul
     return _ref10.apply(this, arguments);
   };
 }());
-router.get("/dashboard/kategorie/osts/categories", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
+router.get("/dashboard/posts/categories", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref11 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee11(req, res, next) {
     var perPage, page, category, count;
     return _regenerator["default"].wrap(function _callee11$(_context11) {

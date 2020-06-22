@@ -456,7 +456,7 @@ router.get(
 );
 
 router.get(
-  "/dashboard/kategorie/osts/categories",
+  "/dashboard/posts/categories",
   auth,
   install.redirectToLogin,
   role("admin"),

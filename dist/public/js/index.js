@@ -87,28 +87,28 @@ $(function () {
       .animate({ top: '-5000px' }, 140000, 'linear', loop);
 
   }
-  loop();
-  $('.first-column').hover(function () {
-    $(this).stop();
-  }, function () {
-    $(this)
-      .animate({ top: deltaheight_first }, 200000, 'linear', loop);
-  }
-  );
-  $('.second-column').hover(function () {
-    $(this).stop();
-  }, function () {
-    $(this)
-      .animate({ top: deltaheight_second }, 60000, 'linear', loop);
-  }
-  );
-  $('.third-column').hover(function () {
-    $(this).stop();
-  }, function () {
-    $(this)
-      .animate({ top: deltaheight_third }, 140000, 'linear', loop);
-  }
-  );
+  // loop();
+  // $('.first-column').hover(function () {
+  //   $(this).stop();
+  // }, function () {
+  //   $(this)
+  //     .animate({ top: deltaheight_first }, 200000, 'linear', loop);
+  // }
+  // );
+  // $('.second-column').hover(function () {
+  //   $(this).stop();
+  // }, function () {
+  //   $(this)
+  //     .animate({ top: deltaheight_second }, 60000, 'linear', loop);
+  // }
+  // );
+  // $('.third-column').hover(function () {
+  //   $(this).stop();
+  // }, function () {
+  //   $(this)
+  //     .animate({ top: deltaheight_third }, 140000, 'linear', loop);
+  // }
+  // );
 });
 
 
