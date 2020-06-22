@@ -701,7 +701,7 @@ router.post('/api/upfollowlist', async (req, res, next) => {
 	let token = req.body.token; // user token
 	let user = await User.findOne({ token: token });
 	const followers = await User.find({
-		following: { $in: user.id }
+		"following.user": { $in: user.id }
 	}).populate("following").sort({ createdAt: -1 });
 	let payload = {
 		list: followers

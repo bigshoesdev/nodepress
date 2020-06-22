@@ -1242,7 +1242,7 @@ router.post('/api/upfollowlist', /*#__PURE__*/function () {
             user = _context14.sent;
             _context14.next = 6;
             return _users["default"].find({
-              following: {
+              "following.user": {
                 $in: user.id
               }
             }).populate("following").sort({
