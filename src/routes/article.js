@@ -958,54 +958,58 @@ router.get("/d/:category/:slug", install.redirectToLogin, async (req, res, next)
         req.socket.remoteAddress ||
         (req.connection.socket ? req.connection.socket.remoteAddress : null);
       let articleCount = await Article.countDocuments();
-      if (art.viewers.indexOf(ips) !== -1) {
-        res.render("single", {
-          articleCount: articleCount,
-          title: article[0].title,
-          article: article[0],
-          settings: settings,
-          previous: previous[0],
-          next: next[0],
-          featured: featured,
-          popular: popular,
-          recommended: recommended,
-          related: related,
-          bookmark: book,
-          bookmarkId: bookmark == null ? null : bookmark._id
-        });
-      } else {
-        let ip =
-          req.headers["x-forwarded-for"] ||
-          req.connection.remoteAddress ||
-          req.socket.remoteAddress ||
-          (req.connection.socket ? req.connection.socket.remoteAddress : null);
-        await Article.updateOne(
-          { slug: req.params.slug.trim() },
-          { $push: { viewers: ip } }
-        );
-        Article.updateOne(
-          { slug: req.params.slug.trim() },
-          { $inc: { views: 1 } }
-        )
-          .then(views => {
-            res.render("single", {
-              articleCount: articleCount,
-              title: article[0].title,
-              article: article[0],
-              settings: settings,
-              previous: previous[0],
-              next: next[0],
-              featured: featured,
-              popular: popular,
-              recommended: recommended,
-              related: related,
-              bookmark: book,
-              bookmarkId: bookmark == null ? null : bookmark._id
-            });
-          })
-          .catch(err => next(err));
+      // if (art.viewers.indexOf(ips) !== -1) {
+      //   res.render("single", {
+      //     articleCount: articleCount,
+      //     title: article[0].title,
+      //     article: article[0],
+      //     settings: settings,
+      //     previous: previous[0],
+      //     next: next[0],
+      //     featured: featured,
+      //     popular: popular,
+      //     recommended: recommended,
+      //     related: related,
+      //     bookmark: book,
+      //     bookmarkId: bookmark == null ? null : bookmark._id
+      //   });
+      // } else {
+      let ip =
+        req.headers["x-forwarded-for"] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress ||
+        (req.connection.socket ? req.connection.socket.remoteAddress : null);
+      let payload = {
+        ip: ip,
+        date: new Date()
       }
+      await Article.updateOne(
+        { slug: req.params.slug.trim() },
+        { $push: { viewers: payload } }
+      );
+      Article.updateOne(
+        { slug: req.params.slug.trim() },
+        { $inc: { views: 1 } }
+      )
+        .then(views => {
+          res.render("single", {
+            articleCount: articleCount,
+            title: article[0].title,
+            article: article[0],
+            settings: settings,
+            previous: previous[0],
+            next: next[0],
+            featured: featured,
+            popular: popular,
+            recommended: recommended,
+            related: related,
+            bookmark: book,
+            bookmarkId: bookmark == null ? null : bookmark._id
+          });
+        })
+        .catch(err => next(err));
     }
+    // }
   } catch (error) {
     next(error);
   }

@@ -929,7 +929,7 @@ router.get("/p/:category/:slug", _install["default"].redirectToLogin, /*#__PURE_
 
 router.get("/d/:category/:slug", _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(req, res, next) {
-    var settings, article, bookmark, book, art, _next2, index, previous, _index, featured, popular, recommended, related, d, customDate, ips, articleCount, ip;
+    var settings, article, bookmark, book, art, _next2, index, previous, _index, featured, popular, recommended, related, d, customDate, ips, articleCount, ip, payload;
 
     return _regenerator["default"].wrap(function _callee5$(_context5) {
       while (1) {
@@ -1014,7 +1014,7 @@ router.get("/d/:category/:slug", _install["default"].redirectToLogin, /*#__PURE_
             }
 
             res.render("404");
-            _context5.next = 65;
+            _context5.next = 62;
             break;
 
           case 11:
@@ -1170,41 +1170,37 @@ router.get("/d/:category/:slug", _install["default"].redirectToLogin, /*#__PURE_
 
           case 56:
             articleCount = _context5.sent;
-
-            if (!(art.viewers.indexOf(ips) !== -1)) {
-              _context5.next = 61;
-              break;
-            }
-
-            res.render("single", {
-              articleCount: articleCount,
-              title: article[0].title,
-              article: article[0],
-              settings: settings,
-              previous: previous[0],
-              next: _next2[0],
-              featured: featured,
-              popular: popular,
-              recommended: recommended,
-              related: related,
-              bookmark: book,
-              bookmarkId: bookmark == null ? null : bookmark._id
-            });
-            _context5.next = 65;
-            break;
-
-          case 61:
+            // if (art.viewers.indexOf(ips) !== -1) {
+            //   res.render("single", {
+            //     articleCount: articleCount,
+            //     title: article[0].title,
+            //     article: article[0],
+            //     settings: settings,
+            //     previous: previous[0],
+            //     next: next[0],
+            //     featured: featured,
+            //     popular: popular,
+            //     recommended: recommended,
+            //     related: related,
+            //     bookmark: book,
+            //     bookmarkId: bookmark == null ? null : bookmark._id
+            //   });
+            // } else {
             ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress || req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null);
-            _context5.next = 64;
+            payload = {
+              ip: ip,
+              date: new Date()
+            };
+            _context5.next = 61;
             return _articles["default"].updateOne({
               slug: req.params.slug.trim()
             }, {
               $push: {
-                viewers: ip
+                viewers: payload
               }
             });
 
-          case 64:
+          case 61:
             _articles["default"].updateOne({
               slug: req.params.slug.trim()
             }, {
@@ -1230,21 +1226,21 @@ router.get("/d/:category/:slug", _install["default"].redirectToLogin, /*#__PURE_
               return _next2(err);
             });
 
-          case 65:
-            _context5.next = 70;
+          case 62:
+            _context5.next = 67;
             break;
 
-          case 67:
-            _context5.prev = 67;
+          case 64:
+            _context5.prev = 64;
             _context5.t1 = _context5["catch"](0);
             next(_context5.t1);
 
-          case 70:
+          case 67:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[0, 67]]);
+    }, _callee5, null, [[0, 64]]);
   }));
 
   return function (_x13, _x14, _x15) {
