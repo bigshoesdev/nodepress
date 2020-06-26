@@ -168,43 +168,12 @@ router.get("/dashboard", _install["default"].redirectToLogin, _auth["default"], 
 });
 router.get("/dashboard/index", _install["default"].redirectToLogin, _auth["default"], (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(req, res, next) {
-    var totalUsers, pendingPost, totalComments, totalPost, latestComment, latestUsers, latestContact, latestSubscribers;
+    var latestUsers, limitViews, articles, users, date, currentmonth, lastmonth, thiscontentViewCnt, lastcontentViewCnt, increaseView, thiscontenCnt, lastcontenCnt, increaseContent, thispaidCnt, lastpaidCnt, increasePaid, thisfreecnt, lastfreecnt, increasefreecnt, thisqualifycnt, lastqualifycnt, increasequalify, thisnoqualifycnt, lastnoqualifycnt, increasenoqualifycnt, count;
     return _regenerator["default"].wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
             _context5.next = 2;
-            return _users["default"].countDocuments({
-              roleId: 'user'
-            });
-
-          case 2:
-            totalUsers = _context5.sent;
-            _context5.next = 5;
-            return _articles["default"].countDocuments({
-              active: false
-            });
-
-          case 5:
-            pendingPost = _context5.sent;
-            _context5.next = 8;
-            return _comment2["default"].countDocuments();
-
-          case 8:
-            totalComments = _context5.sent;
-            _context5.next = 11;
-            return _articles["default"].countDocuments();
-
-          case 11:
-            totalPost = _context5.sent;
-            _context5.next = 14;
-            return _comment2["default"].find().sort({
-              createdAt: -1
-            }).limit(6);
-
-          case 14:
-            latestComment = _context5.sent;
-            _context5.next = 17;
             return _users["default"].find({
               roleId: {
                 $ne: "admin"
@@ -213,35 +182,178 @@ router.get("/dashboard/index", _install["default"].redirectToLogin, _auth["defau
               createdAt: -1
             }).limit(6);
 
-          case 17:
+          case 2:
             latestUsers = _context5.sent;
-            _context5.next = 20;
-            return _contact["default"].find().sort({
-              createdAt: -1
-            }).limit(6);
+            limitViews = 99999999;
+            _context5.next = 6;
+            return _articles["default"].find({});
 
-          case 20:
-            latestContact = _context5.sent;
-            _context5.next = 23;
-            return _newsletter2["default"].find().sort({
-              createdAt: -1
-            }).limit(6);
+          case 6:
+            articles = _context5.sent;
+            _context5.next = 9;
+            return _users["default"].find({});
 
-          case 23:
-            latestSubscribers = _context5.sent;
+          case 9:
+            users = _context5.sent;
+
+            if (req.query.filter) {
+              date = new Date(req.query.filter);
+            } else {
+              date = new Date();
+            }
+
+            currentmonth = date.getMonth() + 1;
+            lastmonth = date.getMonth(); // date.getMonth() - 1 + 1
+            // content view
+
+            thiscontentViewCnt = 0;
+            lastcontentViewCnt = 0;
+            increaseView = 0; //content page
+
+            thiscontenCnt = 0;
+            lastcontenCnt = 0;
+            increaseContent = 0; // paid customer 
+
+            thispaidCnt = 0;
+            lastpaidCnt = 0;
+            increasePaid = 0; // free customer
+
+            thisfreecnt = 0;
+            lastfreecnt = 0;
+            increasefreecnt = 0; // qualify count
+
+            thisqualifycnt = 0;
+            lastqualifycnt = 0;
+            increasequalify = 0; // free page count
+
+            thisnoqualifycnt = 0;
+            lastnoqualifycnt = 0;
+            increasenoqualifycnt = 0;
+            articles.forEach(function (element) {
+              // content view count
+              element.viewers.forEach(function (item) {
+                var viewdate = item.date.getMonth() + 1;
+
+                if (viewdate == currentmonth) {
+                  thiscontentViewCnt++;
+                } else if (viewdate == lastmonth) {
+                  lastcontentViewCnt++;
+                }
+              }); // content page count
+
+              var createdate = element.createdAt.getMonth() + 1;
+
+              if (createdate == currentmonth) {
+                thiscontenCnt++;
+
+                if (element.qualify == "qualify") {
+                  thisqualifycnt++;
+                } else {
+                  thisnoqualifycnt++;
+                }
+              } else if (createdate == lastmonth) {
+                lastcontenCnt++;
+
+                if (element.qualify == "qualify") {
+                  lastqualifycnt++;
+                } else {
+                  lastnoqualifycnt++;
+                }
+              } // qualify pages
+
+            });
+            users.forEach(function (element) {
+              var createdate = element.createdAt.getMonth() + 1;
+
+              if (element.paid == "paid") {
+                if (createdate == currentmonth) {
+                  thispaidCnt++;
+                } else if (createdate == lastmonth) {
+                  lastpaidCnt++;
+                }
+              } else {
+                if (createdate == currentmonth) {
+                  thisfreecnt++;
+                } else if (createdate == lastmonth) {
+                  lastfreecnt++;
+                }
+              }
+            }); // content views
+
+            if (lastcontentViewCnt == 0) {
+              increaseView = ((thiscontentViewCnt + limitViews) / limitViews * 100).toFixed(2);
+            } else {
+              increaseView = (thiscontentViewCnt / lastcontentViewCnt * 100).toFixed(2);
+            } // content pages  
+
+
+            if (lastcontenCnt == 0) {
+              increaseContent = ((thiscontenCnt + limitViews) / limitViews * 100).toFixed(2);
+            } else {
+              increaseContent = (thiscontenCnt / lastcontenCnt * 100).toFixed(2);
+            } // paid customer
+
+
+            if (lastpaidCnt == 0) {
+              increasePaid = ((thispaidCnt + limitViews) / limitViews * 100).toFixed(2);
+            } else {
+              increasePaid = (thispaidCnt / lastpaidCnt * 100).toFixed(2);
+            } // free customer
+
+
+            if (lastfreecnt == 0) {
+              increasefreecnt = ((thisfreecnt + limitViews) / limitViews * 100).toFixed(2);
+            } else {
+              increasefreecnt = (thisfreecnt / lastfreecnt * 100).toFixed(2);
+            } // qualify count
+
+
+            if (lastqualifycnt == 0) {
+              increasequalify = ((thisqualifycnt + limitViews) / limitViews * 100).toFixed(2);
+            } else {
+              increasequalify = (thisqualifycnt / lastqualifycnt * 100).toFixed(2);
+            } // free count
+
+
+            if (lastnoqualifycnt == 0) {
+              increasenoqualifycnt = ((thisnoqualifycnt + limitViews) / limitViews * 100).toFixed(2);
+            } else {
+              increasenoqualifycnt = (thisnoqualifycnt / lastnoqualifycnt * 100).toFixed(2);
+            }
+
+            count = {
+              contentView: {
+                count: thiscontentViewCnt,
+                increase: increaseView
+              },
+              contentPage: {
+                count: thiscontenCnt,
+                increase: increaseContent
+              },
+              paid: {
+                count: thispaidCnt,
+                increase: increasePaid
+              },
+              free: {
+                count: thisfreecnt,
+                increase: increasefreecnt
+              },
+              qualify: {
+                count: thisqualifycnt,
+                increase: increasequalify
+              },
+              nonqualify: {
+                count: thisnoqualifycnt,
+                increase: increasenoqualifycnt
+              }
+            };
             res.render("./admin/index", {
               title: "Dashboard",
-              totalUsers: totalUsers,
-              pendingPost: pendingPost,
-              totalComments: totalComments,
-              totalPost: totalPost,
-              latestComment: latestComment,
               latestUsers: latestUsers,
-              contact: latestContact,
-              latestSubscribers: latestSubscribers
+              count: count
             });
 
-          case 25:
+          case 41:
           case "end":
             return _context5.stop();
         }

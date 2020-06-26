@@ -1312,13 +1312,17 @@ router.get("/user/following", _auth["default"], (0, _role["default"])("admin", "
 }());
 router.get('/user/authorstatus', /*#__PURE__*/function () {
   var _ref12 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee12(req, res, next) {
-    var date, currentMonth, limitViews, lastMonthContentViews, thisMonthContentViews, increaseContenViews, upvote_lastmonth, upvote_thismonth, upvote_increase, userArticles, profile_lastmonth, profile_thismonth, profile_increase, follow_lastmonth, follow_thismonth, follow_increase, totalusers, statusCounts, authorrank, users, upvotesCount, veiwsCount, articles, followers;
+    var filter, _date, currentMonth, limitViews, lastMonthContentViews, thisMonthContentViews, increaseContenViews, upvote_lastmonth, upvote_thismonth, upvote_increase, userArticles, profile_lastmonth, profile_thismonth, profile_increase, follow_lastmonth, follow_thismonth, follow_increase, totalusers, statusCounts, authorrank, users, upvotesCount, veiwsCount, articles, followers;
+
     return _regenerator["default"].wrap(function _callee12$(_context12) {
       while (1) {
         switch (_context12.prev = _context12.next) {
           case 0:
-            date = new Date();
-            currentMonth = date.getMonth();
+            filter = req.query.filter;
+            _date = new Date(filter); // var date = new Date();
+            // var currentMonth = date.getMonth();
+
+            currentMonth = _date.getMonth() + 1;
             limitViews = 99999999; //content views
 
             lastMonthContentViews = 0;
@@ -1327,12 +1331,12 @@ router.get('/user/authorstatus', /*#__PURE__*/function () {
             upvote_lastmonth = 0;
             upvote_thismonth = 0;
             upvote_increase = 0;
-            _context12.next = 11;
+            _context12.next = 12;
             return _articles["default"].find({
               postedBy: req.user.id
             });
 
-          case 11:
+          case 12:
             userArticles = _context12.sent;
             userArticles.forEach(function (element) {
               element.viewers.forEach(function (item) {
@@ -1374,12 +1378,12 @@ router.get('/user/authorstatus', /*#__PURE__*/function () {
             follow_lastmonth = 0;
             follow_thismonth = 0;
             follow_increase = 0;
-            _context12.next = 23;
+            _context12.next = 24;
             return _users["default"].find({
               _id: req.user.id
             });
 
-          case 23:
+          case 24:
             totalusers = _context12.sent;
             totalusers.forEach(function (element) {
               element.viewers.forEach(function (item) {
@@ -1406,12 +1410,13 @@ router.get('/user/authorstatus', /*#__PURE__*/function () {
               profile_increase = ((profile_thismonth + limitViews) / limitViews * 100).toFixed(2);
             } else {
               profile_increase = ((profile_thismonth - profile_lastmonth) / profile_lastmonth * 100).toFixed(2);
-            } // if (follow_thismonth == 0) {
-            //   follow_increase = ((follow_thismonth + limitViews) / limitViews * 100).toFixed(2);
-            // } else {
-            //   follow_increase = ((follow_thismonth - follow_lastmonth) / follow_lastmonth * 100).toFixed(2);
-            // }
+            }
 
+            if (follow_thismonth == 0) {
+              follow_increase = ((follow_thismonth + limitViews) / limitViews * 100).toFixed(2);
+            } else {
+              follow_increase = ((follow_thismonth - follow_lastmonth) / follow_lastmonth * 100).toFixed(2);
+            }
 
             follow_increase = follow_thismonth - follow_lastmonth;
             statusCounts = {
@@ -1433,12 +1438,12 @@ router.get('/user/authorstatus', /*#__PURE__*/function () {
               }
             };
             authorrank = "";
-            _context12.next = 31;
+            _context12.next = 33;
             return _articles["default"].find({}).sort({
               views: -1
             });
 
-          case 31:
+          case 33:
             users = _context12.sent;
             users.forEach(function (element, index) {
               if (element.postedBy == req.user.id) {
@@ -1447,32 +1452,32 @@ router.get('/user/authorstatus', /*#__PURE__*/function () {
             });
             upvotesCount = 0;
             veiwsCount = 0;
-            _context12.next = 37;
+            _context12.next = 39;
             return _articles["default"].find({
               postedBy: req.user.id
             });
 
-          case 37:
+          case 39:
             articles = _context12.sent;
             articles.forEach(function (element) {
               upvotesCount = element.upvote.count;
               veiwsCount = element.views;
             });
-            _context12.next = 41;
+            _context12.next = 43;
             return _users["default"].countDocuments({
               _id: req.user.id
             }).populate("following").sort({
               createdAt: -1
             });
 
-          case 41:
+          case 43:
             followers = _context12.sent;
             res.render("./user/author", {
               title: "Dashboard",
               statusCounts: statusCounts
             });
 
-          case 43:
+          case 45:
           case "end":
             return _context12.stop();
         }

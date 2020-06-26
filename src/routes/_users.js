@@ -1103,9 +1103,11 @@ router.get(
 );
 
 router.get('/user/authorstatus', async (req, res, next) => {
-
-  var date = new Date();
-  var currentMonth = date.getMonth();
+  let filter = req.query.filter;
+  let _date = new Date(filter);
+  // var date = new Date();
+  // var currentMonth = date.getMonth();
+  var currentMonth = _date.getMonth() + 1;
   let limitViews = 99999999;
   //content views
   let lastMonthContentViews = 0;
@@ -1177,14 +1179,12 @@ router.get('/user/authorstatus', async (req, res, next) => {
   } else {
     profile_increase = ((profile_thismonth - profile_lastmonth) / profile_lastmonth * 100).toFixed(2);
   }
-
-  // if (follow_thismonth == 0) {
-  //   follow_increase = ((follow_thismonth + limitViews) / limitViews * 100).toFixed(2);
-  // } else {
-  //   follow_increase = ((follow_thismonth - follow_lastmonth) / follow_lastmonth * 100).toFixed(2);
-  // }
+  if (follow_thismonth == 0) {
+    follow_increase = ((follow_thismonth + limitViews) / limitViews * 100).toFixed(2);
+  } else {
+    follow_increase = ((follow_thismonth - follow_lastmonth) / follow_lastmonth * 100).toFixed(2);
+  }
   follow_increase = follow_thismonth - follow_lastmonth;
-
 
   let statusCounts = {
     contentView: {

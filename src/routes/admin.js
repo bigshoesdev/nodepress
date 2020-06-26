@@ -47,32 +47,160 @@ router.get("/dashboard", install.redirectToLogin, auth, role('admin'), (req, res
   res.redirect("/dashboard/index");
 });
 router.get("/dashboard/index", install.redirectToLogin, auth, role("admin"), async (req, res, next) => {
-  let totalUsers = await User.countDocuments({ roleId: 'user' });
-  let pendingPost = await Article.countDocuments({ active: false });
-  let totalComments = await Comment.countDocuments();
-  let totalPost = await Article.countDocuments();
-  let latestComment = await Comment.find()
-    .sort({ createdAt: -1 })
-    .limit(6);
   let latestUsers = await User.find({ roleId: { $ne: "admin" } })
     .sort({ createdAt: -1 })
     .limit(6);
-  let latestContact = await Contact.find()
-    .sort({ createdAt: -1 })
-    .limit(6);
-  let latestSubscribers = await Newsletter.find()
-    .sort({ createdAt: -1 })
-    .limit(6);
+  let limitViews = 99999999;
+
+  let articles = await Article.find({});
+  let users = await User.find({});
+
+  let date;
+  if (req.query.filter) {
+    date = new Date(req.query.filter);
+  } else {
+    date = new Date();
+  }
+  let currentmonth = date.getMonth() + 1;
+  let lastmonth = date.getMonth(); // date.getMonth() - 1 + 1
+  // content view
+  let thiscontentViewCnt = 0;
+  let lastcontentViewCnt = 0;
+  let increaseView = 0;
+  //content page
+  let thiscontenCnt = 0;
+  let lastcontenCnt = 0;
+  let increaseContent = 0;
+  // paid customer 
+  let thispaidCnt = 0;
+  let lastpaidCnt = 0;
+  let increasePaid = 0;
+  // free customer
+  let thisfreecnt = 0;
+  let lastfreecnt = 0;
+  let increasefreecnt = 0;
+  // qualify count
+  let thisqualifycnt = 0;
+  let lastqualifycnt = 0;
+  let increasequalify = 0;
+  // free page count
+  let thisnoqualifycnt = 0;
+  let lastnoqualifycnt = 0;
+  let increasenoqualifycnt = 0;
+
+  articles.forEach(element => {
+    // content view count
+    element.viewers.forEach(item => {
+      let viewdate = item.date.getMonth() + 1;
+      if (viewdate == currentmonth) {
+        thiscontentViewCnt++;
+      } else if (viewdate == lastmonth) {
+        lastcontentViewCnt++;
+      }
+    })
+    // content page count
+    let createdate = element.createdAt.getMonth() + 1;
+    if (createdate == currentmonth) {
+      thiscontenCnt++;
+      if (element.qualify == "qualify") {
+        thisqualifycnt++;
+      } else {
+        thisnoqualifycnt++;
+      }
+    } else if (createdate == lastmonth) {
+      lastcontenCnt++;
+      if (element.qualify == "qualify") {
+        lastqualifycnt++;
+      } else {
+        lastnoqualifycnt++;
+      }
+    }
+    // qualify pages
+  });
+
+  users.forEach(element => {
+    let createdate = element.createdAt.getMonth() + 1;
+    if (element.paid == "paid") {
+      if (createdate == currentmonth) {
+        thispaidCnt++;
+      } else if (createdate == lastmonth) {
+        lastpaidCnt++;
+      }
+    } else {
+      if (createdate == currentmonth) {
+        thisfreecnt++;
+      } else if (createdate == lastmonth) {
+        lastfreecnt++;
+      }
+    }
+  })
+
+  // content views
+  if (lastcontentViewCnt == 0) {
+    increaseView = ((thiscontentViewCnt + limitViews) / limitViews * 100).toFixed(2);
+  } else {
+    increaseView = (thiscontentViewCnt / lastcontentViewCnt * 100).toFixed(2);
+  }
+  // content pages  
+  if (lastcontenCnt == 0) {
+    increaseContent = ((thiscontenCnt + limitViews) / limitViews * 100).toFixed(2);
+  } else {
+    increaseContent = (thiscontenCnt / lastcontenCnt * 100).toFixed(2);
+  }
+  // paid customer
+  if (lastpaidCnt == 0) {
+    increasePaid = ((thispaidCnt + limitViews) / limitViews * 100).toFixed(2);
+  } else {
+    increasePaid = (thispaidCnt / lastpaidCnt * 100).toFixed(2);
+  }
+  // free customer
+  if (lastfreecnt == 0) {
+    increasefreecnt = ((thisfreecnt + limitViews) / limitViews * 100).toFixed(2);
+  } else {
+    increasefreecnt = (thisfreecnt / lastfreecnt * 100).toFixed(2);
+  }
+  // qualify count
+  if (lastqualifycnt == 0) {
+    increasequalify = ((thisqualifycnt + limitViews) / limitViews * 100).toFixed(2);
+  } else {
+    increasequalify = (thisqualifycnt / lastqualifycnt * 100).toFixed(2);
+  }
+  // free count
+  if (lastnoqualifycnt == 0) {
+    increasenoqualifycnt = ((thisnoqualifycnt + limitViews) / limitViews * 100).toFixed(2);
+  } else {
+    increasenoqualifycnt = (thisnoqualifycnt / lastnoqualifycnt * 100).toFixed(2);
+  }
+  let count = {
+    contentView: {
+      count: thiscontentViewCnt,
+      increase: increaseView
+    },
+    contentPage: {
+      count: thiscontenCnt,
+      increase: increaseContent
+    },
+    paid: {
+      count: thispaidCnt,
+      increase: increasePaid
+    },
+    free: {
+      count: thisfreecnt,
+      increase: increasefreecnt
+    },
+    qualify: {
+      count: thisqualifycnt,
+      increase: increasequalify
+    },
+    nonqualify: {
+      count: thisnoqualifycnt,
+      increase: increasenoqualifycnt
+    }
+  }
   res.render("./admin/index", {
     title: "Dashboard",
-    totalUsers: totalUsers,
-    pendingPost: pendingPost,
-    totalComments: totalComments,
-    totalPost: totalPost,
-    latestComment: latestComment,
     latestUsers: latestUsers,
-    contact: latestContact,
-    latestSubscribers: latestSubscribers,
+    count: count
   });
 });
 
