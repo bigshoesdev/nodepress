@@ -794,7 +794,7 @@ router.post("/sign-up", _install["default"].redirectToLogin, checkIfLoggedIn, /*
             }
 
             _context10.next = 34;
-            return (0, _mail2["default"])("Registration Successfull", req.body.email, "reg-email", payload, req.headers.host, function (err, info) {
+            return (0, _mail2["default"])("Verifizierung deiner E-Mail", req.body.email, "reg-email", payload, req.headers.host, function (err, info) {
               if (err) console.log(err);
             });
 

@@ -419,7 +419,7 @@ router.post(
               // SOLVED SETTINGS BUG, USED SET[0] INSTEAD OF SET
               set.emailVerification == true
                 ? await _mail(
-                  "Registration Successfull",
+                  "Verifizierung deiner E-Mail",
                   req.body.email,
                   "reg-email",
                   payload,
