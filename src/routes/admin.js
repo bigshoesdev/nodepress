@@ -18,6 +18,7 @@ import Menu from '../models/menu';
 import Counting from '../models/counting';
 import install from '../helpers/install';
 import average from "../models/average";
+import searchkey from "../models/searchkey";
 const router = express.Router();
 
 router.use(async (req, res, next) => {
@@ -197,10 +198,14 @@ router.get("/dashboard/index", install.redirectToLogin, auth, role("admin"), asy
       increase: increasenoqualifycnt
     }
   }
+  let searchnoResult = await searchkey.find({noresult : true}).sort({count: -1});
+  let searchResult = await searchkey.find({noresult : false}).sort({count: -1});
   res.render("./admin/index", {
     title: "Dashboard",
     latestUsers: latestUsers,
-    count: count
+    count: count,
+    searchResult: searchResult,
+    searchnoResult: searchnoResult
   });
 });
 

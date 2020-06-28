@@ -36,6 +36,8 @@ var _menu = _interopRequireDefault(require("../models/menu"));
 
 var _bookmark = _interopRequireDefault(require("../models/bookmark"));
 
+var _searchkey = _interopRequireDefault(require("../models/searchkey"));
+
 var fs = require('fs');
 
 var _require = require('sitemap'),
@@ -1425,7 +1427,7 @@ router.post('/api/home', /*#__PURE__*/function () {
 }());
 router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref18 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee18(req, res, next) {
-    var perPage, page, count, data, datacategory, datauser, random, popular;
+    var perPage, page, count, data, datacategory, datauser, random, popular, result_count, search_payload, searchkey, new_count;
     return _regenerator["default"].wrap(function _callee18$(_context18) {
       while (1) {
         switch (_context18.prev = _context18.next) {
@@ -1433,7 +1435,7 @@ router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function
             _context18.prev = 0;
 
             if (!req.query.q) {
-              _context18.next = 26;
+              _context18.next = 40;
               break;
             }
 
@@ -1540,7 +1542,42 @@ router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function
 
           case 21:
             popular = _context18.sent;
-            console.log(datacategory.length);
+            console.log(req.query.q);
+            result_count = false;
+
+            if (data.length == 0 && datacategory.length == 0 && datauser.length == 0) {
+              result_count = true;
+            }
+
+            search_payload = {
+              keystring: req.query.q,
+              count: 1,
+              date: new Date(),
+              noresult: result_count
+            };
+            _context18.next = 28;
+            return _searchkey["default"].findOne({
+              keystring: req.query.q
+            });
+
+          case 28:
+            searchkey = _context18.sent;
+
+            if (!searchkey) {
+              _context18.next = 37;
+              break;
+            }
+
+            new_count = parseInt(searchkey.count) + 1;
+            console.log(new_count);
+            _context18.next = 34;
+            return _searchkey["default"].updateOne({
+              _id: searchkey.id
+            }, {
+              count: new_count
+            });
+
+          case 34:
             res.render('search', {
               data: data,
               datacategory: datacategory,
@@ -1551,27 +1588,45 @@ router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function
               random: random,
               popular: popular
             });
-            _context18.next = 27;
+            _context18.next = 38;
             break;
 
-          case 26:
+          case 37:
+            _searchkey["default"].create(search_payload).then(function (result) {
+              res.render('search', {
+                data: data,
+                datacategory: datacategory,
+                datauser: datauser,
+                search: req.query.q,
+                current: page,
+                pages: Math.ceil(count / perPage),
+                random: random,
+                popular: popular
+              });
+            });
+
+          case 38:
+            _context18.next = 41;
+            break;
+
+          case 40:
             res.render('404');
 
-          case 27:
-            _context18.next = 32;
+          case 41:
+            _context18.next = 46;
             break;
 
-          case 29:
-            _context18.prev = 29;
+          case 43:
+            _context18.prev = 43;
             _context18.t0 = _context18["catch"](0);
             next(_context18.t0);
 
-          case 32:
+          case 46:
           case "end":
             return _context18.stop();
         }
       }
-    }, _callee18, null, [[0, 29]]);
+    }, _callee18, null, [[0, 43]]);
   }));
 
   return function (_x50, _x51, _x52) {

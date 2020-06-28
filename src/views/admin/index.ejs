@@ -292,7 +292,6 @@
             </div>
         </div>
     </div><!-- Top Report Wrap End -->
-
     <div class="row">
         <div class="col-md-6 mt-4">
             <div class="bg-white shadow-sm p-3">
@@ -313,11 +312,12 @@
                 </div>
             </div>
         </div>
-
+    </div>
+    <div class="row">
         <div class="col-md-6 mt-4">
             <div class="bg-white shadow-sm p-3">
                 <h4><b>Search Key</b></h4>
-                <small>You can see Search Key List here</small>
+                <small>You can see search Key list  here</small>
                 <div class="table-responsive mt-3">
                     <table class="table table-vertical-middle">
                         <thead>
@@ -326,6 +326,39 @@
                                 <th>Count</th>
                             </tr>
                         </thead>
+                        <tbody>
+                            <% for(var i = 0; i < searchResult.length; i ++) {%>
+                            <tr>
+                                <td><%= searchResult[i].keystring%></td>
+                                <td><%= searchResult[i].count%></td>
+                            </tr>
+                            <% }%>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mt-4">
+            <div class="bg-white shadow-sm p-3">
+                <h4><b>Search Key (no result)</b></h4>
+                <small>You can see Search Key that haven't result List here</small>
+                <div class="table-responsive mt-3">
+                    <table class="table table-vertical-middle">
+                        <thead>
+                            <tr>
+                                <th>Search Key</th>
+                                <th>Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(var i = 0; i < searchnoResult.length; i ++) {%>
+                            <tr>
+                                <td><%= searchnoResult[i].keystring%></td>
+                                <td><%= searchnoResult[i].count%></td>
+                            </tr>
+                            <% }%>
+                        </tbody>
                     </table>
                 </div>
             </div>

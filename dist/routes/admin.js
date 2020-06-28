@@ -46,6 +46,8 @@ var _install = _interopRequireDefault(require("../helpers/install"));
 
 var _average = _interopRequireDefault(require("../models/average"));
 
+var _searchkey = _interopRequireDefault(require("../models/searchkey"));
+
 var router = _express["default"].Router();
 
 router.use( /*#__PURE__*/function () {
@@ -168,7 +170,7 @@ router.get("/dashboard", _install["default"].redirectToLogin, _auth["default"], 
 });
 router.get("/dashboard/index", _install["default"].redirectToLogin, _auth["default"], (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(req, res, next) {
-    var latestUsers, limitViews, articles, users, date, currentmonth, lastmonth, thiscontentViewCnt, lastcontentViewCnt, increaseView, thiscontenCnt, lastcontenCnt, increaseContent, thispaidCnt, lastpaidCnt, increasePaid, thisfreecnt, lastfreecnt, increasefreecnt, thisqualifycnt, lastqualifycnt, increasequalify, thisnoqualifycnt, lastnoqualifycnt, increasenoqualifycnt, count;
+    var latestUsers, limitViews, articles, users, date, currentmonth, lastmonth, thiscontentViewCnt, lastcontentViewCnt, increaseView, thiscontenCnt, lastcontenCnt, increaseContent, thispaidCnt, lastpaidCnt, increasePaid, thisfreecnt, lastfreecnt, increasefreecnt, thisqualifycnt, lastqualifycnt, increasequalify, thisnoqualifycnt, lastnoqualifycnt, increasenoqualifycnt, count, searchnoResult, searchResult;
     return _regenerator["default"].wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
@@ -347,13 +349,33 @@ router.get("/dashboard/index", _install["default"].redirectToLogin, _auth["defau
                 increase: increasenoqualifycnt
               }
             };
+            _context5.next = 42;
+            return _searchkey["default"].find({
+              noresult: true
+            }).sort({
+              count: -1
+            });
+
+          case 42:
+            searchnoResult = _context5.sent;
+            _context5.next = 45;
+            return _searchkey["default"].find({
+              noresult: false
+            }).sort({
+              count: -1
+            });
+
+          case 45:
+            searchResult = _context5.sent;
             res.render("./admin/index", {
               title: "Dashboard",
               latestUsers: latestUsers,
-              count: count
+              count: count,
+              searchResult: searchResult,
+              searchnoResult: searchnoResult
             });
 
-          case 41:
+          case 47:
           case "end":
             return _context5.stop();
         }

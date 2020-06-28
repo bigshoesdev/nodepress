@@ -13,6 +13,8 @@ import Ads from '../models/ads';
 import install from '../helpers/install';
 import Menu from '../models/menu';
 import Bookmark from "../models/bookmark";
+import SearchKey from "../models/searchkey";
+
 var fs = require('fs');
 
 const { SitemapStream, streamToPromise } = require('sitemap')
@@ -829,17 +831,47 @@ router.get('/search', install.redirectToLogin, async (req, res, next) => {
 				.populate("postedBy")
 				.sort({ views: -1 })
 				.limit(3);
-			console.log(datacategory.length);
-			res.render('search', {
-				data: data,
-				datacategory: datacategory,
-				datauser: datauser,
-				search: req.query.q,
-				current: page,
-				pages: Math.ceil(count / perPage),
-				random: random,
-				popular: popular
-			});
+
+			console.log(req.query.q);
+			let result_count = false;
+			if (data.length == 0 && datacategory.length == 0 && datauser.length == 0) {
+				result_count = true;
+			}
+			let search_payload = {
+				keystring: req.query.q,
+				count: 1,
+				date: new Date(),
+				noresult: result_count
+			}
+			let searchkey = await SearchKey.findOne({ keystring: req.query.q });
+			if (searchkey) {
+				let new_count = parseInt(searchkey.count) + 1;
+				console.log(new_count);
+				await SearchKey.updateOne({_id: searchkey.id}, {count: new_count});
+				res.render('search', {
+					data: data,
+					datacategory: datacategory,
+					datauser: datauser,
+					search: req.query.q,
+					current: page,
+					pages: Math.ceil(count / perPage),
+					random: random,
+					popular: popular
+				});
+			} else {
+				SearchKey.create(search_payload).then(result => {
+					res.render('search', {
+						data: data,
+						datacategory: datacategory,
+						datauser: datauser,
+						search: req.query.q,
+						current: page,
+						pages: Math.ceil(count / perPage),
+						random: random,
+						popular: popular
+					});
+				});
+			}
 		} else {
 			res.render('404');
 		}
