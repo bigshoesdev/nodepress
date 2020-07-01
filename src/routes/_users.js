@@ -377,7 +377,7 @@ router.get(
         var minutes = Math.floor(seconds / 60);
         var hours = Math.floor(minutes / 60);
         var days = Math.floor(hours / 24);
-        if(days > 90){
+        if (days > 90) {
           Updatearticle.push(element);
         }
       })
@@ -1204,13 +1204,24 @@ router.get('/user/authorstatus', async (req, res, next) => {
       increase: follow_increase
     }
   }
-  let authorrank = "";
-  let users = await Article.find({}).sort({ views: -1 });
-  users.forEach((element, index) => {
+  let filterdate = new Date(req.query.filter);
+  let currentmonth = filterdate.getMonth() + 1;
+  let articlerank = await Article.find({}).sort({ views: -1 });
+  let thismonthrank = -1;
+  let lastmonthrank = -1;
+  articlerank.forEach((element, index) => {
     if (element.postedBy == req.user.id) {
-      authorrank = index + 1;
+      if (element.createdAt.getMonth() == currentmonth) {
+        thismonthrank = index + 1;
+      } else if (element.createdAt.getMonth() + 1 == currentMonth) {
+        lastmonthrank = index + 1;
+      }
     }
   });
+  let authorrank = {
+    this: thismonthrank,
+    last: lastmonthrank
+  }
   let upvotesCount = 0;
   let veiwsCount = 0;
   let articles = await Article.find({ postedBy: req.user.id });
@@ -1222,7 +1233,8 @@ router.get('/user/authorstatus', async (req, res, next) => {
 
   res.render("./user/author", {
     title: "Dashboard",
-    statusCounts: statusCounts
+    statusCounts: statusCounts,
+    authorrank: authorrank
   });
 });
 

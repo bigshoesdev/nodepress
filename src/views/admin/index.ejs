@@ -292,23 +292,81 @@
             </div>
         </div>
     </div><!-- Top Report Wrap End -->
+    <hr>
     <div class="row">
-        <div class="col-md-6 mt-4">
+        <div class="col-lg-12">
+            <h4> Total Number</h4>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-lg-4 col-md-4  col-12 mb-30">
+            <div class="small-box bg-gray shadow-sm">
+                <div class="inner">
+                    <h3 class="increase-count">Pages</h3>
+                    <h1><%= totalcontentCnt%></h1>
+                </div>
+                <div class="icon">
+                    <a href="javascript:void(0);">
+                        <i class="fa fa-clone"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4  col-12 mb-30">
+            <div class="small-box bg-gray shadow-sm">
+                <div class="inner">
+                    <h3 class="increase-count">Searches </h3>
+                    <h1><%= totalSearchCnt%></h1>
+                </div>
+                <div class="icon">
+                    <a href="javascript:void(0);">
+                        <i class="fa fa-search"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4  col-12 mb-30">
+            <div class="small-box bg-gray shadow-sm">
+                <div class="inner">
+                    <h3 class="increase-count">Publisher </h3>
+                    <h1><%= totalPublisherCnt%></h1>
+                </div>
+                <div class="icon">
+                    <a href="javascript:void(0);">
+                        <i class="fa fa-users"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 mt-4">
             <div class="bg-white shadow-sm p-3">
                 <h4><b>Category</b></h4>
-                <small>You can see count of article by category here</small>
+                <small>You can see count
+                    of article by category here</small>
                 <div class="table-responsive mt-3">
                     <table class="table table-vertical-middle">
                         <thead>
                             <tr>
-                                <th>Image</th>
-                                <th>Title</th>
-                                <th>Description</th>
-                                <th>Counts</th>
+                                <th>Category</th>
+                                <th>Count of articles</th>
                                 <th>Spent Time</th>
                             </tr>
                         </thead>
+                        <tbody>
+                            <% for(var i = 0; i < categoryCat.length; i ++) {%>
+                            <tr>
+                                <td><%= categoryCat[i].name%></td>
+                                <td><%= categoryCat[i].count%></td>
+                                <td><%= categoryCat[i].time%> min</td>
+                            </tr>
+                            <% } %>
+                        </tbody>
                     </table>
+                </div>
+                <div class="mt-3">
+                    <a href="/dashboard/categorycount"><button class="btn btn-info btn-sm">View All</button></a>
                 </div>
             </div>
         </div>
@@ -317,7 +375,7 @@
         <div class="col-md-6 mt-4">
             <div class="bg-white shadow-sm p-3">
                 <h4><b>Search Key</b></h4>
-                <small>You can see search Key list  here</small>
+                <small>You can see search Key list here</small>
                 <div class="table-responsive mt-3">
                     <table class="table table-vertical-middle">
                         <thead>
@@ -335,6 +393,9 @@
                             <% }%>
                         </tbody>
                     </table>
+                    <div class="mt-3">
+                        <a href="/dashboard/searchkey"><button class="btn btn-info btn-sm">View All</button></a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -361,36 +422,18 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="mt-3">
+                    <a href="/dashboard/searchkey"><button class="btn btn-info btn-sm">View All</button></a>
+                </div>
             </div>
         </div>
     </div>
-
 
     <div class="row">
         <div class="col-md-6 mt-4">
             <div class="bg-white shadow-sm p-3">
                 <h4><b>User Cancel Subscription</b></h4>
-                <small>You can see count of article by category here</small>
-                <div class="table-responsive mt-3">
-                    <table class="table table-vertical-middle">
-                        <thead>
-                            <tr>
-                                <th>Image</th>
-                                <th>Title</th>
-                                <th>Description</th>
-                                <th>Counts</th>
-                                <th>Spent Time</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6 mt-4">
-            <div class="bg-white shadow-sm p-3">
-                <h4><b>Closed User</b></h4>
-                <small>You can see Search Key List here</small>
+                <small>You can see count of cancel subscription user here</small>
                 <div class="table-responsive mt-3">
                     <table class="table table-vertical-middle">
                         <thead>
@@ -400,12 +443,69 @@
                                 <th>Email</th>
                             </tr>
                         </thead>
+                        <tbody>
+                            <% for(var key in canceledUser) {%>
+                            <tr>
+                                <td>
+                                    <img src="<%= canceledUser[key].profilePicture %>" class="img-fluid profile-image"
+                                        style="width: 50px !important;
+                                    height: 50px !important;" alt="">
+                                </td>
+                                <td class="text-capitalize" style="width: 160px;">
+                                    <%= canceledUser[key].username %>
+                                </td>
+                                <td>
+                                    <%= canceledUser[key].email %>
+                                </td>
+                            </tr>
+                            <% } %>
+                        </tbody>
                     </table>
+                </div>
+                <div class="mt-3">
+                    <a href="/dashboard/usercancel"><button class="btn btn-info btn-sm">View All</button></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mt-4">
+            <div class="bg-white shadow-sm p-3">
+                <h4><b>Closed User</b></h4>
+                <small>You can see closed account List here</small>
+                <div class="table-responsive mt-3">
+                    <table class="table table-vertical-middle">
+                        <thead>
+                            <tr>
+                                <th>Avatar</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(var key in closedUser) {%>
+                            <tr>
+                                <td>
+                                    <img src="<%= closedUser[key].profilePicture %>" class="img-fluid profile-image"
+                                        style="width: 50px !important;
+                                    height: 50px !important;" alt="">
+                                </td>
+                                <td class="text-capitalize" style="width: 160px;">
+                                    <%= closedUser[key].username %>
+                                </td>
+                                <td>
+                                    <%= closedUser[key].email %>
+                                </td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-3">
+                    <a href="/dashboard/usersdelete"><button class="btn btn-info btn-sm">View All</button></a>
                 </div>
             </div>
         </div>
     </div>
-
 
     <div class="row">
         <div class="col-md-12 mt-4">
@@ -609,11 +709,10 @@
         $('#filterdate').change(function () {
             var date = $('#filterdate').val();
             var month = new Date(date);
-            location.replace('https://dype.me/dashboard/index?filter=' + date);
+            location.replace('http://localhost:9000/dashboard/index?filter=' + date);
         })
     })
 </script>
-
 </body>
 
 </html>

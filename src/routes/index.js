@@ -832,7 +832,6 @@ router.get('/search', install.redirectToLogin, async (req, res, next) => {
 				.sort({ views: -1 })
 				.limit(3);
 
-			console.log(req.query.q);
 			let result_count = false;
 			if (data.length == 0 && datacategory.length == 0 && datauser.length == 0) {
 				result_count = true;

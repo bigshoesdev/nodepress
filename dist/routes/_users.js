@@ -1312,7 +1312,7 @@ router.get("/user/following", _auth["default"], (0, _role["default"])("admin", "
 }());
 router.get('/user/authorstatus', /*#__PURE__*/function () {
   var _ref12 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee12(req, res, next) {
-    var filter, _date, currentMonth, limitViews, lastMonthContentViews, thisMonthContentViews, increaseContenViews, upvote_lastmonth, upvote_thismonth, upvote_increase, userArticles, profile_lastmonth, profile_thismonth, profile_increase, follow_lastmonth, follow_thismonth, follow_increase, totalusers, statusCounts, authorrank, users, upvotesCount, veiwsCount, articles, followers;
+    var filter, _date, currentMonth, limitViews, lastMonthContentViews, thisMonthContentViews, increaseContenViews, upvote_lastmonth, upvote_thismonth, upvote_increase, userArticles, profile_lastmonth, profile_thismonth, profile_increase, follow_lastmonth, follow_thismonth, follow_increase, totalusers, statusCounts, filterdate, currentmonth, articlerank, thismonthrank, lastmonthrank, authorrank, upvotesCount, veiwsCount, articles, followers;
 
     return _regenerator["default"].wrap(function _callee12$(_context12) {
       while (1) {
@@ -1437,47 +1437,59 @@ router.get('/user/authorstatus', /*#__PURE__*/function () {
                 increase: follow_increase
               }
             };
-            authorrank = "";
-            _context12.next = 33;
+            filterdate = new Date(req.query.filter);
+            currentmonth = filterdate.getMonth() + 1;
+            _context12.next = 34;
             return _articles["default"].find({}).sort({
               views: -1
             });
 
-          case 33:
-            users = _context12.sent;
-            users.forEach(function (element, index) {
+          case 34:
+            articlerank = _context12.sent;
+            thismonthrank = -1;
+            lastmonthrank = -1;
+            articlerank.forEach(function (element, index) {
               if (element.postedBy == req.user.id) {
-                authorrank = index + 1;
+                if (element.createdAt.getMonth() == currentmonth) {
+                  thismonthrank = index + 1;
+                } else if (element.createdAt.getMonth() + 1 == currentMonth) {
+                  lastmonthrank = index + 1;
+                }
               }
             });
+            authorrank = {
+              "this": thismonthrank,
+              last: lastmonthrank
+            };
             upvotesCount = 0;
             veiwsCount = 0;
-            _context12.next = 39;
+            _context12.next = 43;
             return _articles["default"].find({
               postedBy: req.user.id
             });
 
-          case 39:
+          case 43:
             articles = _context12.sent;
             articles.forEach(function (element) {
               upvotesCount = element.upvote.count;
               veiwsCount = element.views;
             });
-            _context12.next = 43;
+            _context12.next = 47;
             return _users["default"].countDocuments({
               _id: req.user.id
             }).populate("following").sort({
               createdAt: -1
             });
 
-          case 43:
+          case 47:
             followers = _context12.sent;
             res.render("./user/author", {
               title: "Dashboard",
-              statusCounts: statusCounts
+              statusCounts: statusCounts,
+              authorrank: authorrank
             });
 
-          case 45:
+          case 49:
           case "end":
             return _context12.stop();
         }

@@ -198,12 +198,143 @@ router.get("/dashboard/index", install.redirectToLogin, auth, role("admin"), asy
       increase: increasenoqualifycnt
     }
   }
-  let searchnoResult = await searchkey.find({noresult : true}).sort({count: -1});
-  let searchResult = await searchkey.find({noresult : false}).sort({count: -1});
+  let searchnoResult = await searchkey.find({ noresult: true }).sort({ count: -1 }).limit(5);
+  let searchResult = await searchkey.find({ noresult: false }).sort({ count: -1 }).limit(5);
+  let totalcontentCnt = await Article.countDocuments();
+  let totalSearchCnt = await searchkey.countDocuments();
+  let totalPublisherCnt = await User.countDocuments();
+
+  let categoriesCat = await Category.find({});
+  let articlesCat = await Article.find({});
+  let averateTime = await average.find({});
+
+  let categoryCat = [];
+  categoriesCat.forEach(element => {
+    let name = element.name;
+    let count = 0;
+    let time = 0;
+    let payload = {
+      name: name,
+      count: count++,
+      time: time
+    }
+
+    articlesCat.forEach(item => {
+      let _time = 0;
+      averateTime.forEach(data => {
+        if (data.articleId == item.id) {
+          _time = _time + parseInt(data.spentTime / 60)
+        }
+      });
+      if (element.id == item.category) {
+        payload.count++;
+        payload.time = payload.time + _time;
+      }
+    })
+    if (payload.count != 0) {
+      if (categoryCat.length < 5) {
+        categoryCat.push(payload);
+      }
+    }
+  });
+  categoryCat = categoryCat.sort(function (a, b) { if (a.count < b.count) { return 1; } if (a.count > b.count) { return -1; } return 0 });
+
+  let closedUser = await User.find({ closed: true });
+  let canceledUser = await User.find({ canceled: true });
   res.render("./admin/index", {
     title: "Dashboard",
     latestUsers: latestUsers,
     count: count,
+    searchResult: searchResult,
+    searchnoResult: searchnoResult,
+    totalcontentCnt: totalcontentCnt,
+    totalSearchCnt: totalSearchCnt,
+    totalPublisherCnt: totalPublisherCnt,
+    categoryCat: categoryCat,
+    closedUser: closedUser,
+    canceledUser: canceledUser
+  });
+});
+
+router.get("/dashboard/usercancel", install.redirectToLogin, auth, role("admin"), async (req, res, next) => {
+  try {
+    let users = await User.find({ canceled: true })
+    res.render("./admin/usercancel", {
+      title: "Dashboard - Users",
+      allusers: users,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/dashboard/usersdelete", install.redirectToLogin, auth, role("admin"), async (req, res, next) => {
+  try {
+    let users = await User.find({ closed: true })
+    res.render("./admin/usercancel", {
+      title: "Dashboard - Users",
+      allusers: users,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+router.get("/dashboard/categorycount", install.redirectToLogin, auth, role("admin"), async (req, res, next) => {
+  try {
+    let categoriesCat = await Category.find({});
+    let articlesCat = await Article.find({});
+    let averateTime = await average.find({});
+
+    let categoryCat = [];
+    categoriesCat.forEach(element => {
+      let name = element.name;
+      let count = 0;
+      let time = 0;
+      let payload = {
+        name: name,
+        count: count++,
+        time: time
+      }
+
+      articlesCat.forEach(item => {
+        let _time = 0;
+        averateTime.forEach(data => {
+          if (data.articleId == item.id) {
+            _time = _time + parseInt(data.spentTime / 60)
+          }
+        });
+        if (element.id == item.category) {
+          payload.count++;
+          payload.time = payload.time + _time;
+        }
+      })
+      if (payload.count != 0) {
+        categoryCat.push(payload);
+      }
+    });
+    categoryCat = categoryCat.sort(function (a, b) { if (a.count < b.count) { return 1; } if (a.count > b.count) { return -1; } return 0 });
+    res.render("./admin/categorycount", {
+      title: "Dashboard",
+      categoryCat: categoryCat
+    });
+  } catch (error) {
+    next(error);
+  }
+})
+
+router.get("/dashboard/searchkey", install.redirectToLogin, auth, role("admin"), async (req, res, next) => {
+  let searchnoResult;
+  let searchResult;
+  if (req.query.filter) {
+    var date = new Date(req.query.filter);
+    searchnoResult = await searchkey.find({ noresult: true, date: { $lte: date } }).sort({ count: -1 }).limit(10);
+    searchResult = await searchkey.find({ noresult: false, date: { $lte: date } }).sort({ count: -1 }).limit(10);
+  } else {
+    searchnoResult = await searchkey.find({ noresult: true }).sort({ count: -1 }).limit(10);
+    searchResult = await searchkey.find({ noresult: false }).sort({ count: -1 }).limit(10);
+  }
+  res.render("./admin/searchkey", {
+    title: "Dashboard",
     searchResult: searchResult,
     searchnoResult: searchnoResult
   });

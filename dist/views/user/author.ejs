@@ -224,9 +224,12 @@
             <div class="small-box bg-gray shadow-sm">
                 <div class="inner">
                     <h3 class="increase-count">Author Rank</h3>
-                    <h4>456,456</h4>
-                    <span class="percent-up-icon"><i class="fa fa-arrow-up"></i> 120 %</span>
-                    <span class="percent-down-icon"><i class="fa fa-arrow-down"></i> 120 %</span>
+                    <h4><%= authorrank.this%></h4>
+                    <% if(authorrank.this - authorrank.last > 0) {%>
+                    <span class="percent-up-icon"><i class="fa fa-arrow-up"></i><%= (authorrank.this - authorrank.last)%></span>
+                    <% } else {%>
+                    <span class="percent-down-icon"><i class="fa fa-arrow-down"></i><%= (authorrank.this - authorrank.last)%></span>
+                    <% } %>
                     <span class="percent-text">Since Last Month</span>
                 </div>
                 <div class="icon">
@@ -276,7 +279,7 @@
         $('#filterdate').change(function(){
             var date = $('#filterdate').val();
             var month = new Date(date);
-            location.replace('https://dype.me/user/authorstatus?filter=' + date);
+            location.replace('http://localhost:9000/user/authorstatus?filter=' + date);
         })
     })
 </script>

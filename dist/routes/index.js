@@ -1435,7 +1435,7 @@ router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function
             _context18.prev = 0;
 
             if (!req.query.q) {
-              _context18.next = 40;
+              _context18.next = 39;
               break;
             }
 
@@ -1542,7 +1542,6 @@ router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function
 
           case 21:
             popular = _context18.sent;
-            console.log(req.query.q);
             result_count = false;
 
             if (data.length == 0 && datacategory.length == 0 && datauser.length == 0) {
@@ -1555,29 +1554,29 @@ router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function
               date: new Date(),
               noresult: result_count
             };
-            _context18.next = 28;
+            _context18.next = 27;
             return _searchkey["default"].findOne({
               keystring: req.query.q
             });
 
-          case 28:
+          case 27:
             searchkey = _context18.sent;
 
             if (!searchkey) {
-              _context18.next = 37;
+              _context18.next = 36;
               break;
             }
 
             new_count = parseInt(searchkey.count) + 1;
             console.log(new_count);
-            _context18.next = 34;
+            _context18.next = 33;
             return _searchkey["default"].updateOne({
               _id: searchkey.id
             }, {
               count: new_count
             });
 
-          case 34:
+          case 33:
             res.render('search', {
               data: data,
               datacategory: datacategory,
@@ -1588,10 +1587,10 @@ router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function
               random: random,
               popular: popular
             });
-            _context18.next = 38;
+            _context18.next = 37;
             break;
 
-          case 37:
+          case 36:
             _searchkey["default"].create(search_payload).then(function (result) {
               res.render('search', {
                 data: data,
@@ -1605,28 +1604,28 @@ router.get('/search', _install["default"].redirectToLogin, /*#__PURE__*/function
               });
             });
 
-          case 38:
-            _context18.next = 41;
+          case 37:
+            _context18.next = 40;
             break;
 
-          case 40:
+          case 39:
             res.render('404');
 
-          case 41:
-            _context18.next = 46;
+          case 40:
+            _context18.next = 45;
             break;
 
-          case 43:
-            _context18.prev = 43;
+          case 42:
+            _context18.prev = 42;
             _context18.t0 = _context18["catch"](0);
             next(_context18.t0);
 
-          case 46:
+          case 45:
           case "end":
             return _context18.stop();
         }
       }
-    }, _callee18, null, [[0, 43]]);
+    }, _callee18, null, [[0, 42]]);
   }));
 
   return function (_x50, _x51, _x52) {
