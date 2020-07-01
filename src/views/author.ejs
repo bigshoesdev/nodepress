@@ -75,7 +75,7 @@
 											<%if(user){%>
                                     <% if(author._id != user.id){%>
                                     <% for(var i = 0; i < author.following.length;  i ++){
-                            if(author.following[i] == user.id){
+                            if(author.following[i]['user'] == user.id){
                                var existuser = true;
                            } }%>
                                     <div class="follow-btn">
