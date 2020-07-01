@@ -1287,12 +1287,14 @@ router.get("/follow-user", auth, async (req, res, next) => {
 
 // unfollow a user
 router.get("/unfollow-user", auth, async (req, res, next) => {
+  let user = await User.findOne({ _id: req.query.authorId});
+  let following = user.following;
+  let removefield = 0;
   following.forEach(element => {
     if(element.user == req.user.id){
       removefield = element._id;
     }
   });
-  console.log(following)
   if (req.query.authorId) {
     await User.updateOne(
       { _id: req.query.authorId },
