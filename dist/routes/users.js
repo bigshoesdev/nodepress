@@ -2193,23 +2193,32 @@ router.get("/follow-user", _auth["default"], /*#__PURE__*/function () {
 
 router.get("/unfollow-user", _auth["default"], /*#__PURE__*/function () {
   var _ref26 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee26(req, res, next) {
+    var user, following, removefield;
     return _regenerator["default"].wrap(function _callee26$(_context26) {
       while (1) {
         switch (_context26.prev = _context26.next) {
           case 0:
+            _context26.next = 2;
+            return _users["default"].findOne({
+              _id: req.query.authorId
+            });
+
+          case 2:
+            user = _context26.sent;
+            following = user.following;
+            removefield = 0;
             following.forEach(function (element) {
               if (element.user == req.user.id) {
                 removefield = element._id;
               }
             });
-            console.log(following);
 
             if (!req.query.authorId) {
-              _context26.next = 7;
+              _context26.next = 11;
               break;
             }
 
-            _context26.next = 5;
+            _context26.next = 9;
             return _users["default"].updateOne({
               _id: req.query.authorId
             }, {
@@ -2220,12 +2229,12 @@ router.get("/unfollow-user", _auth["default"], /*#__PURE__*/function () {
               }
             });
 
-          case 5:
-            _context26.next = 9;
+          case 9:
+            _context26.next = 13;
             break;
 
-          case 7:
-            _context26.next = 9;
+          case 11:
+            _context26.next = 13;
             return _users["default"].updateOne({
               _id: req.query.followerId
             }, {
@@ -2234,10 +2243,10 @@ router.get("/unfollow-user", _auth["default"], /*#__PURE__*/function () {
               }
             });
 
-          case 9:
+          case 13:
             return _context26.abrupt("return", res.redirect('back'));
 
-          case 10:
+          case 14:
           case "end":
             return _context26.stop();
         }
