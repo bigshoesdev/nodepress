@@ -1312,7 +1312,7 @@ router.get("/user/following", _auth["default"], (0, _role["default"])("admin", "
 }());
 router.get('/user/authorstatus', /*#__PURE__*/function () {
   var _ref12 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee12(req, res, next) {
-    var filter, _date, currentMonth, limitViews, lastMonthContentViews, thisMonthContentViews, increaseContenViews, upvote_lastmonth, upvote_thismonth, upvote_increase, userArticles, profile_lastmonth, profile_thismonth, profile_increase, follow_lastmonth, follow_thismonth, follow_increase, totalusers, statusCounts, filterdate, currentmonth, articlerank, thismonthrank, lastmonthrank, authorrank, upvotesCount, veiwsCount, articles, followers;
+    var filter, _date, currentMonth, limitViews, lastMonthContentViews, thisMonthContentViews, increaseContenViews, upvote_lastmonth, upvote_thismonth, upvote_increase, userArticles, profile_lastmonth, profile_thismonth, profile_increase, follow_lastmonth, follow_thismonth, follow_increase, totalusers, statusCounts, filterdate, currentmonth, thismonthrank, lastmonthrank, _views, user, authorrank, upvotesCount, veiwsCount, articles, followers;
 
     return _regenerator["default"].wrap(function _callee12$(_context12) {
       while (1) {
@@ -1323,7 +1323,12 @@ router.get('/user/authorstatus', /*#__PURE__*/function () {
             // var currentMonth = date.getMonth();
 
             currentMonth = _date.getMonth() + 1;
-            limitViews = 99999999; //content views
+            limitViews = 99999999;
+
+            if (!req.query.filter) {
+              currentMonth = new Date().getMonth();
+            } //content views
+
 
             lastMonthContentViews = 0;
             thisMonthContentViews = 0;
@@ -1331,12 +1336,12 @@ router.get('/user/authorstatus', /*#__PURE__*/function () {
             upvote_lastmonth = 0;
             upvote_thismonth = 0;
             upvote_increase = 0;
-            _context12.next = 12;
+            _context12.next = 13;
             return _articles["default"].find({
               postedBy: req.user.id
             });
 
-          case 12:
+          case 13:
             userArticles = _context12.sent;
             userArticles.forEach(function (element) {
               element.viewers.forEach(function (item) {
@@ -1378,12 +1383,12 @@ router.get('/user/authorstatus', /*#__PURE__*/function () {
             follow_lastmonth = 0;
             follow_thismonth = 0;
             follow_increase = 0;
-            _context12.next = 24;
+            _context12.next = 25;
             return _users["default"].find({
               _id: req.user.id
             });
 
-          case 24:
+          case 25:
             totalusers = _context12.sent;
             totalusers.forEach(function (element) {
               element.viewers.forEach(function (item) {
@@ -1439,49 +1444,43 @@ router.get('/user/authorstatus', /*#__PURE__*/function () {
             };
             filterdate = new Date(req.query.filter);
             currentmonth = filterdate.getMonth() + 1;
-            _context12.next = 34;
-            return _articles["default"].find({}).sort({
-              views: -1
-            });
-
-          case 34:
-            articlerank = _context12.sent;
             thismonthrank = -1;
             lastmonthrank = -1;
-            articlerank.forEach(function (element, index) {
-              if (element.postedBy == req.user.id) {
-                if (element.createdAt.getMonth() == currentmonth) {
-                  thismonthrank = index + 1;
-                } else if (element.createdAt.getMonth() + 1 == currentMonth) {
-                  lastmonthrank = index + 1;
-                }
+            _views = 0;
+            _context12.next = 38;
+            return _users["default"].find({}).sort({
+              contentviews: -1
+            });
+
+          case 38:
+            user = _context12.sent;
+            authorrank = -1;
+            user.forEach(function (element, index) {
+              if (element.id == req.user.id) {
+                authorrank = index + 1;
               }
             });
-            authorrank = {
-              "this": thismonthrank,
-              last: lastmonthrank
-            };
             upvotesCount = 0;
             veiwsCount = 0;
-            _context12.next = 43;
+            _context12.next = 45;
             return _articles["default"].find({
               postedBy: req.user.id
             });
 
-          case 43:
+          case 45:
             articles = _context12.sent;
             articles.forEach(function (element) {
               upvotesCount = element.upvote.count;
               veiwsCount = element.views;
             });
-            _context12.next = 47;
+            _context12.next = 49;
             return _users["default"].countDocuments({
               _id: req.user.id
             }).populate("following").sort({
               createdAt: -1
             });
 
-          case 47:
+          case 49:
             followers = _context12.sent;
             res.render("./user/author", {
               title: "Dashboard",
@@ -1489,7 +1488,7 @@ router.get('/user/authorstatus', /*#__PURE__*/function () {
               authorrank: authorrank
             });
 
-          case 49:
+          case 51:
           case "end":
             return _context12.stop();
         }

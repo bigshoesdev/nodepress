@@ -13,7 +13,7 @@ import passport from "../helpers/passport";
 import fs, { stat } from "fs";
 import path from "path";
 import auth from "../helpers/auth";
-import AWS from "aws-sdk";
+import AWS, { Backup } from "aws-sdk";
 import { v2 as cloudinary } from "cloudinary";
 import Article from "../models/articles";
 import Counting from "../models/counting";
@@ -356,7 +356,7 @@ router.post(
   install.redirectToLogin,
   checkIfLoggedIn,
   async (req, res, next) => {
-    if (!req.body['g-recaptcha-response']) {
+    if (req.body['g-recaptcha-response']) {
       req.flash("success_msg", "Captcha is required!");
       return res.redirect("back");
     } else {
@@ -742,11 +742,36 @@ router.get("/close", (req, res, next) => {
     title: "Close Account",
   });
 });
+
 router.post("/close", async (req, res, next) => {
-  let user = await User.updateOne({ _id: req.user._id }, { banned: true });
+  let user = await User.updateOne({ _id: req.user._id }, { closed: true });
+  await Article.deleteMany({ postedBy: req.body._id });
   req.logout();
   res.redirect('/login');
+  // let articles = await Article.find({});
+  // articles.forEach(element => {
+  //   if (element.postedBy == req.user.id) {
+  //     Article.deleteOne({ _id: element._id }).then(deleted => {
+  //       req.logout();
+  //       res.redirect('/login');
+  //     })
+  //   }
+  // })
 });
+
+router.get("/admin-close", async (req, res, next) => {
+  let user = await User.deleteOne({ _id: req.query.user });
+  let articles = await Article.find({});
+  articles.forEach(element => {
+    if (element.postedBy == req.query.user) {
+      Article.deleteOne({ _id: element._id }).then(deleted => {
+        res.redirect("/dashboard/users");
+      })
+    }
+  })
+  res.redirect("/dashboard/users");
+});
+
 
 router.post(
   "/login",
@@ -769,7 +794,7 @@ router.post(
           );
           return res.redirect("back");
         }
-        if (user.banned === true) {
+        if (user.closed === true) {
           req.flash(
             "success_msg",
             "Your Account has been closed."
@@ -1287,18 +1312,18 @@ router.get("/follow-user", auth, async (req, res, next) => {
 
 // unfollow a user
 router.get("/unfollow-user", auth, async (req, res, next) => {
-  let user = await User.findOne({ _id: req.query.authorId});
+  let user = await User.findOne({ _id: req.query.authorId });
   let following = user.following;
   let removefield = 0;
   following.forEach(element => {
-    if(element.user == req.user.id){
+    if (element.user == req.user.id) {
       removefield = element._id;
     }
   });
   if (req.query.authorId) {
     await User.updateOne(
       { _id: req.query.authorId },
-      { $pull: { following: {user: req.user.id}} }
+      { $pull: { following: { user: req.user.id } } }
     );
   } else {
     await User.updateOne(
@@ -1418,7 +1443,7 @@ router.post("/saveTime", async (req, res) => {
 
   //balance calculation part
 
-  let totalCountings = await Counting.find({userId: userId});
+  let totalCountings = await Counting.find({ userId: userId });
   let totalSpentTime = 0;
   totalCountings.forEach(item => {
     totalSpentTime = totalSpentTime + item.spentTime;
@@ -1444,11 +1469,11 @@ router.post("/saveTime", async (req, res) => {
   }
   let userlength = 0;
   earningList.forEach(element => {
-    if(element.user == userId){
+    if (element.user == userId) {
       userlength = 1;
     }
   })
-  
+
   if (userlength == 0) {
     if (balance != 0) {
       await User.updateOne(

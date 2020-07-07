@@ -669,7 +669,7 @@ router.get("/p/:category/:slug", _install["default"].redirectToLogin, /*#__PURE_
             }
 
             res.render("404");
-            _context4.next = 70;
+            _context4.next = 71;
             break;
 
           case 14:
@@ -848,7 +848,7 @@ router.get("/p/:category/:slug", _install["default"].redirectToLogin, /*#__PURE_
 
           case 63:
             articleCount = _context4.sent;
-            console.log(art.viewers.indexOf(ips)); // if (art.viewers.indexOf(ips) !== -1) {
+            // if (art.viewers.indexOf(ips) !== -1) {
             //   res.render("single", {
             //     articleCount: articleCount,
             //     title: article[0].title,
@@ -864,13 +864,22 @@ router.get("/p/:category/:slug", _install["default"].redirectToLogin, /*#__PURE_
             //     bookmarkId: bookmark == null ? null : bookmark._id
             //   });
             // } else {
-
             ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress || req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null);
             payload = {
               ip: ip,
               date: new Date()
             };
-            _context4.next = 69;
+            _context4.next = 68;
+            return _users["default"].updateOne({
+              _id: art.postedBy
+            }, {
+              $inc: {
+                contentviews: 1
+              }
+            });
+
+          case 68:
+            _context4.next = 70;
             return _articles["default"].updateOne({
               slug: req.params.slug.trim()
             }, {
@@ -879,7 +888,7 @@ router.get("/p/:category/:slug", _install["default"].redirectToLogin, /*#__PURE_
               }
             });
 
-          case 69:
+          case 70:
             _articles["default"].updateOne({
               slug: req.params.slug.trim()
             }, {
@@ -905,21 +914,21 @@ router.get("/p/:category/:slug", _install["default"].redirectToLogin, /*#__PURE_
               return _next(err);
             });
 
-          case 70:
-            _context4.next = 75;
+          case 71:
+            _context4.next = 76;
             break;
 
-          case 72:
-            _context4.prev = 72;
+          case 73:
+            _context4.prev = 73;
             _context4.t1 = _context4["catch"](0);
             next(_context4.t1);
 
-          case 75:
+          case 76:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[0, 72]]);
+    }, _callee4, null, [[0, 73]]);
   }));
 
   return function (_x10, _x11, _x12) {

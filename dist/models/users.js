@@ -89,6 +89,7 @@ var userSchema = new Schema({
     ip: String,
     date: Date
   }],
+  contentviews: Number,
   earning: [{
     balance: {
       type: Number,

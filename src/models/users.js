@@ -89,6 +89,7 @@ const userSchema = new Schema(
         date: Date
       }
     ],
+    contentviews: Number,
     earning: [
       {
         balance: {

@@ -1107,8 +1107,12 @@ router.get('/user/authorstatus', async (req, res, next) => {
   let _date = new Date(filter);
   // var date = new Date();
   // var currentMonth = date.getMonth();
+
   var currentMonth = _date.getMonth() + 1;
   let limitViews = 99999999;
+  if (!req.query.filter) {
+    currentMonth = new Date().getMonth()
+  }
   //content views
   let lastMonthContentViews = 0;
   let thisMonthContentViews = 0;
@@ -1206,22 +1210,16 @@ router.get('/user/authorstatus', async (req, res, next) => {
   }
   let filterdate = new Date(req.query.filter);
   let currentmonth = filterdate.getMonth() + 1;
-  let articlerank = await Article.find({}).sort({ views: -1 });
   let thismonthrank = -1;
   let lastmonthrank = -1;
-  articlerank.forEach((element, index) => {
-    if (element.postedBy == req.user.id) {
-      if (element.createdAt.getMonth() == currentmonth) {
-        thismonthrank = index + 1;
-      } else if (element.createdAt.getMonth() + 1 == currentMonth) {
-        lastmonthrank = index + 1;
-      }
-    }
-  });
-  let authorrank = {
-    this: thismonthrank,
-    last: lastmonthrank
-  }
+  let _views = 0;
+  let user = await User.find({}).sort({ contentviews: -1 });
+  let authorrank = -1;
+  user.forEach((element, index) => {
+    if(element.id == req.user.id){
+      authorrank = index + 1;
+    } 
+  })
   let upvotesCount = 0;
   let veiwsCount = 0;
   let articles = await Article.find({ postedBy: req.user.id });

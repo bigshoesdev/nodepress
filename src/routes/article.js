@@ -754,7 +754,6 @@ router.get("/p/:category/:slug", install.redirectToLogin, async (req, res, next)
         req.socket.remoteAddress ||
         (req.connection.socket ? req.connection.socket.remoteAddress : null);
       let articleCount = await Article.countDocuments();
-      console.log(art.viewers.indexOf(ips));
       // if (art.viewers.indexOf(ips) !== -1) {
       //   res.render("single", {
       //     articleCount: articleCount,
@@ -780,9 +779,13 @@ router.get("/p/:category/:slug", install.redirectToLogin, async (req, res, next)
         ip: ip,
         date: new Date()
       }
+      await User.updateOne(
+        {_id: art.postedBy},
+        {$inc: {contentviews: 1}}
+      );
       await Article.updateOne(
         { slug: req.params.slug.trim() },
-        { $push: { viewers: payload } }
+        { $push: { viewers: payload }}
       );
       Article.updateOne(
         { slug: req.params.slug.trim() },

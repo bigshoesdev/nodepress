@@ -53,7 +53,6 @@ module.exports = async (subject, to, html, replace, siteUrl, callback) => {
             pass: set.email.config.smtp.password
         }
     });
-
     // Aws Config
     AWS.config.update({
         accessKeyId: set.email.config.aws.accessKeyId,

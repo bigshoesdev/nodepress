@@ -224,12 +224,9 @@
             <div class="small-box bg-gray shadow-sm">
                 <div class="inner">
                     <h3 class="increase-count">Author Rank</h3>
-                    <h4><%= authorrank.this%></h4>
-                    <% if(authorrank.this - authorrank.last > 0) {%>
-                    <span class="percent-up-icon"><i class="fa fa-arrow-up"></i><%= (authorrank.this - authorrank.last)%></span>
-                    <% } else {%>
-                    <span class="percent-down-icon"><i class="fa fa-arrow-down"></i><%= (authorrank.this - authorrank.last)%></span>
-                    <% } %>
+                    <h4><%= authorrank%></h4>
+                    <span class="percent-up-icon">&nbsp;</span>
+                    <span class="percent-down-icon"></span>
                     <span class="percent-text">Since Last Month</span>
                 </div>
                 <div class="icon">
