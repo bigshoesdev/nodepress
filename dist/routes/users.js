@@ -313,7 +313,8 @@ router.get('/downgrade', _install["default"].redirectToLogin, /*#__PURE__*/funct
 }());
 router.get('/onboarding', _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(req, res, next) {
-    var redirect, categoryCount, stripeSession_id, session, stripesession, categories, user, payload;
+    var redirect, categoryCount, stripeSession_id, session, stripesession, user, payload, categories, _user, _payload;
+
     return _regenerator["default"].wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
@@ -324,7 +325,7 @@ router.get('/onboarding', _install["default"].redirectToLogin, /*#__PURE__*/func
             stripeSession_id = req.query.session_id;
 
             if (!stripeSession_id) {
-              _context6.next = 13;
+              _context6.next = 21;
               break;
             }
 
@@ -340,35 +341,17 @@ router.get('/onboarding', _install["default"].redirectToLogin, /*#__PURE__*/func
             stripesession = _context6.sent;
             console.log(stripesession._id);
             categoryCount = 10;
-
-          case 13:
-            if (req.user.paid == "paid") {
-              categoryCount = 10;
-            }
-
-            _context6.next = 16;
-            return _category2["default"].find({}).limit(20);
-
-          case 16:
-            categories = _context6.sent;
-            console.log(redirect);
-
-            if (redirect) {
-              _context6.next = 27;
-              break;
-            }
-
-            _context6.next = 21;
+            _context6.next = 15;
             return _users["default"].findOne({
               _id: req.user.id
             });
 
-          case 21:
+          case 15:
             user = _context6.sent;
             console.log(user.emailsend);
 
             if (!user.emailsend) {
-              _context6.next = 27;
+              _context6.next = 21;
               break;
             }
 
@@ -379,31 +362,74 @@ router.get('/onboarding', _install["default"].redirectToLogin, /*#__PURE__*/func
               lastName: user.lastName,
               siteLink: res.locals.siteLink
             };
-            _context6.next = 27;
-            return (0, _mail2["default"])("Herzlichen Glückwunsch", user.email, "onboarding-email", payload, req.headers.host, function (err, info) {
+            _context6.next = 21;
+            return (0, _mail2["default"])("Nun bist du Premium-Member! ", user.email, "paid-email", payload, req.headers.host, function (err, info) {
               if (err) console.log(err);
             });
 
-          case 27:
+          case 21:
+            if (req.user.paid == "paid") {
+              categoryCount = 10;
+            }
+
+            _context6.next = 24;
+            return _category2["default"].find({}).limit(20);
+
+          case 24:
+            categories = _context6.sent;
+            console.log(redirect);
+
+            if (!(!redirect && !stripeSession_id)) {
+              _context6.next = 35;
+              break;
+            }
+
+            _context6.next = 29;
+            return _users["default"].findOne({
+              _id: req.user.id
+            });
+
+          case 29:
+            _user = _context6.sent;
+            console.log(_user.emailsend);
+
+            if (!_user.emailsend) {
+              _context6.next = 35;
+              break;
+            }
+
+            _payload = {
+              email: _user.email.trim(),
+              username: _user.username.trim().toLowerCase(),
+              firstName: _user.firstName,
+              lastName: _user.lastName,
+              siteLink: res.locals.siteLink
+            };
+            _context6.next = 35;
+            return (0, _mail2["default"])("Herzlichen Glückwunsch", _user.email, "onboarding-email", _payload, req.headers.host, function (err, info) {
+              if (err) console.log(err);
+            });
+
+          case 35:
             res.render('onboarding', {
               categoryCount: categoryCount,
               categories: categories,
               redirect: redirect
             });
-            _context6.next = 33;
+            _context6.next = 41;
             break;
 
-          case 30:
-            _context6.prev = 30;
+          case 38:
+            _context6.prev = 38;
             _context6.t0 = _context6["catch"](1);
             next(_context6.t0);
 
-          case 33:
+          case 41:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[1, 30]]);
+    }, _callee6, null, [[1, 38]]);
   }));
 
   return function (_x15, _x16, _x17) {
@@ -1427,22 +1453,47 @@ router.post("/close", /*#__PURE__*/function () {
 }());
 router.get("/admin-close", /*#__PURE__*/function () {
   var _ref15 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee15(req, res, next) {
-    var user, articles;
+    var user, payload, articles;
     return _regenerator["default"].wrap(function _callee15$(_context15) {
       while (1) {
         switch (_context15.prev = _context15.next) {
           case 0:
             _context15.next = 2;
-            return _users["default"].deleteOne({
+            return _users["default"].findOne({
               _id: req.query.user
             });
 
           case 2:
             user = _context15.sent;
-            _context15.next = 5;
+
+            if (!user.emailsend) {
+              _context15.next = 7;
+              break;
+            }
+
+            payload = {
+              email: user.email.trim(),
+              username: user.username.trim().toLowerCase(),
+              firstName: user.firstName,
+              lastName: user.lastName,
+              siteLink: res.locals.siteLink
+            };
+            _context15.next = 7;
+            return (0, _mail2["default"])("Löschung deines Accounts", user.email, "account-delete-email", payload, req.headers.host, function (err, info) {
+              if (err) console.log(err);
+            });
+
+          case 7:
+            _context15.next = 9;
+            return _users["default"].deleteOne({
+              _id: req.query.user
+            });
+
+          case 9:
+            _context15.next = 11;
             return _articles["default"].find({});
 
-          case 5:
+          case 11:
             articles = _context15.sent;
             articles.forEach(function (element) {
               if (element.postedBy == req.query.user) {
@@ -1455,7 +1506,7 @@ router.get("/admin-close", /*#__PURE__*/function () {
             });
             res.redirect("/dashboard/users");
 
-          case 8:
+          case 14:
           case "end":
             return _context15.stop();
         }

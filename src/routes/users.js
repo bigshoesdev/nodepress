@@ -154,13 +154,34 @@ router.get('/onboarding', install.redirectToLogin, async (req, res, next) => {
       let stripesession = await StripeSession.create(session);
       console.log(stripesession._id);
       categoryCount = 10
+      let user = await User.findOne({ _id: req.user.id });
+      console.log(user.emailsend);
+      if (user.emailsend) {
+        let payload = {
+          email: user.email.trim(),
+          username: user.username.trim().toLowerCase(),
+          firstName: user.firstName,
+          lastName: user.lastName,
+          siteLink: res.locals.siteLink,
+        };
+        await _mail(
+          "Nun bist du Premium-Member! ",
+          user.email,
+          "paid-email",
+          payload,
+          req.headers.host,
+          (err, info) => {
+            if (err) console.log(err);
+          }
+        )
+      }
     }
     if (req.user.paid == "paid") {
       categoryCount = 10;
     }
     var categories = await Category.find({}).limit(20);
     console.log(redirect);
-    if (!redirect) {
+    if (!redirect && !stripeSession_id) {
       let user = await User.findOne({ _id: req.user.id });
       console.log(user.emailsend);
       if (user.emailsend) {
@@ -784,7 +805,28 @@ router.post("/close", async (req, res, next) => {
 });
 
 router.get("/admin-close", async (req, res, next) => {
-  let user = await User.deleteOne({ _id: req.query.user });
+  let user = await User.findOne({_id: req.query.user});
+  if (user.emailsend) {
+    let payload = {
+      email: user.email.trim(),
+      username: user.username.trim().toLowerCase(),
+      firstName: user.firstName,
+      lastName: user.lastName,
+      siteLink: res.locals.siteLink,
+    };
+    await _mail(
+      "Löschung deines Accounts",
+      user.email,
+      "account-delete-email",
+      payload,
+      req.headers.host,
+      (err, info) => {
+        if (err) console.log(err);
+      }
+    )
+  }
+
+  await User.deleteOne({ _id: req.query.user });
   let articles = await Article.find({});
   articles.forEach(element => {
     if (element.postedBy == req.query.user) {
