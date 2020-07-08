@@ -1,5 +1,6 @@
 import passport from "passport";
 import Settings from "../models/settings";
+import _mail from "./_mail";
 const LocalStrategy = require("passport-local").Strategy;
 const FacebookStrategy = require("passport-facebook").Strategy;
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
@@ -67,7 +68,7 @@ set.then(data => {
         callbackURL: "/auth/facebook/callback",
         profileFields: ["id", "displayName", "photos", "email"]
       },
-      function(accessToken, refreshToken, profile, done) {
+      function (accessToken, refreshToken, profile, done) {
         process.nextTick(() => {
           User.findOne({ email: profile.emails[0].value }, (err, user) => {
             if (err) return done(err);
@@ -101,13 +102,13 @@ set.then(data => {
   passport.use(
     new GoogleStrategy(
       {
-        clientID: 
+        clientID:
           data != null
             ? data.socialLogin.google.clientId !== undefined
               ? data.socialLogin.google.clientId
               : " "
             : " ",
-        clientSecret: 
+        clientSecret:
           data != null
             ? data.socialLogin.google.clientSecret !== undefined
               ? data.socialLogin.google.clientSecret
@@ -115,9 +116,9 @@ set.then(data => {
             : " ",
         callbackURL: "https://dype.me/auth/google/callback"
       },
-      function(accessToken, refreshToken, profile, done) {
+      function (accessToken, refreshToken, profile, done) {
         process.nextTick(() => {
-          User.findOne({ email: profile.emails[0].value }, (err, user) => {
+          User.findOne({ email: profile.emails[0].value }, async (err, user) => {
             var status = "exist";
             if (err) return done(err);
             if (user) return done(null, user, status);
@@ -134,10 +135,20 @@ set.then(data => {
                 active: true,
                 provider: profile.provider,
                 googleId: profile.id,
+                emailsend: true,
                 firstName: profile.name.givenName,
                 lastName: profile.name.familyName,
                 signupProcess: "/enterinformation",
               };
+              await _mail(
+                "Verifizierung deiner E-Mail",
+                profile.emails[0].value,
+                "reg-email",
+                payload,
+                req.headers.host,
+                (err, info) => {
+                  if (err) console.log(err);
+                })
               let newUser = new User(payload);
               newUser.save((err, user) => {
                 if (err) throw err;
@@ -169,7 +180,7 @@ set.then(data => {
         userProfileURL:
           "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true"
       },
-      function(token, tokenSecret, profile, done) {
+      function (token, tokenSecret, profile, done) {
         User.findOne({ email: profile.emails[0].value }, (err, user) => {
           if (err) return done(err);
           if (user) return done(null, user);
@@ -221,7 +232,7 @@ set.then(data => {
             : " ",
         callbackURL: "/auth/vkontakte/callback"
       },
-      function(accessToken, refreshToken, params, profile, done) {
+      function (accessToken, refreshToken, params, profile, done) {
         if (!params.email) {
           return done(null, false, { message: "Email Access Not given" });
         } else {

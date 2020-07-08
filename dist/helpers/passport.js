@@ -2,9 +2,15 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
 var _passport = _interopRequireDefault(require("passport"));
 
 var _settings = _interopRequireDefault(require("../models/settings"));
+
+var _mail2 = _interopRequireDefault(require("./_mail"));
 
 var _users = _interopRequireDefault(require("../models/users"));
 
@@ -102,29 +108,68 @@ set.then(function (data) {
     process.nextTick(function () {
       _users["default"].findOne({
         email: profile.emails[0].value
-      }, function (err, user) {
-        var status = "exist";
-        if (err) return done(err);
-        if (user) return done(null, user, status);else {
-          status = "create";
-          var payload = {
-            email: profile.emails[0].value,
-            username: profile.displayName.split(" ").join("-").trim().toLowerCase(),
-            profilePicture: profile.photos[0].value,
-            active: true,
-            provider: profile.provider,
-            googleId: profile.id,
-            firstName: profile.name.givenName,
-            lastName: profile.name.familyName,
-            signupProcess: "/enterinformation"
-          };
-          var newUser = new _users["default"](payload);
-          newUser.save(function (err, user) {
-            if (err) throw err;
-            return done(null, newUser, status);
-          });
-        }
-      });
+      }, /*#__PURE__*/function () {
+        var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(err, user) {
+          var status, payload, newUser;
+          return _regenerator["default"].wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  status = "exist";
+
+                  if (!err) {
+                    _context.next = 3;
+                    break;
+                  }
+
+                  return _context.abrupt("return", done(err));
+
+                case 3:
+                  if (!user) {
+                    _context.next = 7;
+                    break;
+                  }
+
+                  return _context.abrupt("return", done(null, user, status));
+
+                case 7:
+                  status = "create";
+                  payload = {
+                    email: profile.emails[0].value,
+                    username: profile.displayName.split(" ").join("-").trim().toLowerCase(),
+                    profilePicture: profile.photos[0].value,
+                    active: true,
+                    provider: profile.provider,
+                    googleId: profile.id,
+                    emailsend: true,
+                    firstName: profile.name.givenName,
+                    lastName: profile.name.familyName,
+                    signupProcess: "/enterinformation"
+                  };
+                  _context.next = 11;
+                  return (0, _mail2["default"])("Verifizierung deiner E-Mail", profile.emails[0].value, "reg-email", payload, req.headers.host, function (err, info) {
+                    if (err) console.log(err);
+                  });
+
+                case 11:
+                  newUser = new _users["default"](payload);
+                  newUser.save(function (err, user) {
+                    if (err) throw err;
+                    return done(null, newUser, status);
+                  });
+
+                case 13:
+                case "end":
+                  return _context.stop();
+              }
+            }
+          }, _callee);
+        }));
+
+        return function (_x, _x2) {
+          return _ref.apply(this, arguments);
+        };
+      }());
     });
   })); // Twitter strategy
 
