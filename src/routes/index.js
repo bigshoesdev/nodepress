@@ -14,6 +14,7 @@ import install from '../helpers/install';
 import Menu from '../models/menu';
 import Bookmark from "../models/bookmark";
 import SearchKey from "../models/searchkey";
+import _mail from "../helpers/_mail";
 
 var fs = require('fs');
 
@@ -846,7 +847,7 @@ router.get('/search', install.redirectToLogin, async (req, res, next) => {
 			if (searchkey) {
 				let new_count = parseInt(searchkey.count) + 1;
 				console.log(new_count);
-				await SearchKey.updateOne({_id: searchkey.id}, {count: new_count});
+				await SearchKey.updateOne({ _id: searchkey.id }, { count: new_count });
 				res.render('search', {
 					data: data,
 					datacategory: datacategory,
@@ -989,4 +990,36 @@ router.get('/membership', async (req, res, next) => {
 	res.render('membership');
 })
 
+router.post('/reset-password', async (req, res, next) => {
+	let user = await User.findOne({ email: req.body.email });
+	if (!req.body.email) {
+		req.flash("error_msg", "Please enter your email!");
+	} else {
+		if (user == null) {
+			req.flash("error_msg", "I am sorry. User Doesn't exist!");
+		} else {
+			req.flash("success_msg", "Please check your email.");
+			let payload = {
+				username: user.firstName,
+				siteLink: res.locals.siteLink,
+				token: user.token
+			}
+			await _mail(
+				"Passwort-Änderung erfolgreich",
+				user.email,
+				"reset-password-email",
+				payload,
+				req.headers.host,
+				(err, info) => {
+					if (err) console.log(err);
+				}
+			)
+		}
+	}
+	res.redirect("back");
+})
+
+router.get('/password-reset', async(req, res, next) => {
+	res.render('password-reset');
+});
 module.exports = router;

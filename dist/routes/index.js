@@ -38,6 +38,8 @@ var _bookmark = _interopRequireDefault(require("../models/bookmark"));
 
 var _searchkey = _interopRequireDefault(require("../models/searchkey"));
 
+var _mail2 = _interopRequireDefault(require("../helpers/_mail"));
+
 var fs = require('fs');
 
 var _require = require('sitemap'),
@@ -1797,6 +1799,87 @@ router.get('/membership', /*#__PURE__*/function () {
 
   return function (_x59, _x60, _x61) {
     return _ref21.apply(this, arguments);
+  };
+}());
+router.post('/reset-password', /*#__PURE__*/function () {
+  var _ref22 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee22(req, res, next) {
+    var user, payload;
+    return _regenerator["default"].wrap(function _callee22$(_context22) {
+      while (1) {
+        switch (_context22.prev = _context22.next) {
+          case 0:
+            _context22.next = 2;
+            return _users["default"].findOne({
+              email: req.body.email
+            });
+
+          case 2:
+            user = _context22.sent;
+
+            if (req.body.email) {
+              _context22.next = 7;
+              break;
+            }
+
+            req.flash("error_msg", "Please enter your email!");
+            _context22.next = 15;
+            break;
+
+          case 7:
+            if (!(user == null)) {
+              _context22.next = 11;
+              break;
+            }
+
+            req.flash("error_msg", "I am sorry. User Doesn't exist!");
+            _context22.next = 15;
+            break;
+
+          case 11:
+            req.flash("success_msg", "Please check your email.");
+            payload = {
+              username: user.firstName,
+              siteLink: res.locals.siteLink,
+              token: user.token
+            };
+            _context22.next = 15;
+            return (0, _mail2["default"])("Passwort-Änderung erfolgreich", user.email, "reset-password-email", payload, req.headers.host, function (err, info) {
+              if (err) console.log(err);
+            });
+
+          case 15:
+            res.redirect("back");
+
+          case 16:
+          case "end":
+            return _context22.stop();
+        }
+      }
+    }, _callee22);
+  }));
+
+  return function (_x62, _x63, _x64) {
+    return _ref22.apply(this, arguments);
+  };
+}());
+router.get('/password-reset', /*#__PURE__*/function () {
+  var _ref23 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee23(req, res, next) {
+    return _regenerator["default"].wrap(function _callee23$(_context23) {
+      while (1) {
+        switch (_context23.prev = _context23.next) {
+          case 0:
+            res.render('password-reset');
+
+          case 1:
+          case "end":
+            return _context23.stop();
+        }
+      }
+    }, _callee23);
+  }));
+
+  return function (_x65, _x66, _x67) {
+    return _ref23.apply(this, arguments);
   };
 }());
 module.exports = router;
