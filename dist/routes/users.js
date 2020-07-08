@@ -1720,7 +1720,7 @@ router.post("/user/dashboard/update/info", _install["default"].redirectToLogin, 
             user = _context17.sent;
 
             if (!(user.email == req.body.email)) {
-              _context17.next = 18;
+              _context17.next = 20;
               break;
             }
 
@@ -1760,6 +1760,9 @@ router.post("/user/dashboard/update/info", _install["default"].redirectToLogin, 
               req.body.postenable = "true";
             }
 
+            req.body.emailsend = !req.body.emailsend ? false : true;
+            console.log(req.body.emailsend);
+
             _users["default"].updateOne({
               _id: req.user.id
             }, req.body).then(function (user) {
@@ -1769,27 +1772,27 @@ router.post("/user/dashboard/update/info", _install["default"].redirectToLogin, 
               return next(err);
             });
 
-            _context17.next = 27;
+            _context17.next = 29;
             break;
 
-          case 18:
-            _context17.next = 20;
+          case 20:
+            _context17.next = 22;
             return _users["default"].findOne({
               email: req.body.email
             });
 
-          case 20:
+          case 22:
             use = _context17.sent;
 
             if (!use) {
-              _context17.next = 26;
+              _context17.next = 28;
               break;
             }
 
             req.flash("success_msg", "The Email you provided has been used");
             return _context17.abrupt("return", res.redirect("back"));
 
-          case 26:
+          case 28:
             _users["default"].updateOne({
               _id: req.user.id
             }, req.body).then(function (user) {
@@ -1799,21 +1802,21 @@ router.post("/user/dashboard/update/info", _install["default"].redirectToLogin, 
               return next(err);
             });
 
-          case 27:
-            _context17.next = 32;
+          case 29:
+            _context17.next = 34;
             break;
 
-          case 29:
-            _context17.prev = 29;
+          case 31:
+            _context17.prev = 31;
             _context17.t0 = _context17["catch"](0);
             next(_context17.t0);
 
-          case 32:
+          case 34:
           case "end":
             return _context17.stop();
         }
       }
-    }, _callee17, null, [[0, 29]]);
+    }, _callee17, null, [[0, 31]]);
   }));
 
   return function (_x48, _x49, _x50) {

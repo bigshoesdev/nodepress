@@ -1868,7 +1868,9 @@ router.get('/password-reset', /*#__PURE__*/function () {
       while (1) {
         switch (_context23.prev = _context23.next) {
           case 0:
-            res.render('password-reset');
+            res.render('password-reset', {
+              token: req.query.token
+            });
 
           case 1:
           case "end":
@@ -1880,6 +1882,54 @@ router.get('/password-reset', /*#__PURE__*/function () {
 
   return function (_x65, _x66, _x67) {
     return _ref23.apply(this, arguments);
+  };
+}());
+router.post('/password-save', /*#__PURE__*/function () {
+  var _ref24 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee24(req, res, next) {
+    var user;
+    return _regenerator["default"].wrap(function _callee24$(_context24) {
+      while (1) {
+        switch (_context24.prev = _context24.next) {
+          case 0:
+            console.log(req.body.token);
+            _context24.next = 3;
+            return _users["default"].findOne({
+              token: req.body.token
+            });
+
+          case 3:
+            user = _context24.sent;
+
+            if (!(req.body.password !== req.body.conform)) {
+              _context24.next = 9;
+              break;
+            }
+
+            req.flash("success_msg", "Password Does/'nt match");
+            return _context24.abrupt("return", res.redirect('back'));
+
+          case 9:
+            _context24.next = 11;
+            return _users["default"].updateOne({
+              _id: user.id
+            }, {
+              password: req.body.password
+            });
+
+          case 11:
+            req.flash("success_msg", "Successful");
+            res.redirect('/login');
+
+          case 13:
+          case "end":
+            return _context24.stop();
+        }
+      }
+    }, _callee24);
+  }));
+
+  return function (_x68, _x69, _x70) {
+    return _ref24.apply(this, arguments);
   };
 }());
 module.exports = router;

@@ -107,7 +107,7 @@
                                 <div class="col-sm-6 col-12 mb-20">
                                     <label for="">Phone Number</label>
                                     <input type="tel" name="phone" id="phone"
-                                        class="form-control" value="<%= user.phone %>" required />
+                                        class="form-control" value="<%= user.phone %>" />
                                 </div>
                                 <div class="col-sm-12 col-12 mb-20 tax-field" style="display: none;">
                                     <label for="">Tax number</label>
@@ -117,6 +117,10 @@
                                     <label for="">About Me (*)</label>
                                     <textarea name="about" required id="about" cols="30" rows="10" class="form-control"
                                         maxlength="150"><%= user.about %></textarea>
+                                </div>
+                                <div class="col-12 mb-20">
+                                    <label for="">Email Notification</label>
+                                    <input type="checkbox" name="emailsend"  style="width: 30px; height: 30px;" <% if(user.emailsend == true){ %>checked<% } %> >
                                 </div>
                                 <div class="col-12 mb-20">
                                     <label for="">Categories</label>

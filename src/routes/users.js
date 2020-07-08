@@ -1024,6 +1024,8 @@ router.post(
         if (status == 100) {
           req.body.postenable = "true";
         }
+        req.body.emailsend = !req.body.emailsend ? false : true;
+        console.log(req.body.emailsend)
         User.updateOne({ _id: req.user.id }, req.body)
           .then(user => {
 

@@ -1020,6 +1020,21 @@ router.post('/reset-password', async (req, res, next) => {
 })
 
 router.get('/password-reset', async(req, res, next) => {
-	res.render('password-reset');
+	res.render('password-reset', {
+		token: req.query.token
+	});
 });
+
+router.post('/password-save', async(req, res, next) =>{
+	console.log(req.body.token);
+	let user = await User.findOne({token: req.body.token});
+	if(req.body.password !== req.body.conform){
+		req.flash("success_msg", "Password Does/'nt match");
+		return res.redirect('back');
+	}else {
+		await User.updateOne({_id: user.id}, {password: req.body.password});
+		req.flash("success_msg", "Successful");
+		res.redirect('/login');
+	}
+})
 module.exports = router;
