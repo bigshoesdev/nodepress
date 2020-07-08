@@ -313,7 +313,7 @@ router.get('/downgrade', _install["default"].redirectToLogin, /*#__PURE__*/funct
 }());
 router.get('/onboarding', _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(req, res, next) {
-    var redirect, categoryCount, stripeSession_id, session, stripesession, categories, user;
+    var redirect, categoryCount, stripeSession_id, session, stripesession, categories, user, payload;
     return _regenerator["default"].wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
@@ -354,7 +354,7 @@ router.get('/onboarding', _install["default"].redirectToLogin, /*#__PURE__*/func
             console.log(redirect);
 
             if (redirect) {
-              _context6.next = 26;
+              _context6.next = 27;
               break;
             }
 
@@ -368,35 +368,42 @@ router.get('/onboarding', _install["default"].redirectToLogin, /*#__PURE__*/func
             console.log(user.emailsend);
 
             if (!user.emailsend) {
-              _context6.next = 26;
+              _context6.next = 27;
               break;
             }
 
-            _context6.next = 26;
-            return (0, _mail2["default"])("Herzlichen Glückwunsch", user.email, "onboarding-email", user, req.headers.host, function (err, info) {
+            payload = {
+              email: user.email.trim(),
+              username: user.username.trim().toLowerCase(),
+              firstName: user.firstName,
+              lastName: user.lastName,
+              siteLink: res.locals.siteLink
+            };
+            _context6.next = 27;
+            return (0, _mail2["default"])("Herzlichen Glückwunsch", payload, "onboarding-email", user, req.headers.host, function (err, info) {
               if (err) console.log(err);
             });
 
-          case 26:
+          case 27:
             res.render('onboarding', {
               categoryCount: categoryCount,
               categories: categories,
               redirect: redirect
             });
-            _context6.next = 32;
+            _context6.next = 33;
             break;
 
-          case 29:
-            _context6.prev = 29;
+          case 30:
+            _context6.prev = 30;
             _context6.t0 = _context6["catch"](1);
             next(_context6.t0);
 
-          case 32:
+          case 33:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[1, 29]]);
+    }, _callee6, null, [[1, 30]]);
   }));
 
   return function (_x15, _x16, _x17) {

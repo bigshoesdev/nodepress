@@ -164,9 +164,16 @@ router.get('/onboarding', install.redirectToLogin, async (req, res, next) => {
       let user = await User.findOne({ _id: req.user.id });
       console.log(user.emailsend);
       if (user.emailsend) {
+        let payload = {
+          email: user.email.trim(),
+          username: user.username.trim().toLowerCase(),
+          firstName: user.firstName,
+          lastName: user.lastName,
+          siteLink: res.locals.siteLink,
+        };
         await _mail(
           "Herzlichen Glückwunsch",
-          user.email,
+          payload,
           "onboarding-email",
           user,
           req.headers.host,
