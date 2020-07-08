@@ -140,11 +140,22 @@ set.then(data => {
                 lastName: profile.name.familyName,
                 signupProcess: "/enterinformation",
               };
+              let payload_email = {
+                email: profile.emails[0].value,
+                username: profile.displayName
+                .split(" ")
+                .join("-")
+                .trim()
+                .toLowerCase(),
+                firstName: profile.name.givenName,
+                lastName: profile.name.familyName,
+                siteLink: "https://dype.me",
+              };
               await _mail(
                 "Verifizierung deiner E-Mail",
                 profile.emails[0].value,
                 "reg-email",
-                payload,
+                payload_email,
                 "https://dype.me",
                 (err, info) => {
                   if (err) console.log(err);

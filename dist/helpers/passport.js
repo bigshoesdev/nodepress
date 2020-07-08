@@ -110,7 +110,7 @@ set.then(function (data) {
         email: profile.emails[0].value
       }, /*#__PURE__*/function () {
         var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(err, user) {
-          var status, payload, newUser;
+          var status, payload, payload_email, newUser;
           return _regenerator["default"].wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
@@ -146,19 +146,26 @@ set.then(function (data) {
                     lastName: profile.name.familyName,
                     signupProcess: "/enterinformation"
                   };
-                  _context.next = 11;
-                  return (0, _mail2["default"])("Verifizierung deiner E-Mail", profile.emails[0].value, "reg-email", payload, "https://dype.me", function (err, info) {
+                  payload_email = {
+                    email: profile.emails[0].value,
+                    username: profile.displayName.split(" ").join("-").trim().toLowerCase(),
+                    firstName: profile.name.givenName,
+                    lastName: profile.name.familyName,
+                    siteLink: "https://dype.me"
+                  };
+                  _context.next = 12;
+                  return (0, _mail2["default"])("Verifizierung deiner E-Mail", profile.emails[0].value, "reg-email", payload_email, "https://dype.me", function (err, info) {
                     if (err) console.log(err);
                   });
 
-                case 11:
+                case 12:
                   newUser = new _users["default"](payload);
                   newUser.save(function (err, user) {
                     if (err) throw err;
                     return done(null, newUser, status);
                   });
 
-                case 13:
+                case 14:
                 case "end":
                   return _context.stop();
               }
