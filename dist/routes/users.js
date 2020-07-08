@@ -313,7 +313,7 @@ router.get('/downgrade', _install["default"].redirectToLogin, /*#__PURE__*/funct
 }());
 router.get('/onboarding', _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref6 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(req, res, next) {
-    var redirect, categoryCount, stripeSession_id, session, stripesession, categories;
+    var redirect, categoryCount, stripeSession_id, session, stripesession, categories, user;
     return _regenerator["default"].wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
@@ -351,25 +351,52 @@ router.get('/onboarding', _install["default"].redirectToLogin, /*#__PURE__*/func
 
           case 16:
             categories = _context6.sent;
+            console.log(redirect);
+
+            if (redirect) {
+              _context6.next = 26;
+              break;
+            }
+
+            _context6.next = 21;
+            return _users["default"].findOne({
+              _id: req.user.id
+            });
+
+          case 21:
+            user = _context6.sent;
+            console.log(user.emailsend);
+
+            if (!user.emailsend) {
+              _context6.next = 26;
+              break;
+            }
+
+            _context6.next = 26;
+            return (0, _mail2["default"])("Herzlichen Glückwunsch", user.email, "onboarding-email", user, req.headers.host, function (err, info) {
+              if (err) console.log(err);
+            });
+
+          case 26:
             res.render('onboarding', {
               categoryCount: categoryCount,
               categories: categories,
               redirect: redirect
             });
-            _context6.next = 23;
+            _context6.next = 32;
             break;
 
-          case 20:
-            _context6.prev = 20;
+          case 29:
+            _context6.prev = 29;
             _context6.t0 = _context6["catch"](1);
             next(_context6.t0);
 
-          case 23:
+          case 32:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[1, 20]]);
+    }, _callee6, null, [[1, 29]]);
   }));
 
   return function (_x15, _x16, _x17) {

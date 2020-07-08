@@ -194,11 +194,10 @@
                         <td align="center" style="color: #343434; font-size: 24px; font-family: Quicksand, Calibri, sans-serif; font-weight:700;letter-spacing: 3px; line-height: 35px;"
                             class="main-header">
                             <div style="line-height: 35px">
-                                Hallo<span style="color: #5caad2;"> Santos!</span>
+                                Hallo<span style="color: #5caad2;"> <%= username%> !</span>
                             </div>
                         </td>
                     </tr>
-
                     <tr>
                         <td height="10" style="font-size: 10px; line-height: 10px;">&nbsp;</td>
                     </tr>
@@ -325,7 +324,7 @@
                                             <tr>
                                                 <td align="center">
                                                     <a style="font-size: 14px; font-family: 'Work Sans', Calibri, sans-serif; line-height: 24px;color: #5caad2; text-decoration: none;font-weight:bold;"
-                                                        href="{{UnsubscribeURL}}">Mails bearbeiten</a>
+                                                        href="<%= siteLink %>/user/profile">Mails bearbeiten</a>
                                                 </td>
                                             </tr>
                                         </table>

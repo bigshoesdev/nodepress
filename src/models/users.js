@@ -24,6 +24,10 @@ const userSchema = new Schema(
       type: Boolean,
       default: false
     },
+    emailsend: {
+      type: Boolean,
+      default: true
+    },
     canceled: {
       type: Boolean,
       default: false

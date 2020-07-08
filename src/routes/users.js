@@ -159,6 +159,23 @@ router.get('/onboarding', install.redirectToLogin, async (req, res, next) => {
       categoryCount = 10;
     }
     var categories = await Category.find({}).limit(20);
+    console.log(redirect);
+    if (!redirect) {
+      let user = await User.findOne({ _id: req.user.id });
+      console.log(user.emailsend);
+      if (user.emailsend) {
+        await _mail(
+          "Herzlichen Glückwunsch",
+          user.email,
+          "onboarding-email",
+          user,
+          req.headers.host,
+          (err, info) => {
+            if (err) console.log(err);
+          }
+        )
+      }
+    }
     res.render('onboarding', {
       categoryCount: categoryCount,
       categories: categories,
