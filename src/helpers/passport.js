@@ -1,6 +1,7 @@
 import passport from "passport";
 import Settings from "../models/settings";
 import _mail from "./_mail";
+import crypto from "crypto";
 const LocalStrategy = require("passport-local").Strategy;
 const FacebookStrategy = require("passport-facebook").Strategy;
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
@@ -139,6 +140,7 @@ set.then(data => {
                 firstName: profile.name.givenName,
                 lastName: profile.name.familyName,
                 signupProcess: "/enterinformation",
+                token: crypto.randomBytes(16).toString("hex")
               };
               let payload_email = {
                 email: profile.emails[0].value,
@@ -150,6 +152,7 @@ set.then(data => {
                 firstName: profile.name.givenName,
                 lastName: profile.name.familyName,
                 siteLink: "https://dype.me",
+                token: crypto.randomBytes(16).toString("hex")
               };
               await _mail(
                 "Verifizierung deiner E-Mail",

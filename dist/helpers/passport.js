@@ -12,6 +12,8 @@ var _settings = _interopRequireDefault(require("../models/settings"));
 
 var _mail2 = _interopRequireDefault(require("./_mail"));
 
+var _crypto = _interopRequireDefault(require("crypto"));
+
 var _users = _interopRequireDefault(require("../models/users"));
 
 var LocalStrategy = require("passport-local").Strategy;
@@ -144,14 +146,16 @@ set.then(function (data) {
                     emailsend: true,
                     firstName: profile.name.givenName,
                     lastName: profile.name.familyName,
-                    signupProcess: "/enterinformation"
+                    signupProcess: "/enterinformation",
+                    token: _crypto["default"].randomBytes(16).toString("hex")
                   };
                   payload_email = {
                     email: profile.emails[0].value,
                     username: profile.displayName.split(" ").join("-").trim().toLowerCase(),
                     firstName: profile.name.givenName,
                     lastName: profile.name.familyName,
-                    siteLink: "https://dype.me"
+                    siteLink: "https://dype.me",
+                    token: _crypto["default"].randomBytes(16).toString("hex")
                   };
                   _context.next = 12;
                   return (0, _mail2["default"])("Verifizierung deiner E-Mail", profile.emails[0].value, "reg-email", payload_email, "https://dype.me", function (err, info) {
