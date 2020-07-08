@@ -1423,7 +1423,7 @@ router.post("/close", /*#__PURE__*/function () {
           case 0:
             _context14.next = 2;
             return _users["default"].updateOne({
-              _id: req.user._id
+              _id: req.user.id
             }, {
               closed: true
             });
@@ -1452,13 +1452,13 @@ router.post("/close", /*#__PURE__*/function () {
           case 8:
             _context14.next = 10;
             return _users["default"].deleteOne({
-              _id: req.user._id
+              _id: req.user.id
             });
 
           case 10:
             _context14.next = 12;
             return _articles["default"].deleteMany({
-              postedBy: req.body._id
+              postedBy: req.user.id
             });
 
           case 12:

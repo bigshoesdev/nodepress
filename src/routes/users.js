@@ -789,7 +789,7 @@ router.get("/close", (req, res, next) => {
 });
 
 router.post("/close", async (req, res, next) => {
-  let user = await User.updateOne({ _id: req.user._id }, { closed: true });
+  let user = await User.updateOne({ _id: req.user.id }, { closed: true });
   console.log(user.emailsend)
   if (user.emailsend) {
     let payload = {
@@ -810,8 +810,8 @@ router.post("/close", async (req, res, next) => {
       }
     )
   }
-  await User.deleteOne({ _id: req.user._id });
-  await Article.deleteMany({ postedBy: req.body._id });
+  await User.deleteOne({ _id: req.user.id });
+  await Article.deleteMany({ postedBy: req.user.id });
   req.logout();
   res.redirect('/login');
 });
