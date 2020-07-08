@@ -792,6 +792,7 @@ router.post("/close", async (req, res, next) => {
   let user = await User.updateOne({ _id: req.user.id }, { closed: true });
   console.log(user.emailsend)
   if (user.emailsend) {
+    console.log(user);
     let payload = {
       email: user.email.trim(),
       username: user.username.trim().toLowerCase(),

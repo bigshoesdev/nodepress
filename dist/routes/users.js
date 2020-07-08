@@ -1433,10 +1433,11 @@ router.post("/close", /*#__PURE__*/function () {
             console.log(user.emailsend);
 
             if (!user.emailsend) {
-              _context14.next = 8;
+              _context14.next = 9;
               break;
             }
 
+            console.log(user);
             payload = {
               email: user.email.trim(),
               username: user.username.trim().toLowerCase(),
@@ -1444,28 +1445,28 @@ router.post("/close", /*#__PURE__*/function () {
               lastName: user.lastName,
               siteLink: res.locals.siteLink
             };
-            _context14.next = 8;
+            _context14.next = 9;
             return (0, _mail2["default"])("Löschung deines Accounts", user.email, "account-delete-email", payload, req.headers.host, function (err, info) {
               if (err) console.log(err);
             });
 
-          case 8:
-            _context14.next = 10;
+          case 9:
+            _context14.next = 11;
             return _users["default"].deleteOne({
               _id: req.user.id
             });
 
-          case 10:
-            _context14.next = 12;
+          case 11:
+            _context14.next = 13;
             return _articles["default"].deleteMany({
               postedBy: req.user.id
             });
 
-          case 12:
+          case 13:
             req.logout();
             res.redirect('/login');
 
-          case 14:
+          case 15:
           case "end":
             return _context14.stop();
         }
