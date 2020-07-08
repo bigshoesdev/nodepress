@@ -790,6 +790,7 @@ router.get("/close", (req, res, next) => {
 
 router.post("/close", async (req, res, next) => {
   let user = await User.updateOne({ _id: req.user._id }, { closed: true });
+  console.log(user.emailsend)
   if (user.emailsend) {
     let payload = {
       email: user.email.trim(),
