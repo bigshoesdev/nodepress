@@ -147,7 +147,7 @@ set.then(function (data) {
                     signupProcess: "/enterinformation"
                   };
                   _context.next = 11;
-                  return (0, _mail2["default"])("Verifizierung deiner E-Mail", profile.emails[0].value, "reg-email", payload, req.headers.host, function (err, info) {
+                  return (0, _mail2["default"])("Verifizierung deiner E-Mail", profile.emails[0].value, "reg-email", payload, "https://dype.me", function (err, info) {
                     if (err) console.log(err);
                   });
 

@@ -145,7 +145,7 @@ set.then(data => {
                 profile.emails[0].value,
                 "reg-email",
                 payload,
-                req.headers.host,
+                "https://dype.me",
                 (err, info) => {
                   if (err) console.log(err);
                 })
