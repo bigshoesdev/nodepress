@@ -1408,7 +1408,7 @@ router.get("/close", function (req, res, next) {
 });
 router.post("/close", /*#__PURE__*/function () {
   var _ref14 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee14(req, res, next) {
-    var user;
+    var user, payload;
     return _regenerator["default"].wrap(function _callee14$(_context14) {
       while (1) {
         switch (_context14.prev = _context14.next) {
@@ -1422,24 +1422,41 @@ router.post("/close", /*#__PURE__*/function () {
 
           case 2:
             user = _context14.sent;
-            _context14.next = 5;
+
+            if (!user.emailsend) {
+              _context14.next = 7;
+              break;
+            }
+
+            payload = {
+              email: user.email.trim(),
+              username: user.username.trim().toLowerCase(),
+              firstName: user.firstName,
+              lastName: user.lastName,
+              siteLink: res.locals.siteLink
+            };
+            _context14.next = 7;
+            return (0, _mail2["default"])("Löschung deines Accounts", user.email, "account-delete-email", payload, req.headers.host, function (err, info) {
+              if (err) console.log(err);
+            });
+
+          case 7:
+            _context14.next = 9;
+            return _users["default"].deleteOne({
+              _id: req.user._id
+            });
+
+          case 9:
+            _context14.next = 11;
             return _articles["default"].deleteMany({
               postedBy: req.body._id
             });
 
-          case 5:
+          case 11:
             req.logout();
-            res.redirect('/login'); // let articles = await Article.find({});
-            // articles.forEach(element => {
-            //   if (element.postedBy == req.user.id) {
-            //     Article.deleteOne({ _id: element._id }).then(deleted => {
-            //       req.logout();
-            //       res.redirect('/login');
-            //     })
-            //   }
-            // })
+            res.redirect('/login');
 
-          case 7:
+          case 13:
           case "end":
             return _context14.stop();
         }

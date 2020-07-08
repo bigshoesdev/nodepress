@@ -790,18 +790,29 @@ router.get("/close", (req, res, next) => {
 
 router.post("/close", async (req, res, next) => {
   let user = await User.updateOne({ _id: req.user._id }, { closed: true });
+  if (user.emailsend) {
+    let payload = {
+      email: user.email.trim(),
+      username: user.username.trim().toLowerCase(),
+      firstName: user.firstName,
+      lastName: user.lastName,
+      siteLink: res.locals.siteLink,
+    };
+    await _mail(
+      "Löschung deines Accounts",
+      user.email,
+      "account-delete-email",
+      payload,
+      req.headers.host,
+      (err, info) => {
+        if (err) console.log(err);
+      }
+    )
+  }
+  await User.deleteOne({ _id: req.user._id });
   await Article.deleteMany({ postedBy: req.body._id });
   req.logout();
   res.redirect('/login');
-  // let articles = await Article.find({});
-  // articles.forEach(element => {
-  //   if (element.postedBy == req.user.id) {
-  //     Article.deleteOne({ _id: element._id }).then(deleted => {
-  //       req.logout();
-  //       res.redirect('/login');
-  //     })
-  //   }
-  // })
 });
 
 router.get("/admin-close", async (req, res, next) => {
