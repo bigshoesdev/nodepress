@@ -789,7 +789,8 @@ router.get("/close", (req, res, next) => {
 });
 
 router.post("/close", async (req, res, next) => {
-  let user = await User.updateOne({ _id: req.user.id }, { closed: true });
+  await User.updateOne({ _id: req.user.id }, { closed: true });
+  let user = User.findOne({_id: req.user.id});
   console.log(user.emailsend)
   if (user.emailsend) {
     console.log(user);

@@ -1429,7 +1429,9 @@ router.post("/close", /*#__PURE__*/function () {
             });
 
           case 2:
-            user = _context14.sent;
+            user = _users["default"].findOne({
+              _id: req.user.id
+            });
             console.log(user.emailsend);
 
             if (!user.emailsend) {
