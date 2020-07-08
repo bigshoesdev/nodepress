@@ -325,7 +325,7 @@ router.get('/onboarding', _install["default"].redirectToLogin, /*#__PURE__*/func
             stripeSession_id = req.query.session_id;
 
             if (!stripeSession_id) {
-              _context6.next = 21;
+              _context6.next = 22;
               break;
             }
 
@@ -348,10 +348,15 @@ router.get('/onboarding', _install["default"].redirectToLogin, /*#__PURE__*/func
 
           case 15:
             user = _context6.sent;
-            console.log(user.emailsend);
+            _context6.next = 18;
+            return _users["default"].updateOne({
+              _id: req.user._id,
+              paid: "paid"
+            });
 
+          case 18:
             if (!user.emailsend) {
-              _context6.next = 21;
+              _context6.next = 22;
               break;
             }
 
@@ -362,39 +367,39 @@ router.get('/onboarding', _install["default"].redirectToLogin, /*#__PURE__*/func
               lastName: user.lastName,
               siteLink: res.locals.siteLink
             };
-            _context6.next = 21;
-            return (0, _mail2["default"])("Nun bist du Premium-Member! ", user.email, "paid-email", payload, req.headers.host, function (err, info) {
+            _context6.next = 22;
+            return (0, _mail2["default"])("Nun bist du Premium-Member!", user.email, "paid-email", payload, req.headers.host, function (err, info) {
               if (err) console.log(err);
             });
 
-          case 21:
+          case 22:
             if (req.user.paid == "paid") {
               categoryCount = 10;
             }
 
-            _context6.next = 24;
+            _context6.next = 25;
             return _category2["default"].find({}).limit(20);
 
-          case 24:
+          case 25:
             categories = _context6.sent;
             console.log(redirect);
 
             if (!(!redirect && !stripeSession_id)) {
-              _context6.next = 35;
+              _context6.next = 36;
               break;
             }
 
-            _context6.next = 29;
+            _context6.next = 30;
             return _users["default"].findOne({
               _id: req.user.id
             });
 
-          case 29:
+          case 30:
             _user = _context6.sent;
             console.log(_user.emailsend);
 
             if (!_user.emailsend) {
-              _context6.next = 35;
+              _context6.next = 36;
               break;
             }
 
@@ -405,31 +410,31 @@ router.get('/onboarding', _install["default"].redirectToLogin, /*#__PURE__*/func
               lastName: _user.lastName,
               siteLink: res.locals.siteLink
             };
-            _context6.next = 35;
+            _context6.next = 36;
             return (0, _mail2["default"])("Herzlichen Glückwunsch", _user.email, "onboarding-email", _payload, req.headers.host, function (err, info) {
               if (err) console.log(err);
             });
 
-          case 35:
+          case 36:
             res.render('onboarding', {
               categoryCount: categoryCount,
               categories: categories,
               redirect: redirect
             });
-            _context6.next = 41;
+            _context6.next = 42;
             break;
 
-          case 38:
-            _context6.prev = 38;
+          case 39:
+            _context6.prev = 39;
             _context6.t0 = _context6["catch"](1);
             next(_context6.t0);
 
-          case 41:
+          case 42:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[1, 38]]);
+    }, _callee6, null, [[1, 39]]);
   }));
 
   return function (_x15, _x16, _x17) {

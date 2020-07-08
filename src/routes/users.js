@@ -155,7 +155,7 @@ router.get('/onboarding', install.redirectToLogin, async (req, res, next) => {
       console.log(stripesession._id);
       categoryCount = 10
       let user = await User.findOne({ _id: req.user.id });
-      console.log(user.emailsend);
+      await User.updateOne({_id: req.user._id, paid: "paid"})
       if (user.emailsend) {
         let payload = {
           email: user.email.trim(),
@@ -165,7 +165,7 @@ router.get('/onboarding', install.redirectToLogin, async (req, res, next) => {
           siteLink: res.locals.siteLink,
         };
         await _mail(
-          "Nun bist du Premium-Member! ",
+          "Nun bist du Premium-Member!",
           user.email,
           "paid-email",
           payload,
