@@ -350,8 +350,11 @@ router.get('/onboarding', _install["default"].redirectToLogin, /*#__PURE__*/func
             user = _context6.sent;
             _context6.next = 18;
             return _users["default"].updateOne({
-              _id: req.user.id,
-              paid: "paid"
+              _id: req.user.id
+            }, {
+              $set: {
+                paid: "paid"
+              }
             });
 
           case 18:
