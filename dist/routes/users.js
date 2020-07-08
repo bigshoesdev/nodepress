@@ -643,6 +643,7 @@ router.post("/api/sign-up", /*#__PURE__*/function () {
                 logo: res.locals.siteLogo,
                 instagram: res.locals.instagram,
                 facebook: res.locals.facebook,
+                emailsend: true,
                 twitter: res.locals.twitter,
                 signupProcess: "/enterinformation"
               };
@@ -821,6 +822,7 @@ router.post("/sign-up", _install["default"].redirectToLogin, checkIfLoggedIn, /*
               instagram: res.locals.instagram,
               facebook: res.locals.facebook,
               twitter: res.locals.twitter,
+              emailsend: true,
               signupProcess: "/enterinformation"
             };
 
@@ -1429,17 +1431,19 @@ router.post("/close", /*#__PURE__*/function () {
             });
 
           case 2:
-            user = _users["default"].findOne({
+            _context14.next = 4;
+            return _users["default"].findOne({
               _id: req.user.id
             });
-            console.log(user.emailsend);
+
+          case 4:
+            user = _context14.sent;
 
             if (!user.emailsend) {
               _context14.next = 9;
               break;
             }
 
-            console.log(user);
             payload = {
               email: user.email.trim(),
               username: user.username.trim().toLowerCase(),

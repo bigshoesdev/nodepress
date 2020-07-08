@@ -342,6 +342,7 @@ router.post("/api/sign-up", async (req, res, next) => {
         logo: res.locals.siteLogo,
         instagram: res.locals.instagram,
         facebook: res.locals.facebook,
+        emailsend: true,
         twitter: res.locals.twitter,
         signupProcess: "/enterinformation"
       };
@@ -449,6 +450,7 @@ router.post(
             instagram: res.locals.instagram,
             facebook: res.locals.facebook,
             twitter: res.locals.twitter,
+            emailsend: true,
             signupProcess: "/enterinformation"
           };
           if (req.body.password !== req.body.cPassword) {
@@ -790,10 +792,8 @@ router.get("/close", (req, res, next) => {
 
 router.post("/close", async (req, res, next) => {
   await User.updateOne({ _id: req.user.id }, { closed: true });
-  let user = User.findOne({_id: req.user.id});
-  console.log(user.emailsend)
+  let user = await User.findOne({_id: req.user.id});
   if (user.emailsend) {
-    console.log(user);
     let payload = {
       email: user.email.trim(),
       username: user.username.trim().toLowerCase(),
