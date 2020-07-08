@@ -155,7 +155,7 @@ router.get('/onboarding', install.redirectToLogin, async (req, res, next) => {
       console.log(stripesession._id);
       categoryCount = 10
       let user = await User.findOne({ _id: req.user.id });
-      await User.updateOne({_id: req.user.id}, { $set: { paid: "paid" } });
+      await User.updateOne({ _id: req.user.id }, { $set: { paid: "paid" } });
       if (user.emailsend) {
         let payload = {
           email: user.email.trim(),
@@ -816,7 +816,7 @@ router.post("/close", async (req, res, next) => {
 });
 
 router.get("/admin-close", async (req, res, next) => {
-  let user = await User.findOne({_id: req.query.user});
+  let user = await User.findOne({ _id: req.query.user });
   if (user.emailsend) {
     let payload = {
       email: user.email.trim(),
