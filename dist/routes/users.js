@@ -380,7 +380,7 @@ router.get('/onboarding', _install["default"].redirectToLogin, /*#__PURE__*/func
               siteLink: res.locals.siteLink
             };
             _context6.next = 27;
-            return (0, _mail2["default"])("Herzlichen Glückwunsch", payload, "onboarding-email", user, req.headers.host, function (err, info) {
+            return (0, _mail2["default"])("Herzlichen Glückwunsch", user.email, "onboarding-email", payload, req.headers.host, function (err, info) {
               if (err) console.log(err);
             });
 

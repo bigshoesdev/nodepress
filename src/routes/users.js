@@ -173,9 +173,9 @@ router.get('/onboarding', install.redirectToLogin, async (req, res, next) => {
         };
         await _mail(
           "Herzlichen Glückwunsch",
-          payload,
+          user.email,
           "onboarding-email",
-          user,
+          payload,
           req.headers.host,
           (err, info) => {
             if (err) console.log(err);
