@@ -130,7 +130,7 @@
             <h6>Filter : </h6>
         </div>
         <div class="col-3 mb-20">
-            <input type="date" class="form-control" name="filterdate" id="filterdate"/>
+            <input type="date" class="form-control" name="filterdate" id="filterdate" />
         </div>
     </div>
     <div class="row">
@@ -267,13 +267,26 @@
 <script src="/assets/js/plugins/nice-select/jquery.nice-select.min.js"></script>
 
 <script>
-    $(function(){
+    $(function () {
         var param = window.location.search;
         var searchdate = param.split("?filter=")[1];
-        if(searchdate){
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+
+        today = yyyy + '-' + mm + '-' + dd;
+        $('#filterdate').attr('max', today);
+        if (searchdate) {
             $('#filterdate').val(searchdate);
         }
-        $('#filterdate').change(function(){
+        $('#filterdate').change(function () {
             var date = $('#filterdate').val();
             var month = new Date(date);
             location.replace('https://dype.me/user/authorstatus?filter=' + date);

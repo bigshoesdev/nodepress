@@ -754,43 +754,13 @@ router.get("/p/:category/:slug", install.redirectToLogin, async (req, res, next)
         req.socket.remoteAddress ||
         (req.connection.socket ? req.connection.socket.remoteAddress : null);
       let articleCount = await Article.countDocuments();
-      // if (art.viewers.indexOf(ips) !== -1) {
-      //   res.render("single", {
-      //     articleCount: articleCount,
-      //     title: article[0].title,
-      //     article: article[0],
-      //     settings: settings,
-      //     previous: previousarticle[0],
-      //     next: nextarticle[0],
-      //     featured: featured,
-      //     popular: popular,
-      //     recommended: recommended,
-      //     related: related,
-      //     bookmark: book,
-      //     bookmarkId: bookmark == null ? null : bookmark._id
-      //   });
-      // } else {
-      let ip =
-        req.headers["x-forwarded-for"] ||
-        req.connection.remoteAddress ||
-        req.socket.remoteAddress ||
-        (req.connection.socket ? req.connection.socket.remoteAddress : null);
-      let payload = {
-        ip: ip,
-        date: new Date()
-      }
-      await User.updateOne(
-        {_id: art.postedBy},
-        {$inc: {contentviews: 1}}
-      );
-      await Article.updateOne(
-        { slug: req.params.slug.trim() },
-        { $push: { viewers: payload }}
-      );
-      Article.updateOne(
-        { slug: req.params.slug.trim() },
-        { $inc: { views: 1 } }
-      ).then(views => {
+      let indexof = -1;
+      art.viewers.forEach(element => {
+        if (element.ip == ips) {
+          indexof = 1;
+        }
+      })
+      if (indexof !== -1) {
         res.render("single", {
           articleCount: articleCount,
           title: article[0].title,
@@ -805,10 +775,46 @@ router.get("/p/:category/:slug", install.redirectToLogin, async (req, res, next)
           bookmark: book,
           bookmarkId: bookmark == null ? null : bookmark._id
         });
-      })
-        .catch(err => next(err));
+      } else {
+        let ip =
+          req.headers["x-forwarded-for"] ||
+          req.connection.remoteAddress ||
+          req.socket.remoteAddress ||
+          (req.connection.socket ? req.connection.socket.remoteAddress : null);
+        let payload = {
+          ip: ip,
+          date: new Date()
+        }
+        await User.updateOne(
+          { _id: art.postedBy },
+          { $inc: { contentviews: 1 } }
+        );
+        await Article.updateOne(
+          { slug: req.params.slug.trim() },
+          { $push: { viewers: payload } }
+        );
+        Article.updateOne(
+          { slug: req.params.slug.trim() },
+          { $inc: { views: 1 } }
+        ).then(views => {
+          res.render("single", {
+            articleCount: articleCount,
+            title: article[0].title,
+            article: article[0],
+            settings: settings,
+            previous: previousarticle[0],
+            next: nextarticle[0],
+            featured: featured,
+            popular: popular,
+            recommended: recommended,
+            related: related,
+            bookmark: book,
+            bookmarkId: bookmark == null ? null : bookmark._id
+          });
+        })
+          .catch(err => next(err));
+      }
     }
-    // }
   } catch (error) {
     next(error);
   }
@@ -961,58 +967,64 @@ router.get("/d/:category/:slug", install.redirectToLogin, async (req, res, next)
         req.socket.remoteAddress ||
         (req.connection.socket ? req.connection.socket.remoteAddress : null);
       let articleCount = await Article.countDocuments();
-      // if (art.viewers.indexOf(ips) !== -1) {
-      //   res.render("single", {
-      //     articleCount: articleCount,
-      //     title: article[0].title,
-      //     article: article[0],
-      //     settings: settings,
-      //     previous: previous[0],
-      //     next: next[0],
-      //     featured: featured,
-      //     popular: popular,
-      //     recommended: recommended,
-      //     related: related,
-      //     bookmark: book,
-      //     bookmarkId: bookmark == null ? null : bookmark._id
-      //   });
-      // } else {
-      let ip =
-        req.headers["x-forwarded-for"] ||
-        req.connection.remoteAddress ||
-        req.socket.remoteAddress ||
-        (req.connection.socket ? req.connection.socket.remoteAddress : null);
-      let payload = {
-        ip: ip,
-        date: new Date()
+      let indexof = -1;
+      art.viewers.forEach(element => {
+        if (element.ip == ips) {
+          indexof = 1;
+        }
+      })
+      if (indexof !== -1) {
+        res.render("single", {
+          articleCount: articleCount,
+          title: article[0].title,
+          article: article[0],
+          settings: settings,
+          previous: previous[0],
+          next: next[0],
+          featured: featured,
+          popular: popular,
+          recommended: recommended,
+          related: related,
+          bookmark: book,
+          bookmarkId: bookmark == null ? null : bookmark._id
+        });
+      } else {
+        let ip =
+          req.headers["x-forwarded-for"] ||
+          req.connection.remoteAddress ||
+          req.socket.remoteAddress ||
+          (req.connection.socket ? req.connection.socket.remoteAddress : null);
+        let payload = {
+          ip: ip,
+          date: new Date()
+        }
+        await Article.updateOne(
+          { slug: req.params.slug.trim() },
+          { $push: { viewers: payload } }
+        );
+        Article.updateOne(
+          { slug: req.params.slug.trim() },
+          { $inc: { views: 1 } }
+        )
+          .then(views => {
+            res.render("single", {
+              articleCount: articleCount,
+              title: article[0].title,
+              article: article[0],
+              settings: settings,
+              previous: previous[0],
+              next: next[0],
+              featured: featured,
+              popular: popular,
+              recommended: recommended,
+              related: related,
+              bookmark: book,
+              bookmarkId: bookmark == null ? null : bookmark._id
+            });
+          })
+          .catch(err => next(err));
       }
-      await Article.updateOne(
-        { slug: req.params.slug.trim() },
-        { $push: { viewers: payload } }
-      );
-      Article.updateOne(
-        { slug: req.params.slug.trim() },
-        { $inc: { views: 1 } }
-      )
-        .then(views => {
-          res.render("single", {
-            articleCount: articleCount,
-            title: article[0].title,
-            article: article[0],
-            settings: settings,
-            previous: previous[0],
-            next: next[0],
-            featured: featured,
-            popular: popular,
-            recommended: recommended,
-            related: related,
-            bookmark: book,
-            bookmarkId: bookmark == null ? null : bookmark._id
-          });
-        })
-        .catch(err => next(err));
     }
-    // }
   } catch (error) {
     next(error);
   }
@@ -1200,7 +1212,6 @@ router.post("/article/add-to-breaking", (req, res, next) => {
 
 // Upvote a post
 router.post("/article/upvote", auth, async (req, res, next) => {
-
   // let payload = {
   //   date: date,
   //   user: req.user.id
@@ -1216,18 +1227,30 @@ router.post('/article/upvote-ajax', async (req, res, next) => {
   let date = new Date();
   let articleId = req.body.articleId;
   let userId = req.body.userId;
-  console.log("This part is the upvote call part");
   let payload = {
     date: date,
     user: req.user.id
   }
-  await Article.updateOne(
-    { _id: req.body.articleId },
-    { $push: { "upvote.users": payload }, $inc: { "upvote.count": 1 } }
-  );
+  let article_origin = await Article.findOne({ _id: articleId });
+  let indexof = -1;
+  article_origin.upvote.users.forEach(element => {
+    if (element.user == req.user.id) {
+      indexof = 1;
+    }
+  })
+  if(indexof == -1 && aarticleId != userId){
+    await Article.updateOne(
+      { _id: req.body.articleId },
+      { $push: { "upvote.users": payload }, $inc: { "upvote.count": 1 } }
+    );
+  }
   let article = await Article.findOne({ _id: articleId });
   let upvotecount = article.upvote.count;
-  res.json(upvotecount);
+  let result = {
+    upvotecount: upvotecount,
+    success: true
+  }
+  res.json(result);
 });
 // Downvote a post
 router.post("/article/downvote", auth, async (req, res, next) => {
