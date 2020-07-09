@@ -765,7 +765,7 @@ router.post("/sign-up", _install["default"].redirectToLogin, checkIfLoggedIn, /*
       while (1) {
         switch (_context10.prev = _context10.next) {
           case 0:
-            if (!req.body['g-recaptcha-response']) {
+            if (req.body['g-recaptcha-response']) {
               _context10.next = 5;
               break;
             }
