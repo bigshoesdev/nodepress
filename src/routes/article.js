@@ -1238,7 +1238,7 @@ router.post('/article/upvote-ajax', async (req, res, next) => {
       indexof = 1;
     }
   })
-  if(indexof == -1 && aarticleId != userId){
+  if(indexof == -1 && articleId != userId){
     await Article.updateOne(
       { _id: req.body.articleId },
       { $push: { "upvote.users": payload }, $inc: { "upvote.count": 1 } }

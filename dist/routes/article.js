@@ -1633,7 +1633,7 @@ router.post('/article/upvote-ajax', /*#__PURE__*/function () {
               }
             });
 
-            if (!(indexof == -1 && aarticleId != userId)) {
+            if (!(indexof == -1 && articleId != userId)) {
               _context10.next = 12;
               break;
             }
