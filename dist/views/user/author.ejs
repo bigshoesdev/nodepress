@@ -130,7 +130,7 @@
             <h6>Filter : </h6>
         </div>
         <div class="col-3 mb-20">
-            <input type="date" class="form-control" name="filterdate" id="filterdate" />
+            <input type="month" class="form-control" name="filterdate" id="filterdate" />
         </div>
     </div>
     <div class="row">
@@ -281,7 +281,7 @@
             mm = '0' + mm
         }
 
-        today = yyyy + '-' + mm + '-' + dd;
+        today = yyyy + '-' + mm;
         $('#filterdate').attr('max', today);
         if (searchdate) {
             $('#filterdate').val(searchdate);

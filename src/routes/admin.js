@@ -50,7 +50,7 @@ router.get("/dashboard", install.redirectToLogin, auth, role('admin'), (req, res
 router.get("/dashboard/index", install.redirectToLogin, auth, role("admin"), async (req, res, next) => {
   let latestUsers = await User.find({ roleId: { $ne: "admin" } })
     .sort({ createdAt: -1 })
-    .limit(6);
+    .limit(5);
   let limitViews = 99999999;
 
   let articles = await Article.find({});
@@ -241,6 +241,31 @@ router.get("/dashboard/index", install.redirectToLogin, auth, role("admin"), asy
 
   let closedUser = await User.find({ closed: true });
   let canceledUser = await User.find({ canceled: true });
+
+  let _user = await User.find({});
+  let followList = _user.sort(function (a, b) { if (a.following.length < b.following.length) { return 1; } if (a.following.length > b.following.length) { return -1; } return 0 }).splice(0, 5);
+
+  let mostarticle = await Article.find({}).sort({ views: -1 }).limit(5).populate("postedBy");
+
+  let _article = await Article.find({});
+  let _userPost = []
+
+  _user.forEach(element => {
+    let count = 0;
+    _article.forEach(item => {
+      if (element.id == item.postedBy) {
+        count++;
+      }
+    })
+    let payload = {
+      profilePicture: element.profilePicture,
+      username: element.username,
+      email: element.email,
+      count: count
+    }
+    _userPost.push(payload);
+  })
+  _userPost = _userPost.sort(function (a, b) { if (a.count < b.count) { return 1; } if (a.count > b.count) { return -1; } return 0 }).splice(0, 5);
   res.render("./admin/index", {
     title: "Dashboard",
     latestUsers: latestUsers,
@@ -252,7 +277,10 @@ router.get("/dashboard/index", install.redirectToLogin, auth, role("admin"), asy
     totalPublisherCnt: totalPublisherCnt,
     categoryCat: categoryCat,
     closedUser: closedUser,
-    canceledUser: canceledUser
+    canceledUser: canceledUser,
+    followList: followList,
+    mostarticle: mostarticle,
+    userpost: _userPost
   });
 });
 

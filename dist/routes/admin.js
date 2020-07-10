@@ -170,7 +170,8 @@ router.get("/dashboard", _install["default"].redirectToLogin, _auth["default"], 
 });
 router.get("/dashboard/index", _install["default"].redirectToLogin, _auth["default"], (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(req, res, next) {
-    var latestUsers, limitViews, articles, users, date, currentmonth, lastmonth, thiscontentViewCnt, lastcontentViewCnt, increaseView, thiscontenCnt, lastcontenCnt, increaseContent, thispaidCnt, lastpaidCnt, increasePaid, thisfreecnt, lastfreecnt, increasefreecnt, thisqualifycnt, lastqualifycnt, increasequalify, thisnoqualifycnt, lastnoqualifycnt, increasenoqualifycnt, count, searchnoResult, searchResult, totalcontentCnt, totalSearchCnt, totalPublisherCnt, categoriesCat, articlesCat, averateTime, categoryCat, closedUser, canceledUser;
+    var latestUsers, limitViews, articles, users, date, currentmonth, lastmonth, thiscontentViewCnt, lastcontentViewCnt, increaseView, thiscontenCnt, lastcontenCnt, increaseContent, thispaidCnt, lastpaidCnt, increasePaid, thisfreecnt, lastfreecnt, increasefreecnt, thisqualifycnt, lastqualifycnt, increasequalify, thisnoqualifycnt, lastnoqualifycnt, increasenoqualifycnt, count, searchnoResult, searchResult, totalcontentCnt, totalSearchCnt, totalPublisherCnt, categoriesCat, articlesCat, averateTime, categoryCat, closedUser, canceledUser, _user, followList, mostarticle, _article, _userPost;
+
     return _regenerator["default"].wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
@@ -182,7 +183,7 @@ router.get("/dashboard/index", _install["default"].redirectToLogin, _auth["defau
               }
             }).sort({
               createdAt: -1
-            }).limit(6);
+            }).limit(5);
 
           case 2:
             latestUsers = _context5.sent;
@@ -452,6 +453,66 @@ router.get("/dashboard/index", _install["default"].redirectToLogin, _auth["defau
 
           case 72:
             canceledUser = _context5.sent;
+            _context5.next = 75;
+            return _users["default"].find({});
+
+          case 75:
+            _user = _context5.sent;
+            followList = _user.sort(function (a, b) {
+              if (a.following.length < b.following.length) {
+                return 1;
+              }
+
+              if (a.following.length > b.following.length) {
+                return -1;
+              }
+
+              return 0;
+            }).splice(0, 5);
+            _context5.next = 79;
+            return _articles["default"].find({}).sort({
+              views: -1
+            }).limit(5).populate("postedBy");
+
+          case 79:
+            mostarticle = _context5.sent;
+            _context5.next = 82;
+            return _articles["default"].find({});
+
+          case 82:
+            _article = _context5.sent;
+            _userPost = [];
+
+            _user.forEach(function (element) {
+              var count = 0;
+
+              _article.forEach(function (item) {
+                if (element.id == item.postedBy) {
+                  count++;
+                }
+              });
+
+              var payload = {
+                profilePicture: element.profilePicture,
+                username: element.username,
+                email: element.email,
+                count: count
+              };
+
+              _userPost.push(payload);
+            });
+
+            _userPost = _userPost.sort(function (a, b) {
+              if (a.count < b.count) {
+                return 1;
+              }
+
+              if (a.count > b.count) {
+                return -1;
+              }
+
+              return 0;
+            }).splice(0, 5);
             res.render("./admin/index", {
               title: "Dashboard",
               latestUsers: latestUsers,
@@ -463,10 +524,13 @@ router.get("/dashboard/index", _install["default"].redirectToLogin, _auth["defau
               totalPublisherCnt: totalPublisherCnt,
               categoryCat: categoryCat,
               closedUser: closedUser,
-              canceledUser: canceledUser
+              canceledUser: canceledUser,
+              followList: followList,
+              mostarticle: mostarticle,
+              userpost: _userPost
             });
 
-          case 74:
+          case 87:
           case "end":
             return _context5.stop();
         }
@@ -723,7 +787,7 @@ router.get("/dashboard/searchkey", _install["default"].redirectToLogin, _auth["d
 }());
 router.get("/dashboard/all-posts", _install["default"].redirectToLogin, _auth["default"], (0, _role["default"])("admin"), /*#__PURE__*/function () {
   var _ref10 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee10(req, res, next) {
-    var perPage, page, category, article, coun, count, _perPage, _page, _article, _coun, _count, _perPage2, _page2, _article2, _count2;
+    var perPage, page, category, article, coun, count, _perPage, _page, _article2, _coun, _count, _perPage2, _page2, _article3, _count2;
 
     return _regenerator["default"].wrap(function _callee10$(_context10) {
       while (1) {
@@ -909,7 +973,7 @@ router.get("/dashboard/all-posts", _install["default"].redirectToLogin, _auth["d
             }]);
 
           case 21:
-            _article = _context10.sent;
+            _article2 = _context10.sent;
             _context10.next = 24;
             return _articles["default"].aggregate([{
               $match: {
@@ -960,7 +1024,7 @@ router.get("/dashboard/all-posts", _install["default"].redirectToLogin, _auth["d
             _count = _coun.length;
             res.render("./admin/all-post", {
               title: "Dashboard - All Posts",
-              article: _article,
+              article: _article2,
               current: _page,
               pages: Math.ceil(_count / _perPage),
               query: true,
@@ -1016,7 +1080,7 @@ router.get("/dashboard/all-posts", _install["default"].redirectToLogin, _auth["d
             }]);
 
           case 33:
-            _article2 = _context10.sent;
+            _article3 = _context10.sent;
             _context10.next = 36;
             return _articles["default"].countDocuments();
 
@@ -1024,7 +1088,7 @@ router.get("/dashboard/all-posts", _install["default"].redirectToLogin, _auth["d
             _count2 = _context10.sent;
             res.render("./admin/all-post", {
               title: "Dashboard - All Posts",
-              article: _article2,
+              article: _article3,
               current: _page2,
               pages: Math.ceil(_count2 / _perPage2),
               query: "no"
@@ -1810,7 +1874,7 @@ router.get("/dashboard/newsletter/compose", _auth["default"], _install["default"
 }());
 router.get("/dashboard/qualify", _auth["default"], _install["default"].redirectToLogin, (0, _role["default"])('admin'), /*#__PURE__*/function () {
   var _ref24 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee24(req, res, next) {
-    var perPage, page, category, article, coun, count, _perPage3, _page3, _article3, _coun2, _count4, _perPage4, _page4, _article4, _count5;
+    var perPage, page, category, article, coun, count, _perPage3, _page3, _article4, _coun2, _count4, _perPage4, _page4, _article5, _count5;
 
     return _regenerator["default"].wrap(function _callee24$(_context24) {
       while (1) {
@@ -1996,7 +2060,7 @@ router.get("/dashboard/qualify", _auth["default"], _install["default"].redirectT
             }]);
 
           case 21:
-            _article3 = _context24.sent;
+            _article4 = _context24.sent;
             _context24.next = 24;
             return _articles["default"].aggregate([{
               $match: {
@@ -2047,7 +2111,7 @@ router.get("/dashboard/qualify", _auth["default"], _install["default"].redirectT
             _count4 = _coun2.length;
             res.render("./admin/qualify", {
               title: "Qualify - Content",
-              article: _article3,
+              article: _article4,
               current: _page3,
               pages: Math.ceil(_count4 / _perPage3),
               query: true,
@@ -2103,7 +2167,7 @@ router.get("/dashboard/qualify", _auth["default"], _install["default"].redirectT
             }]);
 
           case 33:
-            _article4 = _context24.sent;
+            _article5 = _context24.sent;
             _context24.next = 36;
             return _articles["default"].countDocuments();
 
@@ -2111,7 +2175,7 @@ router.get("/dashboard/qualify", _auth["default"], _install["default"].redirectT
             _count5 = _context24.sent;
             res.render("./admin/qualify", {
               title: "Qualify - Content",
-              article: _article4,
+              article: _article5,
               current: _page4,
               pages: Math.ceil(_count5 / _perPage4),
               query: "no"

@@ -101,7 +101,7 @@ function upvote() {
       dataType: 'json',
       data: { articleId: articleId, userId: uId },
       success: function (data) {
-         $('#upvoteCount').text(data);
+         $('#upvoteCount').text(data.upvotecount);
       }
    });
 }

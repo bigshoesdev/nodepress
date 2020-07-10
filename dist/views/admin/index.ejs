@@ -154,7 +154,7 @@
             <h6>Filter : </h6>
         </div>
         <div class="col-3 mb-20">
-            <input type="date" class="form-control" name="filterdate" id="filterdate" />
+            <input type="month" class="form-control" name="filterdate" id="filterdate" />
         </div><!-- Page Heading End -->
 
     </div><!-- Page Headings End -->
@@ -553,8 +553,8 @@
 
         <div class="col-md-6 mt-4">
             <div class="bg-white shadow-sm p-3">
-                <h4><b>Most Publishers</b></h4>
-                <small>You can see most publishers has the most followed</small>
+                <h4><b>Which publisher has the most follower</b></h4>
+                <small>Which publisher has the most follower</small>
                 <div class="table-responsive mt-3">
                     <table class="table table-vertical-middle">
                         <thead>
@@ -566,31 +566,120 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <% for(var key in latestUsers) { %>
+                            <% for(var key in followList) { %>
                             <tr>
                                 <td>
-                                    <img src="<%= latestUsers[key].profilePicture %>" class="img-fluid profile-image"
+                                    <img src="<%= followList[key].profilePicture %>" class="img-fluid profile-image"
                                         style="width: 50px !important;
                                     height: 50px !important;" alt="">
                                 </td>
                                 <td class="text-capitalize" style="width: 160px;">
-                                    <a href="/dashboard/users/edit/<%= latestUsers[key].username %>"
+                                    <a href="/dashboard/users/edit/<%= followList[key].username %>"
                                         data-toggle="tooltip" data-placement="bottom" title="Edit User">
-                                        <%= latestUsers[key].username %>
+                                        <%= followList[key].username %>
                                     </a>
                                 </td>
                                 <td>
-                                    <%= latestUsers[key].email %>
+                                    <%= followList[key].email %>
                                 </td>
-                                <td><%= formatDate(latestUsers[key].createdAt) %></td>
+                                <td><%= followList[key].following.length %></td>
                             </tr>
                             <% } %>
                         </tbody>
                     </table>
                 </div>
-                <div class="mt-3">
+                <!-- <div class="mt-3">
                     <a href="/dashboard/users"><button class="btn btn-info btn-sm">View All</button></a>
+                </div> -->
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mt-4">
+            <div class="bg-white shadow-sm p-3">
+                <h4><b>Listing of the publishers with the highest content views</b></h4>
+                <small>Listing of the publishers with the highest content views</small>
+                <div class="table-responsive mt-3">
+                    <table class="table table-vertical-middle">
+                        <thead>
+                            <tr>
+                                <th>Avatar</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(var key in mostarticle) { %>
+                            <tr>
+                                <td>
+                                    <img src="<%= mostarticle[key].postedBy.profilePicture %>" class="img-fluid profile-image"
+                                        style="width: 50px !important;
+                                    height: 50px !important;" alt="">
+                                </td>
+                                <td class="text-capitalize" style="width: 160px;">
+                                    <a href="/dashboard/users/edit/<%= mostarticle[key].postedBy.username %>"
+                                        data-toggle="tooltip" data-placement="bottom" title="Edit User">
+                                        <%= mostarticle[key].postedBy.username %>
+                                    </a>
+                                </td>
+                                <td>
+                                    <%= mostarticle[key].postedBy.email %>
+                                </td>
+                                <td><%= mostarticle[key].views %></td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
                 </div>
+                <!-- <div class="mt-3">
+                    <a href="/dashboard/users"><button class="btn btn-info btn-sm">View All</button></a>
+                </div> -->
+            </div>
+        </div>
+
+        <div class="col-md-6 mt-4">
+            <div class="bg-white shadow-sm p-3">
+                <h4><b>Which publisher publishes most pages</b></h4>
+                <small>Which publisher publishes most pages</small>
+                <div class="table-responsive mt-3">
+                    <table class="table table-vertical-middle">
+                        <thead>
+                            <tr>
+                                <th>Avatar</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Most page count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(var key in latestUsers) { %>
+                            <tr>
+                                <td>
+                                    <img src="<%= userpost[key].profilePicture %>" class="img-fluid profile-image"
+                                        style="width: 50px !important;
+                                    height: 50px !important;" alt="">
+                                </td>
+                                <td class="text-capitalize" style="width: 160px;">
+                                    <a href="/dashboard/users/edit/<%= userpost[key].username %>"
+                                        data-toggle="tooltip" data-placement="bottom" title="Edit User">
+                                        <%= latestUsers[key].username %>
+                                    </a>
+                                </td>
+                                <td>
+                                    <%= userpost[key].email %>
+                                </td>
+                                <td><%= userpost[key].count %></td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- <div class="mt-3">
+                    <a href="/dashboard/users"><button class="btn btn-info btn-sm">View All</button></a>
+                </div> -->
             </div>
         </div>
 
@@ -756,7 +845,7 @@
         if (mm < 10) {
             mm = '0' + mm
         }
-        today = yyyy + '-' + mm + '-' + dd;
+        today = yyyy + '-' + mm;
         $('#filterdate').attr('max', today);
         if (searchdate) {
             $('#filterdate').val(searchdate);
