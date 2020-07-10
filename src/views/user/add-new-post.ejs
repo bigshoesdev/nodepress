@@ -34,9 +34,12 @@
 
 <body>
     <!-- Start your project here-->
-    <div class="container">
+    <div class="container title">
         <div class="row">
-            <div class="col-12">
+            <div class="col-2">
+                <img src="<%= user.profilePicture%>" class="rounded-circle img-fluid" width="120px"/>
+            </div>
+            <div class="col-10">
                 <div class="md-form">
                     <input type="text" id="form1" class="form-control">
                     <label for="form1" style="font-size: 1.5rem;">Title</label>
@@ -44,8 +47,8 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-12">
-                <button class="btn btn-danger">Next</button>
+            <div class="col-10 offset-2">
+                <button class="btn btn-danger title-next">Next</button>
             </div>
         </div>
     </div>
@@ -59,7 +62,13 @@
     <!-- MDB core JavaScript -->
     <script type="text/javascript" src="/mdb/js/mdb.min.js"></script>
     <!-- Your custom scripts (optional) -->
-    <script type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function(){
+            $('.title-next').click(function(){
+                
+            });
+        })
+    </script>
 
 </body>
 
