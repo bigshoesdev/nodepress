@@ -156,7 +156,7 @@ router.post("/article/create", _install["default"].redirectToLogin, _auth["defau
               metadescription: req.body.metadescription,
               body: req.body.body.trim(),
               summary: req.body.summary.trim(),
-              keywords: req.body.keywords.trim(),
+              keywords: "",
               "short": _htmlToText["default"].fromString(req.body.body, {
                 wordwrap: false
               }),

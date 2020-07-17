@@ -437,6 +437,11 @@ router.get('/lostpassword', install.redirectToLogin, async (req, res, next) => {
 	});
 });
 
+router.post('/payout/download', install.redirectToLogin, async(req, res, next) =>{
+	// console.log(req.user);
+	res.redirect("back");
+})
+
 router.get('/paycontent', install.redirectToLogin, async (req, res, next) => {
 	res.render('paycontent', {
 		title: "Pay Content"

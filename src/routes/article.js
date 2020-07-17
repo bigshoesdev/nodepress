@@ -77,7 +77,7 @@ router.post(
             );
             return res.redirect("back");
           }
-
+          
           let real = req.body.slug
             ? req.body.slug
               .trim()
@@ -129,7 +129,7 @@ router.post(
             metadescription: req.body.metadescription,
             body: req.body.body.trim(),
             summary: req.body.summary.trim(),
-            keywords: req.body.keywords.trim(),
+            keywords: "",
             short: htmlToText.fromString(req.body.body, {
               wordwrap: false
             }),

@@ -116,15 +116,64 @@
       </div>
       <div class="col-md-2">
          <div class="page-heading">
-            <button class="button button-secondary text-left">Withdraw</button>
+            <% if(total < 5){ %>
+            <button class="button button-secondary text-left" data-toggle="modal"
+               data-target="#exampleModal">Withdraw</button>
+            <% } else { %>
+            <button class="button button-secondary text-left" data-toggle="modal"
+               data-target="#withdrawmodal">Withdraw</button>
+            <% } %>
          </div>
       </div>
    </div><!-- Page Headings End -->
+
+   <div class="modal fade" id="withdrawmodal" tabindex="-1" style="z-index: 9999;" role="dialog"
+      aria-labelledby="withdrawmodal" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title" id="withdrawmodal">Withdraw</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body withdraw">
+            </div>
+            <div class="modal-footer">
+            </div>
+         </div>
+      </div>
+   </div>
+
+
+   <div class="modal fade" id="exampleModal" tabindex="-1" style="z-index: 9999;" role="dialog"
+      aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title" id="exampleModalLabel">Oops !</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               You can't withdraw the money because the balance is less than 5€!
+            </div>
+            <div class="modal-footer">
+            </div>
+         </div>
+      </div>
+   </div>
+
+
+
+
+
    <%- include ../partials/msg %>
    <div class="row">
       <div class="col-12">
          <div class="alert alert-solid-primary">
-            <h4>You can withdraw the money less than 5 € every month</h4>
+            <h4>You can withdraw the money less than 5 € every time.</h4>
          </div>
       </div>
    </div>
@@ -159,7 +208,7 @@
             </div>
          </form>
       </div>
-      
+
       <div class="col-6">
          <div class="table-responsive bg-white shadow-sm">
             <table class="table table-vertical-middle">
@@ -168,7 +217,11 @@
                      <th>#</th>
                      <th>Month</th>
                      <th>Payout</th>
-                     <th>Status<button style="float: right;" class="btn btn-success"><i class="fa fa-download"></i></button></th>
+                     <th>Status
+                        <form action="/payout/download" method="POST">
+                           <button style="position: absolute;top: 12%;right: 10%;" class="btn btn-success" type="submit"><i class="fa fa-download"></i></button>
+                        </form>
+                     </th>
                   </tr>
                </thead>
                <tbody>
@@ -176,7 +229,6 @@
             </table>
          </div>
       </div>
-
    </div>
 </div>
 </div>
@@ -190,7 +242,8 @@
 <script src="/assets/js/plugins/tippy4.min.js.js"></script>
 <!--Main JS-->
 <script src="/assets/js/main.js"></script>
-
+<script src="https://www.paypal.com/sdk/js?client-id=sb"></script>
+<script>paypal.Buttons().render('.withdraw');</script>
 <!-- Plugins & Activation JS For Only This Page -->
 
 <!--Moment-->
@@ -201,8 +254,6 @@
 <script src="/assets/js/plugins/daterangepicker/daterangepicker.active.js"></script>
 
 <!--Echarts-->
-
-
 <script src="/assets/js/plugins/nice-select/jquery.nice-select.min.js"></script>
 
 </body>

@@ -11,7 +11,7 @@ body {
 }
 
 .form-control {
-  padding: 5px 11px !important;
+  /* padding: 5px 11px !important; */
 }
 
 input[type="checkbox"] {
