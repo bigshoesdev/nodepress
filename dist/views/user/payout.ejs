@@ -116,7 +116,7 @@
       </div>
       <div class="col-md-2">
          <div class="page-heading">
-            <% if(total < 5){ %>
+            <% if(total > 5){ %>
             <button class="button button-secondary text-left" data-toggle="modal"
                data-target="#exampleModal">Withdraw</button>
             <% } else { %>
@@ -242,10 +242,30 @@
 <script src="/assets/js/plugins/tippy4.min.js.js"></script>
 <!--Main JS-->
 <script src="/assets/js/main.js"></script>
-<script src="https://www.paypal.com/sdk/js?client-id=sb"></script>
-<script>paypal.Buttons().render('.withdraw');</script>
+<script src="https://www.paypal.com/sdk/js?client-id=Ac__9y8nnJBHSkeoMZTbcDKS0BYpF9LwBioDHrC7Fj-7AoBVi_X8zoWIn2dQzLJ53rmicDzdZ8_7MdO-"></script>
+<!-- <script>paypal.Buttons().render('.withdraw');</script> -->
 <!-- Plugins & Activation JS For Only This Page -->
-
+<script>
+   paypal.Buttons({
+     createOrder: function(data, actions) {
+       // This function sets up the details of the transaction, including the amount and line item details.
+       return actions.order.create({
+         purchase_units: [{
+           amount: {
+             value: '5.99'
+           }
+         }]
+       });
+     },
+     onApprove: function(data, actions) {
+      // This function captures the funds from the transaction.
+      return actions.order.capture().then(function(details) {
+        // This function shows a transaction success message to your buyer.
+        alert('Transaction completed by ' + details.payer.name.given_name);
+      });
+    }
+   }).render('.withdraw');
+ </script>
 <!--Moment-->
 <script src="/assets/js/plugins/moment/moment.min.js"></script>
 

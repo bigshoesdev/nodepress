@@ -437,8 +437,10 @@ router.get('/lostpassword', install.redirectToLogin, async (req, res, next) => {
 	});
 });
 
+// payout table download as a pdf.
 router.post('/payout/download', install.redirectToLogin, async(req, res, next) =>{
 	// console.log(req.user);
+	let user = await User.findOne({_id: req.user.id});
 	res.redirect("back");
 })
 
@@ -1024,17 +1026,22 @@ router.post('/reset-password', async (req, res, next) => {
 	res.redirect("back");
 })
 
+// This is the password - reset part.
+// Currently password encryption is not working.
 router.get('/password-reset', async(req, res, next) => {
+	// user token
+	let token = req.query.token;
 	res.render('password-reset', {
-		token: req.query.token
+		token: token
 	});
 });
 
 router.post('/password-save', async(req, res, next) =>{
-	console.log(req.body.token);
+	//console.log(req.body.token);
+
 	let user = await User.findOne({token: req.body.token});
 	if(req.body.password !== req.body.conform){
-		req.flash("success_msg", "Password Does/'nt match");
+		req.flash("success_msg", "Password Does'nt match");
 		return res.redirect('back');
 	}else {
 		await User.updateOne({_id: user.id}, {password: req.body.password});
