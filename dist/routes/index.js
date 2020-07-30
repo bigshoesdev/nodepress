@@ -629,17 +629,25 @@ router.get('/lostpassword', _install["default"].redirectToLogin, /*#__PURE__*/fu
   return function (_x10, _x11, _x12) {
     return _ref4.apply(this, arguments);
   };
-}());
+}()); // payout table download as a pdf.
+
 router.post('/payout/download', _install["default"].redirectToLogin, /*#__PURE__*/function () {
   var _ref5 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(req, res, next) {
+    var user;
     return _regenerator["default"].wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            // console.log(req.user);
+            _context5.next = 2;
+            return _users["default"].findOne({
+              _id: req.user.id
+            });
+
+          case 2:
+            user = _context5.sent;
             res.redirect("back");
 
-          case 1:
+          case 4:
           case "end":
             return _context5.stop();
         }
@@ -1882,18 +1890,23 @@ router.post('/reset-password', /*#__PURE__*/function () {
   return function (_x65, _x66, _x67) {
     return _ref23.apply(this, arguments);
   };
-}());
+}()); // This is the password - reset part.
+// Currently password encryption is not working.
+
 router.get('/password-reset', /*#__PURE__*/function () {
   var _ref24 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee24(req, res, next) {
+    var token;
     return _regenerator["default"].wrap(function _callee24$(_context24) {
       while (1) {
         switch (_context24.prev = _context24.next) {
           case 0:
+            // user token
+            token = req.query.token;
             res.render('password-reset', {
-              token: req.query.token
+              token: token
             });
 
-          case 1:
+          case 2:
           case "end":
             return _context24.stop();
         }
@@ -1912,36 +1925,35 @@ router.post('/password-save', /*#__PURE__*/function () {
       while (1) {
         switch (_context25.prev = _context25.next) {
           case 0:
-            console.log(req.body.token);
-            _context25.next = 3;
+            _context25.next = 2;
             return _users["default"].findOne({
               token: req.body.token
             });
 
-          case 3:
+          case 2:
             user = _context25.sent;
 
             if (!(req.body.password !== req.body.conform)) {
-              _context25.next = 9;
+              _context25.next = 8;
               break;
             }
 
-            req.flash("success_msg", "Password Does/'nt match");
+            req.flash("success_msg", "Password Does'nt match");
             return _context25.abrupt("return", res.redirect('back'));
 
-          case 9:
-            _context25.next = 11;
+          case 8:
+            _context25.next = 10;
             return _users["default"].updateOne({
               _id: user.id
             }, {
               password: req.body.password
             });
 
-          case 11:
+          case 10:
             req.flash("success_msg", "Successful");
             res.redirect('/login');
 
-          case 13:
+          case 12:
           case "end":
             return _context25.stop();
         }

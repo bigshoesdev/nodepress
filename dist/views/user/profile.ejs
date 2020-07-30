@@ -72,20 +72,20 @@
             <%- include ../partials/msg %>
             <div class="box">
                 <div class="box-head">
-                    <h3 class="title">Author Information</h3>
+                    <h3 class="title">Persönliche Daten</h3>
                 </div>
                 <div class="box-body">
                     <div class="form">
                         <form action="/user/dashboard/update/info" method="POST">
                             <div class="row row-10 mbn-20">
                                 <div class="col-sm-6 col-12 mb-20">
-                                    <label for="">Firstname (*)</label>
+                                    <label for="">Vorname (*)</label>
                                     <input type="hidden" name="postenable" id="postenable" />
                                     <input type="text" class="form-control" name="firstName"
                                         value="<%= user.firstName %>" id="firstname" required>
                                 </div>
                                 <div class="col-sm-6 col-12 mb-20">
-                                    <label for="">Lastname (*)</label>
+                                    <label for="">Nachname (*)</label>
                                     <input type="text" class="form-control" name="lastName" value="<%= user.lastName %>"
                                         id="lastname" required>
                                 </div>
@@ -95,26 +95,26 @@
                                         id="email" required>
                                 </div>
                                 <div class="col-sm-6 col-12 mb-20">
-                                    <label for="">Username (*)</label>
+                                    <label for="">Benutzername (*)</label>
                                     <input type="text" name="username" class="form-control" value="<%= user.username %>"
                                         required>
                                 </div>
                                 <div class="col-sm-6 col-12 mb-20">
-                                    <label for="">Birthday (*)</label>
+                                    <label for="">Geburtsdatum (*)</label>
                                     <input type="date" name="birthday" class="form-control" value="<% if(user.birthday){%><%= 1900+user.birthday.getYear()%>-<%if(user.birthday.getMonth() < 10){%><%=0%><%}%><%= 1+user.birthday.getMonth()%>-<%if(user.birthday.getDate() < 10){%><%=0%><%}%><%= user.birthday.getDate()%><%}%>"
                                          id="birthday" required />
                                 </div>
                                 <div class="col-sm-6 col-12 mb-20">
-                                    <label for="">Phone Number</label>
+                                    <label for="">Geburtsdatum</label>
                                     <input type="tel" name="phone" id="phone"
                                         class="form-control" value="<%= user.phone %>" />
                                 </div>
                                 <div class="col-sm-12 col-12 mb-20 tax-field" style="display: none;">
-                                    <label for="">Tax number</label>
+                                    <label for="">Steuernummer</label>
                                     <input type="text" name="tax" class="form-control" value="<%= user.tax %>" id="tax">
                                 </div>
                                 <div class="col-12 mb-20">
-                                    <label for="">About Me (*)</label>
+                                    <label for="">Über dich (Diese Informationen werden in deinem Profil angezeigt) (*)</label>
                                     <textarea name="about" required id="about" cols="30" rows="10" class="form-control"
                                         maxlength="150"><%= user.about %></textarea>
                                 </div>
@@ -123,17 +123,17 @@
                                     <input type="checkbox" name="emailsend"  style="width: 30px; height: 30px;" <% if(user.emailsend == true){ %>checked<% } %> >
                                 </div>
                                 <div class="col-12 mb-20">
-                                    <label for="">Categories</label>
+                                    <label for="">Kategorien</label>
                                     <% for(var i = 0; i < user.categoryList.length; i ++){%>
                                     <label class="badge badge-primary"
                                         style="font-size: 14px;"><%=user.categoryList[i]%></label>
                                     <%}%>
                                 </div>
                                 <div class="col-12 mb-20">
-                                    <a style="color:#98E0F2" href="/onboarding?redirect=true">Change the Categories</a>
+                                    <a style="color:#98E0F2" href="/onboarding?redirect=true">Ändere deine ausgewählten Kategorien</a>
                                 </div>
                                 <div class="col-12 mb-20">
-                                    <b>Gebe mindestens einen Social Media Account an (*)</b>
+                                    <b>Soziale Netzwerke (Füge deine Account-Links hinzu) (*)</b>
                                 </div>
                                 <div class="col-sm-6 col-12 mb-20">
                                     <label for="">Facebook</label>
@@ -156,8 +156,8 @@
                                         value="<%= user.social.linkedin %>">
                                 </div>
                                 <div class="col-12 mt-10 mb-20">
-                                    <input type="submit" class="button button-primary button-outline button-profile"
-                                        value="Save Changes">
+                                    <input type="submit" class="btn btn-primary button-profile"
+                                        value="Änderungen speichern">
                                 </div>
                             </div>
                         </form>
@@ -171,7 +171,7 @@
         <div class="col-xlg-12 col-lg-12 col-12 mb-30">
             <div class="box">
                 <div class="box-head">
-                    <h3 class="title">Update Your Password</h3>
+                    <h3 class="title">Passwort ändern</h3>
                 </div>
                 <div class="box-body">
                     <div class="form">
@@ -179,14 +179,14 @@
                             <div class="row row-10 mbn-20">
 
                                 <div class="col-sm-6 col-12 mb-20">
-                                    <label for="current">Current Password</label>
+                                    <label for="current">Aktuelles Passwort</label>
                                     <input type="password" name="currentPassword" class="form-control" required></div>
                                 <div class="col-sm-6 col-12 mb-20">
-                                    <label for="">New Password</label>
+                                    <label for="">Neues Passwort</label>
                                     <input type="password" name="password" class="form-control" required></div>
                                 <div class="col-12 mt-10 mb-20">
-                                    <input type="submit" class="button button-primary button-outline"
-                                        value="Save Changes"/>
+                                    <input type="submit" class="btn btn-primary button-outline"
+                                        value="Änderungen speichern"/>
                                     <a href="/close" target="_blank" class="btn btn-danger text-white">Close Account</a>
                                 </div>
                             </div>

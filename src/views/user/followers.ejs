@@ -124,7 +124,7 @@
         <!-- Page Heading Start -->
         <div class="col-md-8 col-lg-auto mb-20">
             <div class="page-heading">
-                <h3>Followers</h3>
+                <h3>Follower</h3>
             </div>
         </div><!-- Page Heading End -->
 
@@ -139,14 +139,14 @@
             <form action method="GET" id="bulkDeleteForm">
                 <div class="table-responsive bg-white shadow-sm">
                     <% if(following.following == "") { %>
-                    <div class="alert alert-primary">You have no an followers.</div>
+                    <div class="alert alert-primary">Du hast leider noch keine Follower.</div>
                     <% } %>
                     <table class="table table-vertical-middle">
                         <thead>
                             <tr>
                                 <th>Avatar</th>
-                                <th>User Name</th>
-                                <th>Actions</th>
+                                <th>Benutzername</th>
+                                <th>Aktionen</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -157,7 +157,7 @@
                                 <td><%= data.firstName %> <%= data.lastName %></td>
                                 <td>
                                     <a href="/author/<%= data.username %>" target="_blank"><button type="button"
-                                            class="btn btn-success btn-sm">View User's Profile</button></a>
+                                            class="btn btn-success btn-sm">Benutzerprofil anzeigen</button></a>
                                     <!-- <a href="/unfollow-user?followerId=<%= data._id %>"><button class="btn btn-danger btn-sm" type="button">Unfollow</button></a> -->
                                 </td>
                             </tr>

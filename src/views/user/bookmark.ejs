@@ -138,7 +138,7 @@
         <!-- Page Heading Start -->
         <div class="col-md-8 col-lg-auto mb-20">
             <div class="page-heading">
-                <h3>Reading List</h3>
+                <h3>Gespeicherte Beiträge</h3>
             </div>
         </div><!-- Page Heading End -->
 
@@ -165,13 +165,13 @@
                 margin: 10px;
                 color: white;"><%= data.articleId.title %></h4>
                 <% if(data.articleId.postedBy.roleId == 'user'){%>
-                    <a href="/p/<%= data.articleId.category.slug%>/<%= data.articleId.slug %>" target="_blank" class="bookmark-view">View Post</a>
+                    <a href="/p/<%= data.articleId.category.slug%>/<%= data.articleId.slug %>" target="_blank" class="bookmark-view">Beitrag anzeigen</a>
                     <%} else {%>
-                        <a href="/d/<%= data.articleId.slug %>" target="_blank" class="bookmark-view">View Post</a>
+                        <a href="/d/<%= data.articleId.slug %>" target="_blank" class="bookmark-view">Beitrag anzeigen</a>
                         <%}%>
                 <a type="button" class="btn btn-danger btn-sm" style="position: absolute;
                 bottom: 10%;
-                right: 7vw;" href="/bookmark/delete?bookmarkId=<%= data._id %>">Remove</a>
+                right: 7vw;" href="/bookmark/delete?bookmarkId=<%= data._id %>">Nicht mehr speichern</a>
             </div>
         </div>
         <%})%>

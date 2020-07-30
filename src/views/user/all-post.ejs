@@ -122,19 +122,19 @@
         <!-- Page Heading Start -->
         <div class="col-md-8 col-lg-auto mb-20">
             <div class="page-heading">
-                <h3>All Posts <span>/ Manage Posts</span></h3>
+                <h3>Alle Beiträge <span>/ Beiträge bearbeiten</span></h3>
             </div>
         </div><!-- Page Heading End -->
 
         <div class="col-md-4 text-right">
                 <div class="dropdown">
                         <a href="javascript:void(0);" class="btn text-white button button-info dropdown-toggle btn-sm"
-                            data-toggle="dropdown" aria-expanded="false">Add New</a>
+                            data-toggle="dropdown" aria-expanded="false">Beitrag hinzufügen</a>
                         <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-start"
                             style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 40px, 0px);">
                             <a class="dropdown-item" href="/user/posts/add-new">Add New Article</a>
-                            <a class="dropdown-item" href="/user/posts/add-new-audio">Add new Audio</a>
-                            <a class="dropdown-item" href="/user/posts/add-new-video">Add new Video</a>
+                            <!-- <a class="dropdown-item" href="/user/posts/add-new-audio">Add new Audio</a> -->
+                            <!-- <a class="dropdown-item" href="/user/posts/add-new-video">Add new Video</a> -->
                         </div>
                     </div>
         </div>
@@ -148,17 +148,17 @@
         <div class="col-md-4  mb-20">
             <div class="form-group d-flex">
                 <select id="bulkSelect" class="form-control form-control-sm bulk">
-                    <option selected="selected" disabled="disabled">Bulk Actions</option>
+                    <option selected="selected" disabled="disabled">Mehrere bearbeiten</option>
                     <option value="delete">Delete</option>
                 </select>
                 <button class="btn btn-info ml-3 btn-sm"
-                    onclick="document.querySelector('#bulkDeleteForm').submit();">Apply</button>
+                    onclick="document.querySelector('#bulkDeleteForm').submit();">Anwenden</button>
             </div>
         </div><!-- Page Heading End -->
         <div class="col-md-3 mb-20">
                 <div class="form-group">
                     <select id="searchByCategory" class="form-control form-control-sm" onchange="window.location.href = window.origin + '/user/all-posts?category=' + this.value" required>
-                        <option selected="selected" disabled="disabled">-- Filter By Category --</option>
+                        <option selected="selected" disabled="disabled">-- Filtern nach Kategorie --</option>
                         <% for(let item of category2) { %>
     
                         <option value="<%= item.name %>"><%= item.name %></option>
@@ -170,7 +170,7 @@
         <div class="col-md-5  mb-20">
                 <form action="/user/all-posts" method="GET">
                         <div class="input-group">
-                                <input type="search" name="q" class="form-control" placeholder="Search by Title.." aria-describedby="button-addon2" required>
+                                <input type="search" name="q" class="form-control" placeholder="Suche nach Titel.." aria-describedby="button-addon2" required>
                                 <div class="input-group-append">
                                     <button class="btn btn-bsa noBorderRadius" id="button-addon2" id="search"><i class="icofont-search-2 mr-1"></i></button>
                                 </div>
@@ -198,11 +198,11 @@
                                     <th>
                                             <input type="checkbox" name="" id="selectAll" class="">
                                         </th>
-                                <th>Title</th>
-                                <th>Category</th>
-                                <th>Date</th>
+                                <th>Titel</th>
+                                <th>Kategorie</th>
+                                <th>Datum</th>
                                 <th>Status</th>
-                                <th>Qualify Status</th>
+                                <th>Qualifizier ungsstatus</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -222,7 +222,7 @@
                                 <td><%= article[key].createdAt.toLocaleDateString() %></td>
                                 <td>
                                     <% if(article[key].active== true){ %>
-                                    <span class="badge badge-success">Published</span>
+                                    <span class="badge badge-success">Veröffentlicht</span>
                                     <%} else { %>
                                     <span class="badge badge-danger">Inactive</span>
                                     <% } %>
@@ -258,7 +258,7 @@
                     <div class="pagination-container pagination-sm">
                         <ul class="pagination">
                             <% if (current == 1) { %>
-                            <li class="disabled page-item"><a href="javascript:void(0);" class="page-link">First</a>
+                            <li class="disabled page-item"><a href="javascript:void(0);" class="page-link">Erste</a>
                             </li>
                             <% } else { %>
                             <li class="page-item"><a href="?category=<%=searchName %>&&page=1"
@@ -287,7 +287,7 @@
                             </li>
                             <% } else { %>
                             <li class="page-item"><a href="?category=<%=searchName %>&&page=<%= pages %>"
-                                    class="page-link">Last</a></li>
+                                    class="page-link">Letzte</a></li>
                             <% } %>
                         </ul>
                     </div>

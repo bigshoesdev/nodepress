@@ -124,7 +124,7 @@
       <!-- Page Heading Start -->
       <div class="col-md-8 col-lg-auto mb-20">
          <div class="page-heading">
-            <h3>Marking List</h3>
+            <h3>Nicht mehr speichern</h3>
          </div>
       </div><!-- Page Heading End -->
    </div><!-- Page Headings End -->
@@ -139,9 +139,9 @@
                <div class="col-4">
                   <img src="<%= data.articleId.file%>" style="min-height: 250px; object-fit: cover;" />
                   <a href="<%= data.url%>" target="_blank" class="btn btn-primary btn-sm"
-                     style="position: absolute;bottom: 25%; right: 40%;">&nbsp;View&nbsp;&nbsp;</a>
+                     style="position: absolute;bottom: 25%; right: 40%;">&nbsp;Beitrag anzeigen&nbsp;&nbsp;</a>
                   <a href="/savetext/delete?markingId=<%= data._id %>" class="btn btn-danger btn-sm"
-                     style="position: absolute;bottom: 10%; right: 40%;">Delete</a>
+                     style="position: absolute;bottom: 10%; right: 40%;">Markierung entfernen</a>
                </div>
                <div class="col-8" style="max-height: 250px; overflow-wrap: break-word; overflow-y: scroll;">
                   <% data.text.forEach((item) => {%>

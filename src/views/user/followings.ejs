@@ -123,7 +123,7 @@
         <!-- Page Heading Start -->
         <div class="col-md-8 col-lg-auto mb-20">
             <div class="page-heading">
-                <h3>Followings</h3>
+                <h3>Du folgst</h3>
             </div>
         </div><!-- Page Heading End -->
 
@@ -138,14 +138,14 @@
             <form action method="GET" id="bulkDeleteForm">
                 <div class="table-responsive bg-white shadow-sm">
                     <% if(followers == "") { %>
-                        <div class="alert alert-primary">You are not followings anyone.</div>
+                        <div class="alert alert-primary">Du folgst leider noch keinem Blog.</div>
                         <% } %>
                         <table class="table table-vertical-middle">
                             <thead>
                                 <tr>
                                     <th>Avatar</th>
-                                    <th>User Name</th>
-                                    <th>Actions</th>
+                                    <th>Benutzername</th>
+                                    <th>Aktionen</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -156,7 +156,7 @@
                                         <td><%= data.firstName %> <%= data.lastName %></td>
                                         <td>
                                             <!-- <a href="/author/<%= data.username %>" target="_blank"><button type="button" class="btn btn-success btn-sm">View User's Profile</button></a> -->
-                                            <a href="/unfollow-user?followerId=<%= data._id %>"><button class="btn btn-danger btn-sm" type="button">Unfollow</button></a>
+                                            <a href="/unfollow-user?followerId=<%= data._id %>"><button class="btn btn-danger btn-sm" type="button">Nicht mehr folgen</button></a>
                                         </td>
                                     </tr>
                                     <% }}) %>

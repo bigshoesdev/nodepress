@@ -115,16 +115,18 @@
       <div class="row">
         <div class="col-md-6">
           <div class="Basic-plan" data-aos="fade-up" data-aos-duration="1500">
-            <div class="Basic-plan-content">
+            <div class="Basic-plan-content" style="margin: auto;">
               <div class="Basic-plan-head">
-                <h2>1 Monat kostenlos testen</h2>
                 <h5>Basic</h5>
                 <h1>Kostenlos</h1>
                 <h4>/Monat</h4>
               </div>
-              <div class="Basic-plan-brief">
-                <p>Publiziere Inhalte und erreiche Menschen Bis zu 7 Minuten kostenloser Lesezeit täglich Erhalte
-                  Zugriff auf Inhalte aus 2 Kategorien</p>
+              <div class="Basic-plan-brief" >
+                <ul style="text-align: left; width: 80%; margin: auto; color: #6b6a6a;">
+                  <li>Veröffentliche Beiträge und erreiche Menschen</li>
+                  <li>Folge Autoren</li>
+                  <li> Greife aus Inhalte aus zwei ausgewählten Kategorien zu</li>
+                </ul>
               </div>
               <div class="Basic-plan-btn">
                 <form action="/onboarding" method="POST">
@@ -132,7 +134,7 @@
                   <%if(user){%>
                   <% if(user.paid == "paid"){%>
                   <a href="/downgrade?user=<%= user.id%>" style="color: #fff;border: 1px solid #fff;padding: 13px 15px;text-decoration: none !important;background: transparent;
-                 font-size: 16px;" type="button">DownGrade<i style="margin-left: 10px;" class="fa fa-long-arrow-right"
+                 font-size: 16px;" type="button">Premium kündigen<i style="margin-left: 10px;" class="fa fa-long-arrow-right"
                       aria-hidden="true"></i></a>
                   <%} else if(user.paid == "free") {%>
                   <!-- <button type="submit"><span>Basic-Member werden</span><span><i class="fa fa-long-arrow-right" aria-hidden="true"></i></span></button> -->
@@ -145,7 +147,7 @@
         </div>
         <div class="col-md-6">
           <div class="premium-plan" data-aos="fade-up" data-aos-duration="1500">
-            <div class="premium-plan-content">
+            <div class="premium-plan-content" style="margin: auto;">
               <div class="premium-plan-head">
                 <h2>1 Monat kostenlos testen</h2>
                 <h5>Premium</h5>
@@ -153,9 +155,16 @@
                 <h4>/Monat</h4>
               </div>
               <div class="premium-plan-brief">
-                <p>Publiziere Inhalte und erreiche Menschen Genieße unsere Inhalte unbegrenzt Lese exklusive Inhalte von
-                  verifizierten Autoren Lese aus allen Kategorien Markiere inspirierende Passagen Folge Autoren Kündige
-                  jederzeit</p>
+                <ul style="text-align: left; width: 80%; margin: auto; color: #6b6a6a;">
+                  <li>Veröffentliche Beiträge und erreiche Menschen</li>
+                  <li>Genieße Inhalte ganz ohne Begrenzung</li>
+                  <li>Greife auf Inhalte aus über 30 Kategorien zu</li>
+                  <li>Lese exklusive Inhalte von qualifizierten Bloggern</li>
+                  <li>Markiere inspirierende Passagen</li>
+                  <li>Speichere Beiträge</li>
+                  <li>Folge Autoren</li>
+                  <li>Kündige jederzeit</li>
+                </ul>
               </div>
               <div class="premium-plan-btn">
                 <form action="/onboarding" method="POST">

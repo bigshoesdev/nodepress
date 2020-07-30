@@ -123,7 +123,7 @@
         <!-- Page Heading Start -->
         <div class="col-md-8 col-lg-auto mb-20">
             <div class="page-heading">
-                <h3>Pending Posts</h3>
+                <h3>Ausstehende Beiträge</h3>
             </div>
         </div><!-- Page Heading End -->
 
@@ -133,9 +133,9 @@
                             data-toggle="dropdown" aria-expanded="false">Add New</a>
                         <div class="dropdown-menu dropdown-menu-right" x-placement="bottom-start"
                             style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 40px, 0px);">
-                            <a class="dropdown-item" href="/user/posts/add-new">Add New Article</a>
-                            <a class="dropdown-item" href="/user/posts/add-new-audio">Add new Audio</a>
-                            <a class="dropdown-item" href="/user/posts/add-new-video">Add new Video</a>
+                            <a class="dropdown-item" href="/user/posts/add-new">Beitrag hinzufügen</a>
+                            <!-- <a class="dropdown-item" href="/user/posts/add-new-audio">Add new Audio</a> -->
+                            <!-- <a class="dropdown-item" href="/user/posts/add-new-video">Add new Video</a> -->
                         </div>
                     </div>
         </div>
@@ -149,7 +149,7 @@
         <div class="col-md-6 mb-20">
                 <div class="form-group">
                     <select id="searchByCategory" class="form-control form-control-sm" onchange="window.location.href = window.origin + '/user/pending-posts?category=' + this.value" required>
-                        <option selected="selected" disabled="disabled">-- Filter By Category --</option>
+                        <option selected="selected" disabled="disabled">-- Filtern nach Kategorie --</option>
                         <% for(let item of category2) { %>
     
                         <option value="<%= item.name %>"><%= item.name %></option>
@@ -182,17 +182,17 @@
             <form action method="GET" id="bulkDeleteForm">
                 <div class="table-responsive bg-white shadow-sm">
                     <% if(article == "") { %>
-                    <div class="alert alert-primary">No pending Post</div>
+                    <div class="alert alert-primary">Keine ausstehenden Beiträge</div>
                     <% } %>
                     <table class="table table-vertical-middle">
                         <thead>
                             <tr>
-                                <th>Title</th>
-                                <th>Category</th>
+                                <th>Titel</th>
+                                <th>Kategorie</th>
                                 <th>Post Type</th>
                                 <th>Author</th>
                                 <th>Comments</th>
-                                <th>Date</th>
+                                <th>Datum</th>
                                 <th>Status</th>
                             </tr>
                         </thead>

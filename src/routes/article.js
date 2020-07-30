@@ -180,6 +180,7 @@ router.post(
                 "success_msg",
                 "New article has been posted successfully"
               );
+              console.log(user.roleId);
               return res.redirect("back");
             })
             .catch(e => next(e));
@@ -1063,6 +1064,13 @@ router.get("/all-post", install.redirectToLogin, async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+});
+
+router.post('/api/kategorie', async(req, res, next) => {
+  let slug = req.body.slug;
+  let category = await Category.findOne({slug: slug});
+  let articles = await Article.find({category: category.id}).sort({createdAt: -1}).limit(10);
+  return res.json({"data" : articles});
 });
 
 // Get all the posts in a category
